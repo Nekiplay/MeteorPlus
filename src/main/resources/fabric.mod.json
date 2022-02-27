@@ -1,11 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "addon-template",
+  "id": "anti-xray-bypass",
   "version": "${version}",
-  "name": "Addon Template",
-  "description": "An addon template for the Meteor addons.",
+  "name": "Anti-Xray Bypass",
+  "description": "Bypasses X-Ray",
   "authors": [
-    "seasnail8169"
+    "Olejka",
+	"Eld3rly"
   ],
   "contact": {
     "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
@@ -14,11 +15,11 @@
   "environment": "client",
   "entrypoints": {
     "meteor": [
-      "dummy.addon.template.TemplateAddon"
+      "olejka.axb.AntiXRayBypass"
     ]
   },
   "mixins": [
-    "template.mixins.json"
+    "axb.mixins.json"
   ],
   "custom": {
     "meteor-client:color": "225,25,25"
