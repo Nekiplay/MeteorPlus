@@ -43,7 +43,7 @@ public class AntiXRayBypassCommand extends Command {
             return;
 
         BlockPos pos = mc.player.getBlockPos();
-		ChatUtils.info("AXB", "Starting task...");
+		ChatUtils.info("AXB", "Task started!");
 
 		Thread newThread = new Thread(() -> {
 			for(int dy = -radius; dy <= radius; dy++) {
@@ -62,9 +62,9 @@ public class AntiXRayBypassCommand extends Command {
 						}
 					}
 				}
-				ChatUtils.info("AXB", "Completed height " + (pos.getY() + dy));
+				ChatUtils.info("AXB", "Done height " + (pos.getY() + dy));
             }
-			ChatUtils.info("AXB", "Completed!");
+			ChatUtils.info("AXB", "Task finished!");
 		});
 		
 
