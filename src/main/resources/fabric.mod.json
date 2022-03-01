@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "anti-xray-bypass",
+  "id": "meteor-plus",
   "version": "${version}",
-  "name": "Anti-Xray Bypass",
-  "description": "Bypasses X-Ray",
+  "name": "Meteor Plus",
+  "description": "Cool add-on for Meteor",
   "authors": [
     "Olejka",
 	"Eld3rly"
@@ -15,11 +15,11 @@
   "environment": "client",
   "entrypoints": {
     "meteor": [
-      "olejka.axb.AntiXRayBypass"
+      "olejka.meteorplus.MeteorPlus"
     ]
   },
   "mixins": [
-    "axb.mixins.json"
+    "meteor-plus.mixins.json"
   ],
   "custom": {
     "meteor-client:color": "225,25,25"
