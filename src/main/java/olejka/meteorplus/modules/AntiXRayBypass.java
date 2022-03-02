@@ -3,7 +3,7 @@ package olejka.meteorplus.modules;
 import olejka.meteorplus.MeteorPlus;
 
 import meteordevelopment.meteorclient.systems.modules.Module;
-//import meteordevelopment.meteorclient.settings.BoolSetting;	
+//import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -38,7 +38,7 @@ public class AntiXRayBypass extends Module {
 		.sliderMax(25)
 		.build()
 	);
-	
+
 	// private final Setting<Boolean> baritone = sgGeneral.add(new BoolSetting.Builder()
     //         .name("baritone")
     //         .description("Set baritone ore positions to the simulated ones. // indev")
@@ -52,7 +52,7 @@ public class AntiXRayBypass extends Module {
 	public void onActivate() {
 		runScan();
 	}
-	
+
 	@Override
 	public void onDeactivate() {
 		worker.interrupt();
@@ -61,9 +61,9 @@ public class AntiXRayBypass extends Module {
 	private void runScan() {
         ClientPlayNetworkHandler con = mc.getNetworkHandler();
         if (con == null) return;
-
 		int r = radius.get();
 
+        assert mc.player != null;
         BlockPos pos = mc.player.getBlockPos();
 		ChatUtils.info("AXB", "Task started!");
 
@@ -92,7 +92,7 @@ public class AntiXRayBypass extends Module {
             }
 			ChatUtils.info("AXB", "Task finished!");
 		});
-		
+
 		worker.start();
     }
 }
