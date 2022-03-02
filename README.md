@@ -1,8 +1,8 @@
-# Meteor Addon Template
+# Meteor Plus
 
-A template to allow easy usage of the Meteor Addon API.
+Simple addon for Meteor client.
 
-### How to use:  
-- Clone this project
-- Use this template to create new modules/commands
-- Run the mod with Meteor.
+### Features:
+- Anti X-Ray bypass.
+- Quick chat commands.
+- ~~Friend chat & locator~~
