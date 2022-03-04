@@ -1,11 +1,12 @@
 package olejka.meteorplus;
 //import olejka.meteorplus.commands.*;
 import olejka.meteorplus.modules.*;
+
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
-//import meteordevelopment.meteorclient.systems.commands.Commands;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+//import meteordevelopment.meteorclient.systems.commands.Commands;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +26,9 @@ public class MeteorPlus extends MeteorAddon {
 
 		//Modules
 		Modules.get().add(new AntiXRayBypass());
+
+		//Commands
+		//Commands.get().add();
 	}
 
 	@Override

@@ -26,6 +26,8 @@ public class AntiXRayBypass extends Module {
 		.description("Set the scan radius")
 		.defaultValue(10)
 		.min(2)
+		.max(30)
+		.sliderMin(2)
 		.sliderMax(30)
 		.build()
 	);
@@ -35,6 +37,8 @@ public class AntiXRayBypass extends Module {
 		.description("Delay before scan.")
 		.defaultValue(5)
 		.min(5)
+		.max(25)
+		.sliderMin(5)
 		.sliderMax(25)
 		.build()
 	);
