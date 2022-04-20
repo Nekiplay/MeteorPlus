@@ -6,7 +6,8 @@
   "description": "Cool add-on for Meteor",
   "authors": [
     "Olejka",
-	"Eld3rly"
+		"Eld3rly",
+		"Vazgen005"
   ],
   "contact": {
     "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
@@ -22,11 +23,11 @@
     "meteor-plus.mixins.json"
   ],
   "custom": {
-    "meteor-client:color": "225,25,25"
+    "meteor-client:color": "0,140,252"
   },
   "depends": {
     "java": ">=17",
-    "minecraft": ">=1.18",
+    "minecraft": ">=${mc_version}",
     "meteor-client": "*"
   }
 }

@@ -5,8 +5,6 @@ plugins {
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
 
 repositories {
     maven {
@@ -32,7 +30,7 @@ dependencies {
 
 processResources {
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand "version": project.mod_version, "mc_version": project.minecraft_version
     }
 }
 
