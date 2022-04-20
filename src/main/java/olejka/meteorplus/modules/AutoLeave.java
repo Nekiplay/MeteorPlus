@@ -34,19 +34,15 @@ public class AutoLeave extends Module {
 
 	@EventHandler
 	public void onEntityAdded(EntityAddedEvent event) {
+		if (mc.player == null) return;
 		if (visualRangeIgnoreFriends.get()) {
-			if (event.entity.isPlayer() && !Friends.get().isFriend((PlayerEntity) event.entity)) {
-				assert mc.player != null;
-				if (!Objects.equals(event.entity.getEntityName(), mc.player.getEntityName())) {
-					assert mc.player != null;
-					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText(String.format("[Auto Leaeve] player %s was detected", event.entity.getEntityName()))));
-					if (AutoDisable.get()) this.toggle();
-				}
+			if (event.entity.isPlayer() && !Friends.get().isFriend((PlayerEntity) event.entity) && !Objects.equals(event.entity.getEntityName(), mc.player.getEntityName()) && !Objects.equals(event.entity.getEntityName(), "FreeCamera")) {
+			mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText(String.format("[Auto Leaeve] player %s was detected", event.entity.getEntityName()))));
+			if (AutoDisable.get()) this.toggle();
 			}
 		}
 		else {
 			if (event.entity.isPlayer()) {
-				assert mc.player != null;
 				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText (String.format("[Auto Leaeve] player %s was detected", event.entity.getEntityName()))));
 				if (AutoDisable.get()) this.toggle();
 			}
