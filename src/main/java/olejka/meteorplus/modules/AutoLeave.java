@@ -11,6 +11,8 @@ import net.minecraft.text.LiteralText;
 import olejka.meteorplus.MeteorPlus;
 import meteordevelopment.meteorclient.events.entity.EntityAddedEvent;
 import meteordevelopment.orbit.EventHandler;
+import java.util.Objects;
+
 public class AutoLeave extends Module {
 	public AutoLeave() {
 		super(MeteorPlus.CATEGORY, "Auto Leave", "Automatically logs out from the server when someone enters your render distance.");
@@ -33,10 +35,13 @@ public class AutoLeave extends Module {
 	@EventHandler
 	public void onEntityAdded(EntityAddedEvent event) {
 		if (visualRangeIgnoreFriends.get()) {
-			if (event.entity.isPlayer() && !Friends.get().isFriend(((PlayerEntity) event.entity))) {
+			if (event.entity.isPlayer() && !Friends.get().isFriend((PlayerEntity) event.entity)) {
 				assert mc.player != null;
-				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText (String.format("[Auto Leaeve] player %s was detected", event.entity.getEntityName()))));
-				if (AutoDisable.get()) this.toggle();
+				if (!Objects.equals(event.entity.getEntityName(), mc.player.getEntityName())) {
+					assert mc.player != null;
+					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText(String.format("[Auto Leaeve] player %s was detected", event.entity.getEntityName()))));
+					if (AutoDisable.get()) this.toggle();
+				}
 			}
 		}
 		else {

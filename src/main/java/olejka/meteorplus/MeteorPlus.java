@@ -27,7 +27,7 @@ public class MeteorPlus extends MeteorAddon {
 		MeteorClient.EVENT_BUS.registerLambdaFactory("olejka.meteorplus", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
 
 		//Modules
-		Modules.get().add(new AntiXRayBypass());
+		// Modules.get().add(new AntiXRayBypass());  useless now
 		Modules.get().add(new AutoLeave());
 
 		//Commands
