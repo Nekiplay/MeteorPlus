@@ -4,5 +4,5 @@ Simple addon for Meteor client.
 
 ### Features:
 - Anti X-Ray bypass.
-- Quick chat commands.
+- Auto leave
 - ~~Friend chat & locator~~
