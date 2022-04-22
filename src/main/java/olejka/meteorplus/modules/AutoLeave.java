@@ -3,8 +3,10 @@ package olejka.meteorplus.modules;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.DisconnectS2CPacket;
 import net.minecraft.text.LiteralText;
@@ -32,22 +34,38 @@ public class AutoLeave extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> Command = ALSettings.add(new BoolSetting.Builder()
+		.name("command")
+		.description("Send command instead of laave.")
+		.defaultValue(true)
+		.build()
+	);
+
+	private final Setting<String> command_str = ALSettings.add(new StringSetting.Builder()
+		.name("command:")
+		.description("Send command in chat.")
+		.defaultValue("/spawn")
+		.visible(Command::get)
+		.build()
+	);
+
 	@EventHandler
 	public void onEntityAdded(EntityAddedEvent event) {
 		if (mc.player == null) return;
 		if (visualRangeIgnoreFriends.get()) {
 			if (event.entity.isPlayer() && !Friends.get().isFriend((PlayerEntity) event.entity) && !Objects.equals(event.entity.getEntityName(), mc.player.getEntityName()) && !Objects.equals(event.entity.getEntityName(), "FreeCamera")) {
-			mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText(String.format("[Auto Leaeve] player %s was detected", event.entity.getEntityName()))));
+				if (Command.get()) {
+					mc.player.sendChatMessage(command_str.get());
+					ChatUtils.info((String.format("[Auto Leaeve] player %s was detected", event.entity.getEntityName())));
+				} else {
+					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText(String.format("[Auto Leaeve] player %s was detected", event.entity.getEntityName()))));
+				}
 			if (AutoDisable.get()) this.toggle();
 			}
 		}
-		else {
-			if (event.entity.isPlayer()) {
+		else if (event.entity.isPlayer()){
 				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText (String.format("[Auto Leaeve] player %s was detected", event.entity.getEntityName()))));
 				if (AutoDisable.get()) this.toggle();
-			}
 		}
 	}
 }
-
-
