@@ -37,7 +37,7 @@ public class AutoLeave extends Module {
 	private final Setting<Boolean> Command = ALSettings.add(new BoolSetting.Builder()
 		.name("command")
 		.description("Send command instead of laave.")
-		.defaultValue(true)
+		.defaultValue(false)
 		.build()
 	);
 
