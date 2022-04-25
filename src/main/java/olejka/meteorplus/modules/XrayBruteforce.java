@@ -514,7 +514,7 @@ public class XrayBruteforce extends Module {
         currentScanBlock = null;
         if (clickerThread != null && clickerThread.isAlive())
         {
-            clickerThread.interrupt();
+            clickerThread.stop();
         }
     }
 
