@@ -32,7 +32,7 @@ import java.util.*;
 
 public class XrayBruteforce extends Module {
     public XrayBruteforce() {
-        super(MeteorPlus.CATEGORY, "xray-bruteForce", "Bypasses anti-xray. (thx Nekiplay)");
+        super(MeteorPlus.CATEGORY, "xray-bruteForce", "Bypasses anti-xray.");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final SettingGroup sgVisual = settings.createGroup("Visual");
