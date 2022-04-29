@@ -1,9 +1,13 @@
+![Meteor Plus icon](/src/main/resources/assets/plus/icon.png)
+
 # Meteor Plus
 
-Simple addon for Meteor client.
+Addon for [Meteor client](https://github.com/MeteorDevelopment/meteor-client).
 
-### Features:
+# Features
+### Modules:
 - Anti X-Ray bypass.
 - Auto leave
 - Auto accept
+- Auto repair
 - ~~Friend chat & locator~~

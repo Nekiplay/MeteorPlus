@@ -30,6 +30,7 @@ public class MeteorPlus extends MeteorAddon {
 		Modules.get().add(new XrayBruteforce());
 		Modules.get().add(new AutoLeave());
 		Modules.get().add(new AutoAccept());
+		Modules.get().add(new AutoRepair());
 
 		//Commands
 		//Commands.get().add();
