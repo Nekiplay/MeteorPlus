@@ -10,7 +10,7 @@
 		"Vazgen005"
   ],
   "contact": {
-    "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
+    "repo": "https://github.com/TheSainEyereg/MeteorPlus"
   },
   "icon": "assets/plus/icon.png",
   "environment": "client",
