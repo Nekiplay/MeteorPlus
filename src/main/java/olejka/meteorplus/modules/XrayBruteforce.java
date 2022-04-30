@@ -1,5 +1,6 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import olejka.meteorplus.MeteorPlus;
 
 import meteordevelopment.meteorclient.events.entity.player.BreakBlockEvent;
@@ -84,12 +85,15 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-    private final Setting<Boolean> scan_cluster = sgGeneral.add(new BoolSetting.Builder()
-        .name("Clusters")
-        .description("Scan clusters.")
-        .defaultValue(true)
-        .build()
-    );
+	private final Setting<Integer> cluster_delay = sgGeneral.add(new IntSetting.Builder()
+		.name("Rescan delay")
+		.description("Rescan delay.")
+		.defaultValue(1250)
+		.min(750)
+		.max(2500)
+		.sliderRange(750, 2500)
+		.build()
+	);
 
     public final Setting<Boolean> auto_height = sgGeneral.add(new BoolSetting.Builder()
         .name("Auto-height")
@@ -146,7 +150,7 @@ public class XrayBruteforce extends Module {
     );
 
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
-        .name("delay")
+        .name("Scan delay")
         .description("Bruteforce delay.")
         .defaultValue(3)
         .min(0)
@@ -154,30 +158,23 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-    private final Setting<XrayBruteforce.Mode> mode = sgGeneral.add(new EnumSetting.Builder<XrayBruteforce.Mode>()
-        .name("mode")
-        .description("Scan mode.")
-        .defaultValue(Mode.Normal)
-        .build()
-    );
-
     private BlockPos currentScanBlock;
-    public static class RenderOre {
+	public class RenderOre {
         public Block block = Blocks.AIR;
         public BlockPos blockPos = null;
         public SettingColor color = null;
     }
     private static final List<RenderOre> ores = new ArrayList<>();
     private RenderOre get(BlockPos pos) {
-        synchronized (ores) {
+		synchronized (ores) {
 			for (RenderOre cur : ores) {
 				if (cur.block != null && cur.blockPos.equals(pos)) {
 					return cur;
 				}
 			}
-            return null;
-        }
-    }
+			return null;
+		}
+	}
     private void addRenderBlock(BlockPos blockPos) {
         synchronized (ores) {
             RenderOre ore = get(blockPos);
@@ -189,31 +186,53 @@ public class XrayBruteforce extends Module {
         }
     }
 
-    @EventHandler
-    public void blockUpdate(BlockUpdateEvent event) {
-        scanned.add(event.pos);
-        new Thread(() -> {
-            if (event.oldState.getBlock() != Blocks.AIR) {
-				assert mc.world != null;
-				if (whblocks.get().contains(mc.world.getBlockState(event.pos).getBlock())) {
-                    if (scan_cluster.get()) {
-                        if (detectOre(event.newState.getBlock())) {
-                            addRenderBlock(event.pos);
+	public ArrayList<BlockScanned> need_rescan = new ArrayList<BlockScanned>();
 
-							for (BlockPos pos : getBlocks(event.pos, 3, 3)) {
-								addBlock(pos);
-							}
-                        }
-                    }
-                } else {
-                    RenderOre ore = get(event.pos);
-                    if (ore != null) {
-                        ores.remove(ore);
-                        scanned.remove(event.pos);
-                    }
-                }
-            }
-        }).start();
+	@EventHandler
+	public void tickEvent(TickEvent.Post event)
+	{
+		synchronized (need_rescan) {
+			Iterator<BlockScanned> iterator = need_rescan.iterator();
+			while (iterator.hasNext()) {
+				BlockScanned blockscanned = iterator.next();
+				if (!scanned.contains(blockscanned.pos)) {
+					scanned.add(blockscanned.pos);
+				}
+				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime + cluster_delay.get() && mc.world != null) {
+					BlockState state = mc.world.getBlockState(blockscanned.pos);
+					if (whblocks.get().contains(state.getBlock())) {
+						addRenderBlock(blockscanned.pos);
+						for (BlockPos pos : getBlocks(blockscanned.pos, 2, 2)) {
+							addBlock(pos);
+						}
+					}
+					iterator.remove();
+				}
+			}
+		}
+	}
+	public class BlockScanned
+	{
+		public BlockPos pos;
+		public long rescanTime;
+	}
+    @EventHandler
+    public void blockUpdateEvent(BlockUpdateEvent event) {
+		if (event.oldState.getMaterial() != Material.AIR)
+		{
+			if (!scanned.contains(event.pos)) {
+				scanned.add(event.pos);
+			}
+			BlockState state = mc.world.getBlockState(event.pos);
+			if (whblocks.get().contains(state.getBlock())) {
+				synchronized (need_rescan) {
+					BlockScanned scanned = new BlockScanned();
+					scanned.pos = event.pos;
+					scanned.rescanTime = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+					need_rescan.add(scanned);
+				}
+			}
+		}
     }
 
     @EventHandler
@@ -233,30 +252,6 @@ public class XrayBruteforce extends Module {
         }
     }
 
-    private boolean detectOre(Block block) {
-        if (block == Blocks.ANCIENT_DEBRIS) {
-            return true;
-        }
-		if (block == Blocks.EMERALD_ORE || block == Blocks.DEEPSLATE_EMERALD_ORE) {
-            return true;
-        }
-		if (block == Blocks.DIAMOND_ORE || block == Blocks.DEEPSLATE_DIAMOND_ORE) {
-            return true;
-        }
-		if (block == Blocks.GOLD_ORE || block == Blocks.DEEPSLATE_GOLD_ORE || block == Blocks.NETHER_GOLD_ORE) {
-            return true;
-        }
-		if (block == Blocks.IRON_ORE || block == Blocks.DEEPSLATE_IRON_ORE) {
-            return true;
-        }
-		if (block == Blocks.REDSTONE_ORE || block == Blocks.DEEPSLATE_REDSTONE_ORE) {
-            return true;
-        }
-		if (block == Blocks.LAPIS_ORE || block == Blocks.DEEPSLATE_LAPIS_ORE) {
-            return true;
-        }
-		return block == Blocks.COAL_ORE || block == Blocks.DEEPSLATE_COAL_ORE;
-	}
     private void setColors(RenderOre ore)
     {
         if (ore != null && ore.block != null && ore.color == null) {
@@ -274,7 +269,7 @@ public class XrayBruteforce extends Module {
             } else if (state.getBlock() == Blocks.IRON_ORE || state.getBlock() == Blocks.DEEPSLATE_IRON_ORE) {
                 ore.color = new SettingColor(128, 128, 128);
             } else if (state.getBlock() == Blocks.REDSTONE_ORE || state.getBlock() == Blocks.DEEPSLATE_REDSTONE_ORE) {
-                ore.color = new SettingColor(0, 0, 153);
+                ore.color = new SettingColor(153, 0, 0);
             } else if (state.getBlock() == Blocks.LAPIS_ORE || state.getBlock() == Blocks.DEEPSLATE_LAPIS_ORE) {
                 ore.color = new SettingColor(0, 0, 153);
             } else if (state.getBlock() == Blocks.COAL_ORE || state.getBlock() == Blocks.DEEPSLATE_COAL_ORE) {
@@ -288,7 +283,7 @@ public class XrayBruteforce extends Module {
         int renderBlocks = 0;
 		for (RenderOre pos : ores) {
 			setColors(pos);
-			if (EntityUtils.isInRenderDistance(pos.blockPos)) {
+			if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block!= null && whblocks.get().contains(pos.block)) {
 				renderOreBlock(event, pos);
 				renderBlocks++;
 			}
@@ -298,10 +293,10 @@ public class XrayBruteforce extends Module {
     private int renderedBlocks = 0;
     private void renderOreBlock(Render3DEvent event, RenderOre ore)
     {
-        if (ore.block != null && ore.color != null) {
-			assert mc.world != null;
+        if (ore.block != null && ore.color != null && mc.world != null) {
 			BlockState state = mc.world.getBlockState(ore.blockPos);
             VoxelShape shape = state.getOutlineShape(mc.world, ore.blockPos);
+			if (shape.isEmpty()) return;
             for (Box b : shape.getBoundingBoxes()) {
                 event.renderer.box(ore.blockPos.getX() + b.minX, ore.blockPos.getY() + b.minY, ore.blockPos.getZ() + b.minZ, ore.blockPos.getX() + b.maxX, ore.blockPos.getY() + b.maxY, ore.blockPos.getZ() + b.maxZ, ore.color, ore.color, ShapeMode.Lines, 0);
             }
@@ -355,13 +350,9 @@ public class XrayBruteforce extends Module {
         else if ((long) blocks.size() > 1) {
             return (long) blocks.size() + " | rendered: " + renderedBlocks + " blocks";
         }
-        else if (mode.get() == Mode.Random)
-        {
-            return "finding | rendered: " + renderedBlocks + " blocks";
-        }
         else
         {
-            return null;
+			return "finding | rendered: " + renderedBlocks + " blocks";
         }
     }
 
@@ -383,6 +374,7 @@ public class XrayBruteforce extends Module {
         if (packetmode.get() == PacketMode.Abort || packetmode.get() == PacketMode.Both) {
             conn.sendPacket(abortPacket);
         }
+		scanned.add(blockpos);
         return true;
     }
     long millis = 0;
@@ -393,7 +385,7 @@ public class XrayBruteforce extends Module {
             if (blocks != null && blocks.size() > 0) {
                 work();
             }
-            else if (mode.get() == Mode.Random)
+            else
             {
                 addRandomBlock();
                 work();
@@ -437,42 +429,43 @@ public class XrayBruteforce extends Module {
 
         if (auto_height.get())
         {
-            if (whblocks.get().contains(Blocks.DIAMOND_ORE) || whblocks.get().contains(Blocks.DEEPSLATE_DIAMOND_ORE))
+			List<Block> findBlocks = whblocks.get();
+            if (findBlocks.contains(Blocks.DIAMOND_ORE) || findBlocks.contains(Blocks.DEEPSLATE_DIAMOND_ORE))
             {
                 y = Utils.random(1, 15);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
                     blocks.add(new BlockPos(x, y, z));
                 }
             }
-            if (whblocks.get().contains(Blocks.REDSTONE_ORE) || whblocks.get().contains(Blocks.DEEPSLATE_REDSTONE_ORE))
+            if (findBlocks.contains(Blocks.REDSTONE_ORE) || findBlocks.contains(Blocks.DEEPSLATE_REDSTONE_ORE))
             {
                 y = Utils.random(1, 15);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
                     blocks.add(new BlockPos(x, y, z));
                 }
             }
-            if (whblocks.get().contains(Blocks.LAPIS_ORE) || whblocks.get().contains(Blocks.DEEPSLATE_LAPIS_ORE))
+            if (findBlocks.contains(Blocks.LAPIS_ORE) || findBlocks.contains(Blocks.DEEPSLATE_LAPIS_ORE))
             {
                 y = Utils.random(1, 31);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
                     blocks.add(new BlockPos(x, y, z));
                 }
             }
-            if (whblocks.get().contains(Blocks.GOLD_ORE) || whblocks.get().contains(Blocks.DEEPSLATE_GOLD_ORE))
+            if (findBlocks.contains(Blocks.GOLD_ORE) || findBlocks.contains(Blocks.DEEPSLATE_GOLD_ORE))
             {
                 y = Utils.random(1, 32);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
                     blocks.add(new BlockPos(x, y, z));
                 }
             }
-            if (whblocks.get().contains(Blocks.IRON_ORE) || whblocks.get().contains(Blocks.DEEPSLATE_IRON_ORE))
+            if (findBlocks.contains(Blocks.IRON_ORE) || findBlocks.contains(Blocks.DEEPSLATE_IRON_ORE))
             {
                 y = Utils.random(1, 63);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
                     blocks.add(new BlockPos(x, y, z));
                 }
             }
-            if (whblocks.get().contains(Blocks.COAL_ORE) || whblocks.get().contains(Blocks.DEEPSLATE_COAL_ORE))
+            if (findBlocks.contains(Blocks.COAL_ORE) || findBlocks.contains(Blocks.DEEPSLATE_COAL_ORE))
             {
                 y = Utils.random(1, 114);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
@@ -493,13 +486,7 @@ public class XrayBruteforce extends Module {
     public void onActivate() {
         millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         clickerThread = new Thread(() -> {
-            if (mode.get() == Mode.Normal) {
-				assert mc.player != null;
-				blocks = getBlocks(mc.player.getBlockPos(), y_range.get(), range.get());
-            }
-            else if (mode.get() == Mode.Random) {
-                addRandomBlock();
-            }
+			addRandomBlock();
             while (true)
             {
                 checker();
@@ -520,47 +507,6 @@ public class XrayBruteforce extends Module {
 
     private static final List<BlockPos> scanned = new ArrayList<>();
     private boolean calculating = false;
-
-    private List<BlockPos> getNearblyBlocks(BlockPos startPos, Block block)
-    {
-        List<BlockPos> nearbly = new ArrayList<>();
-
-        BlockPos pos1 = startPos.add(1, 0, 0);
-		assert mc.world != null;
-		if (mc.world.getBlockState(pos1).getBlock() == block)
-        {
-            nearbly.add(pos1);
-        }
-        BlockPos pos2 = startPos.add(-1, 0, 0);
-        if (mc.world.getBlockState(pos2).getBlock() == block)
-        {
-            nearbly.add(pos2);
-        }
-
-        BlockPos pos3 = startPos.add(0, 0, 1);
-        if (mc.world.getBlockState(pos3).getBlock() == block)
-        {
-            nearbly.add(pos3);
-        }
-
-        BlockPos pos4 = startPos.add(0, 0, -1);
-        if (mc.world.getBlockState(pos4).getBlock() == block)
-        {
-            nearbly.add(pos4);
-        }
-
-        BlockPos pos5 = startPos.add(0, 1, 0);
-        if (mc.world.getBlockState(pos5).getBlock() == block)
-        {
-            nearbly.add(pos5);
-        }
-        BlockPos pos6 = startPos.add(0, -1, 0);
-        if (mc.world.getBlockState(pos6).getBlock() == block)
-        {
-            nearbly.add(pos6);
-        }
-        return nearbly;
-    }
 
     private List<BlockPos> getBlocks(BlockPos startPos, int y_radius, int radius)
     {
@@ -585,10 +531,5 @@ public class XrayBruteforce extends Module {
         }
         calculating = false;
         return temp;
-    }
-
-    public enum Mode {
-		Normal,
-        Random,
     }
 }
