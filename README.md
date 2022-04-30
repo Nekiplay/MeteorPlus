@@ -10,4 +10,5 @@ Addon for [Meteor client](https://github.com/MeteorDevelopment/meteor-client).
 - Auto leave
 - Auto accept
 - Auto repair
+- Auto portal mine
 - ~~Friend chat & locator~~

@@ -18,6 +18,7 @@ import java.lang.invoke.MethodHandles;
 public class MeteorPlus extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
 	public static final Category CATEGORY = new Category("Meteor Plus", Items.EMERALD_BLOCK.getDefaultStack());
+	public static final Category CATEGORY_AUTOMATION = new Category("Automation", Items.EMERALD_BLOCK.getDefaultStack());
 
 	@Override
 	public void onInitialize() {
@@ -32,6 +33,7 @@ public class MeteorPlus extends MeteorAddon {
 		Modules.get().add(new AutoAccept());
 		Modules.get().add(new AutoRepair());
 		Modules.get().add(new GhostBlockFixer());
+		Modules.get().add(new AntiLava());
 
 		//Commands
 		//Commands.get().add();
@@ -40,5 +42,6 @@ public class MeteorPlus extends MeteorAddon {
 	@Override
 	public void onRegisterCategories() {
 		Modules.registerCategory(CATEGORY);
+		Modules.registerCategory(CATEGORY_AUTOMATION);
 	}
 }
