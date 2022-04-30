@@ -1,13 +1,11 @@
 package olejka.meteorplus.modules;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.settings.BoolSetting;
-import meteordevelopment.meteorclient.settings.ItemListSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
+import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.screen.recipebook.RecipeResultCollection;
@@ -43,6 +41,22 @@ public class AutoCraftPlus extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> autoPlace = sgGeneral.add(new BoolSetting.Builder()
+		.name("auto-place")
+		.description("Auto place crafting table.")
+		.defaultValue(false)
+		.visible(autoOpen::get)
+		.build()
+	);
+
+	private final Setting<Integer> radius = sgGeneral.add(new IntSetting.Builder()
+		.name("auto-place")
+		.description("Auto place crafting table.")
+		.defaultValue(5)
+		.visible(autoOpen::get)
+		.build()
+	);
+
 	private final Setting<List<Item>> items = sgGeneral.add(new ItemListSetting.Builder()
 		.name("items")
 		.description("Items you want to get crafted.")
@@ -72,7 +86,7 @@ public class AutoCraftPlus extends Module {
 	);
 
 	private BlockPos findCraftingTable() {
-		List<BlockPos> nearbyBlocks = BlockHelper.getSphere(mc.player.getBlockPos(), 5, 5);
+		List<BlockPos> nearbyBlocks = BlockHelper.getSphere(mc.player.getBlockPos(), radius.get(), radius.get());
 		for (BlockPos block : nearbyBlocks) if (BlockHelper.getBlock(block) == Blocks.CRAFTING_TABLE) return block;
 		return null;
 	}
@@ -83,12 +97,27 @@ public class AutoCraftPlus extends Module {
 		mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, table);
 	}
 
+	private void placeCraftingTable(FindItemResult craftTable) {
+		List<BlockPos> nearbyBlocks = BlockHelper.getSphere(mc.player.getBlockPos(), radius.get(), radius.get());
+		for (BlockPos block : nearbyBlocks) {
+			if (BlockHelper.getBlock(block) == Blocks.AIR) {
+				BlockUtils.place(block, craftTable, 0, true);
+				break;
+			}
+		}
+	}
 	@Override
 	public void onActivate() {
 		if (autoOpen.get()) {
 			BlockPos craftingTable = findCraftingTable();
 			if (craftingTable != null) {
 				openCraftingTable(craftingTable);
+			}
+			else {
+				FindItemResult craftTableFind = InvUtils.findInHotbar(Blocks.CRAFTING_TABLE.asItem());
+				if (craftTableFind.found() && autoPlace.get()) {
+					placeCraftingTable(craftTableFind);
+				}
 			}
 		}
 	}
