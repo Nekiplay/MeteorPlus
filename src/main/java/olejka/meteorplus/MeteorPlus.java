@@ -35,6 +35,7 @@ public class MeteorPlus extends MeteorAddon {
 		Modules.get().add(new AutoRepair());
 		Modules.get().add(new GhostBlockFixer());
 		Modules.get().add(new AntiLava());
+		Modules.get().add(new Freeze());
 
 		//Commands
 		//Commands.get().add();
