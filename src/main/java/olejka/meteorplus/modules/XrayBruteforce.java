@@ -152,7 +152,7 @@ public class XrayBruteforce extends Module {
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
         .name("Scan delay")
         .description("Bruteforce delay.")
-        .defaultValue(3)
+        .defaultValue(11)
         .min(0)
         .sliderRange(0, 20)
         .build()
