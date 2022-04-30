@@ -8,6 +8,9 @@ import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 import olejka.meteorplus.MeteorPlus;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,10 +21,10 @@ public class AutoAccept extends Module {
 
 	private final SettingGroup AASettings = settings.createGroup("Auto Accept Settings");
 
-	public final Setting<AutoAccept.mode> Mode = AASettings.add(new EnumSetting.Builder<AutoAccept.mode>()
-		.name("mode")
-		.description("Server mode.")
-		.defaultValue(mode.CMI)
+	private final Setting<String> accept_command = AASettings.add(new StringSetting.Builder()
+		.name("Accept command")
+		.description("Accept command.")
+		.defaultValue("/cmi tpaccept {username} tpa")
 		.build()
 	);
 
@@ -32,35 +35,67 @@ public class AutoAccept extends Module {
 		.build()
 	);
 
-//	private final Setting<String> command_str = AASettings.add(new StringSetting.Builder()
-//		.name("command:")
-//		.description("Write your own regex.")
-//		.visible(Mode::get()
-//		.build()
-//	);
+	private ArrayList<TPPattern> patters = new ArrayList<>();
 
-	public enum mode {
-		CMI,
-//		Custom;
+	@Override
+	public void onActivate() {
+		patters.clear();
+		TPPattern MST_Network = new TPPattern(".*Игрок §e(.*) §7просит телепортироваться к вам!§7 §a§l.*", 1);
+		patters.add(MST_Network);
 	}
-
+	@Override
+	public void onDeactivate() {
+		patters.clear();
+	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onMessageRecieve(ReceiveMessageEvent event) {
 		if (event.getMessage() != null && mc.player != null){
 			String message = event.getMessage().getString();
-			Pattern pattern = Pattern.compile(".*Игрок §e(.*) §7просит телепортироваться к вам!§7 §a§l.*");
+			String nickname = getName(message);
+			if (!nickname.equals("")) {
+				if (FriendsOnly.get() && isFriend(nickname)) {
+					info("Accepting request from " + "§c" + nickname);
+					mc.player.sendChatMessage(accept_command.get().replace("{username}", nickname));
+				} else if (!FriendsOnly.get()) {
+					info("Accepting request from " + "§c" + nickname);
+					mc.player.sendChatMessage(accept_command.get().replace("{username}", nickname));
+				}
+
+			}
+		}
+	}
+
+	private String getName(String message)
+	{
+		String nickname = "";
+		for (TPPattern tpPattern : patters) {
+			Pattern pattern = Pattern.compile(tpPattern.pattern);
 			Matcher matcher = pattern.matcher(message);
 			if (matcher.find()) {
-				String player = matcher.group(1);
-				if (FriendsOnly.get() && Friends.get().get(player) != null && Friends.get().get(player).name.equals(player)){
-					info("Accepting request from " + "§c" + player);
-					mc.player.sendChatMessage("/cmi tpaccept " + player + " tpa");
-				} else if (!FriendsOnly.get()){
-					info("Accepting request from " + "§c" + player);
-					mc.player.sendChatMessage("/cmi tpaccept " + player + " tpa");
+				String player = matcher.group(tpPattern.group);
+				if (!player.equals("")) {
+					nickname = player;
 				}
 			}
+		}
+		return nickname;
+	}
+
+	private boolean isFriend(String username)
+	{
+		return Friends.get().get(username) != null && Friends.get().get(username).name.equals(username);
+	}
+
+	private class TPPattern
+	{
+		public String pattern = "";
+		public int group = 1;
+
+		public TPPattern(String pattern, int group)
+		{
+			this.pattern = pattern;
+			this.group = group;
 		}
 	}
 }
