@@ -22,9 +22,6 @@ import olejka.meteorplus.MeteorPlus;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Queue;
 
 public class GhostBlockFixer extends Module {
 	public GhostBlockFixer() {
