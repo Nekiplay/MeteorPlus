@@ -6,7 +6,8 @@ Addon for [Meteor client](https://github.com/MeteorDevelopment/meteor-client).
 
 # Features
 ### Modules:
-- X-Ray bruteforce.
+- X-Ray bruteforce
+- Anti lava
 - Auto leave
 - Auto accept
 - Auto repair

@@ -1,10 +1,14 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.entity.player.BreakBlockEvent;
 import meteordevelopment.meteorclient.events.entity.player.StartBreakingBlockEvent;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 import net.minecraft.block.Blocks;
+import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import olejka.meteorplus.MeteorPlus;
 
@@ -18,6 +22,21 @@ public class AntiLava extends Module {
 		if (isExposedLava(event.blockPos)) {
 			mc.options.keyAttack.setPressed(false);
 			info("Lava block nearbly");
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	private void onBlockBreaking(PacketEvent.Send event)
+	{
+		if (event.packet instanceof PlayerInteractBlockC2SPacket interact)
+		{
+			BlockPos blockPos = interact.getBlockHitResult().getBlockPos();
+			if (isExposedLava(blockPos)) {
+				//mc.options.keyAttack.setPressed(false);
+				info("Lava block nearbly");
+				event.setCancelled(true);
+			}
 		}
 	}
 
