@@ -19,7 +19,7 @@ public class AutoRepair extends Module {
 
 	private final SettingGroup ARSettings = settings.createGroup("Auto Repair Settings");
 
-	private final Setting<Integer> breakDurability = ARSettings.add(new IntSetting.Builder()
+	public final Setting<Integer> breakDurability = ARSettings.add(new IntSetting.Builder()
 		.name("Durability-percentage")
 		.description("The durability percentage to repair a tool.")
 		.defaultValue(10)
