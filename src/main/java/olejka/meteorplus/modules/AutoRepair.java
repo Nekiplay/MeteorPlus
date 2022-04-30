@@ -49,6 +49,7 @@ public class AutoRepair extends Module {
 		ItemStack currentStack = mc.player.getMainHandStack();
 		if (shouldStopUsing(currentStack) && isTool(currentStack)) {
 			mc.options.keyAttack.setPressed(false);
+			event.setCancelled(true);
 			if (LocalDateTime.now().isBefore(start.plusSeconds(Interval.get()))) return;
 			info("Repairing §2" + currentStack.getItem().getName().getString());
 			mc.player.sendChatMessage(Command.get());
