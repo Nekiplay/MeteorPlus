@@ -1,8 +1,11 @@
-![Meteor Plus icon](/src/main/resources/assets/plus/icon.png)
+59 lines (43 sloc)  3.38 KB
 
-# Meteor Plus
 
-Addon for [Meteor client](https://github.com/MeteorDevelopment/meteor-client).
+<div align="center">
+	<img src="https://olejka.ru/s/c543417566.png" alt="meteor-plus" width="200px"/>
+	<h1>Meteor Plus</h1>
+	<p>A simple addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many features.</p>
+</div>
 
 # Features
 ### Modules:
