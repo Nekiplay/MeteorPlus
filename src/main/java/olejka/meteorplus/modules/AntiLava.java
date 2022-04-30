@@ -102,7 +102,7 @@ public class AntiLava extends Module {
 	private void onStartBreakingBlock(StartBreakingBlockEvent event) {
 		ArrayList<BlockPos> lavaBlocks = isExposedLava(event.blockPos);
 		if (lavaBlocks.size() > 0) {
-			mc.options.keyAttack.setPressed(false);
+			mc.options.attackKey.setPressed(false);
 			event.setCancelled(true);
 			synchronized (lava) {
 				lava = isExposedLava(event.blockPos);
