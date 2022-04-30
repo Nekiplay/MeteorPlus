@@ -54,10 +54,10 @@ public class AutoAccept extends Module {
 			if (matcher.find()) {
 				String player = matcher.group(1);
 				if (FriendsOnly.get() && Friends.get().get(player) != null && Friends.get().get(player).name.equals(player)){
-					this.info("Accepting request from " + "§c" + player);
+					info("Accepting request from " + "§c" + player);
 					mc.player.sendChatMessage("/cmi tpaccept " + player + " tpa");
 				} else if (!FriendsOnly.get()){
-					this.info("Accepting request from " + "§c" + player);
+					info("Accepting request from " + "§c" + player);
 					mc.player.sendChatMessage("/cmi tpaccept " + player + " tpa");
 				}
 			}

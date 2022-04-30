@@ -19,7 +19,6 @@ public class AutoRepair extends Module {
 
 	private final SettingGroup ARSettings = settings.createGroup("Auto Repair Settings");
 
-
 	private final Setting<Integer> breakDurability = ARSettings.add(new IntSetting.Builder()
 		.name("Durability-percentage")
 		.description("The durability percentage to repair a tool.")
@@ -51,7 +50,7 @@ public class AutoRepair extends Module {
 		if (shouldStopUsing(currentStack) && isTool(currentStack)) {
 			mc.options.keyAttack.setPressed(false);
 			if (LocalDateTime.now().isBefore(start.plusSeconds(Interval.get()))) return;
-			this.info("Repairing §2" + currentStack.getItem().getName().getString());
+			info("Repairing §2" + currentStack.getItem().getName().getString());
 			mc.player.sendChatMessage(Command.get());
 			start = LocalDateTime.now();
 		}
