@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "meteor-plus",
+  "version": "${version}",
+  "name": "Meteor Plus",
+  "description": "Cool add-on for Meteor",
+  "authors": [
+    "Olejka",
+		"Neki_play",
+		"Vazgen005"
+  ],
+  "contact": {
+    "repo": "https://github.com/TheSainEyereg/MeteorPlus"
+  },
+  "icon": "assets/plus/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "olejka.meteorplus.MeteorPlus"
+    ]
+  },
+  "mixins": [
+    "meteor-plus.mixins.json"
+  ],
+  "custom": {
+    "meteor-client:color": "0,140,252"
+  },
+  "depends": {
+    "java": ">=17",
+    "minecraft": ">=${mc_version}",
+    "meteor-client": "*"
+  }
+}
