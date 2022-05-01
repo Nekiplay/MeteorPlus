@@ -15,4 +15,5 @@
 - Auto accept
 - Auto repair
 - Auto portal mine
+- Freeze
 - ~~Friend chat & locator~~
