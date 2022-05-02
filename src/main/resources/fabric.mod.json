@@ -16,7 +16,7 @@
   "environment": "client",
   "entrypoints": {
     "meteor": [
-      "olejka.meteorplus.MeteorPlus"
+			"olejka.meteorplus.MeteorPlus"
     ]
   },
   "mixins": [

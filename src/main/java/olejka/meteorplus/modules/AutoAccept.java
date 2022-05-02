@@ -46,7 +46,7 @@ public class AutoAccept extends Module {
 		patters.clear();
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler()
 	public void onMessageRecieve(ReceiveMessageEvent event) {
 		if (event.getMessage() != null && mc.player != null){
 			String message = event.getMessage().getString();
@@ -59,7 +59,6 @@ public class AutoAccept extends Module {
 					info("Accepting request from " + "§c" + nickname);
 					mc.player.sendChatMessage(accept_command.get().replace("{username}", nickname));
 				}
-
 			}
 		}
 	}

@@ -37,13 +37,11 @@ public class JesusPlus extends Module {
 		float yaw = mc.player.getYaw();
 		Vec3d forward = Vec3d.fromPolar(0, yaw);
 		Vec3d right = Vec3d.fromPolar(0, yaw + 90);
+
 		double velX = 0;
 		double velZ = 0;
-
 		double s = 0.5;
-
 		double speedValue = speed.get();
-
 
 		if (mc.options.forwardKey.isPressed()) {
 			velX += forward.x * s * speedValue;

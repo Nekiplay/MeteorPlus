@@ -85,16 +85,6 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-	private final Setting<Integer> cluster_delay = sgGeneral.add(new IntSetting.Builder()
-		.name("Rescan delay")
-		.description("Rescan delay.")
-		.defaultValue(1250)
-		.min(750)
-		.max(2500)
-		.sliderRange(750, 2500)
-		.build()
-	);
-
     public final Setting<Boolean> auto_height = sgGeneral.add(new BoolSetting.Builder()
         .name("Auto-height")
         .description("Auto detect height.")
@@ -191,25 +181,7 @@ public class XrayBruteforce extends Module {
 	@EventHandler
 	public void tickEvent(TickEvent.Post event)
 	{
-		synchronized (need_rescan) {
-			Iterator<BlockScanned> iterator = need_rescan.iterator();
-			while (iterator.hasNext()) {
-				BlockScanned blockscanned = iterator.next();
-				if (!scanned.contains(blockscanned.pos)) {
-					scanned.add(blockscanned.pos);
-				}
-				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime + cluster_delay.get() && mc.world != null) {
-					BlockState state = mc.world.getBlockState(blockscanned.pos);
-					if (whblocks.get().contains(state.getBlock())) {
-						addRenderBlock(blockscanned.pos);
-						for (BlockPos pos : getBlocks(blockscanned.pos, 2, 2)) {
-							addBlock(pos);
-						}
-					}
-					iterator.remove();
-				}
-			}
-		}
+
 	}
 	public class BlockScanned
 	{
@@ -246,10 +218,16 @@ public class XrayBruteforce extends Module {
         }).start();
     }
 
-    private void addBlock(BlockPos pos) {
-        if (!scanned.contains(pos)) {
+    private void addBlock(BlockPos pos, Boolean ignore) {
+        if (!scanned.contains(pos) && !ignore) {
             blocks.add(pos);
-        }
+			scanned.add(pos);
+        } else {
+			blocks.add(pos);
+			if (!scanned.contains(pos)) {
+				scanned.add(pos);
+			}
+		}
     }
 
     private void setColors(RenderOre ore)
@@ -360,8 +338,6 @@ public class XrayBruteforce extends Module {
     {
         if (blockpos == null)
             return false;
-        if (scanned.contains(blockpos))
-            return false;
         ClientPlayNetworkHandler conn = mc.getNetworkHandler();
         if (conn == null)
             return false;
@@ -434,42 +410,42 @@ public class XrayBruteforce extends Module {
             {
                 y = Utils.random(1, 15);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-                    blocks.add(new BlockPos(x, y, z));
+					addBlock(new BlockPos(x, y, z), false);
                 }
             }
             if (findBlocks.contains(Blocks.REDSTONE_ORE) || findBlocks.contains(Blocks.DEEPSLATE_REDSTONE_ORE))
             {
                 y = Utils.random(1, 15);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-                    blocks.add(new BlockPos(x, y, z));
+					addBlock(new BlockPos(x, y, z), false);
                 }
             }
             if (findBlocks.contains(Blocks.LAPIS_ORE) || findBlocks.contains(Blocks.DEEPSLATE_LAPIS_ORE))
             {
                 y = Utils.random(1, 31);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-                    blocks.add(new BlockPos(x, y, z));
+					addBlock(new BlockPos(x, y, z), false);
                 }
             }
             if (findBlocks.contains(Blocks.GOLD_ORE) || findBlocks.contains(Blocks.DEEPSLATE_GOLD_ORE))
             {
                 y = Utils.random(1, 32);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-                    blocks.add(new BlockPos(x, y, z));
+					addBlock(new BlockPos(x, y, z), false);
                 }
             }
             if (findBlocks.contains(Blocks.IRON_ORE) || findBlocks.contains(Blocks.DEEPSLATE_IRON_ORE))
             {
                 y = Utils.random(1, 63);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-                    blocks.add(new BlockPos(x, y, z));
+					addBlock(new BlockPos(x, y, z), false);
                 }
             }
             if (findBlocks.contains(Blocks.COAL_ORE) || findBlocks.contains(Blocks.DEEPSLATE_COAL_ORE))
             {
                 y = Utils.random(1, 114);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-                    blocks.add(new BlockPos(x, y, z));
+					addBlock(new BlockPos(x, y, z), false);
                 }
             }
         }
@@ -477,11 +453,33 @@ public class XrayBruteforce extends Module {
         {
             y = Utils.random(mc.player.getBlockPos().getY() -y_range.get(), mc.player.getBlockPos().getY() + y_range.get());
             if (!scanned.contains(new BlockPos(x, y, z))) {
-                blocks.add(new BlockPos(x, y, z));
+				addBlock(new BlockPos(x, y, z), false);
             }
         }
     }
     private Thread clickerThread;
+	private void reScaner()
+	{
+		synchronized (need_rescan) {
+			Iterator<BlockScanned> iterator = need_rescan.iterator();
+			while (iterator.hasNext()) {
+				BlockScanned blockscanned = iterator.next();
+				if (!scanned.contains(blockscanned.pos)) {
+					scanned.add(blockscanned.pos);
+				}
+				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime + 1250 && mc.world != null) {
+					BlockState state = mc.world.getBlockState(blockscanned.pos);
+					if (whblocks.get().contains(state.getBlock())) {
+						addRenderBlock(blockscanned.pos);
+						for (BlockPos pos : getBlocks(blockscanned.pos, 2, 2)) {
+							addBlock(pos, true);
+						}
+					}
+					iterator.remove();
+				}
+			}
+		}
+	}
     @Override
     public void onActivate() {
         millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -490,6 +488,7 @@ public class XrayBruteforce extends Module {
             while (true)
             {
                 checker();
+				reScaner();
             }
         });
         clickerThread.start();
