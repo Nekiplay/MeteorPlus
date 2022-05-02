@@ -99,7 +99,7 @@ public class AntiLava extends Module {
 						if (tick == 0)
 						{
 							BlockPos block = iterator.next();
-							BlockUtils.place(block, Hand.OFF_HAND, 0, false, 0, false, false, false);
+							BlockUtils.place(block, Hand.OFF_HAND, mc.player.getInventory().selectedSlot, false, 0, false, false, false);
 							iterator.remove();
 							tick = delay.get();
 						}
