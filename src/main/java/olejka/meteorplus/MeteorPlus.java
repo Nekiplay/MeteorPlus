@@ -29,6 +29,7 @@ public class MeteorPlus extends MeteorAddon {
 
 		//Modules
 		Modules.get().add(new JesusPlus());
+		Modules.get().add(new AutoSell());
 		Modules.get().add(new AutoCraftPlus());
 		Modules.get().add(new AutoPortalMine());
 		Modules.get().add(new XrayBruteforce());
