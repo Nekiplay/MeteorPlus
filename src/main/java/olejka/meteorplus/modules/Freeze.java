@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.MeteorPlus;
 
 public class Freeze extends Module {
@@ -31,11 +32,16 @@ public class Freeze extends Module {
 		.build()
 	);
 
+	private float yaw = 0;
+	private float pitch = 0;
+	private Vec3d position = Vec3d.ZERO;
+
 	@Override()
 	public void onActivate() {
 		if (mc.player != null){
 			yaw = mc.player.getYaw();
 			pitch = mc.player.getPitch();
+			position = mc.player.getPos();
 		}
 	}
 
@@ -51,6 +57,7 @@ public class Freeze extends Module {
 		}
 		if (playerMove.changesPosition()) {
 			mc.player.setVelocity(0, 0, 0);
+			mc.player.setPos(position.getX(), position.getY(), position.getZ());
 			event.setCancelled(true);
 		}
 	}
@@ -71,9 +78,7 @@ public class Freeze extends Module {
 	private void onTick(TickEvent.Pre event) {
 		if (mc.player != null) {
 			mc.player.setVelocity(0, 0, 0);
+			mc.player.setPos(position.getX(), position.getY(), position.getZ());
 		}
 	}
-
-	float yaw = 0;
-	float pitch = 0;
 }
