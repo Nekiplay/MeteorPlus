@@ -256,18 +256,19 @@ public class XrayBruteforce extends Module {
         }
     }
 
-    private void renderOres(Render3DEvent event)
-    {
-        int renderBlocks = 0;
-		for (RenderOre pos : ores) {
-			setColors(pos);
-			if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block!= null && whblocks.get().contains(pos.block)) {
-				renderOreBlock(event, pos);
-				renderBlocks++;
+    private void renderOres(Render3DEvent event) {
+		int renderBlocks = 0;
+		if (ores.size() > 0) {
+			for (RenderOre pos : ores.toArray(new RenderOre[0])) {
+				setColors(pos);
+				if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
+					renderOreBlock(event, pos);
+					renderBlocks++;
+				}
 			}
 		}
-        renderedBlocks = renderBlocks;
-    }
+		renderedBlocks = renderBlocks;
+	}
     private int renderedBlocks = 0;
     private void renderOreBlock(Render3DEvent event, RenderOre ore)
     {
