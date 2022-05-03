@@ -1,5 +1,6 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.entity.player.InteractBlockEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
@@ -26,9 +27,17 @@ public class Freeze extends Module {
 
 	private final Setting<Boolean> FreezeLookSilent = FSettings.add(new BoolSetting.Builder()
 		.name("Freeze look silent")
-		.description("Freezes your pitch and yaw.")
+		.description("Freezes your pitch and yaw silent.")
 		.defaultValue(true)
 		.visible(FreezeLook::get)
+		.build()
+	);
+
+	private final Setting<Boolean> FreezeLookPlace = FSettings.add(new BoolSetting.Builder()
+		.name("Freeze look place support")
+		.description("Unfreez you yaw and pitch on place")
+		.defaultValue(false)
+		.visible(FreezeLookSilent::get)
 		.build()
 	);
 
@@ -45,9 +54,11 @@ public class Freeze extends Module {
 		}
 	}
 
+	private boolean rotate = false;
+
 	private void setFreezeLook(PacketEvent event, PlayerMoveC2SPacket playerMove)
 	{
-		if (playerMove.changesLook() && FreezeLook.get() && FreezeLookSilent.get()) {
+		if (playerMove.changesLook() && FreezeLook.get() && FreezeLookSilent.get() && !rotate) {
 			event.setCancelled(true);
 		}
 		else if (playerMove.changesLook() && FreezeLook.get() && !FreezeLookSilent.get()) {
@@ -57,10 +68,22 @@ public class Freeze extends Module {
 		}
 		if (playerMove.changesPosition()) {
 			mc.player.setVelocity(0, 0, 0);
-			mc.player.setPos(position.getX(), position.getY(), position.getZ());
+			mc.player.setPos(position.x, position.y, position.z);
 			event.setCancelled(true);
 		}
 	}
+
+	@EventHandler
+	private void InteractBlockEvent(InteractBlockEvent event)
+	{
+		if (FreezeLookPlace.get()) {
+			PlayerMoveC2SPacket.LookAndOnGround r = new PlayerMoveC2SPacket.LookAndOnGround(mc.player.getYaw(), mc.player.getPitch(), mc.player.isOnGround());
+			rotate = true;
+			mc.getNetworkHandler().sendPacket(r);
+			rotate = false;
+		}
+	}
+
 	@EventHandler
 	private void onMovePacket(PacketEvent.Sent event) {
 		if (event.packet instanceof PlayerMoveC2SPacket playerMove) {
@@ -78,7 +101,7 @@ public class Freeze extends Module {
 	private void onTick(TickEvent.Pre event) {
 		if (mc.player != null) {
 			mc.player.setVelocity(0, 0, 0);
-			mc.player.setPos(position.getX(), position.getY(), position.getZ());
+			mc.player.setPos(position.x, position.y, position.z);
 		}
 	}
 }
