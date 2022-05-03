@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
+import meteordevelopment.meteorclient.utils.player.SlotUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -65,6 +66,7 @@ public class AutoSell extends Module {
 	public void onActivate() {
 		millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 	}
+
 	@EventHandler
 	private void onTickEventPre(TickEvent.Pre event)
 	{
@@ -73,14 +75,19 @@ public class AutoSell extends Module {
 			if (result.count() >= 64) {
 				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= millis) {
 					if (tick == 0) {
+						slot = mc.player.getInventory().selectedSlot;
 						InvUtils.move().from(result.slot()).toHotbar(8);
 						mc.player.getInventory().selectedSlot = 8;
 						tick++;
 					}
 					else if (tick == 1) {
 						mc.player.sendChatMessage(command.get().replace("{cost}", cost.get()));
-						millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + delay.get();
+						tick++;
+					}
+					else if (tick == 2) {
+						mc.player.getInventory().selectedSlot = slot;
 						tick = 0;
+						millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + delay.get();
 					}
 				}
 			} else {
