@@ -15,5 +15,6 @@
 - Auto accept
 - Auto repair
 - Auto portal mine
+- Auto sell - exploit
 - Freeze
 - ~~Friend chat & locator~~

@@ -13,6 +13,7 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.MessageType;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
@@ -39,8 +40,8 @@ public class AutoSell extends Module {
 	);
 
 	private final Setting<String> cost = ASSettings.add(new StringSetting.Builder()
-		.name("Cost pet stack")
-		.description("Item cost per stack.")
+		.name("Cost per item")
+		.description("Item cost per item.")
 		.defaultValue("2000")
 		.build()
 	);
@@ -72,7 +73,7 @@ public class AutoSell extends Module {
 	{
 		FindItemResult result = InvUtils.find(selling_item.get());
 		if (result.found()) {
-			if (result.count() >= 64) {
+			if (result.count() >= 1) {
 				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= millis) {
 					if (tick == 0) {
 						slot = mc.player.getInventory().selectedSlot;
@@ -81,7 +82,9 @@ public class AutoSell extends Module {
 						tick++;
 					}
 					else if (tick == 1) {
-						mc.player.sendChatMessage(command.get().replace("{cost}", cost.get()));
+						ItemStack item = mc.player.getInventory().getStack(SlotUtils.HOTBAR_END);
+						int cc = Integer.parseInt(cost.get()) * item.getCount();
+						mc.player.sendChatMessage(command.get().replace("{cost}", Integer.toString(cc)));
 						tick++;
 					}
 					else if (tick == 2) {
