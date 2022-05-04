@@ -28,11 +28,18 @@ public class Freeze extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> Packet = FSettings.add(new BoolSetting.Builder()
+		.name("Packet mode")
+		.description("Enable packet mode, better.")
+		.defaultValue(true)
+		.build()
+	);
+
 	private final Setting<Boolean> FreezeLookSilent = FSettings.add(new BoolSetting.Builder()
 		.name("Freeze look silent")
 		.description("Freezes your pitch and yaw silent.")
 		.defaultValue(true)
-		.visible(FreezeLook::get)
+		.visible(Packet::get)
 		.build()
 	);
 
@@ -90,13 +97,17 @@ public class Freeze extends Module {
 	@EventHandler
 	private void onMovePacket(PacketEvent.Sent event) {
 		if (event.packet instanceof PlayerMoveC2SPacket playerMove) {
-			setFreezeLook(event, playerMove);
+			if (Packet.get()) {
+				setFreezeLook(event, playerMove);
+			}
 		}
 	}
 	@EventHandler
 	private void onMovePacket2(PacketEvent.Send event) {
 		if (event.packet instanceof PlayerMoveC2SPacket playerMove) {
-			setFreezeLook(event, playerMove);
+			if (Packet.get()) {
+				setFreezeLook(event, playerMove);
+			}
 		}
 	}
 
