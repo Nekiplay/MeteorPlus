@@ -46,13 +46,11 @@ public class MeteorPlus extends MeteorAddon {
 		Modules.get().add(new AutoRepair());
 		Modules.get().add(new GhostBlockFixer());
 		Modules.get().add(new SafeMine());
-		Modules.get().add(freeze);
+		Modules.get().add(new Freeze());
 
 		//Commands
 		//Commands.get().add();
 	}
-
-	public Freeze freeze = new Freeze();
 
 	@Override
 	public void onRegisterCategories() {
