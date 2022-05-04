@@ -20,12 +20,20 @@ public class MeteorPlus extends MeteorAddon {
 	public static final Category CATEGORY = new Category("Meteor Plus", Items.EMERALD_BLOCK.getDefaultStack());
 	public static final Category CATEGORY_AUTOMATION = new Category("Automation", Items.REDSTONE_BLOCK.getDefaultStack());
 
+	private static MeteorPlus _instance;
+	public static MeteorPlus getInstance() {
+		return _instance;
+	}
+
 	@Override
 	public void onInitialize() {
+		_instance = this;
+
 		LOG.info("Initializing MeteorPlus");
 
 		// Required when using @EventHandler
 		MeteorClient.EVENT_BUS.registerLambdaFactory("olejka.meteorplus", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
+
 
 		//Modules
 		Modules.get().add(new JesusPlus());
@@ -37,12 +45,14 @@ public class MeteorPlus extends MeteorAddon {
 		Modules.get().add(new AutoAccept());
 		Modules.get().add(new AutoRepair());
 		Modules.get().add(new GhostBlockFixer());
-		Modules.get().add(new AntiLava());
-		Modules.get().add(new Freeze());
+		Modules.get().add(new SafeMine());
+		Modules.get().add(freeze);
 
 		//Commands
 		//Commands.get().add();
 	}
+
+	public Freeze freeze = new Freeze();
 
 	@Override
 	public void onRegisterCategories() {

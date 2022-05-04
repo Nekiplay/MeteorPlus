@@ -1,60 +1,66 @@
 package olejka.meteorplus.modules;
 
-import meteordevelopment.meteorclient.events.entity.player.BreakBlockEvent;
-import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent;
+import meteordevelopment.meteorclient.events.entity.player.CanWalkOnFluidEvent;
 import meteordevelopment.meteorclient.events.entity.player.StartBreakingBlockEvent;
-import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.mixin.ClientPlayerInteractionManagerAccessor;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.entity.EntityUtils;
-import meteordevelopment.meteorclient.utils.misc.Vec3;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.entity.MovementType;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShapes;
 import olejka.meteorplus.MeteorPlus;
-import olejka.meteorplus.utils.BlockHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class AntiLava extends Module {
-	public AntiLava() {
-		super(MeteorPlus.CATEGORY, "Anti Lava", "Save you from lava.");
+public class SafeMine extends Module {
+	public SafeMine() {
+		super(MeteorPlus.CATEGORY, "Safe Mine", "Save you from lava.");
 	}
 
 	private final SettingGroup ALSettings = settings.createGroup("Anti Lava Settings");
+
+	public final Setting<Boolean> solidLava = ALSettings.add(new BoolSetting.Builder()
+		.name("Solid lava")
+		.description("Solid lava.")
+		.defaultValue(true)
+		.build()
+	);
+
+	public final Setting<Boolean> solidLavaFreeze = ALSettings.add(new BoolSetting.Builder()
+		.name("Solid lava freeze")
+		.description("Solid lava.")
+		.defaultValue(true)
+		.visible(solidLava::get)
+		.build()
+	);
+
+	public final Setting<Boolean> antiMine = ALSettings.add(new BoolSetting.Builder()
+		.name("Anti lava mine")
+		.description("Block mine block is nearbly lava.")
+		.defaultValue(true)
+		.build()
+	);
 
 	public final Setting<Boolean> replaceLava = ALSettings.add(new BoolSetting.Builder()
 		.name("Replace lava")
 		.description("Place blocks in lava in offhand.")
 		.defaultValue(true)
-		.build()
-	);
-
-	public final Setting<Boolean> moveReplaceLava = ALSettings.add(new BoolSetting.Builder()
-		.name("Move replace lava")
-		.description("Replace lava in movement.")
-		.defaultValue(true)
-		.visible(replaceLava::get)
 		.build()
 	);
 
@@ -65,13 +71,6 @@ public class AntiLava extends Module {
 		.min(0)
 		.visible(replaceLava::get)
 		.sliderRange(0, 20)
-		.build()
-	);
-
-	public final Setting<Boolean> debug = ALSettings.add(new BoolSetting.Builder()
-		.name("Debug")
-		.description("Print chat messages.")
-		.defaultValue(false)
 		.build()
 	);
 
@@ -98,24 +97,16 @@ public class AntiLava extends Module {
 					{
 						if (tick == 0)
 						{
-							BlockPos block = iterator.next();
-							BlockUtils.place(block, Hand.OFF_HAND, mc.player.getInventory().selectedSlot, false, 0, false, false, false);
-							iterator.remove();
-							tick = delay.get();
+							if (mc.player != null) {
+								BlockPos block = iterator.next();
+								BlockUtils.place(block, Hand.OFF_HAND, mc.player.getInventory().selectedSlot, false, 0, false, false, false);
+								iterator.remove();
+								tick = delay.get();
+							}
 						}
 						else
 						{
 							tick--;
-						}
-					}
-					else if (moveReplaceLava.get())
-					{
-						BlockPos under = mc.player.getBlockPos().add(0, -1, 0);
-						List<BlockPos> blocks = getBlocks(under, 2, 0);
-						for (BlockPos pos : blocks) {
-							if (mc.world.getBlockState(pos).getMaterial() == Material.LAVA) {
-								lava.add(pos);
-							}
 						}
 					}
 				}
@@ -123,17 +114,61 @@ public class AntiLava extends Module {
 		}
 	}
 
+	@EventHandler
+	private void onCanContactLava(TickEvent.Post event)
+	{
+		if (mc.player != null && mc.world != null) {
+			Vec3d underpos = mc.player.getPos().add(0, -1, 0);
+			BlockPos under = new BlockPos(underpos.x, underpos.y, underpos.z);
+			if (mc.world.getBlockState(under).getMaterial() == Material.LAVA) {
+				if (solidLavaFreeze.get() && mc.player.isOnGround()) {
+					Freeze freeze = MeteorPlus.getInstance().freeze;
+					if (!freeze.isActive()) {
+						freeze.toggle();
+					}
+				}
+			}
+			else {
+				if (solidLavaFreeze.get()) {
+					Freeze freeze = MeteorPlus.getInstance().freeze;
+					if (freeze.isActive()) {
+						freeze.toggle();
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	private void onCanWalkOnFluid(CanWalkOnFluidEvent event) {
+		if ((event.fluidState.getFluid() == Fluids.LAVA || event.fluidState.getFluid() == Fluids.FLOWING_LAVA) && solidLava.get()) {
+			event.walkOnFluid = true;
+			if (solidLavaFreeze.get()) {
+				Freeze freeze = MeteorPlus.getInstance().freeze;
+				if (!freeze.isActive()) {
+					freeze.toggle();
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	private void onFluidCollisionShape(CollisionShapeEvent event) {
+		if (event.type == CollisionShapeEvent.CollisionType.FLUID) {
+			if (mc.player != null && event.state != null && event.state.getMaterial() == Material.LAVA && !mc.player.isInLava() && solidLava.get()) {
+				event.shape = VoxelShapes.fullCube();
+			}
+		}
+	}
+
 	@EventHandler(priority = EventPriority.HIGH)
 	private void onStartBreakingBlock(StartBreakingBlockEvent event) {
 		ArrayList<BlockPos> lavaBlocks = isExposedLava(event.blockPos);
-		if (lavaBlocks.size() > 0) {
+		if (lavaBlocks.size() > 0 && antiMine.get()) {
 			mc.options.attackKey.setPressed(false);
 			event.setCancelled(true);
 			synchronized (lava) {
 				lava = isExposedLava(event.blockPos);
-			}
-			if (debug.get()) {
-				info("Lava block nearbly");
 			}
 		}
 	}

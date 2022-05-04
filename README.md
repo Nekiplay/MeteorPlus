@@ -10,7 +10,7 @@
 # Features
 ### Modules:
 - X-Ray bruteforce
-- Anti lava
+- Safe Mine
 - Auto leave
 - Auto accept
 - Auto repair
