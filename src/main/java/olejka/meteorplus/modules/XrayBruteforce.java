@@ -163,14 +163,23 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-    private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
-        .name("Scan delay")
-        .description("Bruteforce delay.")
+    private final Setting<Integer> delaymin = sgGeneral.add(new IntSetting.Builder()
+        .name("Scan delay min")
+        .description("Bruteforce delay min .")
         .defaultValue(11)
         .min(0)
-        .sliderRange(0, 20)
+        .sliderRange(0, 150)
         .build()
     );
+
+	private final Setting<Integer> delaymax = sgGeneral.add(new IntSetting.Builder()
+		.name("Scan delay max")
+		.description("Bruteforce delay max .")
+		.defaultValue(11)
+		.min(0)
+		.sliderRange(0, 150)
+		.build()
+	);
 
     private BlockPos currentScanBlock;
 	public class RenderOre {
@@ -202,11 +211,6 @@ public class XrayBruteforce extends Module {
 
 	public ArrayList<BlockScanned> need_rescan = new ArrayList<BlockScanned>();
 
-	@EventHandler
-	public void tickEvent(TickEvent.Post event)
-	{
-
-	}
 	public class BlockScanned
 	{
 		public BlockPos pos;
@@ -353,22 +357,40 @@ public class XrayBruteforce extends Module {
 
     private boolean send(BlockPos blockpos)
     {
-        if (blockpos == null)
-            return false;
+		boolean sucess = true;
+        if (blockpos == null) {
+			sucess = false;
+		}
         ClientPlayNetworkHandler conn = mc.getNetworkHandler();
-        if (conn == null)
-            return false;
-        currentScanBlock = blockpos;
-        PlayerActionC2SPacket startPacket = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
-        PlayerActionC2SPacket abortPacket = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
-        if (packetmode.get() == PacketMode.Start || packetmode.get() == PacketMode.Both) {
-            conn.sendPacket(startPacket);
-        }
-        if (packetmode.get() == PacketMode.Abort || packetmode.get() == PacketMode.Both) {
-            conn.sendPacket(abortPacket);
-        }
+        if (conn == null) {
+			sucess = false;
+		}
+		if (mc.world == null) {
+			sucess = false;
+		}
+		else {
+			BlockState state = mc.world.getBlockState(blockpos);
+			if (state.getMaterial() == Material.AIR) {
+				sucess = false;
+			}
+		}
+
+		if (sucess) {
+			currentScanBlock = blockpos;
+			PlayerActionC2SPacket startPacket = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
+			PlayerActionC2SPacket abortPacket = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
+			if (packetmode.get() == PacketMode.Start || packetmode.get() == PacketMode.Both) {
+				conn.sendPacket(startPacket);
+			}
+			if (packetmode.get() == PacketMode.Abort || packetmode.get() == PacketMode.Both) {
+				conn.sendPacket(abortPacket);
+			}
+		}
+		else {
+			currentScanBlock = null;
+		}
 		scanned.add(blockpos);
-        return true;
+        return sucess;
     }
     long millis = 0;
     private void checker()
@@ -396,7 +418,7 @@ public class XrayBruteforce extends Module {
                         BlockPos block = blocksIterator.next();
                         blocksIterator.remove();
                         if (send(block)) {
-                            millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + delay.get();
+                            millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + Utils.random(delaymin.get(), delaymax.get());
                             lagging = true;
                         }
                     }
@@ -406,7 +428,7 @@ public class XrayBruteforce extends Module {
                     BlockPos block = blocksIterator.next();
                     blocksIterator.remove();
                     if (send(block)) {
-                        millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + delay.get();
+                        millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + Utils.random(delaymin.get(), delaymax.get());
                         lagging = true;
                     }
                 }
