@@ -37,7 +37,6 @@ public class XrayBruteforce extends Module {
         super(MeteorPlus.CATEGORY, "xray-bruteForce", "Bypasses anti-xray.");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-	private final SettingGroup sgVisual = settings.createGroup("Blocks Visuals");
     private final SettingGroup sgRVisual = settings.createGroup("Render Visuals");
 
     private final Setting<List<Block>> whblocks = sgGeneral.add(new BlockListSetting.Builder()
@@ -310,7 +309,7 @@ public class XrayBruteforce extends Module {
 			SBlockData blockdata = getBlockData(state.getBlock());
 			if (shape.isEmpty()) return;
             for (Box b : shape.getBoundingBoxes()) {
-                event.renderer.box(ore.blockPos.getX() + b.minX, ore.blockPos.getY() + b.minY, ore.blockPos.getZ() + b.minZ, ore.blockPos.getX() + b.maxX, ore.blockPos.getY() + b.maxY, ore.blockPos.getZ() + b.maxZ, ore.color, ore.color, ShapeMode.Lines, 0);
+                event.renderer.box(ore.blockPos.getX() + b.minX, ore.blockPos.getY() + b.minY, ore.blockPos.getZ() + b.minZ, ore.blockPos.getX() + b.maxX, ore.blockPos.getY() + b.maxY, ore.blockPos.getZ() + b.maxZ, ore.color, ore.color, blockdata.shapeMode, 0);
             }
 			if (blockdata.tracer) {
 				event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, ore.blockPos.getX(), ore.blockPos.getY(), ore.blockPos.getZ(), ore.colortracer);
