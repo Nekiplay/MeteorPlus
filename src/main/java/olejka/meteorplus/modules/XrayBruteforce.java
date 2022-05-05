@@ -37,7 +37,8 @@ public class XrayBruteforce extends Module {
         super(MeteorPlus.CATEGORY, "xray-bruteForce", "Bypasses anti-xray.");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    private final SettingGroup sgVisual = settings.createGroup("Visual");
+	private final SettingGroup sgVisual = settings.createGroup("Blocks Visuals");
+    private final SettingGroup sgRVisual = settings.createGroup("Render Visuals");
 
     private final Setting<List<Block>> whblocks = sgGeneral.add(new BlockListSetting.Builder()
         .name("whitelist")
@@ -60,7 +61,7 @@ public class XrayBruteforce extends Module {
 				ShapeMode.Lines,
 				new SettingColor(0, 255, 200),
 				new SettingColor(0, 255, 200, 25),
-				true,
+				false,
 				new SettingColor(0, 255, 200, 125)
 			)
 		)
@@ -71,6 +72,15 @@ public class XrayBruteforce extends Module {
 		.name("whitelist-block-configs")
 		.description("Config for each block.")
 		.defaultData(defaultBlockConfig)
+		.onChanged(v -> {
+			synchronized (ores) {
+				for (RenderOre ore : ores) {
+					SBlockData data = getBlockData(ore.block);
+					ore.color = data.lineColor;
+					ore.colortracer = data.tracerColor;
+				}
+			}
+		})
 		.build()
 	);
 
@@ -116,36 +126,6 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-    private final Setting<Boolean> outline = sgVisual.add(new BoolSetting.Builder()
-        .name("outline")
-        .description("Outline to block.")
-        .defaultValue(true)
-        .build()
-    );
-
-    private final Setting<SettingColor> outlineColor = sgVisual.add(new ColorSetting.Builder()
-        .name("outline-color")
-        .description("Outline color to block.")
-        .defaultValue(new SettingColor(255, 255, 0, 255))
-        .visible(outline::get)
-        .build()
-    );
-
-    private final Setting<Boolean> tracer = sgVisual.add(new BoolSetting.Builder()
-        .name("tracer")
-        .description("Tracer to block.")
-        .defaultValue(true)
-        .build()
-    );
-
-    private final Setting<SettingColor> tracerColor = sgVisual.add(new ColorSetting.Builder()
-        .name("tracer-color")
-        .description("Tracer color to block.")
-        .defaultValue(new SettingColor(255, 255, 0, 255))
-        .visible(tracer::get)
-        .build()
-    );
-
     private final Setting<Integer> range = sgGeneral.add(new IntSetting.Builder()
         .name("range")
         .description("Bruteforce range.")
@@ -181,11 +161,42 @@ public class XrayBruteforce extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> outline = sgRVisual.add(new BoolSetting.Builder()
+		.name("outline")
+		.description("Outline to block.")
+		.defaultValue(true)
+		.build()
+	);
+
+	private final Setting<SettingColor> outlineColor = sgRVisual.add(new ColorSetting.Builder()
+		.name("outline-color")
+		.description("Outline color to block.")
+		.defaultValue(new SettingColor(255, 255, 0, 255))
+		.visible(outline::get)
+		.build()
+	);
+
+	private final Setting<Boolean> tracer = sgRVisual.add(new BoolSetting.Builder()
+		.name("tracer")
+		.description("Tracer to block.")
+		.defaultValue(true)
+		.build()
+	);
+
+	private final Setting<SettingColor> tracerColor = sgRVisual.add(new ColorSetting.Builder()
+		.name("tracer-color")
+		.description("Tracer color to block.")
+		.defaultValue(new SettingColor(255, 255, 0, 255))
+		.visible(tracer::get)
+		.build()
+	);
+
     private BlockPos currentScanBlock;
 	public class RenderOre {
         public Block block = Blocks.AIR;
         public BlockPos blockPos = null;
         public SettingColor color = null;
+		public SettingColor colortracer = null;
     }
     private static final List<RenderOre> ores = new ArrayList<>();
     private RenderOre get(BlockPos pos) {
@@ -273,6 +284,7 @@ public class XrayBruteforce extends Module {
             }
 			SBlockData blockdata = getBlockData(state.getBlock());
 			ore.color = blockdata.lineColor;
+			ore.colortracer = blockdata.tracerColor;
         }
     }
 
@@ -295,10 +307,14 @@ public class XrayBruteforce extends Module {
         if (ore.block != null && ore.color != null && mc.world != null) {
 			BlockState state = mc.world.getBlockState(ore.blockPos);
             VoxelShape shape = state.getOutlineShape(mc.world, ore.blockPos);
+			SBlockData blockdata = getBlockData(state.getBlock());
 			if (shape.isEmpty()) return;
             for (Box b : shape.getBoundingBoxes()) {
                 event.renderer.box(ore.blockPos.getX() + b.minX, ore.blockPos.getY() + b.minY, ore.blockPos.getZ() + b.minZ, ore.blockPos.getX() + b.maxX, ore.blockPos.getY() + b.maxY, ore.blockPos.getZ() + b.maxZ, ore.color, ore.color, ShapeMode.Lines, 0);
             }
+			if (blockdata.tracer) {
+				event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, ore.blockPos.getX(), ore.blockPos.getY(), ore.blockPos.getZ(), ore.colortracer);
+			}
         }
     }
     private boolean lagging = false;
