@@ -1,6 +1,7 @@
 package olejka.meteorplus.modules;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
 import olejka.meteorplus.MeteorPlus;
 
 import meteordevelopment.meteorclient.events.entity.player.BreakBlockEvent;
@@ -49,6 +50,29 @@ public class XrayBruteforce extends Module {
         .onChanged(v -> scanned.clear())
         .build()
     );
+
+
+	private final Setting<SBlockData> defaultBlockConfig = sgGeneral.add(new GenericSetting.Builder<SBlockData>()
+		.name("whitelist-config")
+		.description("Default block config.")
+		.defaultValue(
+			new SBlockData(
+				ShapeMode.Lines,
+				new SettingColor(0, 255, 200),
+				new SettingColor(0, 255, 200, 25),
+				true,
+				new SettingColor(0, 255, 200, 125)
+			)
+		)
+		.build()
+	);
+
+	private final Setting<Map<Block, SBlockData>> blockConfigs = sgGeneral.add(new BlockDataSetting.Builder<SBlockData>()
+		.name("whitelist-block-configs")
+		.description("Config for each block.")
+		.defaultData(defaultBlockConfig)
+		.build()
+	);
 
     private final Setting<PacketMode> packetmode = sgGeneral.add(new EnumSetting.Builder<PacketMode>()
         .name("packet-mode")
@@ -222,13 +246,18 @@ public class XrayBruteforce extends Module {
         if (!scanned.contains(pos) && !ignore) {
             blocks.add(pos);
 			scanned.add(pos);
-        } else {
+        } else if (ignore) {
 			blocks.add(pos);
 			if (!scanned.contains(pos)) {
 				scanned.add(pos);
 			}
 		}
     }
+
+	SBlockData getBlockData(Block block) {
+		SBlockData blockData = blockConfigs.get().get(block);
+		return blockData == null ? defaultBlockConfig.get() : blockData;
+	}
 
     private void setColors(RenderOre ore)
     {
@@ -238,21 +267,8 @@ public class XrayBruteforce extends Module {
             if (ore.block == Blocks.AIR) {
                 ore.block = state.getBlock();
             }
-            if (state.getBlock() == Blocks.EMERALD_ORE || state.getBlock() == Blocks.DEEPSLATE_EMERALD_ORE) {
-                ore.color = new SettingColor(0, 179, 60);
-            } else if (state.getBlock() == Blocks.DIAMOND_ORE || state.getBlock() == Blocks.DEEPSLATE_DIAMOND_ORE) {
-                ore.color = new SettingColor(0, 153, 255);
-            } else if (state.getBlock() == Blocks.GOLD_ORE || state.getBlock() == Blocks.GOLD_ORE || state.getBlock() == Blocks.NETHER_GOLD_ORE) {
-                ore.color = new SettingColor(255, 255, 0);
-            } else if (state.getBlock() == Blocks.IRON_ORE || state.getBlock() == Blocks.DEEPSLATE_IRON_ORE) {
-                ore.color = new SettingColor(128, 128, 128);
-            } else if (state.getBlock() == Blocks.REDSTONE_ORE || state.getBlock() == Blocks.DEEPSLATE_REDSTONE_ORE) {
-                ore.color = new SettingColor(153, 0, 0);
-            } else if (state.getBlock() == Blocks.LAPIS_ORE || state.getBlock() == Blocks.DEEPSLATE_LAPIS_ORE) {
-                ore.color = new SettingColor(0, 0, 153);
-            } else if (state.getBlock() == Blocks.COAL_ORE || state.getBlock() == Blocks.DEEPSLATE_COAL_ORE) {
-                ore.color = new SettingColor(0, 0, 0);
-            }
+			SBlockData blockdata = getBlockData(state.getBlock());
+			ore.color = blockdata.lineColor;
         }
     }
 
@@ -407,51 +423,50 @@ public class XrayBruteforce extends Module {
         if (auto_height.get())
         {
 			List<Block> findBlocks = whblocks.get();
-            if (findBlocks.contains(Blocks.DIAMOND_ORE) || findBlocks.contains(Blocks.DEEPSLATE_DIAMOND_ORE))
-            {
+			if (findBlocks.contains(Blocks.ANCIENT_DEBRIS)) {
+				y = Utils.random(8, 22);
+				if (!scanned.contains(new BlockPos(x, y, z))) {
+					addBlock(new BlockPos(x, y, z), false);
+				}
+			}
+            if (findBlocks.contains(Blocks.DIAMOND_ORE) || findBlocks.contains(Blocks.DEEPSLATE_DIAMOND_ORE)) {
                 y = Utils.random(1, 15);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
 					addBlock(new BlockPos(x, y, z), false);
                 }
             }
-            if (findBlocks.contains(Blocks.REDSTONE_ORE) || findBlocks.contains(Blocks.DEEPSLATE_REDSTONE_ORE))
-            {
+            if (findBlocks.contains(Blocks.REDSTONE_ORE) || findBlocks.contains(Blocks.DEEPSLATE_REDSTONE_ORE)) {
                 y = Utils.random(1, 15);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
 					addBlock(new BlockPos(x, y, z), false);
                 }
             }
-            if (findBlocks.contains(Blocks.LAPIS_ORE) || findBlocks.contains(Blocks.DEEPSLATE_LAPIS_ORE))
-            {
+            if (findBlocks.contains(Blocks.LAPIS_ORE) || findBlocks.contains(Blocks.DEEPSLATE_LAPIS_ORE)) {
                 y = Utils.random(1, 31);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
 					addBlock(new BlockPos(x, y, z), false);
                 }
             }
-            if (findBlocks.contains(Blocks.GOLD_ORE) || findBlocks.contains(Blocks.DEEPSLATE_GOLD_ORE))
-            {
+            if (findBlocks.contains(Blocks.GOLD_ORE) || findBlocks.contains(Blocks.DEEPSLATE_GOLD_ORE)) {
                 y = Utils.random(1, 32);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
 					addBlock(new BlockPos(x, y, z), false);
                 }
             }
-            if (findBlocks.contains(Blocks.IRON_ORE) || findBlocks.contains(Blocks.DEEPSLATE_IRON_ORE))
-            {
+            if (findBlocks.contains(Blocks.IRON_ORE) || findBlocks.contains(Blocks.DEEPSLATE_IRON_ORE)) {
                 y = Utils.random(1, 63);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
 					addBlock(new BlockPos(x, y, z), false);
                 }
             }
-            if (findBlocks.contains(Blocks.COAL_ORE) || findBlocks.contains(Blocks.DEEPSLATE_COAL_ORE))
-            {
+            if (findBlocks.contains(Blocks.COAL_ORE) || findBlocks.contains(Blocks.DEEPSLATE_COAL_ORE)) {
                 y = Utils.random(1, 114);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
 					addBlock(new BlockPos(x, y, z), false);
                 }
             }
         }
-        else
-        {
+        else {
             y = Utils.random(mc.player.getBlockPos().getY() -y_range.get(), mc.player.getBlockPos().getY() + y_range.get());
             if (!scanned.contains(new BlockPos(x, y, z))) {
 				addBlock(new BlockPos(x, y, z), false);
