@@ -306,7 +306,7 @@ public class XrayBruteforce extends Module {
         if (ore.block != null && ore.color != null && mc.world != null) {
 			BlockState state = mc.world.getBlockState(ore.blockPos);
             VoxelShape shape = state.getOutlineShape(mc.world, ore.blockPos);
-			SBlockData blockdata = getBlockData(state.getBlock());
+			SBlockData blockdata = getBlockData(ore.block);
 			if (shape.isEmpty()) return;
             for (Box b : shape.getBoundingBoxes()) {
                 event.renderer.box(ore.blockPos.getX() + b.minX, ore.blockPos.getY() + b.minY, ore.blockPos.getZ() + b.minZ, ore.blockPos.getX() + b.maxX, ore.blockPos.getY() + b.maxY, ore.blockPos.getZ() + b.maxZ, ore.color, ore.color, blockdata.shapeMode, 0);
