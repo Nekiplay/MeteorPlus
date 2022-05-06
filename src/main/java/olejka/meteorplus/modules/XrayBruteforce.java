@@ -449,7 +449,7 @@ public class XrayBruteforce extends Module {
 		}
 		else {
 			BlockState state = mc.world.getBlockState(blockpos);
-			if (state.getMaterial() == Material.AIR) {
+			if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.LAVA || state.getBlock() == Blocks.WATER) {
 				sucess = false;
 			}
 		}

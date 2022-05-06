@@ -48,27 +48,27 @@ public class BedrockStorageBruteforce extends Module {
 	private final Setting<Integer> range = SCSettings.add(new IntSetting.Builder()
 		.name("Scan range")
 		.description("Bruteforce delay min .")
-		.defaultValue(11)
+		.defaultValue(8)
 		.min(0)
-		.sliderRange(0, 150)
+		.sliderRange(8, 64)
 		.build()
 	);
 
 	private final Setting<Integer> delaymin = SCSettings.add(new IntSetting.Builder()
 		.name("Scan delay min")
 		.description("Bruteforce delay min .")
-		.defaultValue(11)
+		.defaultValue(24)
 		.min(0)
-		.sliderRange(0, 150)
+		.sliderRange(0, 80)
 		.build()
 	);
 
 	private final Setting<Integer> delaymax = SCSettings.add(new IntSetting.Builder()
 		.name("Scan delay max")
 		.description("Bruteforce delay max .")
-		.defaultValue(11)
+		.defaultValue(25)
 		.min(0)
-		.sliderRange(0, 150)
+		.sliderRange(0, 80)
 		.build()
 	);
 	Thread clickerThread = null;
@@ -86,7 +86,7 @@ public class BedrockStorageBruteforce extends Module {
 			if (!scanned.contains(pos)) {
 				BlockState state = mc.world.getBlockState(pos);
 				Block block = state.getBlock();
-				return block != Blocks.AIR && block != Blocks.BEDROCK;
+				return block != Blocks.AIR && block != Blocks.BEDROCK && block != Blocks.LAVA && block != Blocks.WATER;
 			}
 		}
 		return false;
