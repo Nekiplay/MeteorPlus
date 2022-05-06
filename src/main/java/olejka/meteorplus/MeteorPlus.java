@@ -36,6 +36,7 @@ public class MeteorPlus extends MeteorAddon {
 
 
 		//Modules
+		Modules.get().add(new BedrockStorageBruteforce());
 		Modules.get().add(new JesusPlus());
 		Modules.get().add(new AutoSell());
 		Modules.get().add(new AutoCraftPlus());

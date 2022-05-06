@@ -1,7 +1,13 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
+import meteordevelopment.meteorclient.utils.misc.Keybind;
+import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
+import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import meteordevelopment.meteorclient.utils.world.Dimension;
+import net.minecraft.world.dimension.DimensionType;
 import olejka.meteorplus.MeteorPlus;
 
 import meteordevelopment.meteorclient.events.entity.player.BreakBlockEvent;
@@ -32,12 +38,14 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_ALT;
+
 public class XrayBruteforce extends Module {
     public XrayBruteforce() {
         super(MeteorPlus.CATEGORY, "xray-bruteForce", "Bypasses anti-xray.");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    private final SettingGroup sgRVisual = settings.createGroup("Render Visuals");
+    private final SettingGroup sgRVisual = settings.createGroup("Scaner Render Visuals");
 
     private final Setting<List<Block>> whblocks = sgGeneral.add(new BlockListSetting.Builder()
         .name("whitelist")
@@ -53,7 +61,7 @@ public class XrayBruteforce extends Module {
 
 
 	private final Setting<SBlockData> defaultBlockConfig = sgGeneral.add(new GenericSetting.Builder<SBlockData>()
-		.name("whitelist-config")
+		.name("whitelist-default-config")
 		.description("Default block config.")
 		.defaultValue(
 			new SBlockData(
@@ -75,26 +83,36 @@ public class XrayBruteforce extends Module {
 			synchronized (ores) {
 				for (RenderOre ore : ores) {
 					SBlockData data = getBlockData(ore.block);
-					ore.color = data.lineColor;
-					ore.colortracer = data.tracerColor;
+					ore.linecolor = data.lineColor;
+					ore.sidecolor = data.sideColor;
+					ore.tracercolor = data.tracerColor;
+					ore.shapeMode = data.shapeMode;
 				}
 			}
 		})
 		.build()
 	);
 
-    private final Setting<PacketMode> packetmode = sgGeneral.add(new EnumSetting.Builder<PacketMode>()
-        .name("packet-mode")
-        .description("Packet mode.")
-        .defaultValue(PacketMode.Abort)
+    private final Setting<PacketMode> packet_first = sgGeneral.add(new EnumSetting.Builder<PacketMode>()
+        .name("packet-#1")
+        .description("First packet.")
+        .defaultValue(PacketMode.Start)
         .build()
     );
 
+	private final Setting<PacketMode> packet_two = sgGeneral.add(new EnumSetting.Builder<PacketMode>()
+		.name("packet-#2")
+		.description("Two packet.")
+		.defaultValue(PacketMode.Stop)
+		.build()
+	);
+
     public enum PacketMode
     {
+		None,
         Start,
         Abort,
-        Both,
+		Stop,
     }
 
     public final Setting<Boolean> clear_cache_blocks = sgGeneral.add(new BoolSetting.Builder()
@@ -124,6 +142,13 @@ public class XrayBruteforce extends Module {
         .defaultValue(false)
         .build()
     );
+
+	public final Setting<Boolean> auto_dimension = sgGeneral.add(new BoolSetting.Builder()
+		.name("Auto-dimension")
+		.description("Auto detect dimension.")
+		.defaultValue(false)
+		.build()
+	);
 
     private final Setting<Integer> range = sgGeneral.add(new IntSetting.Builder()
         .name("range")
@@ -160,6 +185,21 @@ public class XrayBruteforce extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> pauseBind = sgGeneral.add(new BoolSetting.Builder()
+		.name("pause-bind")
+		.description("Allow use pause bind.")
+		.defaultValue(true)
+		.build()
+	);
+
+	private final Setting<Keybind> pausekeybind = sgGeneral.add(new KeybindSetting.Builder()
+		.name("pause-keybind")
+		.description("The bind for pause.")
+		.defaultValue(Keybind.fromKey(GLFW_KEY_LEFT_ALT))
+		.visible(pauseBind::get)
+		.build()
+	);
+
 	private final Setting<Boolean> outline = sgRVisual.add(new BoolSetting.Builder()
 		.name("outline")
 		.description("Outline to block.")
@@ -190,13 +230,55 @@ public class XrayBruteforce extends Module {
 		.build()
 	);
 
+	private boolean isPressed() {
+		return (pausekeybind.get().isPressed() && pauseBind.get());
+	}
+
     private BlockPos currentScanBlock;
+
+	private boolean pause_toggle = false;
+
+	@EventHandler
+	private void onKeyEvent(KeyEvent event)
+	{
+		if (event.action == KeyAction.Press && isPressed()) {
+			pause_toggle = !pause_toggle;
+			if (pause_toggle) {
+				info("§c" + "Paused");
+			}
+			else {
+				info("§a" + "Un paused");
+			}
+		}
+	}
+
 	public class RenderOre {
         public Block block = Blocks.AIR;
         public BlockPos blockPos = null;
-        public SettingColor color = null;
-		public SettingColor colortracer = null;
+
+		/* Visual settings */
+		public SettingColor linecolor = null;
+		public SettingColor sidecolor = null;
+		public SettingColor tracercolor = null;
+		public ShapeMode shapeMode = null;
     }
+
+	private void setColors(RenderOre ore)
+	{
+		if (ore != null && ore.block != null && ore.linecolor == null && ore.sidecolor == null && ore.tracercolor == null && ore.shapeMode == null) {
+			assert mc.world != null;
+			BlockState state = mc.world.getBlockState(ore.blockPos);
+			if (ore.block == Blocks.AIR) {
+				ore.block = state.getBlock();
+			}
+			SBlockData blockdata = getBlockData(state.getBlock());
+			ore.linecolor = blockdata.lineColor;
+			ore.sidecolor = blockdata.sideColor;
+			ore.tracercolor = blockdata.tracerColor;
+			ore.shapeMode = blockdata.shapeMode;
+		}
+	}
+
     private static final List<RenderOre> ores = new ArrayList<>();
     private RenderOre get(BlockPos pos) {
 		synchronized (ores) {
@@ -273,20 +355,6 @@ public class XrayBruteforce extends Module {
 		return blockData == null ? defaultBlockConfig.get() : blockData;
 	}
 
-    private void setColors(RenderOre ore)
-    {
-        if (ore != null && ore.block != null && ore.color == null) {
-			assert mc.world != null;
-			BlockState state = mc.world.getBlockState(ore.blockPos);
-            if (ore.block == Blocks.AIR) {
-                ore.block = state.getBlock();
-            }
-			SBlockData blockdata = getBlockData(state.getBlock());
-			ore.color = blockdata.lineColor;
-			ore.colortracer = blockdata.tracerColor;
-        }
-    }
-
     private void renderOres(Render3DEvent event) {
 		int renderBlocks = 0;
 		if (ores.size() > 0) {
@@ -303,16 +371,16 @@ public class XrayBruteforce extends Module {
     private int renderedBlocks = 0;
     private void renderOreBlock(Render3DEvent event, RenderOre ore)
     {
-        if (ore.block != null && ore.color != null && mc.world != null) {
+        if (ore.block != null && mc.world != null && ore.tracercolor != null && ore.sidecolor != null && ore.linecolor != null) {
 			BlockState state = mc.world.getBlockState(ore.blockPos);
             VoxelShape shape = state.getOutlineShape(mc.world, ore.blockPos);
 			SBlockData blockdata = getBlockData(ore.block);
 			if (shape.isEmpty()) return;
             for (Box b : shape.getBoundingBoxes()) {
-                event.renderer.box(ore.blockPos.getX() + b.minX, ore.blockPos.getY() + b.minY, ore.blockPos.getZ() + b.minZ, ore.blockPos.getX() + b.maxX, ore.blockPos.getY() + b.maxY, ore.blockPos.getZ() + b.maxZ, ore.color, ore.color, blockdata.shapeMode, 0);
+                event.renderer.box(ore.blockPos.getX() + b.minX, ore.blockPos.getY() + b.minY, ore.blockPos.getZ() + b.minZ, ore.blockPos.getX() + b.maxX, ore.blockPos.getY() + b.maxY, ore.blockPos.getZ() + b.maxZ, ore.sidecolor, ore.linecolor, blockdata.shapeMode, 0);
             }
 			if (blockdata.tracer) {
-				event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, ore.blockPos.getX(), ore.blockPos.getY(), ore.blockPos.getZ(), ore.colortracer);
+				event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, ore.blockPos.getX(), ore.blockPos.getY(), ore.blockPos.getZ(), ore.tracercolor);
 			}
         }
     }
@@ -358,16 +426,12 @@ public class XrayBruteforce extends Module {
     private List<BlockPos> blocks = new ArrayList<>();
     @Override
     public String getInfoString() {
-        if (calculating) {
-            return "calculating";
-        }
-        else if ((long) blocks.size() > 1) {
-            return (long) blocks.size() + " | rendered: " + renderedBlocks + " blocks";
-        }
-        else
-        {
-			return "finding | rendered: " + renderedBlocks + " blocks";
-        }
+		if (pause_toggle) {
+			return "paused";
+		}
+        else {
+			return Integer.toString(renderedBlocks);
+		}
     }
 
     private boolean send(BlockPos blockpos)
@@ -392,13 +456,13 @@ public class XrayBruteforce extends Module {
 
 		if (sucess) {
 			currentScanBlock = blockpos;
-			PlayerActionC2SPacket startPacket = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
-			PlayerActionC2SPacket abortPacket = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
-			if (packetmode.get() == PacketMode.Start || packetmode.get() == PacketMode.Both) {
-				conn.sendPacket(startPacket);
+			PlayerActionC2SPacket packet_one = getPacket(blockpos, packet_first);
+			if (packet_one != null) {
+				conn.sendPacket(packet_one);
 			}
-			if (packetmode.get() == PacketMode.Abort || packetmode.get() == PacketMode.Both) {
-				conn.sendPacket(abortPacket);
+			PlayerActionC2SPacket packet_tw = getPacket(blockpos, packet_two);
+			if (packet_tw != null) {
+				conn.sendPacket(packet_tw);
 			}
 		}
 		else {
@@ -407,10 +471,27 @@ public class XrayBruteforce extends Module {
 		scanned.add(blockpos);
         return sucess;
     }
+
+	private PlayerActionC2SPacket getPacket(BlockPos blockpos, Setting<PacketMode> setting) {
+		if (setting.get() == PacketMode.Abort) {
+			PlayerActionC2SPacket abort = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
+			return abort;
+		}
+		else if (setting.get() == PacketMode.Start) {
+			PlayerActionC2SPacket start = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
+			return start;
+		}
+		else if (setting.get() == PacketMode.Stop) {
+			PlayerActionC2SPacket stop = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
+			return stop;
+		}
+		return null;
+	}
+
     long millis = 0;
     private void checker()
     {
-        if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= millis)
+        if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= millis && !pause_toggle)
         {
             if (blocks != null && blocks.size() > 0) {
                 work();
@@ -463,50 +544,90 @@ public class XrayBruteforce extends Module {
 			if (findBlocks.contains(Blocks.ANCIENT_DEBRIS)) {
 				y = Utils.random(8, 22);
 				if (!scanned.contains(new BlockPos(x, y, z))) {
-					addBlock(new BlockPos(x, y, z), false);
+					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Nether) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
+					else if (!auto_dimension.get()) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
 				}
 			}
             if (findBlocks.contains(Blocks.DIAMOND_ORE) || findBlocks.contains(Blocks.DEEPSLATE_DIAMOND_ORE)) {
                 y = Utils.random(1, 15);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-					addBlock(new BlockPos(x, y, z), false);
+					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
+					else if (!auto_dimension.get()) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
                 }
             }
             if (findBlocks.contains(Blocks.REDSTONE_ORE) || findBlocks.contains(Blocks.DEEPSLATE_REDSTONE_ORE)) {
                 y = Utils.random(1, 15);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-					addBlock(new BlockPos(x, y, z), false);
+					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
+					else if (!auto_dimension.get()) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
                 }
             }
             if (findBlocks.contains(Blocks.LAPIS_ORE) || findBlocks.contains(Blocks.DEEPSLATE_LAPIS_ORE)) {
                 y = Utils.random(1, 31);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-					addBlock(new BlockPos(x, y, z), false);
+					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
+					else if (!auto_dimension.get()) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
                 }
             }
             if (findBlocks.contains(Blocks.GOLD_ORE) || findBlocks.contains(Blocks.DEEPSLATE_GOLD_ORE)) {
                 y = Utils.random(1, 32);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-					addBlock(new BlockPos(x, y, z), false);
+					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
+					else if (!auto_dimension.get()) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
                 }
             }
             if (findBlocks.contains(Blocks.IRON_ORE) || findBlocks.contains(Blocks.DEEPSLATE_IRON_ORE)) {
                 y = Utils.random(1, 63);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-					addBlock(new BlockPos(x, y, z), false);
+					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
+					else if (!auto_dimension.get()) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
                 }
             }
             if (findBlocks.contains(Blocks.COAL_ORE) || findBlocks.contains(Blocks.DEEPSLATE_COAL_ORE)) {
                 y = Utils.random(1, 114);
                 if (!scanned.contains(new BlockPos(x, y, z))) {
-					addBlock(new BlockPos(x, y, z), false);
+					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
+					else if (!auto_dimension.get()) {
+						addBlock(new BlockPos(x, y, z), false);
+					}
                 }
             }
         }
         else {
             y = Utils.random(mc.player.getBlockPos().getY() -y_range.get(), mc.player.getBlockPos().getY() + y_range.get());
             if (!scanned.contains(new BlockPos(x, y, z))) {
-				addBlock(new BlockPos(x, y, z), false);
+				if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
+					addBlock(new BlockPos(x, y, z), false);
+				}
+				else if (!auto_dimension.get()) {
+					addBlock(new BlockPos(x, y, z), false);
+				}
             }
         }
     }
@@ -535,10 +656,11 @@ public class XrayBruteforce extends Module {
 	}
     @Override
     public void onActivate() {
+		scan = true;
         millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         clickerThread = new Thread(() -> {
 			addRandomBlock();
-            while (true)
+            while (scan)
             {
                 checker();
 				reScaner();
@@ -546,9 +668,10 @@ public class XrayBruteforce extends Module {
         });
         clickerThread.start();
     }
-
+	private boolean scan = false;
     @Override
     public void onDeactivate() {
+		scan = false;
         blocks.clear();
         currentScanBlock = null;
         if (clickerThread != null && clickerThread.isAlive())
