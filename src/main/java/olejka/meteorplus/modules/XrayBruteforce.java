@@ -2,11 +2,16 @@ package olejka.meteorplus.modules;
 
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.systems.modules.render.search.SBlock;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
+import meteordevelopment.meteorclient.systems.modules.render.search.SChunk;
 import meteordevelopment.meteorclient.utils.misc.Keybind;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import olejka.meteorplus.MeteorPlus;
 
@@ -146,7 +151,15 @@ public class XrayBruteforce extends Module {
 	public final Setting<Boolean> auto_dimension = sgGeneral.add(new BoolSetting.Builder()
 		.name("Auto-dimension")
 		.description("Auto detect dimension.")
-		.defaultValue(false)
+		.defaultValue(true)
+		.visible(auto_height::get)
+		.build()
+	);
+
+	public final Setting<Boolean> caves = sgGeneral.add(new BoolSetting.Builder()
+		.name("Caves")
+		.description("Scan expanded blocks.")
+		.defaultValue(true)
 		.build()
 	);
 
@@ -244,6 +257,7 @@ public class XrayBruteforce extends Module {
 		if (event.action == KeyAction.Press && isPressed()) {
 			pause_toggle = !pause_toggle;
 			if (pause_toggle) {
+				currentScanBlock = null;
 				info("§c" + "Paused");
 			}
 			else {
@@ -427,6 +441,55 @@ public class XrayBruteforce extends Module {
             }
         }
     }
+
+	private void addExposedBlocks() {
+		if (caves.get() &&  mc.world != null) {
+			Iterable<Chunk> chunks = Utils.chunks();
+			for (Chunk chunk : chunks) {
+				SChunk s = SChunk.searchChunk(chunk, whblocks.get());
+				if (s.blocks != null) {
+					for (SBlock sBlock : s.blocks.values()) {
+						BlockPos pos = new BlockPos(sBlock.x, sBlock.y, sBlock.z);
+						if (whblocks.get().contains(mc.world.getBlockState(pos).getBlock())) {
+							if (isExposedOre(pos)) {
+								addRenderBlock(pos);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private boolean isExposedBlock(Block block) {
+		return (block == Blocks.AIR || block == Blocks.WATER || block == Blocks.LAVA);
+	}
+
+	private boolean isExposedBlock(BlockState state) {
+		Block block = state.getBlock();
+		return isExposedBlock(block);
+	}
+
+	private boolean isExposedOre(BlockPos pos) {
+		if (mc.world != null) {
+			BlockState def = mc.world.getBlockState(pos);
+			if (whblocks.get().contains(def.getBlock())) {
+				if (isExposedBlock(mc.world.getBlockState(pos.add(0, 1, 0))))
+					return true;
+				else if (isExposedBlock(mc.world.getBlockState(pos.add(0, -1, 0))))
+					return true;
+				else if (isExposedBlock(mc.world.getBlockState(pos.add(1, 0, 0))))
+					return true;
+				else if (isExposedBlock(mc.world.getBlockState(pos.add(-1, 0, 0))))
+					return true;
+				else if (isExposedBlock(mc.world.getBlockState(pos.add(0, 0, 1))))
+					return true;
+				else if (isExposedBlock(mc.world.getBlockState(pos.add(-0, 0, -1))))
+					return true;
+			}
+		}
+		return false;
+	}
 
     private List<BlockPos> blocks = new ArrayList<>();
     @Override
@@ -660,6 +723,7 @@ public class XrayBruteforce extends Module {
 			}
 		}
 	}
+	private Thread exposedthread = null;
     @Override
     public void onActivate() {
 		scan = true;
@@ -672,7 +736,16 @@ public class XrayBruteforce extends Module {
 				reScaner();
             }
         });
-        clickerThread.start();
+		clickerThread.start();
+
+		clickerThread = new Thread(() -> {
+			addRandomBlock();
+			while (scan)
+			{
+				addExposedBlocks();
+			}
+		});
+		clickerThread.start();
     }
 	private boolean scan = false;
     @Override
@@ -684,6 +757,10 @@ public class XrayBruteforce extends Module {
         {
             clickerThread.stop();
         }
+		if (exposedthread != null && exposedthread.isAlive())
+		{
+			exposedthread.stop();
+		}
     }
 
     private static final List<BlockPos> scanned = new ArrayList<>();
