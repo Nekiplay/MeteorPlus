@@ -738,14 +738,19 @@ public class XrayBruteforce extends Module {
         });
 		clickerThread.start();
 
-		clickerThread = new Thread(() -> {
+		exposedthread = new Thread(() -> {
 			addRandomBlock();
 			while (scan)
 			{
 				addExposedBlocks();
+				try {
+					Thread.sleep(1500);
+				} catch (InterruptedException e) {
+
+				}
 			}
 		});
-		clickerThread.start();
+		exposedthread.start();
     }
 	private boolean scan = false;
     @Override
