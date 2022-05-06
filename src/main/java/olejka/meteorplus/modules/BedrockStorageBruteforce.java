@@ -1,6 +1,8 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.IntSetting;
@@ -8,8 +10,10 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.Utils;
+import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.render.RenderUtils;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
+import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -73,13 +77,16 @@ public class BedrockStorageBruteforce extends Module {
 	);
 	Thread clickerThread = null;
 	private boolean scan = true;
-	@Override
-	public void onDeactivate() {
+	private void stop() {
 		if (clickerThread != null && clickerThread.isAlive())
 		{
 			clickerThread.stop();
 		}
 		scan = false;
+	}
+	@Override
+	public void onDeactivate() {
+		stop();
 	}
 	private boolean isAllowScan(BlockPos pos) {
 		if (mc.world != null) {
@@ -91,8 +98,10 @@ public class BedrockStorageBruteforce extends Module {
 		}
 		return false;
 	}
+	Dimension dim;
 	@Override
 	public void onActivate() {
+		dim = PlayerUtils.getDimension();
 		scan = true;
 		clickerThread = new Thread(() -> {
 			while (scan)
@@ -111,7 +120,7 @@ public class BedrockStorageBruteforce extends Module {
 							scanned.add(posible);
 							PlayerActionC2SPacket abortPacket = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, posible, Direction.UP);
 							conn.sendPacket(abortPacket);
-							PlayerActionC2SPacket abortPacket2 = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, posible, Direction.UP);
+							PlayerActionC2SPacket abortPacket2 = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, posible, Direction.UP);
 							conn.sendPacket(abortPacket2);
 							millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + Utils.random(delaymin.get(), delaymax.get());
 						}
@@ -137,6 +146,18 @@ public class BedrockStorageBruteforce extends Module {
 				event.renderer.box(bp.getX() + b.minX, bp.getY() + b.minY, bp.getZ() + b.minZ, bp.getX() + b.maxX, bp.getY() + b.maxY, bp.getZ() + b.maxZ, new SettingColor(255, 255, 255, 255), color, ShapeMode.Lines, 0);
 			}
 			event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, bp.getX(), bp.getY(), bp.getZ(), color);
+		}
+	}
+	@EventHandler
+	private void onGameLeft(GameLeftEvent event) {
+		scanned.clear();
+		stop();
+	}
+	@EventHandler
+	private void onTickPre(TickEvent.Pre event) {
+		if (PlayerUtils.getDimension() != dim) {
+			dim = PlayerUtils.getDimension();
+			scanned.clear();
 		}
 	}
 }

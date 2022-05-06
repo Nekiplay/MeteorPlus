@@ -4,9 +4,12 @@ import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.misc.text.TextUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
+import net.fabricmc.loader.impl.util.StringUtil;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.utils.ColorRemover;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -38,8 +41,10 @@ public class AutoAccept extends Module {
 	@Override
 	public void onActivate() {
 		patters.clear();
-		TPPattern MST_Network = new TPPattern(".*Игрок §e(.*) §7просит телепортироваться к вам!§7 §a§l.*", 1);
+		TPPattern MST_Network = new TPPattern(".*Игрок (.*) просит телепортироваться к вам!.*", 1);
+		TPPattern HolyWorld = new TPPattern("(.*) просит телепортироваться.*", 1);
 		patters.add(MST_Network);
+		patters.add(HolyWorld);
 	}
 	@Override
 	public void onDeactivate() {
@@ -49,9 +54,10 @@ public class AutoAccept extends Module {
 	@EventHandler()
 	public void onMessageRecieve(ReceiveMessageEvent event) {
 		if (event.getMessage() != null && mc.player != null){
-			String message = event.getMessage().getString();
+			String message = ColorRemover.GetVerbatim(event.getMessage().getString());
 			String nickname = getName(message);
 			if (!nickname.equals("")) {
+
 				if (FriendsOnly.get() && isFriend(nickname)) {
 					info("Accepting request from " + "§c" + nickname);
 					mc.player.sendChatMessage(accept_command.get().replace("{username}", nickname));

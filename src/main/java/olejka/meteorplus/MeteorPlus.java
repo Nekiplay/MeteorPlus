@@ -10,6 +10,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 
 import net.minecraft.item.Items;
 
+import olejka.meteorplus.modules.AutoSell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

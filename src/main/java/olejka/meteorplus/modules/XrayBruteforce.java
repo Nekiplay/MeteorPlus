@@ -308,6 +308,16 @@ public class XrayBruteforce extends Module {
 		public BlockPos pos;
 		public long rescanTime;
 	}
+
+	private void addNeedRescan(BlockPos pos, int delay) {
+		synchronized (need_rescan) {
+			BlockScanned scanned = new BlockScanned();
+			scanned.pos = pos;
+			scanned.rescanTime = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + delay;
+			need_rescan.add(scanned);
+		}
+	}
+
     @EventHandler
     public void blockUpdateEvent(BlockUpdateEvent event) {
 		if (event.oldState.getMaterial() != Material.AIR)
@@ -317,12 +327,7 @@ public class XrayBruteforce extends Module {
 			}
 			BlockState state = mc.world.getBlockState(event.pos);
 			if (whblocks.get().contains(state.getBlock())) {
-				synchronized (need_rescan) {
-					BlockScanned scanned = new BlockScanned();
-					scanned.pos = event.pos;
-					scanned.rescanTime = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-					need_rescan.add(scanned);
-				}
+				addNeedRescan(event.pos, 1250);
 			}
 		}
     }
@@ -464,6 +469,7 @@ public class XrayBruteforce extends Module {
 			if (packet_tw != null) {
 				conn.sendPacket(packet_tw);
 			}
+			addNeedRescan(blockpos, 2500);
 		}
 		else {
 			currentScanBlock = null;
@@ -641,7 +647,7 @@ public class XrayBruteforce extends Module {
 				if (!scanned.contains(blockscanned.pos)) {
 					scanned.add(blockscanned.pos);
 				}
-				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime + 1250 && mc.world != null) {
+				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime && mc.world != null) {
 					BlockState state = mc.world.getBlockState(blockscanned.pos);
 					if (whblocks.get().contains(state.getBlock())) {
 						addRenderBlock(blockscanned.pos);
