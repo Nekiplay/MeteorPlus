@@ -453,6 +453,11 @@ public class XrayBruteforce extends Module {
 						if (whblocks.get().contains(mc.world.getBlockState(pos).getBlock())) {
 							if (isExposedOre(pos)) {
 								addRenderBlock(pos);
+								addBlock(pos, false);
+								List<BlockPos> post = getBlocks(pos, 2, 2);
+								for (BlockPos pos2 : post) {
+									addBlock(pos2, false);
+								}
 							}
 						}
 					}
