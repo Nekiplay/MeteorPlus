@@ -492,7 +492,11 @@ public class XrayBruteforce extends Module {
 		int renderBlocks = 0;
 		if (ores.size() > 0) {
 			for (RenderOre pos : ores.toArray(new RenderOre[0])) {
+				BlockState state = mc.world.getBlockState(pos.blockPos);
 				setColors(pos);
+				if (state.getBlock() == pos.block) {
+					pos.sBlock.update();
+				}
 				if (!new_render.get()) {
 					if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
 						renderOreBlock(event, pos);
@@ -844,6 +848,7 @@ public class XrayBruteforce extends Module {
 						addRenderBlock(blockscanned.pos);
 						for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
 							addBlock(pos, true);
+							addRenderBlock(blockscanned.pos);
 						}
 					}
 					iterator.remove();
