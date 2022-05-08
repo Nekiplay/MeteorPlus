@@ -1,7 +1,10 @@
 package olejka.meteorplus.modules;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlock;
@@ -48,6 +51,8 @@ import olejka.meteorplus.utils.XBlock;
 import olejka.meteorplus.utils.XChunk;
 import olejka.meteorplus.utils.XGroup;
 
+import java.io.*;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -63,6 +68,100 @@ public class XrayBruteforce extends Module {
 	private final SettingGroup sgSVisual = settings.createGroup("Scaner");
     private final SettingGroup sgRVisual = settings.createGroup("Scaner Render Visuals");
 	private final SettingGroup sgSRenderer = settings.createGroup("Scanned Renderer");
+	private final SettingGroup sgSaver = settings.createGroup("Scanned Saver");
+
+	public final Setting<Boolean> save = sgSaver.add(new BoolSetting.Builder()
+		.name("Save")
+		.description("Save rendered ores.")
+		.defaultValue(false)
+		.onChanged((c) -> {
+			Thread save = new Thread(() ->
+			{
+				File dir = new File(MeteorClient.FOLDER, "xray-bruteforce");
+				if (!dir.exists()) {
+					dir.mkdir();
+				}
+				File dir2 = new File(dir, Utils.getWorldName());
+				if (!dir2.exists()) {
+					dir2.mkdir();
+				}
+				for (RenderOre ore : ores.toArray(new RenderOre[0])) {
+					Gson gson = new Gson();
+					Map<String, Integer> map = new LinkedHashMap<>();
+					map.put("X", ore.blockPos.getX());
+					map.put("Y", ore.blockPos.getY());
+					map.put("Z", ore.blockPos.getZ());
+					String json = gson.toJson(map);
+
+					File file = new File(dir2.getPath(), "x={" + ore.blockPos.getX() + "}, y={" + ore.blockPos.getY() + "}, {z={" + ore.blockPos.getZ() + "}");
+					if (!file.exists()) {
+						try {
+							file.createNewFile();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					FileWriter fileWriter = null;
+					try {
+						fileWriter = new FileWriter(file);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					PrintWriter printWriter = new PrintWriter(fileWriter);
+					printWriter.print(json);
+					printWriter.close();
+				}
+				info("Saving compile");
+			});
+			save.start();
+
+		})
+		.build()
+	);
+
+	public final Setting<Boolean> load = sgSaver.add(new BoolSetting.Builder()
+		.name("Load")
+		.description("Load rendered ores.")
+		.defaultValue(false)
+		.onChanged((c) -> {
+			Thread load = new Thread(() ->
+			{
+				File dir = new File(MeteorClient.FOLDER, "xray-bruteforce");
+				if (dir.exists()) {
+					File dir2 = new File(dir, Utils.getWorldName());
+					if (dir2.exists()) {
+						File[] arrFiles = dir2.listFiles();
+						List<File> lst = Arrays.asList(arrFiles);
+						for (File file : lst) {
+							FileReader fr = null;
+							try {
+								fr = new FileReader(file);
+								BufferedReader reader = new BufferedReader(fr);
+								try {
+									String json = reader.readLine();
+									Gson gson = new Gson();
+									Type type = new TypeToken<Map<String, Integer>>(){}.getType();
+									Map<String, Integer> read = gson.fromJson(json, type);
+									BlockPos pos = new BlockPos(read.get("X"), read.get("Y"), read.get("Z"));
+									addNeedRescan(pos, 1250);
+									addBlock(pos, true);
+
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+				info("Load compile");
+			});
+			load.start();
+
+		})
+		.build()
+	);
 
 	public final Setting<Boolean> new_render = sgSRenderer.add(new BoolSetting.Builder()
 		.name("New Render")
@@ -340,6 +439,10 @@ public class XrayBruteforce extends Module {
         public Block block = Blocks.AIR;
         public BlockPos blockPos = null;
 
+		public RenderOre(BlockPos pos) {
+			this.blockPos = pos;
+		}
+
 		public XBlock sBlock = null;
 
 		/* Visual settings */
@@ -417,7 +520,7 @@ public class XrayBruteforce extends Module {
         synchronized (ores) {
             RenderOre ore = get(blockPos);
             if (ore == null) {
-                RenderOre ne = new RenderOre();
+                RenderOre ne = new RenderOre(blockPos);
                 ne.blockPos = blockPos;
                 ores.add(ne);
             }
@@ -457,6 +560,12 @@ public class XrayBruteforce extends Module {
 			BlockState state = mc.world.getBlockState(event.pos);
 			if (whblocks.get().contains(state.getBlock())) {
 				addNeedRescan(event.pos, 1250);
+			}
+		}
+		if (event.newState.getBlock() == Blocks.AIR) {
+			RenderOre render = get(event.pos);
+			if (render != null) {
+				ores.remove(render);
 			}
 		}
     }
@@ -504,7 +613,6 @@ public class XrayBruteforce extends Module {
 		int renderBlocks = 0;
 		if (ores.size() > 0) {
 			for (RenderOre pos : ores.toArray(new RenderOre[0])) {
-				BlockState state = mc.world.getBlockState(pos.blockPos);
 				setColors(pos);
 				if (!new_render.get()) {
 					if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
@@ -516,6 +624,9 @@ public class XrayBruteforce extends Module {
 					if (pos.sBlock != null) {
 						if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
 							pos.sBlock.render(event, pos);
+							if (pos.sBlock.group != null) {
+								pos.sBlock.group.render(event);
+							}
 							renderBlocks++;
 						}
 					}
@@ -855,15 +966,17 @@ public class XrayBruteforce extends Module {
 					scanned.add(blockscanned.pos);
 				}
 				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime && mc.world != null) {
-					BlockState state = mc.world.getBlockState(blockscanned.pos);
-					if (whblocks.get().contains(state.getBlock())) {
-						addRenderBlock(blockscanned.pos);
-						for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
-							addBlock(pos, true);
+					if (EntityUtils.isInRenderDistance(blockscanned.pos)) {
+						BlockState state = mc.world.getBlockState(blockscanned.pos);
+						if (whblocks.get().contains(state.getBlock())) {
 							addRenderBlock(blockscanned.pos);
+							for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
+								addBlock(pos, true);
+								addRenderBlock(blockscanned.pos);
+							}
 						}
+						iterator.remove();
 					}
-					iterator.remove();
 				}
 			}
 		}
