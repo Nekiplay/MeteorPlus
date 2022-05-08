@@ -1,17 +1,21 @@
 package olejka.meteorplus.modules;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlock;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
 import meteordevelopment.meteorclient.systems.modules.render.search.SChunk;
 import meteordevelopment.meteorclient.utils.misc.Keybind;
+import meteordevelopment.meteorclient.utils.misc.UnorderedArrayList;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import olejka.meteorplus.MeteorPlus;
@@ -40,6 +44,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import olejka.meteorplus.utils.GenerationBlock;
+import olejka.meteorplus.utils.XBlock;
+import olejka.meteorplus.utils.XChunk;
+import olejka.meteorplus.utils.XGroup;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -52,7 +59,16 @@ public class XrayBruteforce extends Module {
         super(MeteorPlus.CATEGORY, "xray-bruteForce", "Bypasses anti-xray.");
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
+	private final SettingGroup sgSVisual = settings.createGroup("Scaner");
     private final SettingGroup sgRVisual = settings.createGroup("Scaner Render Visuals");
+	private final SettingGroup sgSRenderer = settings.createGroup("Scanned Renderer");
+
+	public final Setting<Boolean> new_render = sgSRenderer.add(new BoolSetting.Builder()
+		.name("New Render")
+		.description("New Render.")
+		.defaultValue(true)
+		.build()
+	);
 
     private final Setting<List<Block>> whblocks = sgGeneral.add(new BlockListSetting.Builder()
         .name("whitelist")
@@ -157,14 +173,14 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-    public final Setting<Boolean> auto_height = sgGeneral.add(new BoolSetting.Builder()
+    public final Setting<Boolean> auto_height = sgSVisual.add(new BoolSetting.Builder()
         .name("Auto-height")
         .description("Auto detect height.")
         .defaultValue(false)
         .build()
     );
 
-	public final Setting<Boolean> auto_dimension = sgGeneral.add(new BoolSetting.Builder()
+	public final Setting<Boolean> auto_dimension = sgSVisual.add(new BoolSetting.Builder()
 		.name("Auto-dimension")
 		.description("Auto detect dimension.")
 		.defaultValue(true)
@@ -172,14 +188,42 @@ public class XrayBruteforce extends Module {
 		.build()
 	);
 
-	public final Setting<Boolean> caves = sgGeneral.add(new BoolSetting.Builder()
-		.name("Caves")
+	public final Setting<Boolean> expanded = sgSVisual.add(new BoolSetting.Builder()
+		.name("Expanded")
 		.description("Scan expanded blocks.")
 		.defaultValue(true)
 		.build()
 	);
 
-    private final Setting<Integer> range = sgGeneral.add(new IntSetting.Builder()
+	private final Setting<ScanPriority> scanPriority = sgSVisual.add(new EnumSetting.Builder<ScanPriority>()
+		.name("Scan priority")
+		.description("Ores generation type.")
+		.defaultValue(ScanPriority.Caves)
+		.build()
+	);
+
+	private final Setting<Integer> cavesRange = sgSVisual.add(new IntSetting.Builder()
+		.name("Caves range")
+		.description("Caves range.")
+		.defaultValue(2)
+		.visible(() -> scanPriority.get() == ScanPriority.Caves)
+		.build()
+	);
+
+	private final Setting<Integer> cavesRangeY = sgSVisual.add(new IntSetting.Builder()
+		.name("Caves Y range")
+		.description("Caves y range.")
+		.defaultValue(2)
+		.visible(() -> scanPriority.get() == ScanPriority.Caves)
+		.build()
+	);
+
+	public enum ScanPriority {
+		Caves,
+		Normal
+	}
+
+    private final Setting<Integer> range = sgSVisual.add(new IntSetting.Builder()
         .name("range")
         .description("Bruteforce range.")
         .defaultValue(40)
@@ -187,7 +231,7 @@ public class XrayBruteforce extends Module {
         .sliderRange(3, 512)
         .build()
     );
-    private final Setting<Integer> y_range = sgGeneral.add(new IntSetting.Builder()
+    private final Setting<Integer> y_range = sgSVisual.add(new IntSetting.Builder()
         .name("y-range")
         .description("Bruteforce range.")
         .defaultValue(13)
@@ -259,7 +303,7 @@ public class XrayBruteforce extends Module {
 		.build()
 	);
 
-	private final Setting<Integer> clusterRange = sgGeneral.add(new IntSetting.Builder()
+	private final Setting<Integer> clusterRange = sgSVisual.add(new IntSetting.Builder()
 		.name("Cluster range")
 		.description("Cluster range.")
 		.defaultValue(2)
@@ -295,6 +339,8 @@ public class XrayBruteforce extends Module {
         public Block block = Blocks.AIR;
         public BlockPos blockPos = null;
 
+		public XBlock sBlock = null;
+
 		/* Visual settings */
 		public SettingColor linecolor = null;
 		public SettingColor sidecolor = null;
@@ -302,15 +348,52 @@ public class XrayBruteforce extends Module {
 		public ShapeMode shapeMode = null;
     }
 
+	public ArrayList<XBlock> oresV2 = new ArrayList<XBlock>();
+	private final List<XGroup> groups = new UnorderedArrayList<>();
+
+	public XBlock getSBlockData(BlockPos pos) {
+		for (XBlock ore : oresV2.toArray(new XBlock[0])) {
+			if (ore.x == pos.getX() && ore.y == pos.getY() && ore.z == pos.getZ()) {
+				return ore;
+			}
+		}
+		return null;
+	}
+
+	public XGroup newGroup(Block block) {
+		synchronized (chunks) {
+			XGroup group = new XGroup(block);
+			groups.add(group);
+			return group;
+		}
+	}
+
+	public void removeGroup(XGroup group) {
+		synchronized (chunks) {
+			groups.remove(group);
+		}
+	}
+
+	private final Long2ObjectMap<XChunk> chunks = new Long2ObjectOpenHashMap<>();
+
+	public XBlock getBlock(int x, int y, int z) {
+		XChunk chunk = chunks.get(ChunkPos.toLong(x >> 4, z >> 4));
+		return chunk == null ? null : chunk.get(x, y, z);
+	}
+
 	private void setColors(RenderOre ore)
 	{
-		if (ore != null && ore.block != null && ore.linecolor == null && ore.sidecolor == null && ore.tracercolor == null && ore.shapeMode == null) {
+		if (ore != null && ore.block != null && ore.linecolor == null && ore.sidecolor == null && ore.tracercolor == null && ore.shapeMode == null && ore.sBlock == null) {
 			assert mc.world != null;
 			BlockState state = mc.world.getBlockState(ore.blockPos);
 			if (ore.block == Blocks.AIR) {
 				ore.block = state.getBlock();
 			}
 			SBlockData blockdata = getBlockData(state.getBlock());
+			XBlock sbp = new XBlock(ore.blockPos.getX(), ore.blockPos.getY(), ore.blockPos.getZ());
+
+			ore.sBlock = sbp;
+			ore.sBlock.update();
 			ore.linecolor = blockdata.lineColor;
 			ore.sidecolor = blockdata.sideColor;
 			ore.tracercolor = blockdata.tracerColor;
@@ -337,6 +420,9 @@ public class XrayBruteforce extends Module {
                 ne.blockPos = blockPos;
                 ores.add(ne);
             }
+			else if (ore.sBlock != null) {
+				ore.sBlock.update();
+			}
         }
     }
 
@@ -397,7 +483,7 @@ public class XrayBruteforce extends Module {
 		}
     }
 
-	SBlockData getBlockData(Block block) {
+	public SBlockData getBlockData(Block block) {
 		SBlockData blockData = blockConfigs.get().get(block);
 		return blockData == null ? defaultBlockConfig.get() : blockData;
 	}
@@ -407,9 +493,21 @@ public class XrayBruteforce extends Module {
 		if (ores.size() > 0) {
 			for (RenderOre pos : ores.toArray(new RenderOre[0])) {
 				setColors(pos);
-				if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
-					renderOreBlock(event, pos);
-					renderBlocks++;
+				if (!new_render.get()) {
+					if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
+						renderOreBlock(event, pos);
+						renderBlocks++;
+					}
+				}
+				else {
+					if (pos.sBlock != null) {
+						if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
+							pos.sBlock.render(event, pos);
+							if (pos.sBlock.group != null) {
+								pos.sBlock.group.render(event);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -471,20 +569,58 @@ public class XrayBruteforce extends Module {
     }
 
 	private void addExposedBlocks() {
-		if (caves.get() &&  mc.world != null) {
+		if (mc.world != null) {
 			Iterable<Chunk> chunks = Utils.chunks();
 			for (Chunk chunk : chunks) {
-				SChunk s = SChunk.searchChunk(chunk, whblocks.get());
-				if (s.blocks != null) {
-					for (SBlock sBlock : s.blocks.values()) {
-						BlockPos pos = new BlockPos(sBlock.x, sBlock.y, sBlock.z);
-						if (whblocks.get().contains(mc.world.getBlockState(pos).getBlock())) {
-							if (isExposedOre(pos)) {
-								addRenderBlock(pos);
-								addBlock(pos, false);
-								List<BlockPos> post = getBlocks(pos, clusterRange.get(), clusterRange.get());
-								for (BlockPos pos2 : post) {
-									addBlock(pos2, false);
+				if (expanded.get()) {
+					SChunk s = SChunk.searchChunk(chunk, whblocks.get());
+					if (s.blocks != null) {
+						for (SBlock sBlock : s.blocks.values()) {
+							BlockPos pos = new BlockPos(sBlock.x, sBlock.y, sBlock.z);
+							if (whblocks.get().contains(mc.world.getBlockState(pos).getBlock())) {
+								if (isExposedOre(pos)) {
+									if (auto_dimension.get()) {
+										GenerationBlock generationBlock = GenerationBlock.getGenerationBlock(mc.world.getBlockState(pos).getBlock(), false);
+										if (generationBlock != null && generationBlock.dimension == PlayerUtils.getDimension()) {
+											addRenderBlock(pos);
+											addBlock(pos, false);
+											List<BlockPos> post = getBlocks(pos, clusterRange.get(), clusterRange.get());
+											for (BlockPos pos2 : post) {
+												addBlock(pos2, false);
+											}
+										}
+									} else {
+										addRenderBlock(pos);
+										addBlock(pos, false);
+										List<BlockPos> post = getBlocks(pos, clusterRange.get(), clusterRange.get());
+										for (BlockPos pos2 : post) {
+											addBlock(pos2, false);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				if (scanPriority.get() == ScanPriority.Caves) {
+					ArrayList<Block> caf = new ArrayList<Block>();
+					caf.add(Blocks.AIR);
+					SChunk s = SChunk.searchChunk(chunk, caf);
+					if (s.blocks != null) {
+						for (SBlock sBlock : s.blocks.values()) {
+							for (Block bp : whblocks.get()) {
+								boolean newGeneration = generationType.get() == GenerationType.New;
+								GenerationBlock generationBlock = GenerationBlock.getGenerationBlock(bp, newGeneration);
+								if (generationBlock != null) {
+									BlockPos pos = new BlockPos(sBlock.x, sBlock.y, sBlock.z);
+									if (sBlock.y >= generationBlock.min_height && sBlock.y <= generationBlock.max_height) {
+										List<BlockPos> post = getBlocks(pos, cavesRange.get(), cavesRangeY.get());
+										for (BlockPos pos2 : post) {
+											if (!isExposedOre(pos2) && pos2.getY() >= generationBlock.min_height && pos2.getY() <= generationBlock.max_height) {
+												addBlock(pos2, false);
+											}
+										}
+									}
 								}
 							}
 						}
@@ -731,7 +867,6 @@ public class XrayBruteforce extends Module {
 		clickerThread.start();
 
 		exposedthread = new Thread(() -> {
-			addRandomBlock();
 			while (scan)
 			{
 				addExposedBlocks();

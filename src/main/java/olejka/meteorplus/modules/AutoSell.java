@@ -85,10 +85,12 @@ public class AutoSell extends Module {
 						ItemStack item = mc.player.getInventory().getStack(SlotUtils.HOTBAR_END);
 						int cc = Integer.parseInt(cost.get()) * item.getCount();
 						mc.player.sendChatMessage(command.get().replace("{cost}", Integer.toString(cc)));
+						info("Selling " + item.getName().getString() + " x" + item.getCount() + " for " + cc);
 						tick++;
 					}
 					else if (tick == 2) {
 						mc.player.getInventory().selectedSlot = slot;
+						mc.player.getInventory().updateItems();
 						tick = 0;
 						millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + delay.get();
 					}
