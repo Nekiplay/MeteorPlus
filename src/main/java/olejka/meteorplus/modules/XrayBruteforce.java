@@ -510,6 +510,7 @@ public class XrayBruteforce extends Module {
 							if (pos.sBlock.group != null) {
 								pos.sBlock.group.render(event);
 							}
+							renderBlocks++;
 						}
 					}
 				}
