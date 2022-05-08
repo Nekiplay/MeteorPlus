@@ -22,10 +22,34 @@ public class AutoAccept extends Module {
 
 	private final SettingGroup AASettings = settings.createGroup("Auto Accept Settings");
 
+	private final Setting<Mode> mode = AASettings.add(new EnumSetting.Builder<Mode>()
+		.name("Mode")
+		.description("Accept mode.")
+		.defaultValue(Mode.Auto)
+		.build()
+	);
+
+	private final Setting<String> custom_pattern = AASettings.add(new StringSetting.Builder()
+		.name("Pattern command")
+		.description("Custom pattern.")
+		.defaultValue(".*Игрок (.*) просит телепортироваться к вам!.*")
+		.visible(() ->  mode.get() == Mode.Custom)
+		.build()
+	);
+
+	private final Setting<Integer> custom_group = AASettings.add(new IntSetting.Builder()
+		.name("Pattern command")
+		.description("Custom pattern.")
+		.defaultValue(1)
+		.visible(() -> mode.get() == Mode.Custom)
+		.build()
+	);
+
 	private final Setting<String> accept_command = AASettings.add(new StringSetting.Builder()
 		.name("Accept command")
 		.description("Accept command.")
 		.defaultValue("/cmi tpaccept {username} tpa")
+		.visible(() -> mode.get() == Mode.Custom)
 		.build()
 	);
 
@@ -35,14 +59,19 @@ public class AutoAccept extends Module {
 		.defaultValue(true)
 		.build()
 	);
+	public enum Mode
+	{
+		Auto,
+		Custom
+	}
 
 	private ArrayList<TPPattern> patters = new ArrayList<>();
 
 	@Override
 	public void onActivate() {
 		patters.clear();
-		TPPattern MST_Network = new TPPattern(".*Игрок (.*) просит телепортироваться к вам!.*", 1);
-		TPPattern HolyWorld = new TPPattern("(.*) просит телепортироваться.*", 1);
+		TPPattern MST_Network = new TPPattern(".*Игрок (.*) просит телепортироваться к вам!.*", 1, "/cmi tpaccept {username} tpa");
+		TPPattern HolyWorld = new TPPattern("(.*) просит телепортироваться.*", 1, "/tpaccept");
 		patters.add(MST_Network);
 		patters.add(HolyWorld);
 	}
@@ -51,25 +80,68 @@ public class AutoAccept extends Module {
 		patters.clear();
 	}
 
+	private void BetterAccept(String username, TPPattern pattern) {
+		if (FriendsOnly.get() && isFriend(username)) {
+			info("Accepting request from " + "§c" + username);
+			mc.player.sendChatMessage(pattern.command.replace("{username}", username));
+		} else if (!FriendsOnly.get()) {
+			info("Accepting request from " + "§c" + username);
+			mc.player.sendChatMessage(pattern.command.replace("{username}", username));
+		}
+	}
+
+	private void Accept(String username, TPPattern pattern, String message) {
+		if (mode.get() == Mode.Custom) {
+			TPPattern pattern1 = new TPPattern(custom_pattern.get(), custom_group.get(), accept_command.get());
+			username = getName(pattern, message);
+			if (FriendsOnly.get() && isFriend(username)) {
+				info("Accepting request from " + "§c" + username);
+				mc.player.sendChatMessage(accept_command.get().replace("{username}", username));
+			} else if (!FriendsOnly.get()) {
+				info("Accepting request from " + "§c" + username);
+				mc.player.sendChatMessage(accept_command.get().replace("{username}", username));
+			}
+		}
+		else {
+			BetterAccept(username, pattern);
+		}
+	}
+
 	@EventHandler()
 	public void onMessageRecieve(ReceiveMessageEvent event) {
-		if (event.getMessage() != null && mc.player != null){
+		if (event.getMessage() != null && mc.player != null) {
 			String message = ColorRemover.GetVerbatim(event.getMessage().getString());
 			String nickname = getName(message);
-			if (!nickname.equals("")) {
-
-				if (FriendsOnly.get() && isFriend(nickname)) {
-					info("Accepting request from " + "§c" + nickname);
-					mc.player.sendChatMessage(accept_command.get().replace("{username}", nickname));
-				} else if (!FriendsOnly.get()) {
-					info("Accepting request from " + "§c" + nickname);
-					mc.player.sendChatMessage(accept_command.get().replace("{username}", nickname));
-				}
-			}
+			TPPattern pattern = getPattern(message);
+			Accept(nickname, pattern, message);
 		}
 	}
 
 	private String getName(String message)
+	{
+		String nickname = "";
+		for (TPPattern tpPattern : patters) {
+			String nn = getName(tpPattern, message);
+			if (!nn.equals("")) { nickname = nn;}
+		}
+		return nickname;
+	}
+
+	private String getName(TPPattern tpPattern, String message)
+	{
+		String nickname = "";
+		Pattern pattern = Pattern.compile(tpPattern.pattern);
+		Matcher matcher = pattern.matcher(message);
+		if (matcher.find()) {
+			String player = matcher.group(tpPattern.group);
+			if (!player.equals("")) {
+				nickname = player;
+			}
+		}
+		return nickname;
+	}
+
+	private TPPattern getPattern(String message)
 	{
 		String nickname = "";
 		for (TPPattern tpPattern : patters) {
@@ -78,11 +150,11 @@ public class AutoAccept extends Module {
 			if (matcher.find()) {
 				String player = matcher.group(tpPattern.group);
 				if (!player.equals("")) {
-					nickname = player;
+					return tpPattern;
 				}
 			}
 		}
-		return nickname;
+		return null;
 	}
 
 	private boolean isFriend(String username)
@@ -94,11 +166,13 @@ public class AutoAccept extends Module {
 	{
 		public String pattern = "";
 		public int group = 1;
+		public String command;
 
-		public TPPattern(String pattern, int group)
+		public TPPattern(String pattern, int group, String command)
 		{
 			this.pattern = pattern;
 			this.group = group;
+			this.command = command;
 		}
 	}
 }

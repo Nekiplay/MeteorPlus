@@ -10,6 +10,7 @@ import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
+import meteordevelopment.meteorclient.utils.world.TickRate;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
@@ -38,6 +39,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
+import olejka.meteorplus.utils.GenerationBlock;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -112,6 +114,13 @@ public class XrayBruteforce extends Module {
 		.build()
 	);
 
+	private final Setting<GenerationType> generationType = sgGeneral.add(new EnumSetting.Builder<GenerationType>()
+		.name("Generation-type")
+		.description("Ores generation type.")
+		.defaultValue(GenerationType.Old)
+		.build()
+	);
+
     public enum PacketMode
     {
 		None,
@@ -133,6 +142,13 @@ public class XrayBruteforce extends Module {
         .defaultValue(false)
         .build()
     );
+
+	public final Setting<Boolean> tps_sync = sgGeneral.add(new BoolSetting.Builder()
+		.name("TPS-sync")
+		.description("TPS sync scaning.")
+		.defaultValue(true)
+		.build()
+	);
 
     public final Setting<Boolean> fps_sync = sgGeneral.add(new BoolSetting.Builder()
         .name("FPS-sync")
@@ -243,6 +259,15 @@ public class XrayBruteforce extends Module {
 		.build()
 	);
 
+	private final Setting<Integer> clusterRange = sgGeneral.add(new IntSetting.Builder()
+		.name("Cluster range")
+		.description("Cluster range.")
+		.defaultValue(2)
+		.min(1)
+		.sliderRange(1, 2)
+		.build()
+	);
+
 	private boolean isPressed() {
 		return (pausekeybind.get().isPressed() && pauseBind.get());
 	}
@@ -315,10 +340,14 @@ public class XrayBruteforce extends Module {
         }
     }
 
+	public enum GenerationType {
+		Old,
+		New,
+	}
+
 	public ArrayList<BlockScanned> need_rescan = new ArrayList<BlockScanned>();
 
-	public class BlockScanned
-	{
+	public class BlockScanned {
 		public BlockPos pos;
 		public long rescanTime;
 	}
@@ -334,8 +363,7 @@ public class XrayBruteforce extends Module {
 
     @EventHandler
     public void blockUpdateEvent(BlockUpdateEvent event) {
-		if (event.oldState.getMaterial() != Material.AIR)
-		{
+		if (event.oldState.getMaterial() != Material.AIR) {
 			if (!scanned.contains(event.pos)) {
 				scanned.add(event.pos);
 			}
@@ -454,7 +482,7 @@ public class XrayBruteforce extends Module {
 							if (isExposedOre(pos)) {
 								addRenderBlock(pos);
 								addBlock(pos, false);
-								List<BlockPos> post = getBlocks(pos, 2, 2);
+								List<BlockPos> post = getBlocks(pos, clusterRange.get(), clusterRange.get());
 								for (BlockPos pos2 : post) {
 									addBlock(pos2, false);
 								}
@@ -565,15 +593,27 @@ public class XrayBruteforce extends Module {
     long millis = 0;
     private void checker()
     {
+		float timeSinceLastTick = TickRate.INSTANCE.getTimeSinceLastTick();
         if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= millis && !pause_toggle)
         {
             if (blocks != null && blocks.size() > 0) {
-                work();
+				if (tps_sync.get() && timeSinceLastTick <= 1f) {
+					work();
+				}
+				else if (!tps_sync.get()) {
+					work();
+				}
             }
             else
             {
-                addRandomBlock();
-                work();
+				if (tps_sync.get() && timeSinceLastTick <= 1f) {
+					addRandomBlock();
+					work();
+				}
+				else if (!tps_sync.get()) {
+					addRandomBlock();
+					work();
+				}
             }
         }
     }
@@ -615,95 +655,42 @@ public class XrayBruteforce extends Module {
         if (auto_height.get())
         {
 			List<Block> findBlocks = whblocks.get();
-			if (findBlocks.contains(Blocks.ANCIENT_DEBRIS)) {
-				y = Utils.random(8, 22);
-				if (!scanned.contains(new BlockPos(x, y, z))) {
-					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Nether) {
+			boolean newGeneration = generationType.get() == GenerationType.New;
+			for (Block block : findBlocks) {
+				GenerationBlock b = GenerationBlock.getGenerationBlock(block, newGeneration);
+				if (b != null) {
+					y = Utils.random(b.min_height, b.max_height);
+					if (auto_dimension.get() && PlayerUtils.getDimension() == b.dimension) {
 						addBlock(new BlockPos(x, y, z), false);
 					}
 					else if (!auto_dimension.get()) {
 						addBlock(new BlockPos(x, y, z), false);
 					}
 				}
+				else {
+					y = Utils.random(mc.player.getBlockPos().getY() -y_range.get(), mc.player.getBlockPos().getY() + y_range.get());
+					if (!scanned.contains(new BlockPos(x, y, z))) {
+						if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
+							addBlock(new BlockPos(x, y, z), false);
+						}
+						else if (!auto_dimension.get()) {
+							addBlock(new BlockPos(x, y, z), false);
+						}
+					}
+				}
 			}
-            if (findBlocks.contains(Blocks.DIAMOND_ORE) || findBlocks.contains(Blocks.DEEPSLATE_DIAMOND_ORE)) {
-                y = Utils.random(1, 15);
-                if (!scanned.contains(new BlockPos(x, y, z))) {
-					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-					else if (!auto_dimension.get()) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-                }
-            }
-            if (findBlocks.contains(Blocks.REDSTONE_ORE) || findBlocks.contains(Blocks.DEEPSLATE_REDSTONE_ORE)) {
-                y = Utils.random(1, 15);
-                if (!scanned.contains(new BlockPos(x, y, z))) {
-					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-					else if (!auto_dimension.get()) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-                }
-            }
-            if (findBlocks.contains(Blocks.LAPIS_ORE) || findBlocks.contains(Blocks.DEEPSLATE_LAPIS_ORE)) {
-                y = Utils.random(1, 31);
-                if (!scanned.contains(new BlockPos(x, y, z))) {
-					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-					else if (!auto_dimension.get()) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-                }
-            }
-            if (findBlocks.contains(Blocks.GOLD_ORE) || findBlocks.contains(Blocks.DEEPSLATE_GOLD_ORE)) {
-                y = Utils.random(1, 32);
-                if (!scanned.contains(new BlockPos(x, y, z))) {
-					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-					else if (!auto_dimension.get()) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-                }
-            }
-            if (findBlocks.contains(Blocks.IRON_ORE) || findBlocks.contains(Blocks.DEEPSLATE_IRON_ORE)) {
-                y = Utils.random(1, 63);
-                if (!scanned.contains(new BlockPos(x, y, z))) {
-					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-					else if (!auto_dimension.get()) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-                }
-            }
-            if (findBlocks.contains(Blocks.COAL_ORE) || findBlocks.contains(Blocks.DEEPSLATE_COAL_ORE)) {
-                y = Utils.random(1, 114);
-                if (!scanned.contains(new BlockPos(x, y, z))) {
-					if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-					else if (!auto_dimension.get()) {
-						addBlock(new BlockPos(x, y, z), false);
-					}
-                }
-            }
         }
-        else {
-            y = Utils.random(mc.player.getBlockPos().getY() -y_range.get(), mc.player.getBlockPos().getY() + y_range.get());
-            if (!scanned.contains(new BlockPos(x, y, z))) {
+		else {
+			y = Utils.random(mc.player.getBlockPos().getY() -y_range.get(), mc.player.getBlockPos().getY() + y_range.get());
+			if (!scanned.contains(new BlockPos(x, y, z))) {
 				if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
 					addBlock(new BlockPos(x, y, z), false);
 				}
 				else if (!auto_dimension.get()) {
 					addBlock(new BlockPos(x, y, z), false);
 				}
-            }
-        }
+			}
+		}
     }
     private Thread clickerThread;
 	private void reScaner()
@@ -719,7 +706,7 @@ public class XrayBruteforce extends Module {
 					BlockState state = mc.world.getBlockState(blockscanned.pos);
 					if (whblocks.get().contains(state.getBlock())) {
 						addRenderBlock(blockscanned.pos);
-						for (BlockPos pos : getBlocks(blockscanned.pos, 2, 2)) {
+						for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
 							addBlock(pos, true);
 						}
 					}
