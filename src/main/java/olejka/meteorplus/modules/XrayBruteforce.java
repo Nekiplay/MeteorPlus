@@ -53,6 +53,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_ALT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
 
 public class XrayBruteforce extends Module {
     public XrayBruteforce() {
@@ -126,7 +127,7 @@ public class XrayBruteforce extends Module {
 	private final Setting<PacketMode> packet_two = sgGeneral.add(new EnumSetting.Builder<PacketMode>()
 		.name("packet-#2")
 		.description("Two packet.")
-		.defaultValue(PacketMode.Stop)
+		.defaultValue(PacketMode.Abort)
 		.build()
 	);
 
@@ -189,8 +190,8 @@ public class XrayBruteforce extends Module {
 	);
 
 	public final Setting<Boolean> expanded = sgSVisual.add(new BoolSetting.Builder()
-		.name("Expanded")
-		.description("Scan expanded blocks.")
+		.name("exposed")
+		.description("Scan exposed blocks.")
 		.defaultValue(true)
 		.build()
 	);
@@ -198,7 +199,7 @@ public class XrayBruteforce extends Module {
 	private final Setting<ScanPriority> scanPriority = sgSVisual.add(new EnumSetting.Builder<ScanPriority>()
 		.name("Scan priority")
 		.description("Ores generation type.")
-		.defaultValue(ScanPriority.Caves)
+		.defaultValue(ScanPriority.Normal)
 		.build()
 	);
 
@@ -243,7 +244,7 @@ public class XrayBruteforce extends Module {
     private final Setting<Integer> delaymin = sgGeneral.add(new IntSetting.Builder()
         .name("Scan delay min")
         .description("Bruteforce delay min .")
-        .defaultValue(11)
+        .defaultValue(30)
         .min(0)
         .sliderRange(0, 150)
         .build()
@@ -252,7 +253,7 @@ public class XrayBruteforce extends Module {
 	private final Setting<Integer> delaymax = sgGeneral.add(new IntSetting.Builder()
 		.name("Scan delay max")
 		.description("Bruteforce delay max .")
-		.defaultValue(11)
+		.defaultValue(35)
 		.min(0)
 		.sliderRange(0, 150)
 		.build()
@@ -268,7 +269,7 @@ public class XrayBruteforce extends Module {
 	private final Setting<Keybind> pausekeybind = sgGeneral.add(new KeybindSetting.Builder()
 		.name("pause-keybind")
 		.description("The bind for pause.")
-		.defaultValue(Keybind.fromKey(GLFW_KEY_LEFT_ALT))
+		.defaultValue(Keybind.fromKey(GLFW_KEY_X))
 		.visible(pauseBind::get)
 		.build()
 	);
@@ -488,15 +489,23 @@ public class XrayBruteforce extends Module {
 		return blockData == null ? defaultBlockConfig.get() : blockData;
 	}
 
+	private void updateRenderedOres() {
+		if (ores.size() > 0) {
+			for (RenderOre pos : ores.toArray(new RenderOre[0])) {
+				BlockState state = mc.world.getBlockState(pos.blockPos);
+				if (state.getBlock() == pos.block) {
+					pos.sBlock.update();
+				}
+			}
+		}
+	}
+
     private void renderOres(Render3DEvent event) {
 		int renderBlocks = 0;
 		if (ores.size() > 0) {
 			for (RenderOre pos : ores.toArray(new RenderOre[0])) {
 				BlockState state = mc.world.getBlockState(pos.blockPos);
 				setColors(pos);
-				if (state.getBlock() == pos.block) {
-					pos.sBlock.update();
-				}
 				if (!new_render.get()) {
 					if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
 						renderOreBlock(event, pos);
@@ -507,9 +516,6 @@ public class XrayBruteforce extends Module {
 					if (pos.sBlock != null) {
 						if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
 							pos.sBlock.render(event, pos);
-							if (pos.sBlock.group != null) {
-								pos.sBlock.group.render(event);
-							}
 							renderBlocks++;
 						}
 					}
@@ -631,6 +637,11 @@ public class XrayBruteforce extends Module {
 						}
 					}
 				}
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+
+				}
 			}
 		}
 	}
@@ -669,7 +680,7 @@ public class XrayBruteforce extends Module {
     @Override
     public String getInfoString() {
 		if (pause_toggle) {
-			return "paused";
+			return "paused | " + Integer.toString(renderedBlocks);
 		}
         else {
 			return Integer.toString(renderedBlocks);
@@ -876,8 +887,9 @@ public class XrayBruteforce extends Module {
 			while (scan)
 			{
 				addExposedBlocks();
+				updateRenderedOres();
 				try {
-					Thread.sleep(1500);
+					Thread.sleep(250);
 				} catch (InterruptedException e) {
 
 				}
@@ -891,13 +903,13 @@ public class XrayBruteforce extends Module {
 		scan = false;
         blocks.clear();
         currentScanBlock = null;
-        if (clickerThread != null && clickerThread.isAlive())
+        if (clickerThread != null)
         {
-            clickerThread.stop();
+            clickerThread = null;
         }
-		if (exposedthread != null && exposedthread.isAlive())
+		if (exposedthread != null)
 		{
-			exposedthread.stop();
+			exposedthread = null;
 		}
     }
 
