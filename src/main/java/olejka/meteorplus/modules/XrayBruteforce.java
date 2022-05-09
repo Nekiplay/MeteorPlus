@@ -918,7 +918,10 @@ public class XrayBruteforce extends Module {
         if (auto_height.get())
         {
 			List<Block> findBlocks = whblocks.get();
-			boolean newGeneration = generationType.get() == GenerationType.New;
+			boolean newGeneration = false;
+			if (generationType.get() == GenerationType.New) {
+				newGeneration = true;
+			}
 			for (Block block : findBlocks) {
 				GenerationBlock b = GenerationBlock.getGenerationBlock(block, newGeneration);
 				if (b != null) {
@@ -933,12 +936,7 @@ public class XrayBruteforce extends Module {
 				else {
 					y = Utils.random(mc.player.getBlockPos().getY() -y_range.get(), mc.player.getBlockPos().getY() + y_range.get());
 					if (!scanned.contains(new BlockPos(x, y, z))) {
-						if (auto_dimension.get() && PlayerUtils.getDimension() == Dimension.Overworld) {
-							addBlock(new BlockPos(x, y, z), false);
-						}
-						else if (!auto_dimension.get()) {
-							addBlock(new BlockPos(x, y, z), false);
-						}
+						addBlock(new BlockPos(x, y, z), false);
 					}
 				}
 			}
