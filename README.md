@@ -24,4 +24,6 @@
 - X-Ray bruteforce
 
 ### ToDo:
-- Friend chat & locator
+- Friend chat & hud (Backend needed)
+- Clans system (Backend needed)
+- Meteor Cloud configs (Backend needed?)
