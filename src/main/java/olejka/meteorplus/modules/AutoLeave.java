@@ -50,13 +50,6 @@ public class AutoLeave extends Module {
 		.build()
 	);
 
-	private final Setting<Boolean> sneak = ALSettings.add(new BoolSetting.Builder()
-		.name("Sneak")
-		.description("Enable sneak in command mode.")
-		.defaultValue(false)
-		.build()
-	);
-
 	@EventHandler
 	public void onEntityAdded(EntityAddedEvent event) {
 		if (mc.player == null) return;
@@ -75,10 +68,5 @@ public class AutoLeave extends Module {
 				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText (String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
 				if (AutoDisable.get()) this.toggle();
 		}
-	}
-
-	private void sneak(boolean sneak) {
-		ClientPlayerEntity player = mc.player;
-		PlayerInputC2SPacket inputC2SPacket = new PlayerInputC2SPacket(player.sidewaysSpeed, player.forwardSpeed, false, true);
 	}
 }
