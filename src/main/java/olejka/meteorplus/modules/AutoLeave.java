@@ -6,7 +6,9 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
 import net.minecraft.network.packet.s2c.play.DisconnectS2CPacket;
 import net.minecraft.text.LiteralText;
 import olejka.meteorplus.MeteorPlus;
@@ -35,7 +37,7 @@ public class AutoLeave extends Module {
 
 	private final Setting<Boolean> Command = ALSettings.add(new BoolSetting.Builder()
 		.name("command")
-		.description("Send command instead of laave.")
+		.description("Send command instead of leave.")
 		.defaultValue(false)
 		.build()
 	);
@@ -45,6 +47,13 @@ public class AutoLeave extends Module {
 		.description("Send command in chat.")
 		.defaultValue("/spawn")
 		.visible(Command::get)
+		.build()
+	);
+
+	private final Setting<Boolean> sneak = ALSettings.add(new BoolSetting.Builder()
+		.name("Sneak")
+		.description("Enable sneak in command mode.")
+		.defaultValue(false)
 		.build()
 	);
 
@@ -66,5 +75,10 @@ public class AutoLeave extends Module {
 				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText (String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
 				if (AutoDisable.get()) this.toggle();
 		}
+	}
+
+	private void sneak(boolean sneak) {
+		ClientPlayerEntity player = mc.player;
+		PlayerInputC2SPacket inputC2SPacket = new PlayerInputC2SPacket(player.sidewaysSpeed, player.forwardSpeed, false, true);
 	}
 }

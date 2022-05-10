@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
+import meteordevelopment.meteorclient.events.world.ChunkDataEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlock;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
@@ -70,98 +71,126 @@ public class XrayBruteforce extends Module {
 	private final SettingGroup sgSRenderer = settings.createGroup("Scanned Renderer");
 	private final SettingGroup sgSaver = settings.createGroup("Scanned Saver");
 
+	public final Setting<Boolean> autoSave = sgSaver.add(new BoolSetting.Builder()
+		.name("Auto save")
+		.description("Save rendered ores.")
+		.defaultValue(true)
+		.build()
+	);
+
 	public final Setting<Boolean> save = sgSaver.add(new BoolSetting.Builder()
 		.name("Save")
 		.description("Save rendered ores.")
 		.defaultValue(false)
 		.onChanged((c) -> {
-			Thread save = new Thread(() ->
+			Thread saveth = new Thread(() ->
 			{
-				File dir = new File(MeteorClient.FOLDER, "xray-bruteforce");
-				if (!dir.exists()) {
-					dir.mkdir();
-				}
-				File dir2 = new File(dir, Utils.getWorldName());
-				if (!dir2.exists()) {
-					dir2.mkdir();
-				}
 				for (RenderOre ore : ores.toArray(new RenderOre[0])) {
-					Gson gson = new Gson();
-					Map<String, Integer> map = new LinkedHashMap<>();
-					map.put("X", ore.blockPos.getX());
-					map.put("Y", ore.blockPos.getY());
-					map.put("Z", ore.blockPos.getZ());
-					String json = gson.toJson(map);
-
-					File file = new File(dir2.getPath(), "x={" + ore.blockPos.getX() + "}, y={" + ore.blockPos.getY() + "}, {z={" + ore.blockPos.getZ() + "}");
-					if (!file.exists()) {
-						try {
-							file.createNewFile();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-					FileWriter fileWriter = null;
-					try {
-						fileWriter = new FileWriter(file);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					PrintWriter printWriter = new PrintWriter(fileWriter);
-					printWriter.print(json);
-					printWriter.close();
+					saveRenderOre(ore);
 				}
-				info("Saving compile");
+				info("Saving complite");
 			});
-			save.start();
+			saveth.start();
 
 		})
 		.build()
 	);
 
-	public final Setting<Boolean> load = sgSaver.add(new BoolSetting.Builder()
+    public final Setting<Boolean> autoLoad = sgSaver.add(new BoolSetting.Builder()
+            .name("Auto-Load")
+            .description("Load rendered ores.")
+            .defaultValue(true)
+            .build()
+    );
+
+    public final Setting<Boolean> load = sgSaver.add(new BoolSetting.Builder()
 		.name("Load")
 		.description("Load rendered ores.")
 		.defaultValue(false)
 		.onChanged((c) -> {
-			Thread load = new Thread(() ->
-			{
-				File dir = new File(MeteorClient.FOLDER, "xray-bruteforce");
-				if (dir.exists()) {
-					File dir2 = new File(dir, Utils.getWorldName());
-					if (dir2.exists()) {
-						File[] arrFiles = dir2.listFiles();
-						List<File> lst = Arrays.asList(arrFiles);
-						for (File file : lst) {
-							FileReader fr = null;
-							try {
-								fr = new FileReader(file);
-								BufferedReader reader = new BufferedReader(fr);
-								try {
-									String json = reader.readLine();
-									Gson gson = new Gson();
-									Type type = new TypeToken<Map<String, Integer>>(){}.getType();
-									Map<String, Integer> read = gson.fromJson(json, type);
-									BlockPos pos = new BlockPos(read.get("X"), read.get("Y"), read.get("Z"));
-									addNeedRescan(pos, 1250);
-									addBlock(pos, true);
-
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				}
-				info("Load compile");
-			});
-			load.start();
-
+			loadSaveOres();
+			info("Loaded");
 		})
 		.build()
 	);
+
+	private class SaveOreClass {
+		public BlockPos pos;
+		public Block block;
+	}
+
+	private void loadSaveOres() {
+		Thread loadth = new Thread(() ->
+		{
+			File dir = new File(MeteorClient.FOLDER, "xray-bruteforce");
+			if (dir.exists()) {
+				File dir2 = new File(dir, Utils.getWorldName());
+				if (dir2.exists()) {
+					File[] arrFiles = dir2.listFiles();
+					List<File> lst = Arrays.asList(arrFiles);
+					for (File file : lst) {
+						FileReader fr = null;
+						try {
+							fr = new FileReader(file);
+							BufferedReader reader = new BufferedReader(fr);
+							try {
+								String json = reader.readLine();
+								Gson gson = new Gson();
+								Type type = new TypeToken<Map<String, Integer>>(){}.getType();
+								Map<String, Integer> read = gson.fromJson(json, type);
+								BlockPos pos = new BlockPos(read.get("X"), read.get("Y"), read.get("Z"));
+                                if (EntityUtils.isInRenderDistance(pos)) {
+                                    addNeedRescan(pos, 1250);
+                                    addBlock(pos, true);
+                                }
+
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		});
+		loadth.start();
+	}
+
+	private void saveRenderOre(RenderOre ore) {
+		File dir = new File(MeteorClient.FOLDER, "xray-bruteforce");
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+		File dir2 = new File(dir, Utils.getWorldName());
+		if (!dir2.exists()) {
+			dir2.mkdir();
+		}
+		Gson gson = new Gson();
+		Map<String, Integer> map = new LinkedHashMap<>();
+		map.put("X", ore.blockPos.getX());
+		map.put("Y", ore.blockPos.getY());
+		map.put("Z", ore.blockPos.getZ());
+		String json = gson.toJson(map);
+
+		File file = new File(dir2.getPath(), "x={" + ore.blockPos.getX() + "}, y={" + ore.blockPos.getY() + "}, {z={" + ore.blockPos.getZ() + "}");
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		FileWriter fileWriter = null;
+		try {
+			fileWriter = new FileWriter(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		PrintWriter printWriter = new PrintWriter(fileWriter);
+		printWriter.print(json);
+		printWriter.close();
+	}
 
 	public final Setting<Boolean> new_render = sgSRenderer.add(new BoolSetting.Builder()
 		.name("New Render")
@@ -485,7 +514,7 @@ public class XrayBruteforce extends Module {
 		return chunk == null ? null : chunk.get(x, y, z);
 	}
 
-	private void setColors(RenderOre ore)
+	private boolean setColors(RenderOre ore)
 	{
 		if (ore != null && ore.block != null && ore.linecolor == null && ore.sidecolor == null && ore.tracercolor == null && ore.shapeMode == null && ore.sBlock == null) {
 			assert mc.world != null;
@@ -502,7 +531,9 @@ public class XrayBruteforce extends Module {
 			ore.sidecolor = blockdata.sideColor;
 			ore.tracercolor = blockdata.tracerColor;
 			ore.shapeMode = blockdata.shapeMode;
+			return true;
 		}
+		return false;
 	}
 
     private static final List<RenderOre> ores = new ArrayList<>();
@@ -613,7 +644,18 @@ public class XrayBruteforce extends Module {
 		int renderBlocks = 0;
 		if (ores.size() > 0) {
 			for (RenderOre pos : ores.toArray(new RenderOre[0])) {
-				setColors(pos);
+				if (setColors(pos))
+				{
+					if (autoSave.get()) {
+						Thread saveth = new Thread(() ->
+						{
+							for (RenderOre ore : ores.toArray(new RenderOre[0])) {
+								saveRenderOre(ore);
+							}
+						});
+						saveth.start();
+					}
+				}
 				if (!new_render.get()) {
 					if (EntityUtils.isInRenderDistance(pos.blockPos) && pos.block != null && whblocks.get().contains(pos.block)) {
 						renderOreBlock(event, pos);
@@ -924,7 +966,7 @@ public class XrayBruteforce extends Module {
 			}
 			for (Block block : findBlocks) {
 				GenerationBlock b = GenerationBlock.getGenerationBlock(block, newGeneration);
-				if (b != null) {
+				if (b != null && b.block == block) {
 					y = Utils.random(b.min_height, b.max_height);
 					if (auto_dimension.get() && PlayerUtils.getDimension() == b.dimension) {
 						addBlock(new BlockPos(x, y, z), false);
@@ -933,7 +975,7 @@ public class XrayBruteforce extends Module {
 						addBlock(new BlockPos(x, y, z), false);
 					}
 				}
-				else {
+				else if (b == null) {
 					y = Utils.random(mc.player.getBlockPos().getY() -y_range.get(), mc.player.getBlockPos().getY() + y_range.get());
 					if (!scanned.contains(new BlockPos(x, y, z))) {
 						addBlock(new BlockPos(x, y, z), false);
@@ -964,17 +1006,17 @@ public class XrayBruteforce extends Module {
 					scanned.add(blockscanned.pos);
 				}
 				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime && mc.world != null) {
-					if (EntityUtils.isInRenderDistance(blockscanned.pos)) {
-						BlockState state = mc.world.getBlockState(blockscanned.pos);
-						if (whblocks.get().contains(state.getBlock())) {
-							addRenderBlock(blockscanned.pos);
-							for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
-								addBlock(pos, true);
-								addRenderBlock(blockscanned.pos);
-							}
-						}
-						iterator.remove();
-					}
+                    if (EntityUtils.isInRenderDistance(blockscanned.pos)) {
+                        BlockState state = mc.world.getBlockState(blockscanned.pos);
+                        if (whblocks.get().contains(state.getBlock())) {
+                            addRenderBlock(blockscanned.pos);
+                            for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
+                                addBlock(pos, true);
+                                addRenderBlock(blockscanned.pos);
+                            }
+                        }
+                    }
+					iterator.remove();
 				}
 			}
 		}
@@ -1000,7 +1042,7 @@ public class XrayBruteforce extends Module {
 				addExposedBlocks();
 				updateRenderedOres();
 				try {
-					Thread.sleep(250);
+					Thread.sleep(25);
 				} catch (InterruptedException e) {
 
 				}
