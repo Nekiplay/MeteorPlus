@@ -140,7 +140,6 @@ public class XrayBruteforce extends Module {
 								Map<String, Integer> read = gson.fromJson(json, type);
 								BlockPos pos = new BlockPos(read.get("X"), read.get("Y"), read.get("Z"));
                                 if (EntityUtils.isInRenderDistance(pos)) {
-                                    addNeedRescan(pos, 1250);
                                     addBlock(pos, true);
                                 }
 
@@ -540,7 +539,7 @@ public class XrayBruteforce extends Module {
     private RenderOre get(BlockPos pos) {
 		synchronized (ores) {
 			for (RenderOre cur : ores) {
-				if (cur.block != null && cur.blockPos.equals(pos)) {
+				if (cur.block != null && cur.blockPos != null && cur.blockPos.equals(pos)) {
 					return cur;
 				}
 			}
@@ -647,8 +646,7 @@ public class XrayBruteforce extends Module {
 				if (setColors(pos))
 				{
 					if (autoSave.get()) {
-						Thread saveth = new Thread(() ->
-						{
+						Thread saveth = new Thread(() -> {
 							for (RenderOre ore : ores.toArray(new RenderOre[0])) {
 								saveRenderOre(ore);
 							}
@@ -746,7 +744,6 @@ public class XrayBruteforce extends Module {
 									if (auto_dimension.get()) {
 										GenerationBlock generationBlock = GenerationBlock.getGenerationBlock(mc.world.getBlockState(pos).getBlock(), false);
 										if (generationBlock != null && generationBlock.dimension == PlayerUtils.getDimension()) {
-											addRenderBlock(pos);
 											addBlock(pos, false);
 											List<BlockPos> post = getBlocks(pos, clusterRange.get(), clusterRange.get());
 											for (BlockPos pos2 : post) {
@@ -754,7 +751,6 @@ public class XrayBruteforce extends Module {
 											}
 										}
 									} else {
-										addRenderBlock(pos);
 										addBlock(pos, false);
 										List<BlockPos> post = getBlocks(pos, clusterRange.get(), clusterRange.get());
 										for (BlockPos pos2 : post) {
@@ -858,6 +854,10 @@ public class XrayBruteforce extends Module {
 			if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.LAVA || state.getBlock() == Blocks.WATER) {
 				sucess = false;
 			}
+		}
+
+		if (!EntityUtils.isInRenderDistance(blockpos)) {
+			sucess = false;
 		}
 
 		if (sucess) {
