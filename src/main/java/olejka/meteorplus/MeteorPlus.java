@@ -1,19 +1,16 @@
 package olejka.meteorplus;
-//import olejka.meteorplus.commands.*;
-import olejka.meteorplus.modules.*;
 
+import meteordevelopment.meteorclient.systems.Systems;
+import olejka.meteorplus.modules.*;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-//import meteordevelopment.meteorclient.systems.commands.Commands;
-
+import meteordevelopment.meteorclient.systems.hud.HUD;
 import net.minecraft.item.Items;
-
 import olejka.meteorplus.modules.AutoSell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.lang.invoke.MethodHandles;
 
 public class MeteorPlus extends MeteorAddon {
@@ -52,8 +49,9 @@ public class MeteorPlus extends MeteorAddon {
 		Modules.get().add(new SafeMine());
 		Modules.get().add(new Freeze());
 
-		//Commands
-		//Commands.get().add();
+		// Hud
+		HUD hud = Systems.get(HUD.class);
+		hud.elements.add(new MeteorPlusLogoHud(hud));
 	}
 
 	@Override

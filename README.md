@@ -9,12 +9,21 @@
 
 # Features
 ### Modules:
-- X-Ray bruteforce
-- Safe Mine
-- Auto leave
 - Auto accept
-- Auto repair
+- Auto craft plus (Autocraft + some additions)
+- Auto leave
 - Auto portal mine
-- Auto sell - exploit
+- Auto repair
+- Auto sell
+- Bedrock storage brutedforce
+- Boat aura
 - Freeze
-- ~~Friend chat & locator~~
+- Ghost block fixer
+- Jesus Plus (Matrix bupass)
+- Safe mine (Prevents player from lava)
+- X-Ray bruteforce
+
+### ToDo:
+- Friend chat & hud (Backend needed)
+- Clans system (Backend needed)
+- Meteor Cloud configs (Backend needed?)
