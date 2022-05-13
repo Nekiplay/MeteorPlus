@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import meteordevelopment.meteorclient.MeteorClient;
+import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.world.ChunkDataEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -539,7 +540,7 @@ public class XrayBruteforce extends Module {
     private RenderOre get(BlockPos pos) {
 		synchronized (ores) {
 			for (RenderOre cur : ores) {
-				if (cur.block != null && cur.blockPos != null && cur.blockPos.equals(pos)) {
+				if (cur != null && cur.block != null && cur.blockPos != null && cur.blockPos.equals(pos)) {
 					return cur;
 				}
 			}
@@ -584,18 +585,23 @@ public class XrayBruteforce extends Module {
     @EventHandler
     public void blockUpdateEvent(BlockUpdateEvent event) {
 		if (event.oldState.getMaterial() != Material.AIR) {
-			if (!scanned.contains(event.pos)) {
-				scanned.add(event.pos);
-			}
-			BlockState state = mc.world.getBlockState(event.pos);
-			if (whblocks.get().contains(state.getBlock())) {
-				addNeedRescan(event.pos, 1250);
+			if (scanned.contains(event.pos)) {
+				BlockState state = mc.world.getBlockState(event.pos);
+				if (whblocks.get().contains(state.getBlock()) && !pause_toggle) {
+					addBlock(event.pos, false);
+					List<BlockPos> post = getBlocks(event.pos, cavesRange.get(), cavesRangeY.get());
+					for (BlockPos pos2 : post) {
+						addBlock(pos2, false);
+					}
+				}
 			}
 		}
 		if (event.newState.getBlock() == Blocks.AIR) {
 			RenderOre render = get(event.pos);
 			if (render != null) {
-				ores.remove(render);
+				synchronized (ores) {
+					ores.remove(render);
+				}
 			}
 		}
     }
@@ -606,7 +612,9 @@ public class XrayBruteforce extends Module {
             RenderOre ore = get(event.blockPos);
             if (ore != null) {
                 ore.block = Blocks.AIR;
-                ores.remove(ore);
+				synchronized (ores) {
+					ores.remove(ore);
+				}
             }
         }).start();
     }
@@ -870,12 +878,14 @@ public class XrayBruteforce extends Module {
 			if (packet_tw != null) {
 				conn.sendPacket(packet_tw);
 			}
-			addNeedRescan(blockpos, 2500);
+			addNeedRescan(blockpos, 3500);
 		}
 		else {
 			currentScanBlock = null;
 		}
-		scanned.add(blockpos);
+		if (!scanned.contains(blockpos)) {
+			scanned.add(blockpos);
+		}
         return sucess;
     }
 
@@ -996,27 +1006,34 @@ public class XrayBruteforce extends Module {
 		}
     }
     private Thread clickerThread;
+
+	@EventHandler
+	private void onGameLeft(GameLeftEvent event) {
+		need_rescan.clear();
+	}
+
 	private void reScaner()
 	{
 		synchronized (need_rescan) {
+			float timeSinceLastTick = TickRate.INSTANCE.getTimeSinceLastTick();
 			Iterator<BlockScanned> iterator = need_rescan.iterator();
 			while (iterator.hasNext()) {
 				BlockScanned blockscanned = iterator.next();
 				if (!scanned.contains(blockscanned.pos)) {
 					scanned.add(blockscanned.pos);
 				}
-				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime && mc.world != null) {
-                    if (EntityUtils.isInRenderDistance(blockscanned.pos)) {
-                        BlockState state = mc.world.getBlockState(blockscanned.pos);
-                        if (whblocks.get().contains(state.getBlock())) {
-                            addRenderBlock(blockscanned.pos);
-                            for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
-                                addBlock(pos, true);
-                                addRenderBlock(blockscanned.pos);
-                            }
-                        }
-                    }
-					iterator.remove();
+				if (timeSinceLastTick <= 1f) {
+					if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime && mc.world != null) {
+						BlockState state = mc.world.getBlockState(blockscanned.pos);
+						if (whblocks.get().contains(state.getBlock())) {
+							addRenderBlock(blockscanned.pos);
+							for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
+								addBlock(pos, true);
+								addRenderBlock(blockscanned.pos);
+							}
+						}
+						iterator.remove();
+					}
 				}
 			}
 		}
