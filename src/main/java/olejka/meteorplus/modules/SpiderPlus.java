@@ -38,9 +38,8 @@ public class SpiderPlus extends Module {
 				if (YGround(y, 0.0, 0.1)) {
 					((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
 				}
-				if (start && YGround(y, 0.0, 2.54)) {
+				if (YGround(y, RGround(startY) - 0.1, RGround(startY) + 0.1)) {
 					((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
-					start = false;
 				}
 			}
 		}
@@ -76,6 +75,13 @@ public class SpiderPlus extends Module {
 		}
 	}
 
+	private double RGround(double height) {
+		String yString = String.valueOf(height);
+		yString = yString.substring(yString.indexOf("."));
+		double y = Double.parseDouble(yString);
+		return y;
+	}
+
 	private double coff = 0.0000000000326;
 
 	@EventHandler
@@ -86,9 +92,9 @@ public class SpiderPlus extends Module {
 		ClientPlayNetworkHandler h = mc.getNetworkHandler();
 		modify = player.horizontalCollision;
 		if (player.horizontalCollision) {
-			if (!start && mc.player.isOnGround() && !startOnGround) {
+			if (!start) {
 				start = true;
-				startOnGround = true;
+				startY = mc.player.getPos().y;
 			}
 			if (tick == 0) {
 				mc.player.setVelocity(pl_velocity.x, 0.41999998688698, pl_velocity.z);

@@ -29,7 +29,7 @@ import java.util.List;
 
 public class AutoPortalMine extends Module {
 	public AutoPortalMine() {
-		super(MeteorPlus.CATEGORY_AUTOMATION, "Auto-portal-mine", "Automatically mine obsidian.");
+		super(MeteorPlus.CATEGORY, "Auto-portal-mine", "Automatically mine obsidian.");
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
