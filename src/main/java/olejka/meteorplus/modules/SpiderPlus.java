@@ -21,38 +21,6 @@ public class SpiderPlus extends Module {
 	}
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
-	private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
-		.name("delay")
-		.description("delay.")
-		.defaultValue(2)
-		.build()
-	);
-	private final Setting<Boolean> jump = sgGeneral.add(new BoolSetting.Builder()
-		.name("jump")
-		.description("jump.")
-		.defaultValue(false)
-		.build()
-	);
-	private final Setting<Boolean> jumppacket = sgGeneral.add(new BoolSetting.Builder()
-		.name("packet-jump")
-		.description("packet-jump.")
-		.defaultValue(false)
-		.build()
-	);
-
-	private final Setting<Double> motion = sgGeneral.add(new DoubleSetting.Builder()
-		.name("motion")
-		.description("motion.")
-		.defaultValue(2)
-		.build()
-	);
-	private final Setting<Double> motionLinit = sgGeneral.add(new DoubleSetting.Builder()
-		.name("motion-limit")
-		.description("motion-limit.")
-		.defaultValue(2)
-		.build()
-	);
-
 	@EventHandler
 	private void onSendPacket(PacketEvent.Send event) {
 		work(event.packet);
