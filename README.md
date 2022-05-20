@@ -19,7 +19,8 @@
 - Boat aura
 - Freeze
 - Ghost block fixer
-- Jesus Plus (Matrix bupass)
+- Spider Plus (Matrix, Vulcan bypass)
+- Jesus Plus (Matrix bypass)
 - Safe mine (Prevents player from lava)
 - X-Ray bruteforce
 
