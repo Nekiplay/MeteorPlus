@@ -17,15 +17,8 @@ public class MeteorPlus extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
 	public static final Category CATEGORY = new Category("Meteor Plus", Items.EMERALD_BLOCK.getDefaultStack());
 
-	private static MeteorPlus _instance;
-	public static MeteorPlus getInstance() {
-		return _instance;
-	}
-
 	@Override
 	public void onInitialize() {
-		_instance = this;
-
 		LOG.info("Initializing MeteorPlus");
 
 		// Required when using @EventHandler
@@ -33,6 +26,8 @@ public class MeteorPlus extends MeteorAddon {
 
 
 		//Modules
+		Modules.get().add(new SpeedPlus());
+		Modules.get().add(new FlyPlus());
 		Modules.get().add(new SpiderPlus());
 		Modules.get().add(new BoatAura());
 		Modules.get().add(new BedrockStorageBruteforce());

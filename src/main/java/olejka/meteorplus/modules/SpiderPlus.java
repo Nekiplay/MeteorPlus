@@ -21,6 +21,19 @@ public class SpiderPlus extends Module {
 	}
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
+	private final Setting<Mode> mode = sgGeneral.add(new EnumSetting.Builder<Mode>()
+		.name("Mode")
+		.description("Spider mode.")
+		.defaultValue(Mode.Matrix)
+		.build()
+	);
+
+	public enum Mode
+	{
+		Matrix,
+		Vulcan,
+	}
+
 	@EventHandler
 	private void onSendPacket(PacketEvent.Send event) {
 		work(event.packet);
@@ -37,16 +50,34 @@ public class SpiderPlus extends Module {
 				y = move.getY(y);
 				if (YGround(y, 0.0, 0.1)) {
 					((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
+					jumps++;
 				}
 				if (YGround(y, RGround(startY) - 0.1, RGround(startY) + 0.1)) {
 					((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
+					jumps++;
+				}
+				if (mc.player.isOnGround() && block) {
+					block = false;
+					startY = mc.player.getPos().y;
+					start = false;
+				}
+			}
+		}
+		else {
+			if (packet instanceof PlayerMoveC2SPacket move) {
+				if (mc.player.isOnGround() && block) {
+					block = false;
+					start = false;
+				}
+				if (mc.player.isOnGround()) {
+					startY = mc.player.getPos().y;
 				}
 			}
 		}
 	}
 
 	private int tick = 0;
-	private int sended = 0;
+	private int jumps = 0;
 
 	@Override
 	public void onActivate() {
@@ -82,6 +113,7 @@ public class SpiderPlus extends Module {
 		return y;
 	}
 
+	private boolean block = false;
 	private double coff = 0.0000000000326;
 
 	@EventHandler
@@ -96,44 +128,30 @@ public class SpiderPlus extends Module {
 				start = true;
 				startY = mc.player.getPos().y;
 			}
-			if (tick == 0) {
-				mc.player.setVelocity(pl_velocity.x, 0.41999998688698, pl_velocity.z);
-				tick = 1;
+			if (!block) {
+				if (tick == 0) {
+					mc.player.setVelocity(pl_velocity.x, 0.41999998688698, pl_velocity.z);
+					tick = 1;
+					jumps++;
+				} else if (tick == 1) {
+					mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.08679999325 - coff, pl_velocity.z);
+					tick = 2;
+					jumps++;
+				} else if (tick == 2) {
+					mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.17186398826 - coff, pl_velocity.z);
+					tick = 0;
+					jumps++;
+				}
+				if (mc.player.getPos().y >= startY + 3.5 && mode.get() == Mode.Vulcan) {
+					block = true;
+				}
 			}
-			else if (tick == 1) {
-				mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.08679999325 - coff, pl_velocity.z);
-				tick = 2;
-			}
-			else if (tick == 2) {
-				mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.17186398826 - coff, pl_velocity.z);
-				tick = 0;
-			}
-
-			//if (mc.player.getPos().y <= startY + 0.41999998688698) {
-			//	mc.player.setVelocity(0, 0.41999998688698, 0);
-			//} else if (mc.player.getPos().y <= startY + 0.7531999805212) {
-			//	mc.player.setVelocity(0, 0.33319999363, 0);
-			//} else if (mc.player.getPos().y == startY + 1.00133597911214) {
-			//	mc.player.setVelocity(0, 0.00133597911214, 0);
-			//} else if (mc.player.getPos().y <= startY + 1.42133596599912) {
-			//	mc.player.setVelocity(0, 0.41999998688698, 0);
-			//}
-			//else if (mc.player.getPos().y <= startY + 1.75453595963334) {
-			//	mc.player.setVelocity(0, 0.33319999363, 0);
-			//}
-			//else if (mc.player.getPos().y <= startY + 2.00267195822428) {
-			//	mc.player.setVelocity(0, 0.0267195822428, 0);
-			//}
 
 		} else {
 			modify = false;
-			if (start) {
-				mc.player.setVelocity(pl_velocity.x, 0, pl_velocity.z);
-				mc.player.setOnGround(true);
-			}
+			jumps = 0;
 			startOnGround = false;
 			tick = 0;
-			start = false;
 		}
 	}
 }
