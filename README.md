@@ -10,12 +10,12 @@
 # Features
 ### Modules:
 - Auto accept
-- Auto craft plus (Autocraft + some additions)
+- Auto craft plus (Auto сrafting + some additions)
 - Auto leave
 - Auto portal mine
 - Auto repair
 - Auto sell
-- Bedrock storage brutedforce
+- Bedrock storage bruteforce
 - Boat aura
 - Freeze
 - Ghost block fixer
