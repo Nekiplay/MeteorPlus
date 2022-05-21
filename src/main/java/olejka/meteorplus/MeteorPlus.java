@@ -11,7 +11,6 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.hud.HUD;
 import net.minecraft.item.Items;
 import olejka.meteorplus.modules.AutoSell;
-import olejka.meteorplus.utils.UpdateChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
@@ -25,8 +24,6 @@ public class MeteorPlus extends MeteorAddon {
 	@Override
 	public void onInitialize() {
 		LOG.info("MeteorPlus initializing...");
-
-		UpdateChecker updateChecker = new UpdateChecker();
 
 		// Required when using @EventHandler
 		MeteorClient.EVENT_BUS.registerLambdaFactory("olejka.meteorplus", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
@@ -64,11 +61,6 @@ public class MeteorPlus extends MeteorAddon {
 		HUD hud = Systems.get(HUD.class);
 		hud.elements.add(new MeteorPlusLogoHud(hud));
 		LOG.info("MeteorPlus loaded hud");
-
-
-		if (updateChecker.check()) {
-			LOG.info("MeteorPlus new update found");
-		}
 
 		LOG.info("MeteorPlus loaded");
 	}
