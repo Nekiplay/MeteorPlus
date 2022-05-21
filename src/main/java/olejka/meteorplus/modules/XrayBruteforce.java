@@ -7,8 +7,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
-import meteordevelopment.meteorclient.events.world.ChunkDataEvent;
-import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlock;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
 import meteordevelopment.meteorclient.systems.modules.render.search.SChunk;
@@ -16,13 +14,10 @@ import meteordevelopment.meteorclient.utils.misc.Keybind;
 import meteordevelopment.meteorclient.utils.misc.UnorderedArrayList;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
-import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.meteorclient.utils.world.TickRate;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.dimension.DimensionType;
 import olejka.meteorplus.MeteorPlus;
 
 import meteordevelopment.meteorclient.events.entity.player.BreakBlockEvent;
@@ -49,9 +44,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import olejka.meteorplus.utils.GenerationBlock;
-import olejka.meteorplus.utils.XBlock;
-import olejka.meteorplus.utils.XChunk;
-import olejka.meteorplus.utils.XGroup;
+import olejka.meteorplus.utils.xraybruteforce.XBlock;
+import olejka.meteorplus.utils.xraybruteforce.XChunk;
+import olejka.meteorplus.utils.xraybruteforce.XGroup;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -59,7 +54,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_ALT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
 
 public class XrayBruteforce extends Module {

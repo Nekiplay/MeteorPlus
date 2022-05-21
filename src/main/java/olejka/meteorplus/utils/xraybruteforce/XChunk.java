@@ -1,4 +1,4 @@
-package olejka.meteorplus.utils;
+package olejka.meteorplus.utils.xraybruteforce;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;

@@ -1,4 +1,4 @@
-package olejka.meteorplus.modules;
+package olejka.meteorplus.hud;
 
 import meteordevelopment.meteorclient.renderer.GL;
 import meteordevelopment.meteorclient.renderer.Renderer2D;

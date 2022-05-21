@@ -1,12 +1,9 @@
-package olejka.meteorplus.utils;
+package olejka.meteorplus.utils.xraybruteforce;
 
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.systems.modules.render.search.SBlock;
 import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
-import meteordevelopment.meteorclient.systems.modules.render.search.SGroup;
-import meteordevelopment.meteorclient.systems.modules.render.search.Search;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
