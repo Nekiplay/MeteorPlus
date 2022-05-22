@@ -83,7 +83,6 @@ public class GhostBlockFixer extends Module {
 						millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + delay.get();
 						PlayerActionC2SPacket packet = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, block, Direction.UP);
 						conn.sendPacket(packet);
-						info("Fixing §2" + block.toShortString());
 						blocks.remove();
 					}
 					else if (state.getMaterial() != Material.AIR) {
