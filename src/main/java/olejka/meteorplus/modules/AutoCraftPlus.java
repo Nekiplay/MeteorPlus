@@ -108,6 +108,7 @@ public class AutoCraftPlus extends Module {
 	}
 	@Override
 	public void onActivate() {
+		opened = false;
 		if (autoOpen.get()) {
 			BlockPos craftingTable = findCraftingTable();
 			if (craftingTable != null) {
@@ -138,29 +139,37 @@ public class AutoCraftPlus extends Module {
 		}
 		return find;
 	}
+	private boolean opened = false;
 	@EventHandler
 	private void onTick(TickEvent.Post event) {
 		if (mc.interactionManager == null) return;
 		if (items.get().isEmpty()) return;
 
-		if (!(mc.player.currentScreenHandler instanceof CraftingScreenHandler)) return;
-
-
-		if (antiDesync.get())
-			mc.player.getInventory().updateItems();
-
-		// Danke schön GhostTypes
-		// https://github.com/GhostTypes/orion/blob/main/src/main/java/me/ghosttypes/orion/modules/main/AutoBedCraft.java
-		CraftingScreenHandler currentScreenHandler = (CraftingScreenHandler) mc.player.currentScreenHandler;
-		List<Item> itemList = items.get();
-		List<RecipeResultCollection> recipeResultCollectionList  = mc.player.getRecipeBook().getOrderedResults();
-		for (RecipeResultCollection recipeResultCollection : recipeResultCollectionList) {
-			for (Recipe<?> recipe : recipeResultCollection.getRecipes(true)) {
-				if (!itemList.contains(recipe.getOutput().getItem())) continue;
-				if (isContainsIngredients(recipe)) {
-					mc.interactionManager.clickRecipe(currentScreenHandler.syncId, recipe, craftAll.get());
-					mc.interactionManager.clickSlot(currentScreenHandler.syncId, 0, 1,
-						drop.get() ? SlotActionType.THROW : SlotActionType.QUICK_MOVE, mc.player);
+		if (mc.player.currentScreenHandler instanceof CraftingScreenHandler) {
+			if (antiDesync.get())
+				mc.player.getInventory().updateItems();
+			opened = true;
+			// Danke schön GhostTypes
+			// https://github.com/GhostTypes/orion/blob/main/src/main/java/me/ghosttypes/orion/modules/main/AutoBedCraft.java
+			CraftingScreenHandler currentScreenHandler = (CraftingScreenHandler) mc.player.currentScreenHandler;
+			List<Item> itemList = items.get();
+			List<RecipeResultCollection> recipeResultCollectionList = mc.player.getRecipeBook().getOrderedResults();
+			for (RecipeResultCollection recipeResultCollection : recipeResultCollectionList) {
+				for (Recipe<?> recipe : recipeResultCollection.getRecipes(true)) {
+					if (!itemList.contains(recipe.getOutput().getItem())) continue;
+					if (isContainsIngredients(recipe)) {
+						mc.interactionManager.clickRecipe(currentScreenHandler.syncId, recipe, craftAll.get());
+						mc.interactionManager.clickSlot(currentScreenHandler.syncId, 0, 1,
+							drop.get() ? SlotActionType.THROW : SlotActionType.QUICK_MOVE, mc.player);
+					}
+				}
+			}
+		}
+		else if (!opened) {
+			if (autoOpen.get()) {
+				BlockPos crafting_table = findCraftingTable();
+				if (crafting_table != null) {
+					openCraftingTable(crafting_table);
 				}
 			}
 		}

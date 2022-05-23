@@ -434,7 +434,7 @@ public class XrayBruteforce extends Module {
 
     private BlockPos currentScanBlock;
 
-	private boolean pause_toggle = false;
+	private boolean pause_toggle = true;
 
 	@EventHandler
 	private void onKeyEvent(KeyEvent event)

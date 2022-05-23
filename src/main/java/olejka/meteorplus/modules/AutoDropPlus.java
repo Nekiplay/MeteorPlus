@@ -46,12 +46,14 @@ public class AutoDropPlus extends Module  {
 		for (int i = autoDropExcludeHotbar.get() ? 9 : 0; i < mc.player.getInventory().size(); i++) {
 			ItemStack itemStack = mc.player.getInventory().getStack(i);
 
-			if (items.get().contains(itemStack.getItem()) && tick == 0) {
-				InvUtils.drop().slot(i);
-				tick = delay.get();
-			}
-			else {
-				tick--;
+			if (items.get().contains(itemStack.getItem())) {
+				if (tick == 0) {
+					InvUtils.drop().slot(i);
+					tick = delay.get();
+				}
+				else {
+					tick--;
+				}
 			}
 		}
 	}
