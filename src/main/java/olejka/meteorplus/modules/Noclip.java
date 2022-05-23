@@ -20,15 +20,10 @@ public class Noclip extends Module {
 	}
 
 	@EventHandler
-	private void playerMoveEvent(PlayerMoveEvent event) {
-		double s = event.movement.getY() - startY;
-		event.movement.add(new Vec3d(0, s, 0));
-	}
-	@EventHandler
 	private void onCollision(CollisionShapeEvent event) {
 		if (event.type != CollisionShapeEvent.CollisionType.BLOCK || mc.player == null) return;
-		BlockPos under = mc.player.getBlockPos().add(0, -1, 0);
-		if (event.pos.equals(under)) return;
-		event.shape = VoxelShapes.empty();
+		if (event.pos.getY() >= mc.player.getPos().y ) {
+			event.shape = VoxelShapes.empty();
+		}
 	}
 }

@@ -1,16 +1,23 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixin.PlayerMoveC2SPacketAccessor;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShapes;
 import olejka.meteorplus.MeteorPlus;
 
 public class SpiderPlus extends Module {
@@ -38,10 +45,10 @@ public class SpiderPlus extends Module {
 	{
 		Matrix,
 		Vulcan,
+		VulcanCollision,
 	}
 
-
-
+	//region Matrix and Vulcan
 	@EventHandler
 	private void onSendPacket(PacketEvent.Send event) {
 		work(event.packet);
@@ -57,9 +64,9 @@ public class SpiderPlus extends Module {
 				double y = mc.player.getY();
 				y = move.getY(y);
 
-				if (YGround(y, 0.0, 0.1)) {
-					((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
-				}
+				//if (YGround(y, 0.0, 0.1)) {
+				//	((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
+				//}
 				if (YGround(y, RGround(startY) - 0.1, RGround(startY) + 0.1)) {
 					((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
 				}
@@ -71,14 +78,10 @@ public class SpiderPlus extends Module {
 			}
 		}
 		else {
-			if (packet instanceof PlayerMoveC2SPacket move) {
-				if (mc.player.isOnGround() && block) {
-					block = false;
-					start = false;
-				}
-				if (mc.player.isOnGround()) {
-					startY = mc.player.getPos().y;
-				}
+			if (mc.player.isOnGround() && block) {
+				block = false;
+				startY = mc.player.getPos().y;
+				start = false;
 			}
 		}
 	}
@@ -122,7 +125,6 @@ public class SpiderPlus extends Module {
 
 	private boolean block = false;
 	private double coff = 0.0000000000326;
-	private boolean upTouch = false;
 
 	@EventHandler
 	private void onTickPre(TickEvent.Pre event) {
@@ -137,40 +139,101 @@ public class SpiderPlus extends Module {
 		}
 	}
 
+	@Override
+	public String getInfoString() {
+		if (modify && mode.get() == Mode.Vulcan) {
+			return mode.get().name() + " | " + typeStarted.name();
+		}
+		else { return mode.get().name(); }
+	}
+
+	private TypeStarted getType(double startY) {
+		TypeStarted temp = TypeStarted.Air;
+		double y = RGround(startY);
+		if (mc.player.isOnGround()) {
+			temp = TypeStarted.Block;
+			if (mc.world.getBlockState(mc.player.getBlockPos()).getBlock() instanceof SlabBlock) {
+				temp = TypeStarted.Slab;
+			}
+		}
+		else {
+			temp = TypeStarted.Air;
+		}
+		return temp;
+	}
+
+	private enum TypeStarted
+	{
+		Block,
+		Slab,
+		Air,
+	}
+
+	private TypeStarted typeStarted = TypeStarted.Air;
+
 	@EventHandler
 	private void onTick(TickEvent.Post event) {
-		ClientPlayerEntity player = mc.player;
-		Vec3d pl_velocity = player.getVelocity();
-		Vec3d pos = player.getPos();
-		ClientPlayNetworkHandler h = mc.getNetworkHandler();
-		modify = player.horizontalCollision;
-		upTouch = player.verticalCollision;
-		if (player.horizontalCollision) {
-			if (!start) {
-				start = true;
+		if (mode.get() == Mode.Vulcan || mode.get() == Mode.Matrix) {
+			ClientPlayerEntity player = mc.player;
+			Vec3d pl_velocity = player.getVelocity();
+			Vec3d pos = player.getPos();
+			ClientPlayNetworkHandler h = mc.getNetworkHandler();
+			modify = player.horizontalCollision;
+			if (mc.player.isOnGround()) {
+				block = false;
 				startY = mc.player.getPos().y;
-				lastY = mc.player.getY();
+				start = false;
 			}
-			if (!block) {
-				if (tick == 0) {
-					mc.player.setVelocity(pl_velocity.x, 0.41999998688698, pl_velocity.z);
-					tick = 1;
-				} else if (tick == 1) {
-					mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.08679999325 - coff, pl_velocity.z);
-					tick = 2;
-				} else if (tick == 2) {
-					mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.17186398826 - coff, pl_velocity.z);
-					tick = 0;
+			if (player.horizontalCollision) {
+				if (!start) {
+					start = true;
+					startY = mc.player.getPos().y;
+					lastY = mc.player.getY();
+					typeStarted = getType(startY);
 				}
-				if (mc.player.getPos().y >= startY + 3.5 && mode.get() == Mode.Vulcan) {
-					block = true;
+				if (!block) {
+					if (tick == 0) {
+						mc.player.setVelocity(pl_velocity.x, 0.41999998688698, pl_velocity.z);
+						tick = 1;
+					} else if (tick == 1) {
+						mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.08679999325 - coff, pl_velocity.z);
+						tick = 2;
+					} else if (tick == 2) {
+						mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.17186398826 - coff, pl_velocity.z);
+						tick = 0;
+					}
+					if (typeStarted == TypeStarted.Block) {
+						if (mc.player.getPos().y >= startY + 2 && mode.get() == Mode.Vulcan) {
+							block = true;
+						}
+					} else if (typeStarted == TypeStarted.Air) {
+						if (mc.player.getPos().y >= startY + 1.5 && mode.get() == Mode.Vulcan) {
+							block = true;
+						}
+					} else if (typeStarted == TypeStarted.Slab) {
+						if (mc.player.getPos().y >= startY + 2.5 && mode.get() == Mode.Vulcan) {
+							block = true;
+						}
+					}
+					tick2++;
 				}
-				tick2++;
-			}
 
-		} else {
-			modify = false;
-			tick = 0;
+			} else {
+				modify = false;
+				tick = 0;
+			}
 		}
 	}
+	//endregion
+	//region Vulcan collision
+	@EventHandler
+	private void onCollision(CollisionShapeEvent event) {
+		if (mode.get() == Mode.VulcanCollision) {
+			if (event.pos.getY() >= mc.player.getPos().y ) {
+				if (event.type != CollisionShapeEvent.CollisionType.BLOCK || mc.player == null) return;
+				event.shape = VoxelShapes.empty();
+			}
+		}
+	}
+	//endregion
 }

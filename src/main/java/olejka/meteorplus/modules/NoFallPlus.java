@@ -101,7 +101,6 @@ public class NoFallPlus extends Module {
 		if (packet instanceof PlayerMoveC2SPacket move) {
 			if (checkY(move)) {
 				((PlayerMoveC2SPacketAccessor) move).setOnGround(true);
-				mc.player.setOnGround(true);
 			}
 		}
 	}
