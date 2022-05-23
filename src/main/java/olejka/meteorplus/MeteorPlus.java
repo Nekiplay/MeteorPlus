@@ -19,8 +19,6 @@ public class MeteorPlus extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
 	public static final Category CATEGORY = new Category("Meteor Plus", Items.EMERALD_BLOCK.getDefaultStack());
 
-	public static String version = "0.0.9";
-
 	@Override
 	public void onInitialize() {
 		LOG.info("MeteorPlus initializing...");
@@ -37,6 +35,8 @@ public class MeteorPlus extends MeteorAddon {
 		//Modules
 		LOG.info("MeteorPlus initializing modules...");
 		Modules modules = Modules.get();
+		modules.add(new AutoDropPlus());
+		modules.add(new NoFallPlus());
 		modules.add(new SpeedPlus());
 		modules.add(new FlyPlus());
 		modules.add(new SpiderPlus());

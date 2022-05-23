@@ -91,13 +91,6 @@ public class XrayBruteforce extends Module {
 		.build()
 	);
 
-    public final Setting<Boolean> autoLoad = sgSaver.add(new BoolSetting.Builder()
-            .name("Auto-Load")
-            .description("Load rendered ores.")
-            .defaultValue(true)
-            .build()
-    );
-
     public final Setting<Boolean> load = sgSaver.add(new BoolSetting.Builder()
 		.name("Load")
 		.description("Load rendered ores.")

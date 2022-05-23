@@ -1,13 +1,11 @@
 package olejka.meteorplus.modules;
 
-import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixin.PlayerMoveC2SPacketAccessor;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import meteordevelopment.starscript.compiler.Expr;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.Packet;
@@ -58,12 +56,6 @@ public class SpiderPlus extends Module {
 			if (packet instanceof PlayerMoveC2SPacket move) {
 				double y = mc.player.getY();
 				y = move.getY(y);
-				if (lastY == y && tick > 1) {
-					block = true;
-				}
-				else {
-					lastY = y;
-				}
 
 				if (YGround(y, 0.0, 0.1)) {
 					((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
@@ -75,9 +67,6 @@ public class SpiderPlus extends Module {
 					block = false;
 					startY = mc.player.getPos().y;
 					start = false;
-				}
-				else if (upTouch && tick > 0) {
-					block = true;
 				}
 			}
 		}
@@ -134,6 +123,19 @@ public class SpiderPlus extends Module {
 	private boolean block = false;
 	private double coff = 0.0000000000326;
 	private boolean upTouch = false;
+
+	@EventHandler
+	private void onTickPre(TickEvent.Pre event) {
+		if (modify) {
+			ClientPlayerEntity player = mc.player;
+			double y = player.getPos().y;
+			if (lastY == y && tick > 1) {
+				block = true;
+			} else {
+				lastY = y;
+			}
+		}
+	}
 
 	@EventHandler
 	private void onTick(TickEvent.Post event) {

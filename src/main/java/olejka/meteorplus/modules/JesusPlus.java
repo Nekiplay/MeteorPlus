@@ -42,6 +42,7 @@ public class JesusPlus extends Module {
 	);
 	private final Float range = 0.005f;
 	private int tick = 0;
+
 	@Override
 	public void onActivate() {
 
