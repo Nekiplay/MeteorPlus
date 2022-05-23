@@ -1,5 +1,6 @@
 package olejka.meteorplus.modules;
 
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
@@ -64,14 +65,13 @@ public class KillAuraPlus extends Module {
 		.build()
 	);
 
-	private final Setting<Boolean> pauseOnCombat = sgGeneral.add(new BoolSetting.Builder()
-		.name("pause-on-combat")
-		.description("Freezes Baritone temporarily until you are finished attacking the entity.")
-		.defaultValue(true)
+	// Targeting
+	private final Setting<Object2BooleanMap<EntityType<?>>> entities = sgTargeting.add(new EntityTypeListSetting.Builder()
+		.name("entities")
+		.description("Entities to attack.")
+		.onlyAttackable()
 		.build()
 	);
-
-	// Targeting
 
 	private final Setting<Double> range = sgTargeting.add(new DoubleSetting.Builder()
 		.name("range")
@@ -182,10 +182,14 @@ public class KillAuraPlus extends Module {
 
 		TargetUtils.getList(targets, this::entityCheck, priority.get(), maxTargets.get());
 
+
+
 		if (targets.size() > 0) {
 			Entity primary = targets.get(0);
+
+			if (rotation.get() == RotationMode.Always) rotate(primary, null);
+
 			if (primary instanceof PlayerEntity primaryPlayer) {
-				if (rotation.get() == RotationMode.Always) rotate(primary, null);
 				if (primaryPlayer.isBlocking()) {
 					FindItemResult axeResult = InvUtils.findInHotbar(itemStack -> {
 						Item item = itemStack.getItem();
@@ -207,6 +211,9 @@ public class KillAuraPlus extends Module {
 						mc.player.setPosition(primary.getX() + randomOffset(), primary.getY(), primary.getZ() + randomOffset());
 					}
 				}
+			}
+			else {
+				if (delayCheck()) targets.forEach(this::attack);
 			}
 		}
 	}
@@ -230,6 +237,7 @@ public class KillAuraPlus extends Module {
 		if (entity.equals(mc.player) || entity.equals(mc.cameraEntity)) return false;
 		if ((entity instanceof LivingEntity && ((LivingEntity) entity).isDead()) || !entity.isAlive()) return false;
 		if (PlayerUtils.distanceTo(entity) > range.get()) return false;
+		if (!entities.get().getBoolean(entity.getType())) return false;
 		if (!nametagged.get() && entity.hasCustomName()) return false;
 		if (!PlayerUtils.canSeeEntity(entity) && PlayerUtils.distanceTo(entity) > wallsRange.get()) return false;
 		if (entity instanceof PlayerEntity) {
