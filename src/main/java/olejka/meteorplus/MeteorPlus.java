@@ -35,6 +35,7 @@ public class MeteorPlus extends MeteorAddon {
 		//Modules
 		LOG.info("MeteorPlus initializing modules...");
 		Modules modules = Modules.get();
+		modules.add(new KillAuraPlus());
 		modules.add(new AutoDropPlus());
 		modules.add(new NoFallPlus());
 		modules.add(new SpeedPlus());
