@@ -47,7 +47,7 @@ public class SpiderPlus extends Module {
 		work(event.packet);
 	}
 	@EventHandler
-	private void onSentPacket(PacketEvent.Sent event) {
+	private void onSentPacket2(PacketEvent.Sent event) {
 		work(event.packet);
 	}
 
