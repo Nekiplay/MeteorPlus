@@ -4,6 +4,8 @@ import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixin.PlayerMoveC2SPacketAccessor;
 import meteordevelopment.meteorclient.mixininterface.IPlayerMoveC2SPacket;
+import meteordevelopment.meteorclient.mixininterface.IVec3d;
+import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -21,15 +23,40 @@ public class NoFallPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
 	private final Setting<Mode> mode = sgGeneral.add(new EnumSetting.Builder<Mode>()
-		.name("Mode")
+		.name("mode")
 		.description("NoFall mode.")
-		.defaultValue(Mode.Matrix3Beta)
+		.defaultValue(Mode.Matrix3)
+		.build()
+	);
+	private final Setting<Boolean> newMode = sgGeneral.add(new BoolSetting.Builder()
+		.name("new-mode")
+		.description("Better anticheat support.")
+		.defaultValue(true)
+		.onChanged((e) -> {
+			if (e) {
+				lastY = 3;
+			}
+			else {
+				lastY = 4;
+			}
+		})
 		.build()
 	);
 
+	@Override
+	public void onActivate() {
+		if (newMode.get()) {
+			lastY = 3;
+		}
+		else {
+			lastY = 4;
+		}
+	}
+
 	public enum Mode
 	{
-		Matrix3Beta,
+		Matrix3,
+		Matrix4,
 	}
 
 	@EventHandler
@@ -44,14 +71,31 @@ public class NoFallPlus extends Module {
 
 	private boolean checkY(PlayerMoveC2SPacket packet) {
 		if (packet.changesPosition()) {
-			if ((int)mc.player.fallDistance % 3 == 0 && mc.player.fallDistance >= 3) {
+			if ((int)mc.player.fallDistance % 4 == 0 && mc.player.fallDistance >= 4 && lastY == 4) {
+				if (newMode.get()) {
+					lastY = 3;
+				}
+				if (mode.get() == Mode.Matrix4) {
+					IVec3d vec3d = (IVec3d)mc.player.getVelocity();
+					vec3d.setY(0);
+				}
+				return true;
+			}
+			else if ((int)mc.player.fallDistance % 3 == 0 && mc.player.fallDistance >= 3 && lastY == 3) {
+				if (newMode.get()) {
+					lastY = 4;
+				}
+				if (mode.get() == Mode.Matrix4) {
+					IVec3d vec3d = (IVec3d)mc.player.getVelocity();
+					vec3d.setY(0);
+				}
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private double lastY = 0;
+	private double lastY = 4;
 
 	private void work(Packet<?> packet) {
 		if (packet instanceof PlayerMoveC2SPacket move) {
