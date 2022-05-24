@@ -83,7 +83,7 @@ public class XrayBruteforce extends Module {
 				for (RenderOre ore : ores.toArray(new RenderOre[0])) {
 					saveRenderOre(ore);
 				}
-				info("Saving complite");
+				info("Saving complete");
 			});
 			saveth.start();
 
