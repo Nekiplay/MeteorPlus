@@ -182,8 +182,6 @@ public class KillAuraPlus extends Module {
 
 		TargetUtils.getList(targets, this::entityCheck, priority.get(), maxTargets.get());
 
-
-
 		if (targets.size() > 0) {
 			Entity primary = targets.get(0);
 
@@ -273,7 +271,6 @@ public class KillAuraPlus extends Module {
 	}
 
 	private void hitEntity(Entity target) {
-
 		mc.interactionManager.attackEntity(mc.player, target);
 		mc.player.swingHand(Hand.MAIN_HAND);
 	}
