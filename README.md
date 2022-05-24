@@ -5,6 +5,8 @@
 	<img src="https://olejka.ru/s/c543417566.png" alt="meteor-plus" width="200px"/>
 	<h1>Meteor Plus</h1>
 	<p>A simple addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many features.</p>
+
+[![GitHub issues](https://img.shields.io/github/issues/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/issues/) [![GitHub stars](https://badgen.net/github/stars/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
 </div>
 
 # Features

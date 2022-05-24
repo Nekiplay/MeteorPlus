@@ -1,5 +1,6 @@
 package olejka.meteorplus;
 
+import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.systems.commands.Commands;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
@@ -72,5 +73,15 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info("MeteorPlus registering categories...");
 		Modules.registerCategory(CATEGORY);
 		LOG.info("MeteorPlus register categories");
+	}
+
+	@Override
+	public String getWebsite() {
+		return "https://github.com/TheSainEyereg/MeteorPlus/blob/main/src/main/java/olejka/meteorplus/modules/Noclip.java";
+	}
+
+	@Override
+	public GithubRepo getRepo() {
+		return new GithubRepo("TheSainEyereg", "MeteorPlus");
 	}
 }
