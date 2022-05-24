@@ -21,6 +21,7 @@
 - Ghost block fixer
 - Spider Plus (Matrix, Vulcan bypass)
 - Jesus Plus (Matrix bypass)
+- Kill Aura Plus (Shield Breaker KillAura)
 - Safe mine (Prevents player from lava)
 - X-Ray bruteforce
 
