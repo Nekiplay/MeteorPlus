@@ -193,16 +193,20 @@ public class KillAuraPlus extends Module {
 						Item item = itemStack.getItem();
 						return item instanceof AxeItem;
 					});
-					InvUtils.swap(axeResult.slot(), false);
-					if (!itemInHand(mc.player.getInventory().getStack(axeResult.slot()).getItem())) return;
+					if (axeResult.found()) {
+						InvUtils.swap(axeResult.slot(), false);
+						if (!itemInHand(mc.player.getInventory().getStack(axeResult.slot()).getItem())) return;
+					}
 					targets.forEach(this::attack);
 				} else {
 					FindItemResult swordResult = InvUtils.findInHotbar(itemStack -> {
 						Item item = itemStack.getItem();
 						return item instanceof SwordItem;
 					});
-					InvUtils.swap(swordResult.slot(), false);
-					if (!itemInHand(mc.player.getInventory().getStack(swordResult.slot()).getItem())) return;
+					if (swordResult.found()) {
+						InvUtils.swap(swordResult.slot(), false);
+						if (!itemInHand(mc.player.getInventory().getStack(swordResult.slot()).getItem())) return;
+					}
 					if (delayCheck()) targets.forEach(this::attack);
 
 					if (randomTeleport.get()) {
