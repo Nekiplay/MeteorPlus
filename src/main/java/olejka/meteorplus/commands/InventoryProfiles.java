@@ -6,6 +6,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.systems.commands.Command;
+import meteordevelopment.meteorclient.utils.player.InvUtils;
 import net.minecraft.command.CommandSource;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,9 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.nbt.visitor.StringNbtWriter;
+import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
+import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.registry.Registry;
 
 import java.io.*;
@@ -25,6 +29,7 @@ public class InventoryProfiles extends Command {
 	public InventoryProfiles() {
 		super("invprofiles", "Gives items in creative", "invp");
 	}
+	private int delay = 80;
 	@Override
 	public void build(LiteralArgumentBuilder<CommandSource> builder) {
 		builder.then(literal("save").then(argument("id", StringArgumentType.greedyString()).executes(ctx -> {
@@ -53,15 +58,27 @@ public class InventoryProfiles extends Command {
 			JsonItems profile = getProfile(id);
 			if (profile != null) {
 				mc.player.getInventory().clear();
-				getItems(profile);
-				info("Profile " + id + " loaded");
+				Runnable task = new Runnable() {
+					public void run() {
+						System.out.println("Hello, World!");getItems(profile);
+						info("Profile " + id + " loaded");
+					}
+				};
+				Thread thread = new Thread(task);
+				thread.start();
 			}
 			else {
 				JsonItems saved = getSaved(id);
 				if (saved != null) {
 					mc.player.getInventory().clear();
-					getItems(saved);
-					info("Profile " + id + " loaded");
+					Runnable task = new Runnable() {
+						public void run() {
+							getItems(saved);
+							info("Profile " + id + " loaded");
+						}
+					};
+					Thread thread = new Thread(task);
+					thread.start();
 				}
 				else {
 					info("Profile " + id + " not found");
@@ -158,12 +175,19 @@ public class InventoryProfiles extends Command {
 		}
 		return null;
 	}
+
+	private void sleep(int delay) {
+		try { Thread.sleep(delay); }
+		catch (InterruptedException ignore) { }
+	}
 	private void getItems(JsonItems profile) {
 		if (profile.items != null) {
 			for (JsonItem jsonItem : profile.items) {
-				ItemStack item = jsonItem.toStack();
+				ItemStack item = JsonItem.toStack(jsonItem);
 				if (item != null) {
 					mc.player.getInventory().insertStack(jsonItem.slot, item);
+					sleep(40);
+					mc.interactionManager.clickSlot(0, jsonItem.slot, 0, SlotActionType.PICKUP_ALL, mc.player);
 				}
 			}
 			mc.player.getInventory().updateItems();
@@ -194,14 +218,14 @@ public class InventoryProfiles extends Command {
 			}
 		}
 
-		public ItemStack toStack() {
-			Item item = fromId(this.item);
+		public static ItemStack toStack(JsonItem jsItem) {
+			Item item = fromId(jsItem.item);
 			if (item != Items.AIR) {
 				ItemStack itemStack = item.getDefaultStack();
-				itemStack.setCount(this.count);
-				if (!nbt.equals("")) {
+				itemStack.setCount(jsItem.count);
+				if (!jsItem.nbt.equals("")) {
 					try {
-						itemStack.setNbt(StringNbtReader.parse(nbt));
+						itemStack.setNbt(StringNbtReader.parse(jsItem.nbt));
 					} catch (CommandSyntaxException ignore) {
 					}
 				}
@@ -215,7 +239,7 @@ public class InventoryProfiles extends Command {
 		return Registry.ITEM.getRawId(item);
 	}
 
-	private Item fromId(int id) {
+	private static Item fromId(int id) {
 		return Registry.ITEM.get(id);
 	}
 }
