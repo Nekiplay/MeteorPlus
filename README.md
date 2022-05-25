@@ -26,8 +26,3 @@
 - Kill Aura Plus (Shield Breaker KillAura)
 - Safe mine (Prevents player from lava)
 - X-Ray bruteforce
-
-### ToDo:
-- Friend chat & hud (Backend needed)
-- Clans system (Backend needed)
-- Meteor Cloud configs (Backend needed?)
