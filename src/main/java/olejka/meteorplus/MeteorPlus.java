@@ -3,6 +3,7 @@ package olejka.meteorplus;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.systems.commands.Commands;
+import olejka.meteorplus.commands.InventoryProfiles;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import olejka.meteorplus.modules.*;
 import meteordevelopment.meteorclient.MeteorClient;
@@ -12,6 +13,9 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.hud.HUD;
 import net.minecraft.item.Items;
 import olejka.meteorplus.modules.AutoSell;
+import olejka.meteorplus.modules.jesus.JesusPlus;
+import olejka.meteorplus.modules.speed.SpeedPlus;
+import olejka.meteorplus.modules.spider.SpiderPlus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
@@ -30,7 +34,7 @@ public class MeteorPlus extends MeteorAddon {
 		//Commands
 		LOG.info("MeteorPlus initializing commands...");
 		Commands commands = Commands.get();
-		//commands.add(new EClipCommand());
+		commands.add(new InventoryProfiles());
 		LOG.info("MeteorPlus loaded commands");
 
 		//Modules

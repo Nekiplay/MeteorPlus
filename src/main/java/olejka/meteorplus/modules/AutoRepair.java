@@ -1,8 +1,11 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.entity.DamageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ShearsItem;
 import net.minecraft.item.ToolItem;
 import olejka.meteorplus.MeteorPlus;
@@ -57,9 +60,33 @@ public class AutoRepair extends Module {
 		}
 	}
 
+	@EventHandler
+	private void onDamage(DamageEvent event) {
+		if (event.entity == mc.player) {
+			if (LocalDateTime.now().isBefore(start.plusSeconds(Interval.get()))) return;
+
+			if (mc.player.getEquippedStack(EquipmentSlot.HEAD) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.HEAD))) {
+				mc.player.sendChatMessage(Command.get());
+				start = LocalDateTime.now();
+			}
+			else if (mc.player.getEquippedStack(EquipmentSlot.CHEST) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.CHEST))) {
+				mc.player.sendChatMessage(Command.get());
+				start = LocalDateTime.now();
+			}
+			else if (mc.player.getEquippedStack(EquipmentSlot.LEGS) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.LEGS))) {
+				mc.player.sendChatMessage(Command.get());
+				start = LocalDateTime.now();
+			}
+			else if (mc.player.getEquippedStack(EquipmentSlot.FEET) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.FEET))) {
+				mc.player.sendChatMessage(Command.get());
+				start = LocalDateTime.now();
+			}
+		}
+	}
+
 	LocalDateTime start = LocalDateTime.now().minusSeconds(4);
 	public static boolean isTool(ItemStack itemStack) {
-		return itemStack.getItem() instanceof ToolItem || itemStack.getItem() instanceof ShearsItem;
+		return itemStack.getItem() instanceof ToolItem || itemStack.getItem() instanceof ShearsItem || itemStack.getItem() instanceof ArmorItem;
 	}
 	private boolean shouldStopUsing(ItemStack itemStack) {
 		return (itemStack.getMaxDamage() - itemStack.getDamage()) < (itemStack.getMaxDamage() * breakDurability.get() / 100);
