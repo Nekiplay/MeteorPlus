@@ -6,7 +6,10 @@
 	<h1>Meteor Plus</h1>
 	<p>A addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.</p>
 
-[![GitHub issues](https://img.shields.io/github/issues/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/issues/) [![GitHub stars](https://badgen.net/github/stars/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
+[![Verified addon](https://img.shields.io/badge/Verified%20Addon-Yes-blueviolet)](https://anticope.ml/pages/MeteorAddons.html)
+[![GitHub issues](https://img.shields.io/github/issues/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/issues/) 
+[![GitHub stars](https://badgen.net/github/stars/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
+[![Downloads](https://img.shields.io/github/downloads/TheSainEyereg/MeteorPlus/total)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
 </div>
 
 # Features
