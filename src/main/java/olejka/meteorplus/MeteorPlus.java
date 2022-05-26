@@ -3,6 +3,7 @@ package olejka.meteorplus;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.systems.commands.Commands;
+import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.InventoryProfiles;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import olejka.meteorplus.modules.*;
@@ -88,5 +89,16 @@ public class MeteorPlus extends MeteorAddon {
 	@Override
 	public GithubRepo getRepo() {
 		return new GithubRepo("TheSainEyereg", "MeteorPlus");
+	}
+
+	@Override
+	public String getCommit() {
+		String commit = FabricLoader
+			.getInstance()
+			.getModContainer("MeteorPlus")
+			.get().getMetadata()
+			.getCustomValue("github:sha")
+			.getAsString();
+		return commit.isEmpty() ? null : commit.trim();
 	}
 }
