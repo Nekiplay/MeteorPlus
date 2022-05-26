@@ -1,4 +1,4 @@
-package olejka.meteorplus.modules.jesus;
+package olejka.meteorplus.modules.fly;
 
 import meteordevelopment.meteorclient.events.entity.player.CanWalkOnFluidEvent;
 import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent;
@@ -7,16 +7,14 @@ import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.MinecraftClient;
-import olejka.meteorplus.modules.speed.SpeedModes;
-import olejka.meteorplus.modules.speed.SpeedPlus;
 
-public class JesusMode {
+public class FlyMode {
 	protected final MinecraftClient mc;
-	protected final JesusPlus settings;
-	private final JesusModes type;
+	protected final FlyPlus settings;
+	private final FlyModes type;
 
-	public JesusMode(JesusModes type) {
-		this.settings = Modules.get().get(JesusPlus.class);
+	public FlyMode(FlyModes type) {
+		this.settings = Modules.get().get(FlyPlus.class);
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}

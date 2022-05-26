@@ -43,7 +43,7 @@ public class InventoryProfiles extends Command {
 
 			for (int i = 0; i <= mc.player.getInventory().size(); i++) {
 				ItemStack item = mc.player.getInventory().getStack(i);
-				if (item.getItem() != Items.AIR) {
+				if (item.getItem() != Items.AIR && i != 35) {
 					JsonItem jsonItem = new JsonItem(item, i);
 					jsonItems.items.add(jsonItem);
 				}
@@ -58,27 +58,15 @@ public class InventoryProfiles extends Command {
 			JsonItems profile = getProfile(id);
 			if (profile != null) {
 				mc.player.getInventory().clear();
-				Runnable task = new Runnable() {
-					public void run() {
-						System.out.println("Hello, World!");getItems(profile);
-						info("Profile " + id + " loaded");
-					}
-				};
-				Thread thread = new Thread(task);
-				thread.start();
+				getItems(profile);
+				info("Profile " + id + " loaded");
 			}
 			else {
 				JsonItems saved = getSaved(id);
 				if (saved != null) {
 					mc.player.getInventory().clear();
-					Runnable task = new Runnable() {
-						public void run() {
-							getItems(saved);
-							info("Profile " + id + " loaded");
-						}
-					};
-					Thread thread = new Thread(task);
-					thread.start();
+					getItems(saved);
+					info("Profile " + id + " loaded");
 				}
 				else {
 					info("Profile " + id + " not found");
@@ -185,13 +173,15 @@ public class InventoryProfiles extends Command {
 			for (JsonItem jsonItem : profile.items) {
 				ItemStack item = JsonItem.toStack(jsonItem);
 				if (item != null) {
-					mc.player.getInventory().insertStack(jsonItem.slot, item);
-					sleep(40);
-					mc.interactionManager.clickSlot(0, jsonItem.slot, 0, SlotActionType.PICKUP_ALL, mc.player);
+					mc.player.getInventory().insertStack(item);
 				}
 			}
-			mc.player.getInventory().updateItems();
+			//mc.player.getInventory().updateItems();
 		}
+	}
+
+	private void setStack(int slot, ItemStack stack) {
+		mc.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(slot, stack));
 	}
 
 	public class JsonItems {

@@ -3,6 +3,7 @@ package olejka.meteorplus.modules;
 import meteordevelopment.meteorclient.events.entity.player.InteractBlockEvent;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.ConnectToServerEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
@@ -39,7 +40,7 @@ public class Freeze extends Module {
 		.name("Freeze look silent")
 		.description("Freezes your pitch and yaw silent.")
 		.defaultValue(true)
-		.visible(Packet::get)
+		.visible(() -> Packet.get() && FreezeLook.get())
 		.build()
 	);
 
@@ -109,6 +110,11 @@ public class Freeze extends Module {
 				setFreezeLook(event, playerMove);
 			}
 		}
+	}
+
+	@EventHandler
+	private void connectToServerEvent(ConnectToServerEvent event) {
+		toggle();
 	}
 
 	@EventHandler

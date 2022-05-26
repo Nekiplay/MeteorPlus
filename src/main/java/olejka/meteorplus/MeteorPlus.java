@@ -13,6 +13,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.hud.HUD;
 import net.minecraft.item.Items;
 import olejka.meteorplus.modules.AutoSell;
+import olejka.meteorplus.modules.fly.FlyPlus;
 import olejka.meteorplus.modules.jesus.JesusPlus;
 import olejka.meteorplus.modules.speed.SpeedPlus;
 import olejka.meteorplus.modules.spider.SpiderPlus;
@@ -81,7 +82,7 @@ public class MeteorPlus extends MeteorAddon {
 
 	@Override
 	public String getWebsite() {
-		return "https://github.com/TheSainEyereg/MeteorPlus/blob/main/src/main/java/olejka/meteorplus/modules/Noclip.java";
+		return "https://github.com/TheSainEyereg/MeteorPlus";
 	}
 
 	@Override

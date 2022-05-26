@@ -1,4 +1,4 @@
-package olejka.meteorplus.modules.jesus;
+package olejka.meteorplus.modules.fly;
 
 import meteordevelopment.meteorclient.events.entity.player.CanWalkOnFluidEvent;
 import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent;
@@ -9,47 +9,35 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import olejka.meteorplus.MeteorPlus;
-import olejka.meteorplus.modules.jesus.modes.MatrixZoom;
-import olejka.meteorplus.modules.jesus.modes.MatrixZoom2;
-import olejka.meteorplus.modules.jesus.modes.Vulcan;
-import olejka.meteorplus.modules.speed.SpeedModes;
+import olejka.meteorplus.modules.fly.modes.MatrixExploit;
 
-
-public class JesusPlus extends Module {
+public class FlyPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
-	public JesusPlus() {
-		super(MeteorPlus.CATEGORY, "jesus-plus", "Bypass jesus");
-		onJesusModeChanged(jesusMode.get());
+	public FlyPlus() {
+		super(MeteorPlus.CATEGORY, "fly-plus", "Bypass fly");
+		onFlyModeChanged(jesusMode.get());
 	}
 
-	public final Setting<JesusModes> jesusMode = sgGeneral.add(new EnumSetting.Builder<JesusModes>()
+	public final Setting<FlyModes> jesusMode = sgGeneral.add(new EnumSetting.Builder<FlyModes>()
 		.name("mode")
-		.description("The method of applying jesus.")
-		.defaultValue(JesusModes.MatrixZoom)
-		.onModuleActivated(spiderModesSetting -> onJesusModeChanged(spiderModesSetting.get()))
-		.onChanged(this::onJesusModeChanged)
+		.description("The method of applying fly.")
+		.defaultValue(FlyModes.MatrixExploit)
+		.onModuleActivated(spiderModesSetting -> onFlyModeChanged(spiderModesSetting.get()))
+		.onChanged(this::onFlyModeChanged)
 		.build()
 	);
 
 	public final Setting<Double> speed = sgGeneral.add(new DoubleSetting.Builder()
 		.name("Speed")
-		.description("Jesus speed.")
+		.description("Fly speed.")
 		.defaultValue(1.25)
 		.max(2500)
 		.sliderRange(0, 2500)
 		.build()
 	);
 
-	public final Setting<Boolean> autoSwapVulcan = sgGeneral.add(new BoolSetting.Builder()
-		.name("auto-swap")
-		.description("Auto swap.")
-		.defaultValue(true)
-		.visible(() -> jesusMode.get() == JesusModes.Vulcan)
-		.build()
-	);
-
-	private JesusMode currentMode;
+	private FlyMode currentMode;
 
 	@Override
 	public void onActivate() {
@@ -94,11 +82,9 @@ public class JesusPlus extends Module {
 	}
 
 
-	private void onJesusModeChanged(JesusModes mode) {
+	private void onFlyModeChanged(FlyModes mode) {
 		switch (mode) {
-			case MatrixZoom:   currentMode = new MatrixZoom(); break;
-			case MatrixZoom2:   currentMode = new MatrixZoom2(); break;
-			case Vulcan:   currentMode = new Vulcan(); break;
+			case MatrixExploit:   currentMode = new MatrixExploit(); break;
 		}
 	}
 }

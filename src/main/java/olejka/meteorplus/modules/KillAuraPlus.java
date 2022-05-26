@@ -3,6 +3,7 @@ package olejka.meteorplus.modules;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.mixininterface.IPlayerInteractEntityC2SPacket;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -23,10 +24,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.SwordItem;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.world.GameMode;
 import olejka.meteorplus.MeteorPlus;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +49,13 @@ public class KillAuraPlus extends Module {
 	private final Setting<Boolean> randomTeleport = sgGeneral.add(new BoolSetting.Builder()
 		.name("random-teleport")
 		.description("Randomly teleport around the target")
+		.defaultValue(false)
+		.build()
+	);
+
+	private final Setting<Boolean> revertKnockback = sgGeneral.add(new BoolSetting.Builder()
+		.name("revert-knockback")
+		.description("Revert enemy knockback")
 		.defaultValue(false)
 		.build()
 	);
@@ -229,8 +240,15 @@ public class KillAuraPlus extends Module {
 		if (event.packet instanceof UpdateSelectedSlotC2SPacket) {
 			switchTimer = switchDelay.get();
 		}
+		else if (event.packet instanceof IPlayerInteractEntityC2SPacket packet) {
+			if (revertKnockback.get()) {
+				Entity entity = packet.getEntity();
+				double yaw = Rotations.getYaw(entity) - 180;
+				double pitch = Rotations.getPitch(entity, Target.Body);
+				mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround((float) yaw, (float) pitch, mc.player.isOnGround()));
+			}
+		}
 	}
-
 	private double randomOffset() {
 		return Math.random() * 4 - 2;
 	}
@@ -275,8 +293,16 @@ public class KillAuraPlus extends Module {
 	}
 
 	private void hitEntity(Entity target) {
+		float yaw = mc.player.getYaw();
+		float pitch = mc.player.getPitch();
+		if (revertKnockback.get()) {
+			Rotations.rotate(Rotations.getYaw(target) - 180, Rotations.getPitch(target, Target.Body), null);
+		}
 		mc.interactionManager.attackEntity(mc.player, target);
 		mc.player.swingHand(Hand.MAIN_HAND);
+		if (revertKnockback.get()) {
+			Rotations.rotate(yaw, pitch, null);
+		}
 	}
 
 	private void rotate(Entity target, Runnable callback) {

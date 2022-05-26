@@ -10,7 +10,6 @@ import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.SlotUtils;
-import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.entity.EquipmentSlot;
@@ -54,15 +53,17 @@ public class Vulcan extends JesusMode {
 		}
 	}
 
-	@EventHandler
-	private void onCanWalkOnFluid(CanWalkOnFluidEvent event) {
+	@Override
+	public void onCanWalkOnFluid(CanWalkOnFluidEvent event) {
 		if ((event.fluidState.getFluid() == Fluids.WATER || event.fluidState.getFluid() == Fluids.FLOWING_WATER)) {
-			event.walkOnFluid = true;
+			if (mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
+				event.walkOnFluid = true;
+			}
 		}
 	}
-	@EventHandler
-	private void onFluidCollisionShape(CollisionShapeEvent event) {
-		if (event.type == CollisionShapeEvent.CollisionType.FLUID) {
+	@Override
+	public void onCollisionShape(CollisionShapeEvent event) {
+		if (event.type == CollisionShapeEvent.CollisionType.FLUID && mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
 			if (mc.player != null && event.state != null && event.state.getMaterial() == Material.WATER && !mc.player.isTouchingWater()) {
 				event.shape = VoxelShapes.fullCube();
 			}
