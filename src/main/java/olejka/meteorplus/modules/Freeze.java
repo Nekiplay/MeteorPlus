@@ -72,12 +72,12 @@ public class Freeze extends Module {
 		if (playerMove.changesLook() && FreezeLook.get() && FreezeLookSilent.get() && !rotate) {
 			event.setCancelled(true);
 		}
-		else if (playerMove.changesLook() && FreezeLook.get() && !FreezeLookSilent.get()) {
+		else if (mc.player != null && playerMove.changesLook() && FreezeLook.get() && !FreezeLookSilent.get()) {
 			event.setCancelled(true);
 			mc.player.setYaw(yaw);
 			mc.player.setPitch(pitch);
 		}
-		if (playerMove.changesPosition()) {
+		if (mc.player != null && playerMove.changesPosition()) {
 			mc.player.setVelocity(0, 0, 0);
 			mc.player.setPos(position.x, position.y, position.z);
 			event.setCancelled(true);

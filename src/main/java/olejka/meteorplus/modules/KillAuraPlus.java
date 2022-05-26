@@ -24,7 +24,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.SwordItem;
-import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
@@ -189,7 +188,7 @@ public class KillAuraPlus extends Module {
 
 	@EventHandler
 	private void onTick(TickEvent.Pre event) {
-		if (!mc.player.isAlive() || PlayerUtils.getGameMode() == GameMode.SPECTATOR) return;
+		if (mc.player != null && !mc.player.isAlive() || PlayerUtils.getGameMode() == GameMode.SPECTATOR) return;
 
 		TargetUtils.getList(targets, this::entityCheck, priority.get(), maxTargets.get());
 
@@ -206,7 +205,7 @@ public class KillAuraPlus extends Module {
 					});
 					if (axeResult.found()) {
 						InvUtils.swap(axeResult.slot(), false);
-						if (!itemInHand(mc.player.getInventory().getStack(axeResult.slot()).getItem())) return;
+						if (itemInHand(mc.player.getInventory().getStack(axeResult.slot()).getItem())) return;
 					}
 					targets.forEach(this::attack);
 				} else {
@@ -216,7 +215,7 @@ public class KillAuraPlus extends Module {
 					});
 					if (swordResult.found()) {
 						InvUtils.swap(swordResult.slot(), false);
-						if (!itemInHand(mc.player.getInventory().getStack(swordResult.slot()).getItem())) return;
+						if (itemInHand(mc.player.getInventory().getStack(swordResult.slot()).getItem())) return;
 					}
 					if (delayCheck()) targets.forEach(this::attack);
 
@@ -232,7 +231,8 @@ public class KillAuraPlus extends Module {
 	}
 
 	private boolean itemInHand(Item item) {
-		return mc.player.getMainHandStack().getItem() == item;
+		assert mc.player != null;
+		return mc.player.getMainHandStack().getItem() != item;
 	}
 
 	@EventHandler
@@ -241,7 +241,7 @@ public class KillAuraPlus extends Module {
 			switchTimer = switchDelay.get();
 		}
 		else if (event.packet instanceof IPlayerInteractEntityC2SPacket packet) {
-			if (revertKnockback.get()) {
+			if (mc.player != null && revertKnockback.get()) {
 				Entity entity = packet.getEntity();
 				double yaw = Rotations.getYaw(entity) - 180;
 				double pitch = Rotations.getPitch(entity, Target.Body);
@@ -273,7 +273,7 @@ public class KillAuraPlus extends Module {
 			return false;
 		}
 
-		if (smartDelay.get()) return mc.player.getAttackCooldownProgress(0.5f) >= 1;
+		if (mc.player != null && smartDelay.get()) return mc.player.getAttackCooldownProgress(0.5f) >= 1;
 
 		if (hitDelayTimer > 0) {
 			hitDelayTimer--;
@@ -293,13 +293,16 @@ public class KillAuraPlus extends Module {
 	}
 
 	private void hitEntity(Entity target) {
+		assert mc.player != null;
 		float yaw = mc.player.getYaw();
 		float pitch = mc.player.getPitch();
 		if (revertKnockback.get()) {
 			Rotations.rotate(Rotations.getYaw(target) - 180, Rotations.getPitch(target, Target.Body), null);
 		}
-		mc.interactionManager.attackEntity(mc.player, target);
-		mc.player.swingHand(Hand.MAIN_HAND);
+		if(mc.interactionManager != null) {
+			mc.interactionManager.attackEntity(mc.player, target);
+			mc.player.swingHand(Hand.MAIN_HAND);
+		}
 		if (revertKnockback.get()) {
 			Rotations.rotate(yaw, pitch, null);
 		}

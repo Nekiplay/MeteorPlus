@@ -34,10 +34,11 @@ public class BoatAura extends Module {
 
 	@EventHandler
 	private void onTickEvent(TickEvent.Pre event) {
+		assert mc.world != null;
 		for (Entity entity : mc.world.getEntities()) {
-			if (entity.getType() == EntityType.BOAT) {
+			if (mc.player != null && entity.getType() == EntityType.BOAT) {
 				float distance = mc.player.distanceTo(entity);
-				if (mils == 0) {
+				if (mc.interactionManager != null && mils == 0) {
 					mc.player.teleport(entity.getBlockPos().getX(), entity.getBlockPos().getX() + 1, entity.getBlockPos().getZ());
 					mc.interactionManager.interactEntity(mc.player, entity, Hand.MAIN_HAND);
 					mils = delay.get();
