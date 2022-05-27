@@ -6,7 +6,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.systems.commands.Command;
-import meteordevelopment.meteorclient.utils.player.InvUtils;
+import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import net.minecraft.command.CommandSource;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,10 +14,8 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.nbt.visitor.StringNbtWriter;
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
-import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
-import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.GameMode;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class InventoryProfiles extends Command {
 	public InventoryProfiles() {
 		super("invprofiles", "Gives items in creative", "invp");
 	}
-	private int delay = 80;
+	private static int delay = 80;
 	@Override
 	public void build(LiteralArgumentBuilder<CommandSource> builder) {
 		builder.then(literal("save").then(argument("id", StringArgumentType.greedyString()).executes(ctx -> {
@@ -55,22 +53,25 @@ public class InventoryProfiles extends Command {
 		})));
 		builder.then(literal("load").then(argument("id", StringArgumentType.greedyString()).executes(ctx -> {
 			String id = ctx.getArgument("id", String.class).replace("&", "\247");
-			JsonItems profile = getProfile(id);
-			if (profile != null) {
-				mc.player.getInventory().clear();
-				getItems(profile);
-				info("Profile " + id + " loaded");
+			if (PlayerUtils.getGameMode() == GameMode.CREATIVE) {
+				JsonItems profile = getProfile(id);
+				if (profile != null) {
+					mc.player.getInventory().clear();
+					getItems(profile);
+					info("Profile " + id + " loaded");
+				} else {
+					JsonItems saved = getSaved(id);
+					if (saved != null) {
+						mc.player.getInventory().clear();
+						getItems(saved);
+						info("Profile " + id + " loaded");
+					} else {
+						info("Profile " + id + " not found");
+					}
+				}
 			}
 			else {
-				JsonItems saved = getSaved(id);
-				if (saved != null) {
-					mc.player.getInventory().clear();
-					getItems(saved);
-					info("Profile " + id + " loaded");
-				}
-				else {
-					info("Profile " + id + " not found");
-				}
+				info("Need gamemode 1");
 			}
 			return SINGLE_SUCCESS;
 		})));
@@ -98,11 +99,11 @@ public class InventoryProfiles extends Command {
 		})));
 	}
 
-	private ArrayList<JsonItems> profiles = new ArrayList<>();
+	public static ArrayList<JsonItems> profiles = new ArrayList<>();
 
-	private String extension = ".inventory";
+	private static String extension = ".inventory";
 
-	private JsonItems getSaved(String id) {
+	public static JsonItems getSaved(String id) {
 		File dir = new File(MeteorClient.FOLDER, "inventory-profiles");
 		if (dir.exists()) {
 			File file = new File(dir, id + extension);
@@ -129,7 +130,7 @@ public class InventoryProfiles extends Command {
 		return null;
 	}
 
-	private void saveProfile(JsonItems profile) {
+	public static void saveProfile(JsonItems profile) {
 		File dir = new File(MeteorClient.FOLDER, "inventory-profiles");
 		if (!dir.exists()) {
 			dir.mkdir();
@@ -155,7 +156,7 @@ public class InventoryProfiles extends Command {
 		printWriter.close();
 	}
 
-	private JsonItems getProfile(String id) {
+	public static JsonItems getProfile(String id) {
 		for (JsonItems items : profiles) {
 			if (items.id.equals(id)) {
 				return items;
@@ -176,19 +177,14 @@ public class InventoryProfiles extends Command {
 					mc.player.getInventory().insertStack(item);
 				}
 			}
-			//mc.player.getInventory().updateItems();
 		}
 	}
 
-	private void setStack(int slot, ItemStack stack) {
-		mc.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(slot, stack));
-	}
-
 	public class JsonItems {
-		Collection<JsonItem> items = new ArrayList<JsonItem>();
+		public Collection<JsonItem> items = new ArrayList<JsonItem>();
 		public String id;
 	}
-	Gson gson = new Gson();
+	public static Gson gson = new Gson();
 	public class JsonItem {
 		public int item = 0;
 		public int slot = 0;
@@ -225,7 +221,7 @@ public class InventoryProfiles extends Command {
 		}
 	}
 
-	private int toId(Item item) {
+	private static int toId(Item item) {
 		return Registry.ITEM.getRawId(item);
 	}
 

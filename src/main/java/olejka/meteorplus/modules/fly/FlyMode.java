@@ -1,5 +1,6 @@
 package olejka.meteorplus.modules.fly;
 
+import meteordevelopment.meteorclient.events.entity.DamageEvent;
 import meteordevelopment.meteorclient.events.entity.player.CanWalkOnFluidEvent;
 import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
@@ -25,6 +26,7 @@ public class FlyMode {
 
 	public void onCanWalkOnFluid(CanWalkOnFluidEvent event) {}
 	public void onCollisionShape(CollisionShapeEvent event) {}
+	public void onDamage(DamageEvent event) {}
 
 	public void onTickEventPre(TickEvent.Pre event) {}
 	public void onTickEventPost(TickEvent.Post event) {}
