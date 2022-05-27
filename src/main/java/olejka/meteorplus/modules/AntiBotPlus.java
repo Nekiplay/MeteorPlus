@@ -1,6 +1,7 @@
 package olejka.meteorplus.modules;
 
 import com.mojang.authlib.GameProfile;
+import meteordevelopment.meteorclient.events.entity.LivingEntityMoveEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
@@ -11,28 +12,27 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import olejka.meteorplus.MeteorPlus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class AntiBotPlus extends Module {
 	public AntiBotPlus() {
 		super(MeteorPlus.CATEGORY, "Anti Bot", "Remove bots.");
 	}
 
-	// Thanks LiquidBounce
+	/* Thanks LiquidBounce
+		https://github.com/CCBlueX/LiquidBounce/blob/legacy/src/main/java/net/ccbluex/liquidbounce/features/module/modules/misc/AntiBot.kt
+	 */
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final SettingGroup sgFilters = settings.createGroup("Filters");
-
-	private final Setting<Boolean> removeInvisible = sgGeneral.add(new BoolSetting.Builder()
-		.name("remove-invisible")
-		.description("Removes bot only if they are invisible.")
-		.defaultValue(true)
-		.build()
-	);
 
 	public enum TabMode {
 		Equals,
@@ -103,7 +103,31 @@ public class AntiBotPlus extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> swing = sgFilters.add(new BoolSetting.Builder()
+		.name("Swing")
+		.description("check Swing.")
+		.defaultValue(false)
+		.build()
+	);
+
+	private final Setting<Boolean> health = sgFilters.add(new BoolSetting.Builder()
+		.name("health")
+		.description("check health.")
+		.defaultValue(false)
+		.build()
+	);
+
+	private final Setting<Boolean> derp = sgFilters.add(new BoolSetting.Builder()
+		.name("derp")
+		.description("check derp.")
+		.defaultValue(true)
+		.build()
+	);
+
+
 	private ArrayList<Integer> grounds = new ArrayList<Integer>();
+	private ArrayList<Integer> airs = new ArrayList<Integer>();
+	private Map<Integer, Integer> invalidGrounds  = new HashMap<>();
 
 	public boolean isBot(Entity entity) {
 		if (entity instanceof LivingEntity living) {
@@ -122,6 +146,35 @@ public class AntiBotPlus extends Module {
 		if (ground.get() && !grounds.contains(entity.getId()))
 			return true;
 
-		return false;
+		if (InvalidGround.get() && invalidGrounds.getOrDefault(entity.getId(), 0) >= 10)
+			return true;
+
+		return entity.getName().getString().isEmpty() || entity.getName() == mc.player.getName();
+	}
+
+	@EventHandler
+	private void livingEntityMove(PacketEvent.Receive event) {
+		if (event.packet instanceof EntityPositionS2CPacket packet) {
+			Entity entity = mc.world.getEntityById(packet.getId());
+
+			if (entity.isOnGround()) {
+				grounds.add(entity.getId());
+			}
+
+			if (!entity.isOnGround() && !airs.contains(entity.getId()))
+				airs.add(entity.getId());
+
+			if (entity.isOnGround()) {
+				if (entity.prevY != entity.getY())
+					invalidGrounds.put(entity.getId(), invalidGrounds.getOrDefault(entity.getId(), 0) + 1);
+			} else {
+				int currentVL = invalidGrounds.getOrDefault(entity.getId(), 0) / 2;
+				if (currentVL <= 0)
+					invalidGrounds.remove(entity.getId());
+				else
+					//invalidGrounds.put(entity.getId(), invalidGrounds.getOrDefault(entity.getId(), currentVL));
+					invalidGrounds.replace(entity.getId(), currentVL);
+			}
+		}
 	}
 }
