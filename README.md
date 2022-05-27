@@ -26,6 +26,7 @@
 - Boat aura
 - Freeze
 - Ghost block fixer
+- Speed Plus (Matrix, ACC, Vulcan)
 - Spider Plus (Matrix, Vulcan bypass)
 - Jesus Plus (Matrix bypass)
 - Kill Aura Plus (Shield Breaker KillAura)
