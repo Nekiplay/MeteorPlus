@@ -139,6 +139,8 @@ public class AntiBotPlus extends Module {
 	public boolean isBot(LivingEntity entity) {
 		if (!(entity instanceof PlayerEntity))
 			return false;
+		if (!isActive())
+			return false;
 
 		if (color.get() && entity.getDisplayName().getString().replace("§r", "").contains("§"))
 			return true;
