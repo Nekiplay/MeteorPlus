@@ -85,12 +85,12 @@ public class MeteorPlus extends MeteorAddon {
 
 	@Override
 	public String getWebsite() {
-		return "https://github.com/TheSainEyereg/MeteorPlus";
+		return "https://github.com/Nekiplay/MeteorPlus";
 	}
 
 	@Override
 	public GithubRepo getRepo() {
-		return new GithubRepo("TheSainEyereg", "MeteorPlus");
+		return new GithubRepo("Nekiplay", "MeteorPlus");
 	}
 
 	@Override
