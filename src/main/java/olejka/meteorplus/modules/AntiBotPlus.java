@@ -34,6 +34,11 @@ public class AntiBotPlus extends Module {
 		.build()
 	);
 
+	public enum TabMode {
+		Equals,
+		Contains
+	}
+
 	private final Setting<Boolean> tab = sgFilters.add(new BoolSetting.Builder()
 		.name("tab")
 		.description("check tab.")
@@ -118,10 +123,5 @@ public class AntiBotPlus extends Module {
 			return true;
 
 		return false;
-	}
-
-	private enum TabMode {
-		Equals,
-		Contains
 	}
 }
