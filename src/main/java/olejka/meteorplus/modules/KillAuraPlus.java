@@ -133,6 +133,14 @@ public class KillAuraPlus extends Module {
 
 	// Delay
 
+	private final Setting<Boolean> hurtTimeChecker = sgGeneral.add(new BoolSetting.Builder()
+		.name("hurt-time")
+		.description("check hurt time")
+		.defaultValue(false)
+		.build()
+	);
+
+
 	private final Setting<Boolean> smartDelay = sgDelay.add(new BoolSetting.Builder()
 		.name("smart-delay")
 		.description("Uses the vanilla cooldown to attack entities.")
@@ -300,8 +308,16 @@ public class KillAuraPlus extends Module {
 			Rotations.rotate(Rotations.getYaw(target) - 180, Rotations.getPitch(target, Target.Body), null);
 		}
 		if(mc.interactionManager != null) {
-			mc.interactionManager.attackEntity(mc.player, target);
-			mc.player.swingHand(Hand.MAIN_HAND);
+			if (target instanceof LivingEntity livingEntity) {
+				if (livingEntity.hurtTime <= 0 && hurtTimeChecker.get()) {
+					mc.interactionManager.attackEntity(mc.player, target);
+					mc.player.swingHand(Hand.MAIN_HAND);
+				}
+				else {
+					mc.interactionManager.attackEntity(mc.player, target);
+					mc.player.swingHand(Hand.MAIN_HAND);
+				}
+			}
 		}
 		if (revertKnockback.get()) {
 			Rotations.rotate(yaw, pitch, null);

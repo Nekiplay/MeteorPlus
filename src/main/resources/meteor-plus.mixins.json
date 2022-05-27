@@ -1,13 +1,14 @@
 {
-	"required": true,
-	"package": "olejka.meteorplus.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"client": [
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"mixins": [
-		"InGameHudMixin"
-	]
+  "required": true,
+  "package": "olejka.meteorplus.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "InGameHudMixin",
+    "RenderTickCounterMixin"
+    ]
 }
