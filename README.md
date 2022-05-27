@@ -35,5 +35,3 @@ Thanks Akrien Premium, WexSide and LiquidBouce
 - Safe mine (Prevents player from lava)
 - X-Ray bruteforce
 
-![image](https://user-images.githubusercontent.com/35975332/170760341-dba5c2d7-9713-4816-9395-db0d35e65d6f.png)
-
