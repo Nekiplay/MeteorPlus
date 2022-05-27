@@ -10,8 +10,11 @@
 		"Vazgen005"
   ],
   "contact": {
-    "repo": "https://github.com/TheSainEyereg/MeteorPlus"
+		"issues": "https://github.com/TheSainEyereg/MeteorPlus/issues",
+		"sources": "https://github.com/TheSainEyereg/MeteorPlus"
   },
+
+	"license": "GPL-3.0",
   "icon": "assets/plus/icon.png",
   "environment": "client",
   "entrypoints": {
