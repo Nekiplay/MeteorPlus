@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "meteor-plus",
+  "id": "meteorplus",
   "version": "${version}",
   "name": "Meteor Plus",
   "description": "Cool add-on for Meteor",
@@ -23,7 +23,8 @@
     "meteor-plus.mixins.json"
   ],
   "custom": {
-    "meteor-client:color": "0,140,252"
+    "meteor-client:color": "0,140,252",
+		"github:sha": "@gh_hash@"
   },
   "depends": {
     "java": ">=17",
