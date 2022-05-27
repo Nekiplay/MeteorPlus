@@ -155,25 +155,28 @@ public class AntiBotPlus extends Module {
 	@EventHandler
 	private void livingEntityMove(PacketEvent.Receive event) {
 		if (event.packet instanceof EntityPositionS2CPacket packet) {
-			Entity entity = mc.world.getEntityById(packet.getId());
+			if (mc.world != null) {
+				Entity entity = mc.world.getEntityById(packet.getId());
+				if (entity != null) {
+					if (entity.isOnGround()) {
+						grounds.add(entity.getId());
+					}
 
-			if (entity.isOnGround()) {
-				grounds.add(entity.getId());
-			}
+					if (!entity.isOnGround() && !airs.contains(entity.getId()))
+						airs.add(entity.getId());
 
-			if (!entity.isOnGround() && !airs.contains(entity.getId()))
-				airs.add(entity.getId());
-
-			if (entity.isOnGround()) {
-				if (entity.prevY != entity.getY())
-					invalidGrounds.put(entity.getId(), invalidGrounds.getOrDefault(entity.getId(), 0) + 1);
-			} else {
-				int currentVL = invalidGrounds.getOrDefault(entity.getId(), 0) / 2;
-				if (currentVL <= 0)
-					invalidGrounds.remove(entity.getId());
-				else
-					//invalidGrounds.put(entity.getId(), invalidGrounds.getOrDefault(entity.getId(), currentVL));
-					invalidGrounds.replace(entity.getId(), currentVL);
+					if (entity.isOnGround()) {
+						if (entity.prevY != entity.getY())
+							invalidGrounds.put(entity.getId(), invalidGrounds.getOrDefault(entity.getId(), 0) + 1);
+					} else {
+						int currentVL = invalidGrounds.getOrDefault(entity.getId(), 0) / 2;
+						if (currentVL <= 0)
+							invalidGrounds.remove(entity.getId());
+						else
+							//invalidGrounds.put(entity.getId(), invalidGrounds.getOrDefault(entity.getId(), currentVL));
+							invalidGrounds.replace(entity.getId(), currentVL);
+					}
+				}
 			}
 		}
 	}
