@@ -8,7 +8,6 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "InGameHudMixin",
-    "RenderTickCounterMixin"
+    "InGameHudMixin"
     ]
 }

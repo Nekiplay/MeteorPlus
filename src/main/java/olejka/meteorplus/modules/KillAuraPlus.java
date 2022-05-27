@@ -7,6 +7,7 @@ import meteordevelopment.meteorclient.mixininterface.IPlayerInteractEntityC2SPac
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.meteorclient.utils.entity.Target;
@@ -272,6 +273,8 @@ public class KillAuraPlus extends Module {
 			if (((PlayerEntity) entity).isCreative()) return false;
 			if (!Friends.get().shouldAttack((PlayerEntity) entity)) return false;
 		}
+		if (Modules.get().get(AntiBotPlus.class).isBot(entity))
+			return false;
 		return !(entity instanceof AnimalEntity) || babies.get() || !((AnimalEntity) entity).isBaby();
 	}
 

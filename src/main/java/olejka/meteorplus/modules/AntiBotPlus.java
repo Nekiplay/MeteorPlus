@@ -3,24 +3,26 @@ package olejka.meteorplus.modules;
 import com.mojang.authlib.GameProfile;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.settings.BoolSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import olejka.meteorplus.MeteorPlus;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class AntiBotPlus extends Module {
 	public AntiBotPlus() {
 		super(MeteorPlus.CATEGORY, "Anti Bot", "Remove bots.");
 	}
+
+	// Thanks LiquidBounce
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final SettingGroup sgFilters = settings.createGroup("Filters");
@@ -32,116 +34,94 @@ public class AntiBotPlus extends Module {
 		.build()
 	);
 
-	private final Setting<Boolean> gameMode = sgFilters.add(new BoolSetting.Builder()
-		.name("null-gamemode")
-		.description("Removes players without a gamemode")
+	private final Setting<Boolean> tab = sgFilters.add(new BoolSetting.Builder()
+		.name("tab")
+		.description("check tab.")
 		.defaultValue(true)
 		.build()
 	);
 
-	private final Setting<Boolean> api = sgFilters.add(new BoolSetting.Builder()
-		.name("null-entry")
-		.description("Removes players without a player entry")
+	private final Setting<TabMode> tabMode = sgFilters.add(new EnumSetting.Builder<TabMode>()
+		.name("tab-mode")
+		.description("check tab mode.")
+		.defaultValue(TabMode.Contains)
+		.visible(tab::get)
+		.build()
+	);
+
+	private final Setting<Boolean> entityID = sgFilters.add(new BoolSetting.Builder()
+		.name("EntityID")
+		.description("check entity id.")
 		.defaultValue(true)
 		.build()
 	);
 
-	private final Setting<Boolean> profile = sgFilters.add(new BoolSetting.Builder()
-		.name("null-profile")
-		.description("Removes players without a game profile")
-		.defaultValue(true)
-		.build()
-	);
-
-	private final Setting<Boolean> latency = sgFilters.add(new BoolSetting.Builder()
-		.name("ping-check")
-		.description("Removes players using ping check")
+	private final Setting<Boolean> color = sgFilters.add(new BoolSetting.Builder()
+		.name("Color")
+		.description("check color.")
 		.defaultValue(false)
 		.build()
 	);
 
-	private final Setting<Boolean> nullException = sgFilters.add(new BoolSetting.Builder()
-		.name("null-exception")
-		.description("Removes players if a NullPointerException occurred")
+	private final Setting<Boolean> livingTime = sgFilters.add(new BoolSetting.Builder()
+		.name("Living-time")
+		.description("check Living time.")
 		.defaultValue(false)
 		.build()
 	);
 
-	private String pName = "";
+	private final Setting<Integer> livingTimeTicks = sgFilters.add(new IntSetting.Builder()
+		.name("Living-time-ticks")
+		.description("check Living time ticks.")
+		.defaultValue(200)
+		.build()
+	);
 
-	@EventHandler
-	public void onPacketRecive(PacketEvent.Receive event) {
-		if (event.packet instanceof PlayerListS2CPacket packet) {
-			if (packet.getAction() == PlayerListS2CPacket.Action.ADD_PLAYER) {
-				for (PlayerListS2CPacket.Entry entry : packet.getEntries()) {
-					if (entry.getLatency() < 2 || entry.getProfile().getName().length() < 3 || !entry.getProfile().getProperties().isEmpty() || isTheSamePlayer(entry.getProfile())) {
-						continue;
-					}
-					if (isADuplicate(entry.getProfile())) {
-						event.cancel();
-						info("Removed " + entry.getProfile().getName());
-						continue;
-					}
+	private final Setting<Boolean> ground = sgFilters.add(new BoolSetting.Builder()
+		.name("ground")
+		.description("check ground.")
+		.defaultValue(true)
+		.build()
+	);
 
-					pName = entry.getProfile().getName();
-				}
-			}
+	private final Setting<Boolean> air = sgFilters.add(new BoolSetting.Builder()
+		.name("air")
+		.description("check air.")
+		.defaultValue(false)
+		.build()
+	);
+
+	private final Setting<Boolean> InvalidGround = sgFilters.add(new BoolSetting.Builder()
+		.name("Invalid-Ground")
+		.description("check Invalid Ground.")
+		.defaultValue(true)
+		.build()
+	);
+
+	private ArrayList<Integer> grounds = new ArrayList<Integer>();
+
+	public boolean isBot(Entity entity) {
+		if (entity instanceof LivingEntity living) {
+			return isBot(living);
 		}
+		return false;
 	}
 
+	public boolean isBot(LivingEntity entity) {
+		if (!(entity instanceof PlayerEntity))
+			return false;
 
-	@EventHandler
-	public void onTick(TickEvent.Post tickEvent) {
-		for (Entity entity : mc.world.getEntities()) {
-			if (entity != null) {
-				if (removeInvisible.get() && !entity.isInvisible()) continue;
+		if (color.get() && entity.getDisplayName().getString().replace("§r", "").contains("§"))
+			return true;
 
-				if (isBot(entity)) entity.remove(Entity.RemovalReason.DISCARDED);
-			}
-		}
-	}
-
-	private boolean isBot(Entity entity) {
-		if (entity == null) return false;
-		if (!(entity instanceof PlayerEntity)) return false;
-
-		PlayerEntity player = (PlayerEntity)entity;
-
-		try {
-			if (gameMode.get() && EntityUtils.getGameMode(player) == null) return true;
-			if (api.get() &&
-				mc.getNetworkHandler().getPlayerListEntry(entity.getUuid()) == null) return true;
-			if (profile.get() &&
-				mc.getNetworkHandler().getPlayerListEntry(entity.getUuid()).getProfile() == null) return true;
-			if (latency.get() &&
-				mc.getNetworkHandler().getPlayerListEntry(entity.getUuid()).getLatency() > 1) return true;
-		} catch (NullPointerException e) {
-			if (nullException.get()) return true;
-		}
+		if (ground.get() && !grounds.contains(entity.getId()))
+			return true;
 
 		return false;
 	}
 
-	private boolean isADuplicate(GameProfile profile) {
-		Iterator<PlayerListEntry> iterator = mc.getNetworkHandler().getPlayerList().iterator();
-		int found = 0;
-		while (iterator.hasNext()) {
-			PlayerListEntry listEntry = iterator.next();
-			if (profile.getName() == listEntry.getProfile().getName()) {
-				found++;
-			}
-		}
-		return found > 0;
-	}
-
-	private boolean isTheSamePlayer(GameProfile profile) {
-		Iterator<PlayerListEntry> iterator = mc.getNetworkHandler().getPlayerList().iterator();
-		while (iterator.hasNext()) {
-			PlayerListEntry listEntry = iterator.next();
-			if (profile.getId() == listEntry.getProfile().getId()) {
-				return true;
-			}
-		}
-		return false;
+	private enum TabMode {
+		Equals,
+		Contains
 	}
 }
