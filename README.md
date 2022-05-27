@@ -14,6 +14,8 @@
 ![Minecraft version](https://img.shields.io/badge/minecraft%20version-1.18.2-lightgreen)
 </div>
 
+Thanks Akrien Premium and LiquidBouce
+
 # Features
 ### Modules:
 - Auto accept
