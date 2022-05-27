@@ -106,6 +106,7 @@ public class BedrockStorageBruteforce extends Module {
 		clickerThread = new Thread(() -> {
 			while (scan)
 			{
+				assert mc.player != null;
 				BlockPos playerPos = mc.player.getBlockPos();
 				int ranger = range.get();
 				int x = Utils.random(playerPos.getX() - ranger, playerPos.getX() + ranger);

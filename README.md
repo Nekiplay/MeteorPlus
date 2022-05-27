@@ -4,9 +4,13 @@
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>Meteor Plus</h1>
-	<p>A addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.</p>
+	<p>An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.</p>
 
-[![GitHub issues](https://img.shields.io/github/issues/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/issues/) [![GitHub stars](https://badgen.net/github/stars/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
+[![Verified addon](https://img.shields.io/badge/verified%20addon-Yes-blueviolet)](https://anticope.ml/pages/MeteorAddons.html)
+[![GitHub issues](https://img.shields.io/github/issues/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/issues/) 
+[![GitHub stars](https://badgen.net/github/stars/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
+[![Downloads](https://img.shields.io/github/downloads/TheSainEyereg/MeteorPlus/total)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
+![Minecraft version](https://img.shields.io/badge/minecraft%20version-1.18.2-lightgreen)
 </div>
 
 # Features
