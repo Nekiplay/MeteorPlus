@@ -10,6 +10,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/issues/) 
 [![GitHub stars](https://badgen.net/github/stars/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
 [![Downloads](https://img.shields.io/github/downloads/TheSainEyereg/MeteorPlus/total)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/TheSainEyereg/MeteorPlus)
 ![Minecraft version](https://img.shields.io/badge/minecraft%20version-1.18.2-lightgreen)
 </div>
 
