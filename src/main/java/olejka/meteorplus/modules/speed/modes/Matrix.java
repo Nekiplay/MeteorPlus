@@ -7,32 +7,28 @@ import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import olejka.meteorplus.modules.speed.SpeedMode;
 import olejka.meteorplus.modules.speed.SpeedModes;
 
-public class AACHop438 extends SpeedMode {
-	public AACHop438() {
-		super(SpeedModes.AACHop438);
+public class Matrix extends SpeedMode {
+	public Matrix() {
+		super(SpeedModes.Matrix);
 	}
 
 	@Override
 	public void onDeactivate() {
 		Modules.get().get(Timer.class).setOverride(Timer.OFF);
+		mc.player.airStrafingSpeed = 0.02f;
 	}
 
 	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
-		Timer timer = Modules.get().get(Timer.class);
-		timer.setOverride(Timer.OFF);
-		if (!PlayerUtils.isMoving() || mc.player.isTouchingWater() || mc.player.isInLava() ||
+		if (mc.player.isTouchingWater() || mc.player.isInLava() ||
 			mc.player.isClimbing() || mc.player.isRiding()) return;
-
-		if (mc.player.isOnGround())
-			mc.player.jump();
+		Timer timer = Modules.get().get(Timer.class);
+		if (PlayerUtils.isMoving()) {
+			mc.player.airStrafingSpeed = 0.02098f;
+			timer.setOverride(1.055f);
+		}
 		else {
-			if (mc.player.fallDistance <= 0.1)
-				timer.setOverride(1.5);
-			else if (mc.player.fallDistance < 1.3)
-				timer.setOverride(0.7);
-			else
-				timer.setOverride(Timer.OFF);
+			timer.setOverride(1);
 		}
 	}
 }

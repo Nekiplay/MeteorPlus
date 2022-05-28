@@ -7,9 +7,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import olejka.meteorplus.MeteorPlus;
-import olejka.meteorplus.modules.speed.modes.AACHop438;
-import olejka.meteorplus.modules.speed.modes.MatrixExploit;
-import olejka.meteorplus.modules.speed.modes.Vulcan;
+import olejka.meteorplus.modules.speed.modes.*;
 
 public class SpeedPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -90,9 +88,11 @@ public class SpeedPlus extends Module {
 
 	private void onSpeedModeChanged(SpeedModes mode) {
 		switch (mode) {
-			case AACHop438:   currentMode = new AACHop438(); break;
 			case MatrixExploit:   currentMode = new MatrixExploit(); break;
+			case Matrix:   currentMode = new Matrix(); break;
+			case AACHop438:   currentMode = new AACHop438(); break;
 			case Vulcan:   currentMode = new Vulcan(); break;
+			case NCPHop:   currentMode = new NCPHop(); break;
 		}
 	}
 }

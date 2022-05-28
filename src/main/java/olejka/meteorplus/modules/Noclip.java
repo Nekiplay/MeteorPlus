@@ -11,16 +11,12 @@ public class Noclip extends Module {
 		super(MeteorPlus.CATEGORY, "Noclip", "Noclip.");
 	}
 
-	@Override
-	public void onActivate() {
-		assert mc.player != null;
-		double startY = mc.player.getY();
-	}
+
 
 	@EventHandler
 	private void onCollision(CollisionShapeEvent event) {
 		if (event.type != CollisionShapeEvent.CollisionType.BLOCK || mc.player == null) return;
-		if (event.pos.getY() >= mc.player.getPos().y ) {
+		if (event.pos.getY() >= mc.player.getPos().y) {
 			event.shape = VoxelShapes.empty();
 		}
 	}
