@@ -35,7 +35,7 @@ public class BedrockStorageBruteforce extends Module {
 		super(MeteorPlus.CATEGORY, "Bedrock Storage BF", "Scan storage's in bedrock from 1 to 4 height.");
 	}
 
-	public ArrayList<BlockPos> scanned = new ArrayList<BlockPos>();
+	public ArrayList<BlockPos> scanned = new ArrayList<>();
 
 	private final SettingGroup SCSettings = settings.createGroup("Scanner Settings");
 
@@ -43,9 +43,7 @@ public class BedrockStorageBruteforce extends Module {
 		.name("Clear-cache")
 		.description("Clear saved cache.")
 		.defaultValue(false)
-		.onChanged(a -> {
-			scanned.clear();
-		})
+		.onChanged(a -> scanned.clear())
 		.build()
 	);
 

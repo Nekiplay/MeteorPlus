@@ -95,7 +95,7 @@ public class AutoPortalMine extends Module {
 			List<BlockPos> obsidians = getPortalBlocks();
 			isMine = true;
 			if ((obsidians.size() == 0 || blocks.size() == 0)) {
-				if (commandDelay >= delayCommand.get()) {
+				if (mc.player != null && commandDelay >= delayCommand.get()) {
 					mc.player.sendChatMessage(command.get());
 					canTeleport = false;
 					commandDelay = 0;
@@ -167,8 +167,8 @@ public class AutoPortalMine extends Module {
 
 	private boolean isMine = false;
 
-	private void rotate(BlockPos target, Runnable callback) {
-		Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target), callback);
+	private void rotate(BlockPos target) {
+		Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target), null);
 	}
 
 	@EventHandler
@@ -182,6 +182,7 @@ public class AutoPortalMine extends Module {
 		}
 
 		// Calculate some stuff
+		assert mc.player != null;
 		double pX = mc.player.getX();
 		double pY = mc.player.getY();
 		double pZ = mc.player.getZ();
@@ -300,7 +301,7 @@ public class AutoPortalMine extends Module {
 				for (BlockPos block : blocks) {
 					if (count >= maxBlocksPerTick) break;
 					if (rotate.get()) {
-						rotate(block, null);
+						rotate(block);
 					}
 					boolean canInstaMine = BlockUtils.canInstaBreak(block);
 
@@ -388,6 +389,8 @@ public class AutoPortalMine extends Module {
 			{
 				for (int i3 = -4; i3 < 4; i3++)
 				{
+					assert mc.player != null;
+					assert mc.world != null;
 					BlockPos pos = mc.player.getBlockPos().add(i2, i, i3);
 					BlockState state = mc.world.getBlockState(pos);
 					if (state.getBlock() == Blocks.OBSIDIAN)

@@ -2,13 +2,11 @@ package olejka.meteorplus.modules;
 
 import meteordevelopment.meteorclient.events.entity.player.BreakBlockEvent;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
-import meteordevelopment.meteorclient.events.world.BlockUpdateEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
@@ -47,7 +45,7 @@ public class GhostBlockFixer extends Module {
 		.build()
 	);
 
-	private ArrayDeque<BlockPos> blocks = new ArrayDeque<BlockPos>();
+	private final ArrayDeque<BlockPos> blocks = new ArrayDeque<>();
 	@EventHandler
 	public void onBlockBreak(BreakBlockEvent block)
 	{
@@ -77,6 +75,8 @@ public class GhostBlockFixer extends Module {
 			if (conn != null && player != null) {
 				if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= millis) {
 					BlockPos block = blocks.peek();
+					assert block != null;
+					assert mc.world != null;
 					double distance = mc.player.squaredDistanceTo(block.getX(), block.getY(), block.getZ());
 					BlockState state = mc.world.getBlockState(block);
 					if (distance <= range.get() && state.getMaterial() == Material.AIR) {

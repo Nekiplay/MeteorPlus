@@ -312,14 +312,8 @@ public class KillAuraPlus extends Module {
 		}
 		if(mc.interactionManager != null) {
 			if (target instanceof LivingEntity livingEntity) {
-				if (livingEntity.hurtTime <= 0 && hurtTimeChecker.get()) {
-					mc.interactionManager.attackEntity(mc.player, target);
-					mc.player.swingHand(Hand.MAIN_HAND);
-				}
-				else {
-					mc.interactionManager.attackEntity(mc.player, target);
-					mc.player.swingHand(Hand.MAIN_HAND);
-				}
+				mc.interactionManager.attackEntity(mc.player, target);
+				mc.player.swingHand(Hand.MAIN_HAND);
 			}
 		}
 		if (revertKnockback.get()) {

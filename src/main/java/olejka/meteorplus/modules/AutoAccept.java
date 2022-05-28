@@ -4,10 +4,7 @@ import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.misc.text.TextUtils;
 import meteordevelopment.orbit.EventHandler;
-import meteordevelopment.orbit.EventPriority;
-import net.fabricmc.loader.impl.util.StringUtil;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.utils.ColorRemover;
 
@@ -65,7 +62,7 @@ public class AutoAccept extends Module {
 		Custom
 	}
 
-	private ArrayList<TPPattern> patters = new ArrayList<>();
+	private final ArrayList<TPPattern> patters = new ArrayList<>();
 
 	@Override
 	public void onActivate() {
@@ -81,7 +78,7 @@ public class AutoAccept extends Module {
 	}
 
 	private void BetterAccept(String username, TPPattern pattern) {
-		if (FriendsOnly.get() && isFriend(username)) {
+		if (mc.player != null && FriendsOnly.get() && isFriend(username)) {
 			info("Accepting request from " + "§c" + username);
 			mc.player.sendChatMessage(pattern.command.replace("{username}", username));
 		} else if (!FriendsOnly.get()) {
@@ -91,7 +88,7 @@ public class AutoAccept extends Module {
 	}
 
 	private void Accept(String username, TPPattern pattern, String message) {
-		if (mode.get() == Mode.Custom) {
+		if (mc.player != null && mode.get() == Mode.Custom) {
 			TPPattern pattern1 = new TPPattern(custom_pattern.get(), custom_group.get(), accept_command.get());
 			username = getName(pattern, message);
 			if (FriendsOnly.get() && isFriend(username)) {
@@ -162,10 +159,10 @@ public class AutoAccept extends Module {
 		return Friends.get().get(username) != null && Friends.get().get(username).name.equals(username);
 	}
 
-	private class TPPattern
+	private static class TPPattern
 	{
-		public String pattern = "";
-		public int group = 1;
+		public String pattern;
+		public int group;
 		public String command;
 
 		public TPPattern(String pattern, int group, String command)

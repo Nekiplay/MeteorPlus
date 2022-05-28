@@ -1,13 +1,17 @@
-59 lines (43 sloc)  3.38 KB
-
-
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>Meteor Plus</h1>
 	<p>An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.</p>
 </div>
 
-Thanks Akrien Premium, WexSide and LiquidBouce
+[![Verified addon](https://img.shields.io/badge/verified%20addon-No-blueviolet)](https://anticope.ml/pages/MeteorAddons.html)
+[![GitHub issues](https://img.shields.io/github/issues/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/issues/)
+[![GitHub stars](https://badgen.net/github/stars/TheSainEyereg/MeteorPlus)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
+[![Downloads](https://img.shields.io/github/downloads/TheSainEyereg/MeteorPlus/total)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
+![GitHub last commit](https://img.shields.io/github/last-commit/TheSainEyereg/MeteorPlus)
+![Minecraft version](https://img.shields.io/badge/minecraft%20version-1.18.2-lightgreen)
+
+Thanks some paid russians clients and [LiquidBouce](https://github.com/CCBlueX/LiquidBounce) 🤫
 
 # Features
 ### Modules:
@@ -28,3 +32,5 @@ Thanks Akrien Premium, WexSide and LiquidBouce
 - Safe mine (Prevents player from lava)
 - X-Ray bruteforce
 
+### Hud:
+- MeteorPlusLogo

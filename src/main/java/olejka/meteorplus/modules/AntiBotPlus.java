@@ -1,25 +1,17 @@
 package olejka.meteorplus.modules;
 
-import com.mojang.authlib.GameProfile;
-import meteordevelopment.meteorclient.events.entity.LivingEntityMoveEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
-import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import olejka.meteorplus.MeteorPlus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class AntiBotPlus extends Module {
@@ -31,7 +23,6 @@ public class AntiBotPlus extends Module {
 		https://github.com/CCBlueX/LiquidBounce/blob/legacy/src/main/java/net/ccbluex/liquidbounce/features/module/modules/misc/AntiBot.kt
 	 */
 
-	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final SettingGroup sgFilters = settings.createGroup("Filters");
 
 	public enum TabMode {
@@ -125,9 +116,9 @@ public class AntiBotPlus extends Module {
 	);
 
 
-	private ArrayList<Integer> grounds = new ArrayList<Integer>();
-	private ArrayList<Integer> airs = new ArrayList<Integer>();
-	private Map<Integer, Integer> invalidGrounds  = new HashMap<>();
+	private final ArrayList<Integer> grounds = new ArrayList<>();
+	private final ArrayList<Integer> airs = new ArrayList<>();
+	private final Map<Integer, Integer> invalidGrounds  = new HashMap<>();
 
 	public boolean isBot(Entity entity) {
 		if (entity instanceof LivingEntity living) {
@@ -151,7 +142,10 @@ public class AntiBotPlus extends Module {
 		if (InvalidGround.get() && invalidGrounds.getOrDefault(entity.getId(), 0) >= 10)
 			return true;
 
-		return entity.getName().getString().isEmpty() || entity.getName() == mc.player.getName();
+		if (entity.getName().getString().isEmpty()) return true;
+
+		assert mc.player != null;
+		return entity.getName() == mc.player.getName();
 	}
 
 	@EventHandler
