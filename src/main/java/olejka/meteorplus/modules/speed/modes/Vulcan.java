@@ -18,8 +18,6 @@ import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.modules.speed.SpeedMode;
 import olejka.meteorplus.modules.speed.SpeedModes;
 
-import java.util.Iterator;
-
 public class Vulcan extends SpeedMode {
 	public Vulcan() {
 		super(SpeedModes.Vulcan);

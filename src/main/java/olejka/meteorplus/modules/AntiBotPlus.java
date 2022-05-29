@@ -3,6 +3,7 @@ package olejka.meteorplus.modules;
 import com.mojang.authlib.GameProfile;
 import meteordevelopment.meteorclient.events.entity.LivingEntityMoveEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.ConnectToServerEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -12,10 +13,12 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.s2c.play.EntityAnimationS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.utils.ColorRemover;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,20 +71,6 @@ public class AntiBotPlus extends Module {
 		.build()
 	);
 
-	private final Setting<Boolean> livingTime = sgFilters.add(new BoolSetting.Builder()
-		.name("Living-time")
-		.description("check Living time.")
-		.defaultValue(false)
-		.build()
-	);
-
-	private final Setting<Integer> livingTimeTicks = sgFilters.add(new IntSetting.Builder()
-		.name("Living-time-ticks")
-		.description("check Living time ticks.")
-		.defaultValue(200)
-		.build()
-	);
-
 	private final Setting<Boolean> ground = sgFilters.add(new BoolSetting.Builder()
 		.name("ground")
 		.description("check ground.")
@@ -125,6 +114,7 @@ public class AntiBotPlus extends Module {
 	);
 
 
+	private ArrayList<Integer> swings = new ArrayList<Integer>();
 	private ArrayList<Integer> grounds = new ArrayList<Integer>();
 	private ArrayList<Integer> airs = new ArrayList<Integer>();
 	private Map<Integer, Integer> invalidGrounds  = new HashMap<>();
@@ -150,6 +140,36 @@ public class AntiBotPlus extends Module {
 
 		if (InvalidGround.get() && invalidGrounds.getOrDefault(entity.getId(), 0) >= 10)
 			return true;
+
+		if (entityID.get() && (entity.getId() >= 1000000000 || entity.getId() <= -1))
+			return true;
+
+		if (derp.get() && (entity.getPitch() > 90f || entity.getPitch() < -90))
+			return true;
+
+		if (swing.get() && !swings.contains(entity.getId()))
+			return true;
+
+
+		if (tab.get()) {
+			String targetname = ColorRemover.GetVerbatim(entity.getDisplayName().getString());
+			if (targetname != null) {
+				for (PlayerListEntry info : mc.getNetworkHandler().getPlayerList()){
+					String networkName  = ColorRemover.GetVerbatim(info.getDisplayName().getString());
+					if (tabMode.get() == TabMode.Equals) {
+						if (targetname.equals(networkName)) {
+							return false;
+						}
+					}
+					else {
+						if (targetname.contains(networkName)) {
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+		}
 
 		return entity.getName().getString().isEmpty() || entity.getName() == mc.player.getName();
 	}
@@ -181,5 +201,23 @@ public class AntiBotPlus extends Module {
 				}
 			}
 		}
+		else if (event.packet instanceof EntityAnimationS2CPacket packet) {
+			Entity entity = mc.world.getEntityById(packet.getId());
+			if (entity != null) {
+				if (entity instanceof LivingEntity && packet.getAnimationId() == 0 && !swings.contains(entity.getId()))
+					swings.add(entity.getId());
+			}
+		}
+	}
+
+	@EventHandler
+	public void worldEvent(ConnectToServerEvent event) {
+		clearAll();
+	}
+
+	private void clearAll() {
+		swings.clear();
+		grounds.clear();
+		invalidGrounds.clear();
 	}
 }
