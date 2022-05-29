@@ -134,9 +134,9 @@ public class KillAuraPlus extends Module {
 
 	// Delay
 
-	private final Setting<Boolean> hurtTimeChecker = sgGeneral.add(new BoolSetting.Builder()
-		.name("hurt-time")
-		.description("check hurt time")
+	private final Setting<Boolean> itemcooldown = sgGeneral.add(new BoolSetting.Builder()
+		.name("item-cooldown")
+		.description("check cooldown")
 		.defaultValue(false)
 		.build()
 	);
@@ -292,7 +292,12 @@ public class KillAuraPlus extends Module {
 		} else {
 			hitDelayTimer = hitDelay.get();
 			if (randomDelayEnabled.get()) hitDelayTimer += Math.round(Math.random() * randomDelayMax.get());
-			return true;
+			if (itemcooldown.get()) {
+				return !mc.player.getItemCooldownManager().isCoolingDown(mc.player.getMainHandStack().getItem());
+			}
+			else {
+				return true;
+			}
 		}
 	}
 

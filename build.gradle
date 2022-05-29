@@ -32,7 +32,7 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.mod_version, "mc_version": project.minecraft_version, "gh_hash": (System.getenv("GITHUB_SHA") ?: "")
     }
-    
+
 }
 
 tasks.withType(JavaCompile).configureEach {
