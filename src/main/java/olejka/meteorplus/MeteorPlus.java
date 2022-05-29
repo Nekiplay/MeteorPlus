@@ -92,7 +92,7 @@ public class MeteorPlus extends MeteorAddon {
 
 	@Override
 	public GithubRepo getRepo() {
-		return new GithubRepo("Nekiplay", "MeteorPlus");
+		return new GithubRepo("Nekiplay", "MeteorPlus", "main");
 	}
 
 	@Override
