@@ -15,6 +15,7 @@ import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.utils.ColorRemover;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -145,17 +146,19 @@ public class AntiBotPlus extends Module {
 
 		if (tab.get()) {
 			String targetname = ColorRemover.GetVerbatim(entity.getDisplayName().getString());
-			if (targetname != null) {
-				for (PlayerListEntry info : mc.getNetworkHandler().getPlayerList()){
-					String networkName  = ColorRemover.GetVerbatim(info.getDisplayName().getString());
-					if (tabMode.get() == TabMode.Equals) {
-						if (targetname.equals(networkName)) {
-							return false;
-						}
-					}
-					else {
-						if (targetname.contains(networkName)) {
-							return false;
+			if (mc != null && mc.getNetworkHandler() != null) {
+				Collection<PlayerListEntry> entryCollection = mc.getNetworkHandler().getPlayerList();
+				for (PlayerListEntry info : entryCollection) {
+					if (info.getDisplayName() != null) {
+						String networkName = ColorRemover.GetVerbatim(info.getDisplayName().getString());
+						if (tabMode.get() == TabMode.Equals) {
+							if (targetname.equals(networkName)) {
+								return false;
+							}
+						} else {
+							if (targetname.contains(networkName)) {
+								return false;
+							}
 						}
 					}
 				}
