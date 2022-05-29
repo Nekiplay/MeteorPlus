@@ -65,7 +65,7 @@ public class AutoRepair extends Module {
 		if (event.entity == mc.player) {
 			if (LocalDateTime.now().isBefore(start.plusSeconds(Interval.get()))) return;
 
-			if (mc.player.getEquippedStack(EquipmentSlot.HEAD) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.HEAD))) {
+			if (mc.player != null && mc.player.getEquippedStack(EquipmentSlot.HEAD) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.HEAD))) {
 				mc.player.sendChatMessage(Command.get());
 				start = LocalDateTime.now();
 			}

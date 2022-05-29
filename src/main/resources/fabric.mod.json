@@ -2,16 +2,17 @@
   "schemaVersion": 1,
   "id": "meteorplus",
   "version": "${version}",
-  "name": "Meteor Plus",
-  "description": "Cool add-on for Meteor",
+  "name": "MeteorPlus",
+  "description": "An addon for Meteor client that adds many blatant features.",
   "authors": [
     "Olejka",
 		"Neki_play",
 		"Vazgen005"
   ],
   "contact": {
-		"issues": "https://github.com/TheSainEyereg/MeteorPlus/issues",
-		"sources": "https://github.com/TheSainEyereg/MeteorPlus"
+		"homepage": "https://github.com/Nekiplay/MeteorPlus",
+		"issues": "https://github.com/Nekiplay/MeteorPlus/issues",
+		"sources": "https://github.com/Nekiplay/MeteorPlus"
   },
 
 	"license": "GPL-3.0",
@@ -26,7 +27,7 @@
     "meteor-plus.mixins.json"
   ],
   "custom": {
-    "meteor-client:color": "0,140,252",
+    "meteor-client:color": "0,181,73",
 		"github:sha": "${gh_hash}"
   },
   "depends": {

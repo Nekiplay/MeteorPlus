@@ -1,7 +1,6 @@
 package olejka.meteorplus.modules;
 
 import meteordevelopment.meteorclient.events.entity.player.InteractBlockEvent;
-import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.ConnectToServerEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -9,9 +8,7 @@ import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.player.SlotUtils;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.MeteorPlus;
@@ -87,7 +84,7 @@ public class Freeze extends Module {
 	@EventHandler
 	private void InteractBlockEvent(InteractBlockEvent event)
 	{
-		if (FreezeLookPlace.get()) {
+		if (mc.player != null && mc.getNetworkHandler() != null && FreezeLookPlace.get()) {
 			PlayerMoveC2SPacket.LookAndOnGround r = new PlayerMoveC2SPacket.LookAndOnGround(mc.player.getYaw(), mc.player.getPitch(), mc.player.isOnGround());
 			rotate = true;
 			mc.getNetworkHandler().sendPacket(r);

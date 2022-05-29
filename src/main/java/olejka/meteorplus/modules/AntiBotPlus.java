@@ -1,13 +1,9 @@
 package olejka.meteorplus.modules;
 
-import com.mojang.authlib.GameProfile;
-import meteordevelopment.meteorclient.events.entity.LivingEntityMoveEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.ConnectToServerEvent;
-import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
@@ -15,14 +11,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntityAnimationS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.utils.ColorRemover;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class AntiBotPlus extends Module {
@@ -34,7 +27,6 @@ public class AntiBotPlus extends Module {
 		https://github.com/CCBlueX/LiquidBounce/blob/legacy/src/main/java/net/ccbluex/liquidbounce/features/module/modules/misc/AntiBot.kt
 	 */
 
-	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final SettingGroup sgFilters = settings.createGroup("Filters");
 
 	public enum TabMode {

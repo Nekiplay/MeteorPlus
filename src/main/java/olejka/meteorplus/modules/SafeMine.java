@@ -11,12 +11,10 @@ import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -87,7 +85,7 @@ public class SafeMine extends Module {
 		}
 	}
 
-	ArrayList<BlockPos> lava = new ArrayList<BlockPos>();
+	ArrayList<BlockPos> lava = new ArrayList<>();
 
 	private Integer tick = 0;
 
@@ -268,12 +266,12 @@ public class SafeMine extends Module {
 		if (playerMove.changesLook() && FreezeLook.get() && FreezeLookSilent.get() && !rotate) {
 			event.setCancelled(true);
 		}
-		else if (playerMove.changesLook() && FreezeLook.get() && !FreezeLookSilent.get()) {
+		else if (mc.player != null && playerMove.changesLook() && FreezeLook.get() && !FreezeLookSilent.get()) {
 			event.setCancelled(true);
 			mc.player.setYaw(yaw);
 			mc.player.setPitch(pitch);
 		}
-		if (playerMove.changesPosition()) {
+		if (mc.player != null && playerMove.changesPosition()) {
 			mc.player.setVelocity(0, 0, 0);
 			mc.player.setPos(position.x, position.y, position.z);
 			event.setCancelled(true);
@@ -283,7 +281,7 @@ public class SafeMine extends Module {
 	@EventHandler
 	private void InteractBlockEvent(InteractBlockEvent event)
 	{
-		if (FreezeLookPlace.get() && freeze) {
+		if (mc.player != null && mc.getNetworkHandler() != null && FreezeLookPlace.get() && freeze) {
 			PlayerMoveC2SPacket.LookAndOnGround r = new PlayerMoveC2SPacket.LookAndOnGround(mc.player.getYaw(), mc.player.getPitch(), mc.player.isOnGround());
 			rotate = true;
 			mc.getNetworkHandler().sendPacket(r);

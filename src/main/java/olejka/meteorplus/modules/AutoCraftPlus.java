@@ -24,7 +24,6 @@ import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.utils.BlockHelper;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class AutoCraftPlus extends Module {
@@ -60,7 +59,7 @@ public class AutoCraftPlus extends Module {
 	private final Setting<List<Item>> items = sgGeneral.add(new ItemListSetting.Builder()
 		.name("items")
 		.description("Items you want to get crafted.")
-		.defaultValue(Arrays.asList())
+		.defaultValue(List.of())
 		.build()
 	);
 
@@ -86,6 +85,7 @@ public class AutoCraftPlus extends Module {
 	);
 
 	private BlockPos findCraftingTable() {
+		assert mc.player != null;
 		List<BlockPos> nearbyBlocks = BlockHelper.getSphere(mc.player.getBlockPos(), radius.get(), radius.get());
 		for (BlockPos block : nearbyBlocks) if (BlockHelper.getBlock(block) == Blocks.CRAFTING_TABLE) return block;
 		return null;
@@ -94,10 +94,12 @@ public class AutoCraftPlus extends Module {
 	private void openCraftingTable(BlockPos tablePos) {
 		Vec3d tableVec = new Vec3d(tablePos.getX(), tablePos.getY(), tablePos.getZ());
 		BlockHitResult table = new BlockHitResult(tableVec, Direction.UP, tablePos, false);
+		assert mc.interactionManager != null;
 		mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, table);
 	}
 
 	private void placeCraftingTable(FindItemResult craftTable) {
+		assert mc.player != null;
 		List<BlockPos> nearbyBlocks = BlockHelper.getSphere(mc.player.getBlockPos(), radius.get(), radius.get());
 		for (BlockPos block : nearbyBlocks) {
 			if (BlockHelper.getBlock(block) == Blocks.AIR) {
@@ -130,11 +132,7 @@ public class AutoCraftPlus extends Module {
 		for (Ingredient ing : ingredients) {
 			for (ItemStack itemStack : ing.getMatchingStacks()) {
 				FindItemResult plank = InvUtils.find(item -> itemStack.getItem() == item.getItem());
-				if (plank.found() && plank.count() >= itemStack.getCount()) {
-					find = true;
-				} else {
-					find = false;
-				}
+				find = plank.found() && plank.count() >= itemStack.getCount();
 			}
 		}
 		return find;
@@ -145,13 +143,12 @@ public class AutoCraftPlus extends Module {
 		if (mc.interactionManager == null) return;
 		if (items.get().isEmpty()) return;
 
-		if (mc.player.currentScreenHandler instanceof CraftingScreenHandler) {
+		if (mc.player != null && mc.player.currentScreenHandler instanceof CraftingScreenHandler currentScreenHandler) {
 			if (antiDesync.get())
 				mc.player.getInventory().updateItems();
 			opened = true;
 			// Danke schön GhostTypes
 			// https://github.com/GhostTypes/orion/blob/main/src/main/java/me/ghosttypes/orion/modules/main/AutoBedCraft.java
-			CraftingScreenHandler currentScreenHandler = (CraftingScreenHandler) mc.player.currentScreenHandler;
 			List<Item> itemList = items.get();
 			List<RecipeResultCollection> recipeResultCollectionList = mc.player.getRecipeBook().getOrderedResults();
 			for (RecipeResultCollection recipeResultCollection : recipeResultCollectionList) {
