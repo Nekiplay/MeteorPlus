@@ -15,7 +15,8 @@ public class Matrix extends SpeedMode {
 	@Override
 	public void onDeactivate() {
 		Modules.get().get(Timer.class).setOverride(Timer.OFF);
-		mc.player.airStrafingSpeed = 0.02f;
+		if (mc.player != null)
+			mc.player.airStrafingSpeed = 0.02f;
 	}
 
 	@Override

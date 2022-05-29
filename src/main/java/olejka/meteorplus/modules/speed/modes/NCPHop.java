@@ -28,7 +28,8 @@ public class NCPHop extends SpeedMode {
 		if (mc.player.isTouchingWater() || mc.player.isInLava() ||
 			mc.player.isClimbing() || mc.player.isRiding()) return;
 		Timer timer = Modules.get().get(Timer.class);
-		if (PlayerUtils.isMoving()) {
+		if (PlayerUtils.isMoving() && mc.player.isOnGround()) {
+			mc.player.jump();
 			mc.player.airStrafingSpeed = 0.0223f;
 		}
 		else {
