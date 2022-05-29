@@ -15,6 +15,7 @@ Thanks some russian paid clients and [LiquidBouce](https://github.com/CCBlueX/Li
 
 # Features
 ### Modules:
+- Anti Bot
 - Auto accept
 - Auto craft plus (Auto сrafting + some additions)
 - Auto leave
