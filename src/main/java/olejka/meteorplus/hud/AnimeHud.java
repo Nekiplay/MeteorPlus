@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.util.Identifier;
+import olejka.meteorplus.modules.AutoAccept;
 
 import static meteordevelopment.meteorclient.utils.render.color.Color.WHITE;
 
@@ -27,7 +28,10 @@ public class AnimeHud extends HudElement  {
 	public enum Image {
 		Astolfo1,
 		Astolfo2,
+		Neko,
+		Custom,
 	}
+
 	public final Setting<Image> image = sgGeneral.add(new EnumSetting.Builder<Image>()
 		.name("image")
 		.description("Image.")
@@ -40,12 +44,30 @@ public class AnimeHud extends HudElement  {
 		.build()
 	);
 
+	private final Setting<String> customLink = sgGeneral.add(new StringSetting.Builder()
+		.name("Custom link")
+		.description("Custom link.")
+		.defaultValue("")
+		.visible(() ->  image.get() == Image.Custom)
+		.onChanged((a) -> {
+			loadImage(String.valueOf(getLinkByImage(image.get())));
+		})
+		.build()
+	);
+
+
 	public String getLinkByImage(Image image) {
 		if (image == Image.Astolfo1) {
 			return "https://i.ibb.co/gv31zjS/l-Og-TN5x-removebg-preview.png";
 		}
 		else if (image == Image.Astolfo2) {
 			return "https://i.ibb.co/6br3pcc/1619388386-30-pibig-info-p-astolfo-tyan-anime-krasivo-34-removebg-preview.png";
+		}
+		else if (image == Image.Neko) {
+			return "https://i.ibb.co/Zmh2mnF/da5a1f3816dd4e17935e303361152456-removebg-preview.png";
+		}
+		else if (image == Image.Custom) {
+			return customLink.get();
 		}
 		return null;
 	}

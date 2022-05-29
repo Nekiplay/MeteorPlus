@@ -15,18 +15,23 @@ public class Matrix extends SpeedMode {
 	@Override
 	public void onDeactivate() {
 		Modules.get().get(Timer.class).setOverride(Timer.OFF);
-		if (mc.player != null)
+		if (mc.player != null) {
 			mc.player.airStrafingSpeed = 0.02f;
+		}
 	}
 
 	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
+		Timer timer = Modules.get().get(Timer.class);
+		timer.setOverride(Timer.OFF);
 		if (mc.player.isTouchingWater() || mc.player.isInLava() ||
 			mc.player.isClimbing() || mc.player.isRiding()) return;
-		Timer timer = Modules.get().get(Timer.class);
 		if (PlayerUtils.isMoving()) {
-			mc.player.airStrafingSpeed = 0.02098f;
-			timer.setOverride(1.055f);
+			if (mc.player.isOnGround()) {
+				mc.player.jump();
+				mc.player.airStrafingSpeed = 0.02098f;
+				timer.setOverride(1.055f);
+			}
 		}
 		else {
 			timer.setOverride(1);
