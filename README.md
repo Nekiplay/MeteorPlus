@@ -13,6 +13,10 @@
 
 Thanks some russian paid clients and [LiquidBouce](https://github.com/CCBlueX/LiquidBounce) 🤫
 
+<div align="center">
+  <a href="https://discord.gg/syHrs2ePyQ"><img src="https://invidget.switchblade.xyz/syHrs2ePyQ"></a>
+</div>
+
 # Features
 ### Modules:
 - Anti Bot
