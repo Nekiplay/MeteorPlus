@@ -892,7 +892,7 @@ public class XrayBruteforce extends Module {
 			if (packet_tw != null) {
 				conn.sendPacket(packet_tw);
 			}
-			addNeedRescan(blockpos, 3500);
+			addNeedRescan(blockpos, 4500);
 		}
 		else {
 			currentScanBlock = null;
@@ -1037,9 +1037,6 @@ public class XrayBruteforce extends Module {
 			Iterator<BlockScanned> iterator = need_rescan.iterator();
 			while (iterator.hasNext()) {
 				BlockScanned blockscanned = iterator.next();
-				if (!scanned.contains(blockscanned.pos)) {
-					scanned.add(blockscanned.pos);
-				}
 				if (timeSinceLastTick <= 1f) {
 					if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= blockscanned.rescanTime && mc.world != null) {
 						BlockState state = mc.world.getBlockState(blockscanned.pos);
@@ -1047,14 +1044,11 @@ public class XrayBruteforce extends Module {
 							addRenderBlock(blockscanned.pos);
 							for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
 								addBlock(pos, true);
-								addRenderBlock(blockscanned.pos);
+								//addRenderBlock(blockscanned.pos);
 							}
 						}
 						iterator.remove();
 					}
-				}
-				else {
-					blockscanned.rescanTime += 40;
 				}
 			}
 		}
