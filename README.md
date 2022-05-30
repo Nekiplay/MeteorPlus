@@ -35,6 +35,7 @@ Thanks some russian paid clients and [LiquidBouce](https://github.com/CCBlueX/Li
 
 ### Hud:
 - MeteorPlusLogo
+- AnimeHud
 
 ### Commands:
 - InventoryProfile (save and load items)
