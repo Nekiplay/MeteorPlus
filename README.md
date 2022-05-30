@@ -11,7 +11,7 @@
 [![Downloads](https://img.shields.io/github/downloads/TheSainEyereg/MeteorPlus/total)](https://GitHub.com/TheSainEyereg/MeteorPlus/)
 ![GitHub last commit](https://img.shields.io/github/last-commit/TheSainEyereg/MeteorPlus)
 ![Minecraft version](https://img.shields.io/badge/minecraft%20version-1.18.2-lightgreen)
-
+</center>
 Thanks some russian paid clients and [LiquidBouce](https://github.com/CCBlueX/LiquidBounce) 🤫
 </center>
 <div align="center">
