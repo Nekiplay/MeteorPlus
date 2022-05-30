@@ -17,7 +17,7 @@ Thanks some russian paid clients and [LiquidBouce](https://github.com/CCBlueX/Li
   <a href="https://discord.gg/syHrs2ePyQ"><img src="https://invidget.switchblade.xyz/syHrs2ePyQ"></a>
 </div>
 
-![Official]([https://img.shields.io/badge/minecraft%20version-1.18.2-lightgreen](https://img.shields.io/badge/Official-Yes-blue)
+![Official]([[https://img.shields.io/badge/minecraft%20version-1.18.2-lightgreen](https://img.shields.io/badge/Official-Yes-blue)](https://img.shields.io/badge/Official-Yes-blue))
 
 # Features
 ### Modules:
