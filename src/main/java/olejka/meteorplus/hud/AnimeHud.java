@@ -12,14 +12,12 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.util.Identifier;
-import olejka.meteorplus.modules.AutoAccept;
 
 import static meteordevelopment.meteorclient.utils.render.color.Color.WHITE;
 
 public class AnimeHud extends HudElement  {
 	public AnimeHud(HUD hud) {
 		super(hud, "Anime", "Shows anime.");
-		MeteorClient.EVENT_BUS.subscribe(this);
 		//loadImage(String.valueOf(getLinkByImage(image.get())));
 	}
 
@@ -36,9 +34,9 @@ public class AnimeHud extends HudElement  {
 		.name("image")
 		.description("Image.")
 		.defaultValue(Image.Astolfo1)
-		.onModuleActivated((a) -> loadImage(String.valueOf(getLinkByImage(a.get()))))
+		.onModuleActivated((a) -> loadImage(getLinkByImage(a.get())))
 		.onChanged((a) -> {
-			loadImage(String.valueOf(getLinkByImage(a)));
+			loadImage(getLinkByImage(a));
 		})
 
 		.build()
@@ -49,9 +47,7 @@ public class AnimeHud extends HudElement  {
 		.description("Custom link.")
 		.defaultValue("")
 		.visible(() ->  image.get() == Image.Custom)
-		.onChanged((a) -> {
-			loadImage(String.valueOf(getLinkByImage(image.get())));
-		})
+		.onChanged(this::loadImage)
 		.build()
 	);
 
@@ -69,7 +65,7 @@ public class AnimeHud extends HudElement  {
 		else if (image == Image.Custom) {
 			return customLink.get();
 		}
-		return null;
+		return "";
 	}
 
 	private final Setting<Double> imgWidth = sgGeneral.add(new DoubleSetting.Builder()

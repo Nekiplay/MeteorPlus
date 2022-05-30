@@ -14,6 +14,7 @@ import meteordevelopment.meteorclient.utils.misc.Keybind;
 import meteordevelopment.meteorclient.utils.misc.UnorderedArrayList;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import meteordevelopment.meteorclient.utils.render.color.RainbowColors;
 import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import net.minecraft.util.math.ChunkPos;
@@ -59,12 +60,15 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
 public class XrayBruteforce extends Module {
     public XrayBruteforce() {
         super(MeteorPlus.CATEGORY, "xray-bruteForce", "Bypasses anti-xray.");
+		RainbowColors.register(this::onTickRainbow);
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final SettingGroup sgSVisual = settings.createGroup("Scaner");
     private final SettingGroup sgRVisual = settings.createGroup("Scaner Render Visuals");
 	private final SettingGroup sgSRenderer = settings.createGroup("Scanned Renderer");
 	private final SettingGroup sgSaver = settings.createGroup("Scanned Saver");
+	private final SettingGroup sgDelayer = settings.createGroup("Scanned Delayer");
+
 
 	public final Setting<Boolean> autoSave = sgSaver.add(new BoolSetting.Builder()
 		.name("Auto save")
@@ -80,13 +84,11 @@ public class XrayBruteforce extends Module {
 		.onChanged((c) -> {
 			Thread saveth = new Thread(() ->
 			{
-				for (RenderOre ore : ores.toArray(new RenderOre[0])) {
+				for (RenderOre ore : ores.toArray(new RenderOre[0]))
 					saveRenderOre(ore);
-				}
 				info("Saving complete");
 			});
 			saveth.start();
-
 		})
 		.build()
 	);
@@ -275,14 +277,14 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-	public final Setting<Boolean> tps_sync = sgGeneral.add(new BoolSetting.Builder()
+	public final Setting<Boolean> tps_sync = sgDelayer.add(new BoolSetting.Builder()
 		.name("TPS-sync")
 		.description("TPS sync scaning.")
 		.defaultValue(true)
 		.build()
 	);
 
-    public final Setting<Boolean> fps_sync = sgGeneral.add(new BoolSetting.Builder()
+    public final Setting<Boolean> fps_sync = sgDelayer.add(new BoolSetting.Builder()
         .name("FPS-sync")
         .description("FPS sync scaning.")
         .defaultValue(false)
@@ -356,7 +358,7 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-    private final Setting<Integer> delaymin = sgGeneral.add(new IntSetting.Builder()
+    private final Setting<Integer> delaymin = sgDelayer.add(new IntSetting.Builder()
         .name("Scan delay min")
         .description("Bruteforce delay min .")
         .defaultValue(30)
@@ -365,7 +367,7 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-	private final Setting<Integer> delaymax = sgGeneral.add(new IntSetting.Builder()
+	private final Setting<Integer> delaymax = sgDelayer.add(new IntSetting.Builder()
 		.name("Scan delay max")
 		.description("Bruteforce delay max .")
 		.defaultValue(35)
@@ -435,6 +437,24 @@ public class XrayBruteforce extends Module {
     private BlockPos currentScanBlock;
 
 	private boolean pause_toggle = true;
+
+	private void onTickRainbow() {
+		if (isActive()) {
+			if (defaultBlockConfig != null && blockConfigs != null && defaultBlockConfig.get() != null) {
+				defaultBlockConfig.get().tickRainbow();
+				if (blockConfigs.get() != null) {
+					Collection<SBlockData> datas = blockConfigs.get().values();
+					if (datas.size() > 0) {
+						for (SBlockData blockData : datas) {
+							if (blockData != null) {
+								blockData.tickRainbow();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 	@EventHandler
 	private void onKeyEvent(KeyEvent event)
@@ -824,10 +844,10 @@ public class XrayBruteforce extends Module {
     @Override
     public String getInfoString() {
 		if (pause_toggle) {
-			return "paused | " + Integer.toString(renderedBlocks);
+			return "paused, rendered " + renderedBlocks;
 		}
         else {
-			return Integer.toString(renderedBlocks);
+			return "rendered " + renderedBlocks + ", scan delay " + timescan;
 		}
     }
 
@@ -892,12 +912,14 @@ public class XrayBruteforce extends Module {
 		return null;
 	}
 
-    long millis = 0;
+	long timescan = 0;
+	long millis = 0;
     private void checker()
     {
 		float timeSinceLastTick = TickRate.INSTANCE.getTimeSinceLastTick();
         if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= millis && !pause_toggle)
         {
+			long start = System.currentTimeMillis();
             if (blocks != null && blocks.size() > 0) {
 				if (tps_sync.get() && timeSinceLastTick <= 1f) {
 					work();
@@ -917,6 +939,8 @@ public class XrayBruteforce extends Module {
 					work();
 				}
             }
+			long finish = System.currentTimeMillis();
+			timescan = finish - start;
         }
     }
 
@@ -945,6 +969,7 @@ public class XrayBruteforce extends Module {
                     }
                 }
             }
+
         } catch (Exception ignored) { }
     }
 
