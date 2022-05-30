@@ -440,19 +440,22 @@ public class XrayBruteforce extends Module {
 
 	private void onTickRainbow() {
 		if (isActive()) {
-			if (defaultBlockConfig != null && blockConfigs != null && defaultBlockConfig.get() != null) {
-				defaultBlockConfig.get().tickRainbow();
-				if (blockConfigs.get() != null) {
-					Collection<SBlockData> datas = blockConfigs.get().values();
-					if (datas.size() > 0) {
-						for (SBlockData blockData : datas) {
-							if (blockData != null) {
-								blockData.tickRainbow();
+			try {
+				if (defaultBlockConfig != null && blockConfigs != null && defaultBlockConfig.get() != null) {
+					defaultBlockConfig.get().tickRainbow();
+					if (blockConfigs.get() != null) {
+						Collection<SBlockData> datas = blockConfigs.get().values();
+						if (datas.size() > 0) {
+							for (SBlockData blockData : datas) {
+								if (blockData != null) {
+									blockData.tickRainbow();
+								}
 							}
 						}
 					}
 				}
 			}
+			catch (NullPointerException ignore) { }
 		}
 	}
 
@@ -726,24 +729,28 @@ public class XrayBruteforce extends Module {
             clear_cache_ores.set(false);
             ChatUtils.info("Xray BruteForce", "Cache render ores cleared");
         }
-        renderOres(event);
-        if (currentScanBlock != null) {
-            BlockPos bp = currentScanBlock;
+		if (currentScanBlock != null) {
+			BlockPos bp = currentScanBlock;
 			assert mc.world != null;
 			BlockState state = mc.world.getBlockState(bp);
-            VoxelShape shape = state.getOutlineShape(mc.world, bp);
+			VoxelShape shape = state.getOutlineShape(mc.world, bp);
 
-            if (shape.isEmpty()) return;
-            if (outline.get()) {
-                for (Box b : shape.getBoundingBoxes()) {
-                    event.renderer.box(bp.getX() + b.minX, bp.getY() + b.minY, bp.getZ() + b.minZ, bp.getX() + b.maxX, bp.getY() + b.maxY, bp.getZ() + b.maxZ, new SettingColor(255, 255, 255, 255), outlineColor.get(), ShapeMode.Lines, 0);
-                }
-            }
-            if (tracer.get()) {
-                event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, bp.getX(), bp.getY(), bp.getZ(), tracerColor.get());
-            }
-        }
+			if (shape.isEmpty()) return;
+			if (outline.get()) {
+				for (Box b : shape.getBoundingBoxes()) {
+					event.renderer.box(bp.getX() + b.minX, bp.getY() + b.minY, bp.getZ() + b.minZ, bp.getX() + b.maxX, bp.getY() + b.maxY, bp.getZ() + b.maxZ, new SettingColor(255, 255, 255, 255), outlineColor.get(), ShapeMode.Lines, 0);
+				}
+			}
+			if (tracer.get()) {
+				event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, bp.getX(), bp.getY(), bp.getZ(), tracerColor.get());
+			}
+		}
     }
+
+	@EventHandler
+	private void onRenderOres(Render3DEvent event) {
+		renderOres(event);
+	}
 
 	private void addExposedBlocks() {
 		if (mc.world != null) {
@@ -919,7 +926,6 @@ public class XrayBruteforce extends Module {
 		float timeSinceLastTick = TickRate.INSTANCE.getTimeSinceLastTick();
         if (LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() >= millis && !pause_toggle)
         {
-			long start = System.currentTimeMillis();
             if (blocks != null && blocks.size() > 0) {
 				if (tps_sync.get() && timeSinceLastTick <= 1f) {
 					work();
@@ -939,14 +945,13 @@ public class XrayBruteforce extends Module {
 					work();
 				}
             }
-			long finish = System.currentTimeMillis();
-			timescan = finish - start;
         }
     }
 
     private void work()
     {
         try {
+			long start = System.currentTimeMillis();
             Iterator<BlockPos> blocksIterator = blocks.iterator();
             if (blocksIterator.hasNext()) {
                 if (fps_sync.get()) {
@@ -969,7 +974,8 @@ public class XrayBruteforce extends Module {
                     }
                 }
             }
-
+			long finish = System.currentTimeMillis();
+			timescan = finish - start;
         } catch (Exception ignored) { }
     }
 
@@ -1047,6 +1053,9 @@ public class XrayBruteforce extends Module {
 						iterator.remove();
 					}
 				}
+				else {
+					blockscanned.rescanTime += 40;
+				}
 			}
 		}
 	}
@@ -1096,12 +1105,10 @@ public class XrayBruteforce extends Module {
     }
 
     private static final List<BlockPos> scanned = new ArrayList<>();
-    private boolean calculating = false;
 
     private List<BlockPos> getBlocks(BlockPos startPos, int y_radius, int radius)
     {
         List<BlockPos> temp = new ArrayList<>();
-        calculating = true;
         for (int dy = -y_radius; dy <= y_radius; dy++) {
             if ((startPos.getY() + dy) < 1 || (startPos.getY() + dy) > 255) continue;
             for (int dz = -radius; dz <= radius; dz++) {
@@ -1119,7 +1126,6 @@ public class XrayBruteforce extends Module {
                 }
             }
         }
-        calculating = false;
         return temp;
     }
 }

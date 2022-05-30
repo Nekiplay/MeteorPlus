@@ -27,27 +27,19 @@ public class AnimeHud extends HudElement  {
 		Astolfo1,
 		Astolfo2,
 		Neko,
-		Custom,
 	}
 
-	public final Setting<Image> image = sgGeneral.add(new EnumSetting.Builder<Image>()
+	private final Setting<Image> image = sgGeneral.add(new EnumSetting.Builder<Image>()
 		.name("image")
 		.description("Image.")
 		.defaultValue(Image.Astolfo1)
-		.onModuleActivated((a) -> loadImage(getLinkByImage(a.get())))
+		.onModuleActivated((a) -> {
+			loadImage(getLinkByImage(a.get()));
+		})
 		.onChanged((a) -> {
 			loadImage(getLinkByImage(a));
 		})
 
-		.build()
-	);
-
-	private final Setting<String> customLink = sgGeneral.add(new StringSetting.Builder()
-		.name("Custom link")
-		.description("Custom link.")
-		.defaultValue("")
-		.visible(() ->  image.get() == Image.Custom)
-		.onChanged(this::loadImage)
 		.build()
 	);
 
@@ -61,9 +53,6 @@ public class AnimeHud extends HudElement  {
 		}
 		else if (image == Image.Neko) {
 			return "https://i.ibb.co/Zmh2mnF/da5a1f3816dd4e17935e303361152456-removebg-preview.png";
-		}
-		else if (image == Image.Custom) {
-			return customLink.get();
 		}
 		return "";
 	}

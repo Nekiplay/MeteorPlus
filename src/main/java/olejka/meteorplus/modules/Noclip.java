@@ -11,8 +11,6 @@ public class Noclip extends Module {
 		super(MeteorPlus.CATEGORY, "Noclip", "Noclip.");
 	}
 
-
-
 	@EventHandler
 	private void onCollision(CollisionShapeEvent event) {
 		if (event.type != CollisionShapeEvent.CollisionType.BLOCK || mc.player == null) return;
