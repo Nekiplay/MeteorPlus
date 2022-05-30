@@ -2,6 +2,7 @@ package olejka.meteorplus.hud;
 
 import meteordevelopment.meteorclient.renderer.GL;
 import meteordevelopment.meteorclient.renderer.Renderer2D;
+import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.DoubleSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -25,11 +26,20 @@ public class MeteorPlusLogoHud extends HudElement {
 		.build()
 	);
 
+	private final Setting<Boolean> invert = sgGeneral.add(new BoolSetting.Builder()
+		.name("invert")
+		.description("Invert the logo.")
+		.defaultValue(false)
+		.build()
+	);
+
 	private final Identifier TEXTURE = new Identifier("plus", "logo.png");
+
 
 	public MeteorPlusLogoHud(HUD hud) {
 		super(hud, "MeteorPlusLogo", "Shows the Meteor Plus logo in the HUD.");
 	}
+
 
 	@Override
 	public void update(HudRenderer renderer) {
@@ -40,7 +50,11 @@ public class MeteorPlusLogoHud extends HudElement {
 	public void render(HudRenderer renderer) {
 		GL.bindTexture(TEXTURE);
 		Renderer2D.TEXTURE.begin();
-		Renderer2D.TEXTURE.texQuad(box.getX(), box.getY(), box.width, box.height, WHITE);
+		if (!invert.get()) {
+			Renderer2D.TEXTURE.texQuad(box.getX(), box.getY(), box.width, box.height, WHITE);
+		} else {
+			Renderer2D.TEXTURE.texQuad(box.getX()+box.width, box.getY(), -box.width, box.height, WHITE);
+		}
 		Renderer2D.TEXTURE.render(null);
 	}
 }
