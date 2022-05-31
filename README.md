@@ -12,7 +12,7 @@
 	<a href="https://github.com/Nekiplay/MeteorPlus/commits/main"><img src="https://img.shields.io/github/last-commit/Nekiplay/MeteorPlus" alt="GitHub last commit"/></a>
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.18.2-lightgreen" alt="Minecraft version"/></a>
 	<br/><br/>
-  	<a href="https://discord.gg/syHrs2ePyQ"><img src="https://invidget.switchblade.xyz/syHrs2ePyQ"></a>
+  	<a href="https://discord.gg/syHrs2ePyQ"><img src="https://invidget.switchblade.xyz/syHrs2ePyQ" alt="Discord server"></a>
 	<br/><br/>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
 </div>
