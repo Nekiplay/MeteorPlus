@@ -1,6 +1,5 @@
 package olejka.meteorplus.hud;
 
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.renderer.GL;
 import meteordevelopment.meteorclient.renderer.Renderer2D;
 import meteordevelopment.meteorclient.settings.*;
@@ -129,7 +128,7 @@ public class AnimeHud extends HudElement  {
 				var img = NativeImage.read(Http.get(url).sendInputStream());
 				mc.getTextureManager().registerTexture(TEXID, new NativeImageBackedTexture(img));
 				empty = false;
-			} catch (Exception e) {
+			} catch (Exception ignored) {
 
 			} finally {
 				locked = false;
