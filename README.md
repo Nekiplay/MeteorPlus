@@ -1,6 +1,6 @@
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
-	<h1>Meteor Plus</h1>
+	<h1>MeteorPlus</h1>
 	<p>
 		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
 	</p>
@@ -42,3 +42,10 @@
 
 ### Commands:
 - InventoryProfile (save and load items)
+
+# Installation Guide
+<ol>
+	<li>Install <a href="https://www.minecraft.net/">minecraft</a> 1.18.2
+	<li>Install latest <a href="https://fabricmc.net/">fabric</a> and <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api">fabric api</a>
+	<li>Install latest <a href="https://github.com/MeteorDevelopment/meteor-client/releases">meteor client dev build</a> and <a href="https://meteorclient.com/download?devBuild=latest">MeteorPlus</a> in the mods folder
+</ol>
