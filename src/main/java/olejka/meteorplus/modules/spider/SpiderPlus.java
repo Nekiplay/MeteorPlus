@@ -21,7 +21,7 @@ public class SpiderPlus extends Module {
 
 	public final Setting<SpiderModes> spiderMode = sgGeneral.add(new EnumSetting.Builder<SpiderModes>()
 		.name("mode")
-		.description("The method of applying speed.")
+		.description("The method of applying spider.")
 		.defaultValue(SpiderModes.Matrix)
 		.onModuleActivated(spiderModesSetting -> onSpiderModeChanged(spiderModesSetting.get()))
 		.onChanged(this::onSpiderModeChanged)

@@ -134,9 +134,9 @@ public class KillAuraPlus extends Module {
 
 	// Delay
 
-	private final Setting<Boolean> itemcooldown = sgGeneral.add(new BoolSetting.Builder()
+	private final Setting<Boolean> itemcooldown = sgDelay.add(new BoolSetting.Builder()
 		.name("item-cooldown")
-		.description("check cooldown")
+		.description("check item cooldown")
 		.defaultValue(false)
 		.build()
 	);
@@ -145,6 +145,7 @@ public class KillAuraPlus extends Module {
 	private final Setting<Boolean> smartDelay = sgDelay.add(new BoolSetting.Builder()
 		.name("smart-delay")
 		.description("Uses the vanilla cooldown to attack entities.")
+		.visible(() -> !itemcooldown.get())
 		.defaultValue(true)
 		.build()
 	);
@@ -285,6 +286,8 @@ public class KillAuraPlus extends Module {
 		}
 
 		if (mc.player != null && smartDelay.get()) return mc.player.getAttackCooldownProgress(0.5f) >= 1;
+		if (mc.player != null && itemcooldown.get()) return !mc.player.getItemCooldownManager().isCoolingDown(mc.player.getMainHandStack().getItem());
+
 
 		if (hitDelayTimer > 0) {
 			hitDelayTimer--;
@@ -292,13 +295,9 @@ public class KillAuraPlus extends Module {
 		} else {
 			hitDelayTimer = hitDelay.get();
 			if (randomDelayEnabled.get()) hitDelayTimer += Math.round(Math.random() * randomDelayMax.get());
-			if (itemcooldown.get()) {
-				return !mc.player.getItemCooldownManager().isCoolingDown(mc.player.getMainHandStack().getItem());
-			}
-			else {
-				return true;
-			}
+
 		}
+		return false;
 	}
 
 	private void attack(Entity target) {
@@ -312,17 +311,11 @@ public class KillAuraPlus extends Module {
 		assert mc.player != null;
 		float yaw = mc.player.getYaw();
 		float pitch = mc.player.getPitch();
-		if (revertKnockback.get()) {
-			Rotations.rotate(Rotations.getYaw(target) - 180, Rotations.getPitch(target, Target.Body), null);
-		}
 		if(mc.interactionManager != null) {
 			if (target instanceof LivingEntity livingEntity) {
 				mc.interactionManager.attackEntity(mc.player, target);
 				mc.player.swingHand(Hand.MAIN_HAND);
 			}
-		}
-		if (revertKnockback.get()) {
-			Rotations.rotate(yaw, pitch, null);
 		}
 	}
 
