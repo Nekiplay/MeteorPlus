@@ -17,18 +17,17 @@ import static meteordevelopment.meteorclient.utils.render.color.Color.WHITE;
 public class CustomImageHud extends HudElement {
 	public CustomImageHud(HUD hud) {
 		super(hud, "Custom image", "Custom image hud.");
+		loadImage(link.get());
 	}
 
+	private static final Identifier TEXID = new Identifier("plus", "logo3");
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
 	private final Setting<String> link = sgGeneral.add(new StringSetting.Builder()
 		.name("Link")
 		.description("Image link.")
-		.defaultValue("")
-		.onModuleActivated((a) -> {
-			loadImage(a.get());
-		})
-		.onChanged(this::loadImage)
+		.defaultValue("https://i.ibb.co/khQw7B4/comhiclipartyaiob-removebg-preview.png")
+		.onChanged((a) -> loadImage(a))
 		.build()
 	);
 	private final Setting<Double> imgWidth = sgGeneral.add(new DoubleSetting.Builder()
@@ -39,8 +38,6 @@ public class CustomImageHud extends HudElement {
 		.sliderRange(70, 1000)
 		.build()
 	);
-
-	private static final Identifier TEXID = new Identifier("plus", "logo2");
 
 	private final Setting<Double> imgHeight = sgGeneral.add(new DoubleSetting.Builder()
 		.name("height")
@@ -78,7 +75,10 @@ public class CustomImageHud extends HudElement {
 			return;
 		}
 		if ((onInventory.get() && mc != null && mc.currentScreen != null) || isInEditor()) {
-			if (noChat.get() && !isInEditor() && mc.currentScreen instanceof ChatScreen) return;
+			if (noChat.get() && !isInEditor()) {
+				assert mc != null;
+				if (mc.currentScreen instanceof ChatScreen) return;
+			}
 			GL.bindTexture(TEXID);
 			Renderer2D.TEXTURE.begin();
 			Renderer2D.TEXTURE.texQuad(box.getX(), box.getY(), imgWidth.get(), imgHeight.get(), WHITE);
@@ -95,8 +95,9 @@ public class CustomImageHud extends HudElement {
 	private boolean locked = false;
 	private boolean empty = true;
 	private void loadImage(String url) {
-		if (locked)
+		if (locked) {
 			return;
+		}
 		new Thread(() -> {
 			try {
 				locked = true;
@@ -104,11 +105,10 @@ public class CustomImageHud extends HudElement {
 				mc.getTextureManager().registerTexture(TEXID, new NativeImageBackedTexture(img));
 				empty = false;
 			} catch (Exception ignored) {
-
+				empty = true;
 			} finally {
 				locked = false;
 			}
 		}).start();
 	}
-
 }
