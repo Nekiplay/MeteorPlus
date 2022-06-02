@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.systems.commands.Commands;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.InventoryProfiles;
+import olejka.meteorplus.hud.CustomImageHud;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import olejka.meteorplus.hud.AnimeHud;
 import olejka.meteorplus.modules.*;
@@ -72,6 +73,7 @@ public class MeteorPlus extends MeteorAddon {
 		// Hud
 		LOG.info("MeteorPlus initializing hud...");
 		HUD hud = Systems.get(HUD.class);
+		hud.elements.add(new CustomImageHud(hud));
 		hud.elements.add(new AnimeHud(hud));
 		hud.elements.add(new MeteorPlusLogoHud(hud));
 		LOG.info("MeteorPlus loaded hud");

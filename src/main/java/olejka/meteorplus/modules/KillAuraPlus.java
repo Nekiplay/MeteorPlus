@@ -295,9 +295,8 @@ public class KillAuraPlus extends Module {
 		} else {
 			hitDelayTimer = hitDelay.get();
 			if (randomDelayEnabled.get()) hitDelayTimer += Math.round(Math.random() * randomDelayMax.get());
-
+			return true;
 		}
-		return false;
 	}
 
 	private void attack(Entity target) {
