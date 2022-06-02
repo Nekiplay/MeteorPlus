@@ -31,6 +31,7 @@ public class Matrix extends SpiderMode {
 		start = false;
 		modify = false;
 
+		assert mc.player != null;
 		startY = mc.player.getPos().y;
 	}
 
@@ -38,18 +39,13 @@ public class Matrix extends SpiderMode {
 		String yString = String.valueOf(height);
 		yString = yString.substring(yString.indexOf("."));
 		double y = Double.parseDouble(yString);
-		if (y >= min && y <= max) {
-			return true;
-		} else {
-			return false;
-		}
+		return y >= min && y <= max;
 	}
 
 	private double RGround(double height) {
 		String yString = String.valueOf(height);
 		yString = yString.substring(yString.indexOf("."));
-		double y = Double.parseDouble(yString);
-		return y;
+		return Double.parseDouble(yString);
 	}
 
 	@Override
@@ -65,6 +61,7 @@ public class Matrix extends SpiderMode {
 	private void work(Packet<?> packet) {
 		if (modify) {
 			if (packet instanceof PlayerMoveC2SPacket move) {
+				assert mc.player != null;
 				double y = mc.player.getY();
 				y = move.getY(y);
 
@@ -78,6 +75,7 @@ public class Matrix extends SpiderMode {
 				}
 			}
 		} else {
+			assert mc.player != null;
 			if (mc.player.isOnGround() && block) {
 				block = false;
 				startY = mc.player.getPos().y;
@@ -104,6 +102,7 @@ public class Matrix extends SpiderMode {
 	@Override
 	public void onTickEventPost(TickEvent.Post event) {
 		ClientPlayerEntity player = mc.player;
+		assert player != null;
 		Vec3d pl_velocity = player.getVelocity();
 		Vec3d pos = player.getPos();
 		ClientPlayNetworkHandler h = mc.getNetworkHandler();

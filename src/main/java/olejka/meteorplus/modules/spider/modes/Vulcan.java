@@ -32,6 +32,7 @@ public class Vulcan extends SpiderMode {
 		start = false;
 		modify = false;
 
+		assert mc.player != null;
 		startY = mc.player.getPos().y;
 	}
 
@@ -39,18 +40,13 @@ public class Vulcan extends SpiderMode {
 		String yString = String.valueOf(height);
 		yString = yString.substring(yString.indexOf("."));
 		double y = Double.parseDouble(yString);
-		if (y >= min && y <= max) {
-			return true;
-		} else {
-			return false;
-		}
+		return y >= min && y <= max;
 	}
 
 	private double RGround(double height) {
 		String yString = String.valueOf(height);
 		yString = yString.substring(yString.indexOf("."));
-		double y = Double.parseDouble(yString);
-		return y;
+		return Double.parseDouble(yString);
 	}
 
 	@Override
@@ -66,6 +62,7 @@ public class Vulcan extends SpiderMode {
 	private void work(Packet<?> packet) {
 		if (modify) {
 			if (packet instanceof PlayerMoveC2SPacket move) {
+				assert mc.player != null;
 				double y = mc.player.getY();
 				y = move.getY(y);
 
@@ -79,6 +76,7 @@ public class Vulcan extends SpiderMode {
 				}
 			}
 		} else {
+			assert mc.player != null;
 			if (mc.player.isOnGround() && block) {
 				block = false;
 				startY = mc.player.getPos().y;
@@ -93,6 +91,7 @@ public class Vulcan extends SpiderMode {
 	public void onTickEventPre(TickEvent.Pre event) {
 		if (modify) {
 			ClientPlayerEntity player = mc.player;
+			assert player != null;
 			double y = player.getPos().y;
 			if (lastY == y && tick > 1) {
 				block = true;
@@ -105,14 +104,13 @@ public class Vulcan extends SpiderMode {
 	private TypeStarted getType(double startY) {
 		TypeStarted temp = TypeStarted.Air;
 		double y = RGround(startY);
+		assert mc.player != null;
 		if (mc.player.isOnGround()) {
 			temp = TypeStarted.Block;
+			assert mc.world != null;
 			if (mc.world.getBlockState(mc.player.getBlockPos()).getBlock() instanceof SlabBlock) {
 				temp = TypeStarted.Slab;
 			}
-		}
-		else {
-			temp = TypeStarted.Air;
 		}
 		return temp;
 	}
@@ -129,6 +127,7 @@ public class Vulcan extends SpiderMode {
 	@Override
 	public void onTickEventPost(TickEvent.Post event) {
 		ClientPlayerEntity player = mc.player;
+		assert player != null;
 		Vec3d pl_velocity = player.getVelocity();
 		Vec3d pos = player.getPos();
 		ClientPlayNetworkHandler h = mc.getNetworkHandler();
