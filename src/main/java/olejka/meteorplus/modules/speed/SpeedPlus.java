@@ -89,6 +89,7 @@ public class SpeedPlus extends Module {
 	private void onSpeedModeChanged(SpeedModes mode) {
 		switch (mode) {
 			case MatrixExploit:   currentMode = new MatrixExploit(); break;
+			case Matrix6_7_0:   currentMode = new Matrix6_7_0(); break;
 			case Matrix:   currentMode = new Matrix(); break;
 			case AACHop438:   currentMode = new AACHop438(); break;
 			case Vulcan:   currentMode = new Vulcan(); break;

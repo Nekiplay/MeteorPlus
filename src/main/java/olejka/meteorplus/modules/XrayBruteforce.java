@@ -546,7 +546,7 @@ public class XrayBruteforce extends Module {
 		return false;
 	}
 
-    private static final List<RenderOre> ores = new ArrayList<>();
+    public static final List<RenderOre> ores = new ArrayList<>();
     private RenderOre get(BlockPos pos) {
 		synchronized (ores) {
 			for (RenderOre cur : ores) {

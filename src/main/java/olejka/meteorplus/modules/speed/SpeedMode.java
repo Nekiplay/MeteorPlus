@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.effect.StatusEffects;
 import olejka.meteorplus.modules.spider.SpiderModes;
 import olejka.meteorplus.modules.spider.SpiderPlus;
 
@@ -28,4 +29,17 @@ public class SpeedMode {
 
 	public void onActivate() {}
 	public void onDeactivate() {}
+
+	protected double getDefaultSpeed() {
+		double defaultSpeed = 0.2873;
+		if (mc.player.hasStatusEffect(StatusEffects.SPEED)) {
+			int amplifier = mc.player.getStatusEffect(StatusEffects.SPEED).getAmplifier();
+			defaultSpeed *= 1.0 + 0.2 * (amplifier + 1);
+		}
+		if (mc.player.hasStatusEffect(StatusEffects.SLOWNESS)) {
+			int amplifier = mc.player.getStatusEffect(StatusEffects.SLOWNESS).getAmplifier();
+			defaultSpeed /= 1.0 + 0.2 * (amplifier + 1);
+		}
+		return defaultSpeed;
+	}
 }
