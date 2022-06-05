@@ -1,6 +1,10 @@
 package olejka.meteorplus.utils;
 
+import meteordevelopment.meteorclient.utils.misc.Vec3;
+import meteordevelopment.meteorclient.utils.player.Rotations;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -14,6 +18,47 @@ public class RotationUtils {
 		return new Vec3d(player.getX(),
 			player.getY() + player.getEyeHeight(player.getPose()),
 			player.getZ());
+	}
+
+	public static float getAngleDifference(final float a, final float b) {
+		return ((((a - b) % 360F) + 540F) % 360F) - 180F;
+	}
+
+	public static double getRotationDifference(final Rotation a, final Rotation b) {
+		return Math.hypot(getAngleDifference(a.yaw, b.yaw), a.getPitch() - b.getPitch());
+	}
+
+	public static Rotation toRotation(final Vec3 vec, final boolean predict) {
+		final Vec3 eyesPos = new Vec3(mc.player.getX(), mc.player.getBoundingBox().minY +
+			mc.player.getEyeHeight(mc.player.getPose()), mc.player.getZ());
+
+		if(predict) {
+			if(mc.player.isOnGround()) {
+				eyesPos.add(mc.player.getVelocity().x, 0.0, mc.player.getVelocity().z);
+			}else eyesPos.add(mc.player.getVelocity().x, mc.player.getVelocity().y, mc.player.getVelocity().z);
+		}
+
+		final double diffX = vec.x - eyesPos.x;
+		final double diffY = vec.y - eyesPos.y;
+		final double diffZ = vec.z - eyesPos.z;
+
+		return new Rotation(
+			(float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F,
+			(float) (-Math.toDegrees(Math.atan2(diffY, Math.sqrt(diffX * diffX + diffZ * diffZ)))));
+	}
+
+	public static Vec3 getCenter(final Box bb) {
+		return new Vec3(bb.minX + (bb.maxX - bb.minX) * 0.5, bb.minY + (bb.maxY - bb.minY) * 0.5, bb.minZ + (bb.maxZ - bb.minZ) * 0.5);
+	}
+
+	public static Rotation limitAngleChange(final Rotation currentRotation, final Rotation targetRotation, final float turnSpeed) {
+		final float yawDifference = getAngleDifference(targetRotation.getYaw(), currentRotation.getYaw());
+		final float pitchDifference = getAngleDifference(targetRotation.getPitch(), currentRotation.getPitch());
+
+		return new Rotation(
+			currentRotation.getYaw() + (yawDifference > turnSpeed ? turnSpeed : Math.max(yawDifference, -turnSpeed)),
+			currentRotation.getPitch() + (pitchDifference > turnSpeed ? turnSpeed : Math.max(pitchDifference, -turnSpeed)
+			));
 	}
 
 	public static Rotation getNeededRotations(Vec3d vec)
@@ -56,6 +101,12 @@ public class RotationUtils {
 		{
 			this.yaw = MathHelper.wrapDegrees(yaw);
 			this.pitch = MathHelper.wrapDegrees(pitch);
+		}
+
+		public Rotation(double yaw, double pitch)
+		{
+			this.yaw = MathHelper.wrapDegrees((float)yaw);
+			this.pitch = MathHelper.wrapDegrees((float)pitch);
 		}
 
 		public float getYaw()

@@ -45,6 +45,25 @@ public class KillAuraPlus extends Module {
 	private final SettingGroup sgTargeting = settings.createGroup("Targeting");
 	private final SettingGroup sgDelay = settings.createGroup("Delay");
 
+
+	public enum RotationSmooth
+	{
+		None,
+		Linear,
+		Quad,
+		Sine,
+		QuadSine
+	}
+
+	public enum RotationMode
+	{
+		None,
+		OnHit,
+		Instant,
+		LiquidBounce,
+		SmoothCenter,
+	}
+
 	// General
 
 	private final Setting<Boolean> randomTeleport = sgGeneral.add(new BoolSetting.Builder()
@@ -64,7 +83,32 @@ public class KillAuraPlus extends Module {
 	private final Setting<RotationMode> rotation = sgGeneral.add(new EnumSetting.Builder<RotationMode>()
 		.name("rotate")
 		.description("Determines when you should rotate towards the target.")
-		.defaultValue(RotationMode.Always)
+		.defaultValue(RotationMode.LiquidBounce)
+		.build()
+	);
+
+	private final Setting<RotationSmooth> rotationSmooth = sgGeneral.add(new EnumSetting.Builder<RotationSmooth>()
+		.name("rotate")
+		.description("Determines when you should rotate towards the target.")
+		.defaultValue(RotationSmooth.Linear)
+		.build()
+	);
+
+	private final Setting<Double> maxRotationSpeed = sgGeneral.add(new DoubleSetting.Builder()
+		.name("max-rotation-speed")
+		.description("Speed.")
+		.defaultValue(180)
+		.range(1, 180)
+		.sliderRange(1, 180)
+		.build()
+	);
+
+	private final Setting<Double> minRotationSpeed = sgGeneral.add(new DoubleSetting.Builder()
+		.name("min-rotation-speed")
+		.description("Speed.")
+		.defaultValue(180)
+		.range(1, 180)
+		.sliderRange(1, 180)
 		.build()
 	);
 
@@ -85,22 +129,24 @@ public class KillAuraPlus extends Module {
 		.build()
 	);
 
+	private final Setting<Double> fov = sgTargeting.add(new DoubleSetting.Builder()
+		.name("Fov")
+		.description("The fov the entity can be to attack it.")
+		.defaultValue(360)
+		.min(30)
+		.max(360)
+		.sliderMax(360)
+		.sliderMin(30)
+		.sliderRange(30, 360)
+		.build()
+	);
+
 	private final Setting<Double> range = sgTargeting.add(new DoubleSetting.Builder()
 		.name("range")
 		.description("The maximum range the entity can be to attack it.")
 		.defaultValue(4.5)
 		.min(0)
 		.sliderMax(6)
-		.build()
-	);
-
-	private final Setting<Double> fov = sgTargeting.add(new DoubleSetting.Builder()
-		.name("Fov")
-		.description("The maximum range the entity can be to attack it.")
-		.defaultValue(360)
-		.min(30)
-		.max(360)
-		.sliderMax(360)
 		.build()
 	);
 
@@ -213,7 +259,11 @@ public class KillAuraPlus extends Module {
 					e.getBoundingBox().getCenter()) <= fov.get() / 2.0)
 					.toList();
 
-			if (rotation.get() == RotationMode.Always) rotate(primary, null);
+			if (rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant)
+				rotate(primary, null);
+			else if (rotation.get() == RotationMode.Instant) {
+				Rotations.rotate(Rotations.getYaw(primary), Rotations.getPitch(primary, Target.Body), null);
+			}
 
 			if (primary instanceof PlayerEntity primaryPlayer) {
 				if (primaryPlayer.isBlocking()) {
@@ -314,8 +364,6 @@ public class KillAuraPlus extends Module {
 
 	private void hitEntity(Entity target) {
 		assert mc.player != null;
-		float yaw = mc.player.getYaw();
-		float pitch = mc.player.getPitch();
 		if(mc.interactionManager != null) {
 			if (target instanceof LivingEntity livingEntity) {
 				mc.interactionManager.attackEntity(mc.player, target);
@@ -324,8 +372,42 @@ public class KillAuraPlus extends Module {
 		}
 	}
 
+	private RotationUtils.Rotation calculateSpeed(Entity target) {
+		var diffAngle = RotationUtils.getRotationDifference(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)));
+		if (diffAngle <0) diffAngle = -diffAngle;
+		if (diffAngle> 180.0) diffAngle = 180.0;
+
+		double speeds = 180;
+
+		if (rotationSmooth.get() == RotationSmooth.Linear) {
+			speeds = (diffAngle / 180 * maxRotationSpeed.get() + (1 - diffAngle / 180) * minRotationSpeed.get());
+		}
+		else if (rotationSmooth.get() == RotationSmooth.Quad) {
+			speeds = Math.pow((diffAngle / 180), 2.0) * maxRotationSpeed.get() + (1 - Math.pow((diffAngle / 180), 2.0)) * minRotationSpeed.get();
+		}
+		else if (rotationSmooth.get() == RotationSmooth.Sine) {
+			speeds = (-Math.cos(diffAngle / 180 * Math.PI) * 0.5 + 0.5) * maxRotationSpeed.get() + (Math.cos((diffAngle / 180 * Math.PI) * 0.5 + 0.5) * 0.5 + 0.5) * minRotationSpeed.get();
+		}
+		else if (rotationSmooth.get() == RotationSmooth.QuadSine) {
+			speeds = Math.pow(-Math.cos(diffAngle / 180 * Math.PI) * 0.5 + 0.5, 2.0) * maxRotationSpeed.get() + (1 - Math.pow(-Math.cos(diffAngle / 180 * Math.PI) * 0.5 + 0.5, 2.0)) * minRotationSpeed.get();
+		}
+		else {
+			speeds = 180;
+		}
+
+		if (rotation.get() == RotationMode.LiquidBounce) {
+			var rotation = RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float)(Math.random() * (maxRotationSpeed.get() - minRotationSpeed.get()) + minRotationSpeed.get()));
+			return rotation;
+		}
+		else {
+			var rotation = RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) speeds);
+			return rotation;
+		}
+	}
+
 	private void rotate(Entity target, Runnable callback) {
-		Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body), callback);
+		var yaw = calculateSpeed(target);
+		Rotations.rotate(yaw.getYaw(), yaw.getPitch(), callback);
 	}
 
 	public Entity getTarget() {
@@ -337,11 +419,5 @@ public class KillAuraPlus extends Module {
 	public String getInfoString() {
 		if (!targets.isEmpty()) EntityUtils.getName(getTarget());
 		return null;
-	}
-
-	public enum RotationMode {
-		Always,
-		OnHit,
-		None
 	}
 }
