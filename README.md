@@ -44,8 +44,6 @@
 - InventoryProfile (save and load items)
 
 # Installation Guide
-<ol>
-	<li>Install <a href="https://www.minecraft.net/">minecraft</a> 1.18.2
-	<li>Install latest <a href="https://fabricmc.net/">fabric</a> and <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api">fabric api</a>
-	<li>Install latest <a href="https://meteorclient.com/download?devBuild=latest">meteor client dev build</a> and <a href="https://github.com/Nekiplay/MeteorPlus/releases">MeteorPlus</a> in the mods folder
-</ol>
+1. Install [minecraft](https://www.minecraft.net/) 1.18.2
+0. Install latest [fabric](https://fabricmc.net/) and [fabric api](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
+0. Install latest [meteor client dev build](https://meteorclient.com/download?devBuild=latest) and [MeteorPlus](https://github.com/Nekiplay/MeteorPlus/releases) in the mods folder
