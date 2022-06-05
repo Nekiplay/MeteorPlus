@@ -16,7 +16,7 @@
 		"discord": "https://discord.gg/syHrs2ePyQ"
   },
 
-	"license": "Apache License 2.0",
+	"license": "GNU AGPLv3",
   "icon": "assets/plus/icon.png",
   "environment": "client",
   "entrypoints": {
