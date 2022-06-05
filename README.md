@@ -47,5 +47,5 @@
 <ol>
 	<li>Install <a href="https://www.minecraft.net/">minecraft</a> 1.18.2
 	<li>Install latest <a href="https://fabricmc.net/">fabric</a> and <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api">fabric api</a>
-	<li>Install latest <a href="https://github.com/MeteorDevelopment/meteor-client/releases">meteor client dev build</a> and <a href="https://meteorclient.com/download?devBuild=latest">MeteorPlus</a> in the mods folder
+	<li>Install latest <a href="https://meteorclient.com/download?devBuild=latest">meteor client dev build</a> and <a href="https://github.com/Nekiplay/MeteorPlus/releases">MeteorPlus</a> in the mods folder
 </ol>
