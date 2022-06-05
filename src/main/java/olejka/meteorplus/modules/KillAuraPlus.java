@@ -385,14 +385,17 @@ public class KillAuraPlus extends Module {
 		else if (rotationSmooth.get() == RotationSmooth.Quad) {
 			speeds = Math.pow((diffAngle / 180), 2.0) * maxRotationSpeed.get() + (1 - Math.pow((diffAngle / 180), 2.0)) * minRotationSpeed.get();
 		}
-		else if (rotationSmooth.get() == RotationSmooth.Sine) {
-			speeds = (-Math.cos(diffAngle / 180 * Math.PI) * 0.5 + 0.5) * maxRotationSpeed.get() + (Math.cos((diffAngle / 180 * Math.PI) * 0.5 + 0.5) * 0.5 + 0.5) * minRotationSpeed.get();
-		}
-		else if (rotationSmooth.get() == RotationSmooth.QuadSine) {
-			speeds = Math.pow(-Math.cos(diffAngle / 180 * Math.PI) * 0.5 + 0.5, 2.0) * maxRotationSpeed.get() + (1 - Math.pow(-Math.cos(diffAngle / 180 * Math.PI) * 0.5 + 0.5, 2.0)) * minRotationSpeed.get();
-		}
 		else {
-			speeds = 180;
+			final double v = -Math.cos(diffAngle / 180 * Math.PI) * 0.5 + 0.5;
+			if (rotationSmooth.get() == RotationSmooth.Sine) {
+				speeds = v * maxRotationSpeed.get() + (Math.cos((diffAngle / 180 * Math.PI) * 0.5 + 0.5) * 0.5 + 0.5) * minRotationSpeed.get();
+			}
+			else if (rotationSmooth.get() == RotationSmooth.QuadSine) {
+				speeds = Math.pow(v, 2.0) * maxRotationSpeed.get() + (1 - Math.pow(v, 2.0)) * minRotationSpeed.get();
+			}
+			else {
+				speeds = 180;
+			}
 		}
 
 		if (rotation.get() == RotationMode.LiquidBounce) {
