@@ -20,6 +20,7 @@ public class SpeedMode {
 		this.type = type;
 	}
 
+	public void onReceivePacket(PacketEvent.Receive event) {}
 	public void onSendPacket(PacketEvent.Send event) {}
 	public void onSentPacket(PacketEvent.Sent event) {}
 	public void onPlayerMoveEvent(PlayerMoveEvent event) {}

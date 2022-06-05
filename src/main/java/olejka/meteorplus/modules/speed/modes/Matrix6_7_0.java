@@ -1,9 +1,11 @@
 package olejka.meteorplus.modules.speed.modes;
 
 import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixininterface.IVec3d;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import olejka.meteorplus.modules.speed.SpeedMode;
 import olejka.meteorplus.modules.speed.SpeedModes;
 import olejka.meteorplus.utils.MovementUtils;
@@ -21,13 +23,21 @@ public class Matrix6_7_0 extends SpeedMode {
 	}
 
 	@Override
-	public void onPlayerMoveEvent(PlayerMoveEvent event) {
+	public void onTickEventPre(TickEvent.Pre event) {
+		work();
+	}
+	@Override
+	public void onTickEventPost(TickEvent.Post event) {
 		//work();
 	}
 
-	@Override
-	public void onTickEventPre(TickEvent.Pre event) {
-		work();
+	public void onReceivePacket(PacketEvent.Receive event) {
+		if (event.packet instanceof EntityVelocityUpdateS2CPacket velocity) {
+			if (mc.player != null && mc.world != null && mc.world.getEntityById(velocity.getId()) != null) {
+				if (mc.player == mc.world.getEntityById(velocity.getId()))
+					noVelocityY = 10;
+			}
+		}
 	}
 
 	private void work() {
@@ -38,7 +48,6 @@ public class Matrix6_7_0 extends SpeedMode {
 			mc.player.getVelocity().add(0, -0.0094001145141919810, 0);
 		}
 		if (!mc.player.isOnGround() && noVelocityY < 8) {
-			//mc.player.input.jumping = !mc.options.jumpKey.isPressed();
 			if (MovementUtils.getSpeed() < 0.2177 && noVelocityY < 8) {
 				MovementUtils.strafe(0.2177f);
 			}

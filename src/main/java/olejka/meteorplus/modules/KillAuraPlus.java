@@ -30,6 +30,7 @@ import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.world.GameMode;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.utils.RotationUtils;
 
 
 import java.util.ArrayList;
@@ -93,6 +94,16 @@ public class KillAuraPlus extends Module {
 		.build()
 	);
 
+	private final Setting<Double> fov = sgTargeting.add(new DoubleSetting.Builder()
+		.name("Fov")
+		.description("The maximum range the entity can be to attack it.")
+		.defaultValue(360)
+		.min(30)
+		.max(360)
+		.sliderMax(360)
+		.build()
+	);
+
 	private final Setting<Double> wallsRange = sgTargeting.add(new DoubleSetting.Builder()
 		.name("walls-range")
 		.description("The maximum range the entity can be attacked through walls.")
@@ -134,18 +145,9 @@ public class KillAuraPlus extends Module {
 
 	// Delay
 
-	private final Setting<Boolean> itemcooldown = sgDelay.add(new BoolSetting.Builder()
-		.name("item-cooldown")
-		.description("check item cooldown")
-		.defaultValue(false)
-		.build()
-	);
-
-
 	private final Setting<Boolean> smartDelay = sgDelay.add(new BoolSetting.Builder()
 		.name("smart-delay")
 		.description("Uses the vanilla cooldown to attack entities.")
-		.visible(() -> !itemcooldown.get())
 		.defaultValue(true)
 		.build()
 	);
@@ -188,7 +190,6 @@ public class KillAuraPlus extends Module {
 
 	private final List<Entity> targets = new ArrayList<>();
 	private int hitDelayTimer, switchTimer;
-	private boolean wasPathing;
 
 	@Override
 	public void onDeactivate() {
@@ -205,6 +206,13 @@ public class KillAuraPlus extends Module {
 		if (targets.size() > 0) {
 			Entity primary = targets.get(0);
 
+			List<Entity> targets2 = targets;
+
+			if(fov.get() < 360.0)
+				targets2 = targets.stream().filter(e -> RotationUtils.getAngleToLookVec(
+					e.getBoundingBox().getCenter()) <= fov.get() / 2.0)
+					.toList();
+
 			if (rotation.get() == RotationMode.Always) rotate(primary, null);
 
 			if (primary instanceof PlayerEntity primaryPlayer) {
@@ -217,7 +225,7 @@ public class KillAuraPlus extends Module {
 						InvUtils.swap(axeResult.slot(), false);
 						if (itemInHand(mc.player.getInventory().getStack(axeResult.slot()).getItem())) return;
 					}
-					targets.forEach(this::attack);
+					targets2.forEach(this::attack);
 				} else {
 					FindItemResult swordResult = InvUtils.findInHotbar(itemStack -> {
 						Item item = itemStack.getItem();
@@ -227,7 +235,7 @@ public class KillAuraPlus extends Module {
 						InvUtils.swap(swordResult.slot(), false);
 						if (itemInHand(mc.player.getInventory().getStack(swordResult.slot()).getItem())) return;
 					}
-					if (delayCheck()) targets.forEach(this::attack);
+					if (delayCheck()) targets2.forEach(this::attack);
 
 					if (randomTeleport.get()) {
 						mc.player.setPosition(primary.getX() + randomOffset(), primary.getY(), primary.getZ() + randomOffset());
@@ -235,7 +243,7 @@ public class KillAuraPlus extends Module {
 				}
 			}
 			else {
-				if (delayCheck()) targets.forEach(this::attack);
+				if (delayCheck()) targets2.forEach(this::attack);
 			}
 		}
 	}
@@ -286,8 +294,6 @@ public class KillAuraPlus extends Module {
 		}
 
 		if (mc.player != null && smartDelay.get()) return mc.player.getAttackCooldownProgress(0.5f) >= 1;
-		if (mc.player != null && itemcooldown.get()) return !mc.player.getItemCooldownManager().isCoolingDown(mc.player.getMainHandStack().getItem());
-
 
 		if (hitDelayTimer > 0) {
 			hitDelayTimer--;

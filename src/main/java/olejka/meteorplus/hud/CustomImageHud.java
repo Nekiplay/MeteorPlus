@@ -30,6 +30,7 @@ public class CustomImageHud extends HudElement {
 		.onChanged((a) -> loadImage(a))
 		.build()
 	);
+
 	private final Setting<Double> imgWidth = sgGeneral.add(new DoubleSetting.Builder()
 		.name("width")
 		.description("The scale of the image.")
@@ -45,6 +46,13 @@ public class CustomImageHud extends HudElement {
 		.defaultValue(100)
 		.min(10)
 		.sliderRange(70, 1000)
+		.build()
+	);
+
+	private final Setting<Boolean> invert = sgGeneral.add(new BoolSetting.Builder()
+		.name("invert")
+		.description("Invert the logo.")
+		.defaultValue(false)
 		.build()
 	);
 
@@ -79,15 +87,23 @@ public class CustomImageHud extends HudElement {
 				assert mc != null;
 				if (mc.currentScreen instanceof ChatScreen) return;
 			}
+			renderImage(renderer);
+		}
+		else if (!onInventory.get()) {
+			renderImage(renderer);
+		}
+	}
+
+	private void renderImage(HudRenderer renderer) {
+		if (!invert.get()) {
 			GL.bindTexture(TEXID);
 			Renderer2D.TEXTURE.begin();
 			Renderer2D.TEXTURE.texQuad(box.getX(), box.getY(), imgWidth.get(), imgHeight.get(), WHITE);
 			Renderer2D.TEXTURE.render(null);
-		}
-		else if (!onInventory.get()) {
+		} else {
 			GL.bindTexture(TEXID);
 			Renderer2D.TEXTURE.begin();
-			Renderer2D.TEXTURE.texQuad(box.getX(), box.getY(), imgWidth.get(), imgHeight.get(), WHITE);
+			Renderer2D.TEXTURE.texQuad(box.getX()+box.width, box.getY(), -imgWidth.get(), imgHeight.get(), WHITE);
 			Renderer2D.TEXTURE.render(null);
 		}
 	}
