@@ -31,7 +31,7 @@
 - Ghost block fixer
 - Speed Plus (Matrix, ACC, Vulcan bypass)
 - Spider Plus (Matrix, Vulcan bypass)
-- Jesus Plus (Matrix bypass)
+- Jesus Plus (Matrix, Vulcan bypass)
 - KillAura Plus (Shield Breaker KillAura)
 - Safe mine (Prevents player from lava)
 - X-Ray bruteforce
