@@ -98,8 +98,9 @@ public class KillAuraPlus extends Module {
 		.name("max-rotation-speed")
 		.description("Speed.")
 		.defaultValue(180)
-		.range(1, 180)
-		.sliderRange(1, 180)
+		.range(0, 180)
+		.sliderRange(0, 180)
+		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant)
 		.build()
 	);
 
@@ -107,8 +108,9 @@ public class KillAuraPlus extends Module {
 		.name("min-rotation-speed")
 		.description("Speed.")
 		.defaultValue(180)
-		.range(1, 180)
-		.sliderRange(1, 180)
+		.range(0, 180)
+		.sliderRange(0, 180)
+		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant)
 		.build()
 	);
 
@@ -373,7 +375,7 @@ public class KillAuraPlus extends Module {
 	}
 
 	private RotationUtils.Rotation calculateSpeed(Entity target) {
-		var diffAngle = RotationUtils.getRotationDifference(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)));
+		double diffAngle = RotationUtils.getRotationDifference(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)));
 		if (diffAngle <0) diffAngle = -diffAngle;
 		if (diffAngle> 180.0) diffAngle = 180.0;
 
