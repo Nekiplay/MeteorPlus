@@ -13,6 +13,9 @@
 	<br/><br/>
   	<a href="https://discord.gg/syHrs2ePyQ"><img src="https://invidget.switchblade.xyz/syHrs2ePyQ" alt="Discord server"></a>
 	<br/><br/>
+	<br/><br/>
+  	<a href="https://discord.gg/syHrs2ePyQ](https://t.me/meteorclientplus)"><img src="https://t.me/meteorclientplus" alt="Telegram"></a>
+	<br/><br/>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
 </div>
 
