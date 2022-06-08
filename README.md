@@ -42,6 +42,7 @@
 
 ### Commands:
 - InventoryProfile (save and load items)
+- EClip (Elytra Clip Matrix bypass)
 
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net/) 1.18.2
