@@ -751,7 +751,7 @@ public class XrayBruteforce extends Module {
 	private void onRenderOres(Render3DEvent event) {
 		renderOres(event);
 	}
-	private void addCaves() {
+	private void addCaves(Chunk chunk) {
 		if (scanPriority.get() == ScanPriority.Caves) {
 			ArrayList<Block> caf = new ArrayList<Block>();
 			caf.add(Blocks.AIR);
@@ -809,7 +809,7 @@ public class XrayBruteforce extends Module {
 						}
 					}
 				}
-				addCaves();
+				addCaves(chunk);
 				try {
 					Thread.sleep(5);
 				} catch (InterruptedException ignore) {
