@@ -4,6 +4,7 @@ import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.systems.commands.Commands;
 import net.fabricmc.loader.api.FabricLoader;
+import olejka.meteorplus.commands.Eclip;
 import olejka.meteorplus.commands.InventoryProfiles;
 import olejka.meteorplus.hud.CustomImageHud;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
@@ -40,6 +41,7 @@ public class MeteorPlus extends MeteorAddon {
 		//Commands
 		LOG.info("MeteorPlus initializing commands...");
 		Commands commands = Commands.get();
+		commands.add(new Eclip());
 		commands.add(new InventoryProfiles());
 		LOG.info("MeteorPlus loaded commands");
 
