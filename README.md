@@ -1,19 +1,21 @@
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>MeteorPlus</h1>
-	<p>
+	<br>
 		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
-	</p>
+	<br/><br/>
     <a href="https://anticope.ml/pages/MeteorAddons.html"><img src="https://img.shields.io/badge/verified%20addon-Yes-blueviolet" alt="verified addon Yes"/></a>
 	<a href="https://GitHub.com/Nekiplay/MeteorPlus/issues/"><img src="https://img.shields.io/github/issues/Nekiplay/MeteorPlus" alt="GitHub issues"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/stargazers"><img src="https://badgen.net/github/stars/Nekiplay/MeteorPlus" alt="GitHub stars"/></a>
+	<br>
 	<a href="https://github.com/Nekiplay/MeteorPlus/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/MeteorPlus/total" alt="Downloads"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/commits/main"><img src="https://img.shields.io/github/last-commit/Nekiplay/MeteorPlus" alt="GitHub last commit"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus"><img src="https://img.shields.io/github/languages/code-size/Nekiplay/MeteorPlus" alt="Code size"/></a>
+	<br>
 	<a href="https://github.com/Nekiplay/MeteorPlus/graphs/contributors"><img src="https://img.shields.io/github/contributors/Nekiplay/MeteorPlus" alt="Github contributors"/></a>
 	<a href="https://www.codefactor.io/repository/github/nekiplay/meteorplus"><img src="https://www.codefactor.io/repository/github/nekiplay/meteorplus/badge" alt="CodeFactor" /></a>
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.18.2-lightgreen" alt="Minecraft version"/></a>
-	<br/><br/>
+	<br>
   	<a href="https://discord.gg/syHrs2ePyQ"><img src="https://invidget.switchblade.xyz/syHrs2ePyQ" alt="Discord server"></a>
 	<br/><br/>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
