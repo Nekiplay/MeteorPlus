@@ -1,6 +1,7 @@
 package olejka.meteorplus.modules;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import jdk.jfr.Percentage;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixininterface.IPlayerInteractEntityC2SPacket;
@@ -32,12 +33,14 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.utils.Perlin2D;
 import olejka.meteorplus.utils.RaycastUtils;
 import olejka.meteorplus.utils.RotationUtils;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class KillAuraPlus extends Module {
 	public KillAuraPlus() {
@@ -55,7 +58,8 @@ public class KillAuraPlus extends Module {
 		Linear,
 		Quad,
 		Sine,
-		QuadSine
+		QuadSine,
+		Perlin,
 	}
 
 	public enum RotationMode
@@ -107,9 +111,10 @@ public class KillAuraPlus extends Module {
 	);
 
 	private final Setting<RotationSmooth> rotationSmooth = sgGeneral.add(new EnumSetting.Builder<RotationSmooth>()
-		.name("rotate")
+		.name("rotate-smooth")
 		.description("Determines when you should rotate towards the target.")
 		.defaultValue(RotationSmooth.Linear)
+		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
 		.build()
 	);
 
@@ -420,7 +425,7 @@ public class KillAuraPlus extends Module {
 			speeds = (diffAngle / 180 * maxRotationSpeed.get() + (1 - diffAngle / 180) * minRotationSpeed.get());
 		} else if (rotationSmooth.get() == RotationSmooth.Quad) {
 			speeds = Math.pow((diffAngle / 180), 2.0) * maxRotationSpeed.get() + (1 - Math.pow((diffAngle / 180), 2.0)) * minRotationSpeed.get();
-		} else {
+		} else if (rotationSmooth.get() == RotationSmooth.Sine || rotationSmooth.get() == RotationSmooth.QuadSine) {
 			final double v = -Math.cos(diffAngle / 180 * Math.PI) * 0.5 + 0.5;
 			if (rotationSmooth.get() == RotationSmooth.Sine) {
 				speeds = v * maxRotationSpeed.get() + (Math.cos((diffAngle / 180 * Math.PI) * 0.5 + 0.5) * 0.5 + 0.5) * minRotationSpeed.get();
@@ -428,12 +433,23 @@ public class KillAuraPlus extends Module {
 				speeds = Math.pow(v, 2.0) * maxRotationSpeed.get() + (1 - Math.pow(v, 2.0)) * minRotationSpeed.get();
 			}
 		}
+		else if (rotationSmooth.get() == RotationSmooth.Perlin) {
+			speeds = noice(maxRotationSpeed.get().intValue());
+		}
 
 		if (rotation.get() == RotationMode.LiquidBounce) {
 			return RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) (Math.random() * (maxRotationSpeed.get() - minRotationSpeed.get()) + minRotationSpeed.get()));
-		} else {
+		}
+		else {
 			return RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) speeds);
 		}
+	}
+
+	private int noice(int multiply) {
+		Perlin2D perlin = new Perlin2D(new Random().nextInt());
+		float Phi = 0.70710678118f;
+		float noice = perlin.Noise(25, 25) + perlin.Noise((25 - 25) * Phi, (25 + 25) * Phi) * -1;
+		return (int) (noice * multiply);
 	}
 
 	private void rotate(Entity target, Runnable callback) {
