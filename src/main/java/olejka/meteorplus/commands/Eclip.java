@@ -69,7 +69,7 @@ public class Eclip extends Command {
 				ticks++;
 			}
 			case 3: {
-				ElytraUtils.startFly(mc);
+				ElytraUtils.startFly();
 				ticks++;
 			}
 			case 4: {
@@ -78,7 +78,7 @@ public class Eclip extends Command {
 				ticks++;
 			}
 			case 5: {
-				ElytraUtils.startFly(mc);
+				ElytraUtils.startFly();
 				ticks++;
 			}
 			case 6: {

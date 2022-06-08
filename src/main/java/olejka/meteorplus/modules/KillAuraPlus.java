@@ -28,8 +28,11 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.utils.RaycastUtils;
 import olejka.meteorplus.utils.RotationUtils;
 
 
@@ -84,6 +87,14 @@ public class KillAuraPlus extends Module {
 		.name("rotate")
 		.description("Determines when you should rotate towards the target.")
 		.defaultValue(RotationMode.LiquidBounce)
+		.build()
+	);
+
+	private final Setting<Boolean> rayTrace = sgGeneral.add(new BoolSetting.Builder()
+		.name("raytrace")
+		.description("RayTrace attack")
+		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
+		.defaultValue(false)
 		.build()
 	);
 
@@ -375,51 +386,62 @@ public class KillAuraPlus extends Module {
 		assert mc.player != null;
 		if(mc.interactionManager != null) {
 			if (target instanceof LivingEntity livingEntity) {
-				mc.interactionManager.attackEntity(mc.player, target);
-				mc.player.swingHand(Hand.MAIN_HAND);
+				EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch);
+				if (result != null && result.getEntity() != null && rayTrace.get()) {
+					mc.interactionManager.attackEntity(mc.player, target);
+					mc.player.swingHand(Hand.MAIN_HAND);
+				}
+				else if (!rayTrace.get()) {
+					mc.interactionManager.attackEntity(mc.player, target);
+					mc.player.swingHand(Hand.MAIN_HAND);
+				}
 			}
 		}
 	}
 
 	private RotationUtils.Rotation calculateSpeed(Entity target) {
-		double diffAngle = RotationUtils.getRotationDifference(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)));
-		if (diffAngle <0) diffAngle = -diffAngle;
-		if (diffAngle> 180.0) diffAngle = 180.0;
+		RotationUtils.Rotation server = new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch);
+		RotationUtils.Rotation targetRotation = new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body));
+		double diffAngle = RotationUtils.getRotationDifference(server, targetRotation);
+		if (diffAngle < 0) diffAngle = -diffAngle;
+		if (diffAngle > 180.0) diffAngle = 180.0;
 
 		double speeds = 180;
 
 		if (rotationSmooth.get() == RotationSmooth.Linear) {
 			speeds = (diffAngle / 180 * maxRotationSpeed.get() + (1 - diffAngle / 180) * minRotationSpeed.get());
-		}
-		else if (rotationSmooth.get() == RotationSmooth.Quad) {
+		} else if (rotationSmooth.get() == RotationSmooth.Quad) {
 			speeds = Math.pow((diffAngle / 180), 2.0) * maxRotationSpeed.get() + (1 - Math.pow((diffAngle / 180), 2.0)) * minRotationSpeed.get();
-		}
-		else {
+		} else {
 			final double v = -Math.cos(diffAngle / 180 * Math.PI) * 0.5 + 0.5;
 			if (rotationSmooth.get() == RotationSmooth.Sine) {
 				speeds = v * maxRotationSpeed.get() + (Math.cos((diffAngle / 180 * Math.PI) * 0.5 + 0.5) * 0.5 + 0.5) * minRotationSpeed.get();
-			}
-			else if (rotationSmooth.get() == RotationSmooth.QuadSine) {
+			} else if (rotationSmooth.get() == RotationSmooth.QuadSine) {
 				speeds = Math.pow(v, 2.0) * maxRotationSpeed.get() + (1 - Math.pow(v, 2.0)) * minRotationSpeed.get();
-			}
-			else {
+			} else {
 				speeds = 180;
 			}
 		}
 
 		if (rotation.get() == RotationMode.LiquidBounce) {
-			var rotation = RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float)(Math.random() * (maxRotationSpeed.get() - minRotationSpeed.get()) + minRotationSpeed.get()));
+			var rotation = RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) (Math.random() * (maxRotationSpeed.get() - minRotationSpeed.get()) + minRotationSpeed.get()));
 			return rotation;
-		}
-		else {
+		} else {
 			var rotation = RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) speeds);
 			return rotation;
 		}
 	}
 
 	private void rotate(Entity target, Runnable callback) {
-		var yaw = calculateSpeed(target);
-		Rotations.rotate(yaw.getYaw(), yaw.getPitch(), callback);
+		EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch);
+		if (result == null || result.getEntity() == null && rayTrace.get()) {
+			var yaw = calculateSpeed(target);
+			Rotations.rotate(yaw.getYaw(), yaw.getPitch(), callback);
+		}
+		else if (!rayTrace.get()) {
+			var yaw = calculateSpeed(target);
+			Rotations.rotate(yaw.getYaw(), yaw.getPitch(), callback);
+		}
 	}
 
 	public Entity getTarget() {
