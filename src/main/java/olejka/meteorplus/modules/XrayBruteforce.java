@@ -751,7 +751,32 @@ public class XrayBruteforce extends Module {
 	private void onRenderOres(Render3DEvent event) {
 		renderOres(event);
 	}
-
+	private void addCaves() {
+		if (scanPriority.get() == ScanPriority.Caves) {
+			ArrayList<Block> caf = new ArrayList<Block>();
+			caf.add(Blocks.AIR);
+			SChunk s = SChunk.searchChunk(chunk, caf);
+			if (s.blocks != null) {
+				for (SBlock sBlock : s.blocks.values()) {
+					for (Block bp : whblocks.get()) {
+						boolean newGeneration = generationType.get() == GenerationType.New;
+						GenerationBlock generationBlock = GenerationBlock.getGenerationBlock(bp, newGeneration);
+						if (generationBlock != null) {
+							BlockPos pos = new BlockPos(sBlock.x, sBlock.y, sBlock.z);
+							if (sBlock.y >= generationBlock.min_height && sBlock.y <= generationBlock.max_height) {
+								List<BlockPos> post = getBlocks(pos, cavesRange.get(), cavesRangeY.get());
+								for (BlockPos pos2 : post) {
+									if (!isExposedOre(pos2) && pos2.getY() >= generationBlock.min_height && pos2.getY() <= generationBlock.max_height) {
+										addBlock(pos2, false);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	private void addExposedBlocks() {
 		if (mc.world != null) {
 			Iterable<Chunk> chunks = Utils.chunks();
@@ -784,33 +809,10 @@ public class XrayBruteforce extends Module {
 						}
 					}
 				}
-				if (scanPriority.get() == ScanPriority.Caves) {
-					ArrayList<Block> caf = new ArrayList<Block>();
-					caf.add(Blocks.AIR);
-					SChunk s = SChunk.searchChunk(chunk, caf);
-					if (s.blocks != null) {
-						for (SBlock sBlock : s.blocks.values()) {
-							for (Block bp : whblocks.get()) {
-								boolean newGeneration = generationType.get() == GenerationType.New;
-								GenerationBlock generationBlock = GenerationBlock.getGenerationBlock(bp, newGeneration);
-								if (generationBlock != null) {
-									BlockPos pos = new BlockPos(sBlock.x, sBlock.y, sBlock.z);
-									if (sBlock.y >= generationBlock.min_height && sBlock.y <= generationBlock.max_height) {
-										List<BlockPos> post = getBlocks(pos, cavesRange.get(), cavesRangeY.get());
-										for (BlockPos pos2 : post) {
-											if (!isExposedOre(pos2) && pos2.getY() >= generationBlock.min_height && pos2.getY() <= generationBlock.max_height) {
-												addBlock(pos2, false);
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+				addCaves();
 				try {
 					Thread.sleep(5);
-				} catch (InterruptedException e) {
+				} catch (InterruptedException ignore) {
 
 				}
 			}
@@ -1075,7 +1077,7 @@ public class XrayBruteforce extends Module {
 				updateRenderedOres();
 				try {
 					Thread.sleep(25);
-				} catch (InterruptedException e) {
+				} catch (InterruptedException ignore) {
 
 				}
 			}
