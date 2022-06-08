@@ -12,6 +12,7 @@ import meteordevelopment.orbit.EventHandler;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.modules.fly.modes.Damage;
 import olejka.meteorplus.modules.fly.modes.MatrixExploit;
+import olejka.meteorplus.modules.fly.modes.MatrixExploit2;
 
 public class FlyPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -37,6 +38,16 @@ public class FlyPlus extends Module {
 		.max(2500)
 		.sliderRange(0, 2500)
 		.visible(() -> flyMode.get() == FlyModes.MatrixExploit)
+		.build()
+	);
+
+	public final Setting<Double> speed2 = sgGeneral.add(new DoubleSetting.Builder()
+		.name("Speed")
+		.description("Fly speed.")
+		.defaultValue(1.25)
+		.max(2500)
+		.sliderRange(0, 2500)
+		.visible(() -> flyMode.get() == FlyModes.MatrixExploit2)
 		.build()
 	);
 
@@ -122,6 +133,7 @@ public class FlyPlus extends Module {
 
 	private void onFlyModeChanged(FlyModes mode) {
 		switch (mode) {
+			case MatrixExploit2:   currentMode = new MatrixExploit2(); break;
 			case MatrixExploit:   currentMode = new MatrixExploit(); break;
 			case Damage:   currentMode = new Damage(); break;
 		}

@@ -13,6 +13,7 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import olejka.meteorplus.utils.ElytraUtils;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
@@ -68,7 +69,7 @@ public class Eclip extends Command {
 				ticks++;
 			}
 			case 3: {
-				startFly();
+				ElytraUtils.startFly(mc);
 				ticks++;
 			}
 			case 4: {
@@ -77,7 +78,7 @@ public class Eclip extends Command {
 				ticks++;
 			}
 			case 5: {
-				startFly();
+				ElytraUtils.startFly(mc);
 				ticks++;
 			}
 			case 6: {
