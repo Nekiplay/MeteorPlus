@@ -114,6 +114,13 @@ public class KillAuraPlus extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> shieldBreaker = sgGeneral.add(new BoolSetting.Builder()
+		.name("shield-breaker")
+		.description("Break enemy shield by axe")
+		.defaultValue(true)
+		.build()
+	);
+
 	private final Setting<Double> hitChance = sgGeneral.add(new DoubleSetting.Builder()
 		.name("hit-chance")
 		.description("The probability of your hits landing.")
@@ -268,7 +275,7 @@ public class KillAuraPlus extends Module {
 			}
 
 			if (primary instanceof PlayerEntity primaryPlayer) {
-				if (primaryPlayer.isBlocking()) {
+				if (primaryPlayer.isBlocking() && shieldBreaker.get()) {
 					FindItemResult axeResult = InvUtils.findInHotbar(itemStack -> {
 						Item item = itemStack.getItem();
 						return item instanceof AxeItem;

@@ -30,7 +30,7 @@ public class SpeedPlus extends Module {
 		.name("Speed")
 		.description("Speed.")
 		.defaultValue(4)
-		.visible(() -> speedMode.get() == SpeedModes.MatrixExploit)
+		.visible(() -> speedMode.get() == SpeedModes.MatrixExploit || speedMode.get() == SpeedModes.MatrixExploit2)
 		.build()
 	);
 
@@ -88,12 +88,13 @@ public class SpeedPlus extends Module {
 
 	private void onSpeedModeChanged(SpeedModes mode) {
 		switch (mode) {
-			case MatrixExploit:   currentMode = new MatrixExploit(); break;
-			case Matrix6_7_0:   currentMode = new Matrix6_7_0(); break;
-			case Matrix:   currentMode = new Matrix(); break;
-			case AACHop438:   currentMode = new AACHop438(); break;
-			case Vulcan:   currentMode = new Vulcan(); break;
-			case NCPHop:   currentMode = new NCPHop(); break;
+			case MatrixExploit2 -> currentMode = new MatrixExploit2();
+			case MatrixExploit -> currentMode = new MatrixExploit();
+			case Matrix6_7_0 -> currentMode = new Matrix6_7_0();
+			case Matrix -> currentMode = new Matrix();
+			case AACHop438 -> currentMode = new AACHop438();
+			case Vulcan -> currentMode = new Vulcan();
+			case NCPHop -> currentMode = new NCPHop();
 		}
 	}
 }
