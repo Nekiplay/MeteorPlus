@@ -137,6 +137,7 @@ public class Eclip extends Command {
 					ticks++;
 				}
 				case 6: {
+					ticks = 0;
 					InvUtils.move().fromArmor(2).to(slot);
 					MeteorClient.EVENT_BUS.unsubscribe(this);
 				}
