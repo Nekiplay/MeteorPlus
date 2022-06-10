@@ -46,9 +46,7 @@ public class XBlock {
 	public int neighbours;
 
 	public XGroup group;
-
-	public boolean loaded = true;
-
+	
 	public XBlock(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -63,6 +61,7 @@ public class XBlock {
 			case RI: return search.getBlock(x + 1, y, z);
 			case TO: return search.getBlock(x, y + 1, z);
 			case BO: return search.getBlock(x, y - 1, z);
+			default:
 		}
 
 		return null;
@@ -93,6 +92,7 @@ public class XBlock {
 	}
 
 	public void update() {
+		assert mc.world != null;
 		state = mc.world.getBlockState(blockPos.set(x, y, z));
 		neighbours = 0;
 
@@ -121,6 +121,7 @@ public class XBlock {
 
 	private boolean isNeighbour(Direction dir) {
 		blockPos.set(x + dir.getOffsetX(), y + dir.getOffsetY(), z + dir.getOffsetZ());
+		assert mc.world != null;
 		BlockState neighbourState = mc.world.getBlockState(blockPos);
 
 		if (neighbourState.getBlock() != state.getBlock()) return false;
@@ -163,6 +164,7 @@ public class XBlock {
 
 	private boolean isNeighbourDiagonal(double x, double y, double z) {
 		blockPos.set(this.x + x, this.y + y, this.z + z);
+		assert mc.world != null;
 		return state.getBlock() == mc.world.getBlockState(blockPos).getBlock();
 	}
 

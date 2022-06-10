@@ -76,11 +76,7 @@ public class AutoPortalMine extends Module {
 	@EventHandler
 	private void onTick(TickEvent.Pre event) {
 
-		if (commandDelay >= delayCommand.get()) {
-
-		}
-		else
-		{
+		if (commandDelay <= delayCommand.get()) {
 			commandDelay++;
 		}
 		if (PlayerUtils.getDimension() == Dimension.Overworld) {
