@@ -94,8 +94,8 @@ public class RotationUtils {
 
 	public static final class Rotation
 	{
-		private final float yaw;
-		private final float pitch;
+		private float yaw;
+		private float pitch;
 
 		public Rotation(float yaw, float pitch)
 		{
@@ -117,6 +117,14 @@ public class RotationUtils {
 		public float getPitch()
 		{
 			return pitch;
+		}
+
+		public void setYaw(float yaw) {
+			this.yaw = yaw;
+		}
+
+		public void setPitch(float pitch) {
+			this.pitch = pitch;
 		}
 	}
 }

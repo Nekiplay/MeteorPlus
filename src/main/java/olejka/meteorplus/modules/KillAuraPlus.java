@@ -41,6 +41,7 @@ import olejka.meteorplus.utils.RotationUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class KillAuraPlus extends Module {
 	public KillAuraPlus() {
@@ -60,6 +61,14 @@ public class KillAuraPlus extends Module {
 		Sine,
 		QuadSine,
 		Perlin,
+	}
+
+	public enum RotationRandimize
+	{
+		None,
+		Perlin,
+		Random,
+		RandomPerlin,
 	}
 
 	public enum RotationMode
@@ -94,27 +103,29 @@ public class KillAuraPlus extends Module {
 		.build()
 	);
 
-	private final Setting<Boolean> rayTraceRotate = sgGeneral.add(new BoolSetting.Builder()
-		.name("raytrace-rotate")
-		.description("RayTrace rotate")
-		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
-		.defaultValue(false)
-		.build()
-	);
-
-	private final Setting<Boolean> rayTraceAttack = sgGeneral.add(new BoolSetting.Builder()
-		.name("raytrace-attack")
-		.description("RayTrace attack")
-		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
-		.defaultValue(false)
-		.build()
-	);
-
 	private final Setting<RotationSmooth> rotationSmooth = sgGeneral.add(new EnumSetting.Builder<RotationSmooth>()
 		.name("rotate-smooth")
 		.description("Determines when you should rotate towards the target.")
 		.defaultValue(RotationSmooth.Linear)
 		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
+		.build()
+	);
+
+	private final Setting<RotationRandimize> rotationRandomize = sgGeneral.add(new EnumSetting.Builder<RotationRandimize>()
+		.name("rotation-randomize")
+		.description("Rotation randomize.")
+		.defaultValue(RotationRandimize.None)
+		.visible(() -> rotationSmooth.get() != RotationSmooth.None)
+		.build()
+	);
+
+	private final Setting<Integer> rotationRandomizeMultiply = sgGeneral.add(new IntSetting.Builder()
+		.name("rotation-randomize-multiply")
+		.description("Speed.")
+		.defaultValue(4)
+		.range(0, 180)
+		.sliderRange(0, 180)
+		.visible(() -> rotationRandomize.get() != RotationRandimize.None)
 		.build()
 	);
 
@@ -135,6 +146,32 @@ public class KillAuraPlus extends Module {
 		.range(0, 180)
 		.sliderRange(0, 180)
 		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant)
+		.build()
+	);
+
+	private final Setting<Boolean> rayTraceRotate = sgGeneral.add(new BoolSetting.Builder()
+		.name("raytrace-rotate")
+		.description("RayTrace rotate")
+		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
+		.defaultValue(false)
+		.build()
+	);
+
+	private final Setting<Boolean> rayTraceAttack = sgGeneral.add(new BoolSetting.Builder()
+		.name("raytrace-attack")
+		.description("RayTrace attack")
+		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
+		.defaultValue(false)
+		.build()
+	);
+
+	private final Setting<Double> rayTraceBoxStretch = sgGeneral.add(new DoubleSetting.Builder()
+		.name("raytrace-box-stretch")
+		.description("raytrace-box-stretch.")
+		.defaultValue(0.7)
+		.range(0, 1)
+		.sliderRange(0, 1)
+		.visible(() -> rayTraceRotate.get() || rayTraceAttack.get())
 		.build()
 	);
 
@@ -399,7 +436,7 @@ public class KillAuraPlus extends Module {
 		assert mc.player != null;
 		if(mc.interactionManager != null) {
 			if (target instanceof LivingEntity livingEntity) {
-				EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch);
+				EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceBoxStretch.get());
 				if (result != null && result.getEntity() != null && rayTraceAttack.get()) {
 					mc.interactionManager.attackEntity(mc.player, target);
 					mc.player.swingHand(Hand.MAIN_HAND);
@@ -453,9 +490,23 @@ public class KillAuraPlus extends Module {
 	}
 
 	private void rotate(Entity target, Runnable callback) {
-		EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch);
+		EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceBoxStretch.get());
 		if (result == null || result.getEntity() == null && rayTraceRotate.get()) {
 			var yaw = calculateSpeed(target);
+			if (rotationRandomize.get() == RotationRandimize.Perlin) {
+				yaw.setYaw(yaw.getYaw() + noice(rotationRandomizeMultiply.get()));;
+				yaw.setPitch(yaw.getPitch() + noice(rotationRandomizeMultiply.get()));;
+			}
+			else if (rotationRandomize.get() == RotationRandimize.Random) {
+				yaw.setYaw(ThreadLocalRandom.current().nextFloat(yaw.getYaw(), yaw.getYaw() + rotationRandomizeMultiply.get()));;
+				yaw.setPitch(ThreadLocalRandom.current().nextFloat(yaw.getPitch(), yaw.getPitch() + rotationRandomizeMultiply.get()));;
+			}
+			else if (rotationRandomize.get() == RotationRandimize.RandomPerlin) {
+				float yawf = yaw.getYaw() + noice(rotationRandomizeMultiply.get());
+				float pitchf = yaw.getPitch() + noice(rotationRandomizeMultiply.get());
+				yaw.setYaw(ThreadLocalRandom.current().nextFloat(yawf, yawf + rotationRandomizeMultiply.get()));;
+				yaw.setPitch(ThreadLocalRandom.current().nextFloat(pitchf, pitchf + rotationRandomizeMultiply.get()));;
+			}
 			Rotations.rotate(yaw.getYaw(), yaw.getPitch(), callback);
 		}
 		else if (!rayTraceRotate.get()) {

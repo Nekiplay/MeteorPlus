@@ -13,7 +13,7 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 
 public class RaycastUtils {
-	public static EntityHitResult raycastEntity(final double range, final float yaw, final float pitch) {
+	public static EntityHitResult raycastEntity(final double range, final float yaw, final float pitch, double boxexpand) {
 		Entity camera = mc.cameraEntity;
 		Vec3d cameraVec = camera.getCameraPosVec(1f);
 
@@ -25,7 +25,7 @@ public class RaycastUtils {
 		final Vec3d rotation = new Vec3d(yawSin * pitchCos, pitchSin, yawCos * pitchCos);
 
 		Vec3d vec3d3 = cameraVec.add(rotation.x * range, rotation.y * range, rotation.z * range);
-		Box box = camera.getBoundingBox().stretch(rotation.multiply(range)).expand(1.0, 1.0, 1.0);
+		Box box = camera.getBoundingBox().stretch(rotation.multiply(range)).expand(boxexpand, boxexpand, boxexpand);
 
 		return ProjectileUtil.raycast(camera, cameraVec, vec3d3, box, new Predicate<Entity>() {
 			@Override
