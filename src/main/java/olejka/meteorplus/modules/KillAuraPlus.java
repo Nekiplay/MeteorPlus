@@ -63,6 +63,14 @@ public class KillAuraPlus extends Module {
 		Perlin,
 	}
 
+	public enum RotationTickSmooth
+	{
+		None,
+		Perlin,
+		Random,
+		RandomPerlin,
+	}
+
 	public enum RotationRandimize
 	{
 		None,
@@ -123,11 +131,31 @@ public class KillAuraPlus extends Module {
 		.name("rotation-randomize-multiply")
 		.description("Speed.")
 		.defaultValue(4)
-		.range(0, 180)
-		.sliderRange(0, 180)
+		.range(0, 32)
+		.sliderRange(0, 32)
 		.visible(() -> rotationRandomize.get() != RotationRandimize.None)
 		.build()
 	);
+
+
+	private final Setting<RotationTickSmooth> rotationTickSmooth = sgGeneral.add(new EnumSetting.Builder<RotationTickSmooth>()
+		.name("rotation-tick-smooth")
+		.description("Rotation randomize.")
+		.defaultValue(RotationTickSmooth.None)
+		.visible(() -> rotationSmooth.get() != RotationSmooth.None)
+		.build()
+	);
+
+	private final Setting<Integer> rotationTickSmoothMultiply = sgGeneral.add(new IntSetting.Builder()
+		.name("rotation-tick-smooth-multiply")
+		.description("Speed.")
+		.defaultValue(2)
+		.range(0, 32)
+		.sliderRange(0, 32)
+		.visible(() -> rotationTickSmooth.get() != RotationTickSmooth.None && rotationTickSmooth.get() != RotationTickSmooth.Random)
+		.build()
+	);
+
 
 	private final Setting<Double> maxRotationSpeed = sgGeneral.add(new DoubleSetting.Builder()
 		.name("max-rotation-speed")
@@ -489,29 +517,54 @@ public class KillAuraPlus extends Module {
 		return (int) (noice * multiply);
 	}
 
-	private void rotate(Entity target, Runnable callback) {
+	private RotationUtils.Rotation getRotate(Entity target) {
 		EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceBoxStretch.get());
 		if (result == null || result.getEntity() == null && rayTraceRotate.get()) {
 			var yaw = calculateSpeed(target);
 			if (rotationRandomize.get() == RotationRandimize.Perlin) {
-				yaw.setYaw(yaw.getYaw() + noice(rotationRandomizeMultiply.get()));;
-				yaw.setPitch(yaw.getPitch() + noice(rotationRandomizeMultiply.get()));;
+				int yawNoice = noice(rotationRandomizeMultiply.get());
+				int pitchNoice = noice(rotationRandomizeMultiply.get());
+				yaw.setYaw(yaw.getYaw() + yawNoice);
+				yaw.setPitch(yaw.getPitch() + pitchNoice);
 			}
 			else if (rotationRandomize.get() == RotationRandimize.Random) {
-				yaw.setYaw(ThreadLocalRandom.current().nextFloat(yaw.getYaw(), yaw.getYaw() + rotationRandomizeMultiply.get()));;
-				yaw.setPitch(ThreadLocalRandom.current().nextFloat(yaw.getPitch(), yaw.getPitch() + rotationRandomizeMultiply.get()));;
+				yaw.setYaw(ThreadLocalRandom.current().nextFloat(yaw.getYaw() - rotationRandomizeMultiply.get(), yaw.getYaw() + rotationRandomizeMultiply.get()));;
+				yaw.setPitch(ThreadLocalRandom.current().nextFloat(yaw.getPitch() - rotationRandomizeMultiply.get(), yaw.getPitch() + rotationRandomizeMultiply.get()));;
 			}
 			else if (rotationRandomize.get() == RotationRandimize.RandomPerlin) {
 				float yawf = yaw.getYaw() + noice(rotationRandomizeMultiply.get());
 				float pitchf = yaw.getPitch() + noice(rotationRandomizeMultiply.get());
-				yaw.setYaw(ThreadLocalRandom.current().nextFloat(yawf, yawf + rotationRandomizeMultiply.get()));;
-				yaw.setPitch(ThreadLocalRandom.current().nextFloat(pitchf, pitchf + rotationRandomizeMultiply.get()));;
+				yaw.setYaw(ThreadLocalRandom.current().nextFloat(yawf - rotationRandomizeMultiply.get(), yawf + rotationRandomizeMultiply.get()));;
+				yaw.setPitch(ThreadLocalRandom.current().nextFloat(pitchf - rotationRandomizeMultiply.get(), pitchf + rotationRandomizeMultiply.get()));;
 			}
-			Rotations.rotate(yaw.getYaw(), yaw.getPitch(), callback);
+			return yaw;
 		}
 		else if (!rayTraceRotate.get()) {
 			var yaw = calculateSpeed(target);
-			Rotations.rotate(yaw.getYaw(), yaw.getPitch(), callback);
+			return yaw;
+		}
+		return null;
+	}
+
+	private void rotate(Entity target, Runnable callback) {
+		RotationUtils.Rotation rotation = getRotate(target);
+		if (rotation != null) {
+			if (rotationTickSmooth.get() == RotationTickSmooth.Perlin) {
+				int noice = noice(rotationTickSmoothMultiply.get());
+				if (noice != 0) {
+					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
+				}
+			}
+			else if (rotationTickSmooth.get() == RotationTickSmooth.Random) {
+				if (ThreadLocalRandom.current().nextBoolean()) {
+					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
+				}
+			}
+			else if (rotationTickSmooth.get() == RotationTickSmooth.RandomPerlin) {
+				if (ThreadLocalRandom.current().nextBoolean() && noice(rotationTickSmoothMultiply.get()) != 0) {
+					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
+				}
+			}
 		}
 	}
 
