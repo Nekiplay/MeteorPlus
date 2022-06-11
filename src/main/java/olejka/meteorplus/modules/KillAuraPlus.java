@@ -193,13 +193,23 @@ public class KillAuraPlus extends Module {
 		.build()
 	);
 
-	private final Setting<Double> rayTraceBoxStretch = sgGeneral.add(new DoubleSetting.Builder()
-		.name("raytrace-box-stretch")
-		.description("raytrace-box-stretch.")
+	private final Setting<Double> rayTraceRotateBoxStretch = sgGeneral.add(new DoubleSetting.Builder()
+		.name("raytrace-rotate-box-stretch")
+		.description("raytrace-rotate-box-stretch.")
 		.defaultValue(0.7)
 		.range(0, 1)
 		.sliderRange(0, 1)
-		.visible(() -> rayTraceRotate.get() || rayTraceAttack.get())
+		.visible(() -> rayTraceRotate.get())
+		.build()
+	);
+
+	private final Setting<Double> rayTraceAttackBoxStretch = sgGeneral.add(new DoubleSetting.Builder()
+		.name("raytrace-attack-box-stretch")
+		.description("raytrace-attack-box-stretch.")
+		.defaultValue(0.7)
+		.range(0, 1)
+		.sliderRange(0, 1)
+		.visible(() -> rayTraceAttack.get())
 		.build()
 	);
 
@@ -464,7 +474,7 @@ public class KillAuraPlus extends Module {
 		assert mc.player != null;
 		if(mc.interactionManager != null) {
 			if (target instanceof LivingEntity livingEntity) {
-				EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceBoxStretch.get());
+				EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceAttackBoxStretch.get());
 				if (result != null && result.getEntity() != null && rayTraceAttack.get()) {
 					mc.interactionManager.attackEntity(mc.player, target);
 					mc.player.swingHand(Hand.MAIN_HAND);
@@ -518,7 +528,7 @@ public class KillAuraPlus extends Module {
 	}
 
 	private RotationUtils.Rotation getRotate(Entity target) {
-		EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceBoxStretch.get());
+		EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceRotateBoxStretch.get());
 		if (result == null || result.getEntity() == null && rayTraceRotate.get()) {
 			var yaw = calculateSpeed(target);
 			if (rotationRandomize.get() == RotationRandimize.Perlin) {
@@ -541,6 +551,22 @@ public class KillAuraPlus extends Module {
 		}
 		else if (!rayTraceRotate.get()) {
 			var yaw = calculateSpeed(target);
+			if (rotationRandomize.get() == RotationRandimize.Perlin) {
+				int yawNoice = noice(rotationRandomizeMultiply.get());
+				int pitchNoice = noice(rotationRandomizeMultiply.get());
+				yaw.setYaw(yaw.getYaw() + yawNoice);
+				yaw.setPitch(yaw.getPitch() + pitchNoice);
+			}
+			else if (rotationRandomize.get() == RotationRandimize.Random) {
+				yaw.setYaw(ThreadLocalRandom.current().nextFloat(yaw.getYaw() - rotationRandomizeMultiply.get(), yaw.getYaw() + rotationRandomizeMultiply.get()));;
+				yaw.setPitch(ThreadLocalRandom.current().nextFloat(yaw.getPitch() - rotationRandomizeMultiply.get(), yaw.getPitch() + rotationRandomizeMultiply.get()));;
+			}
+			else if (rotationRandomize.get() == RotationRandimize.RandomPerlin) {
+				float yawf = yaw.getYaw() + noice(rotationRandomizeMultiply.get());
+				float pitchf = yaw.getPitch() + noice(rotationRandomizeMultiply.get());
+				yaw.setYaw(ThreadLocalRandom.current().nextFloat(yawf - rotationRandomizeMultiply.get(), yawf + rotationRandomizeMultiply.get()));;
+				yaw.setPitch(ThreadLocalRandom.current().nextFloat(pitchf - rotationRandomizeMultiply.get(), pitchf + rotationRandomizeMultiply.get()));;
+			}
 			return yaw;
 		}
 		return null;
@@ -564,6 +590,9 @@ public class KillAuraPlus extends Module {
 				if (ThreadLocalRandom.current().nextBoolean() && noice(rotationTickSmoothMultiply.get()) != 0) {
 					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
 				}
+			}
+			else {
+				Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
 			}
 		}
 	}
