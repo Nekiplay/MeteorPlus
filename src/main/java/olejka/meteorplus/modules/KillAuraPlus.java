@@ -529,7 +529,7 @@ public class KillAuraPlus extends Module {
 
 	private RotationUtils.Rotation getRotate(Entity target) {
 		EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceRotateBoxStretch.get());
-		if (result == null || result.getEntity() == null && rayTraceRotate.get()) {
+		if ((result == null || result.getEntity() == null) && rayTraceRotate.get()) {
 			var yaw = calculateSpeed(target);
 			if (rotationRandomize.get() == RotationRandimize.Perlin) {
 				int yawNoice = noice(rotationRandomizeMultiply.get());
