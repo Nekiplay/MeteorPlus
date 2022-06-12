@@ -15,6 +15,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.modules.speed.SpeedMode;
 import olejka.meteorplus.modules.speed.SpeedModes;
+import olejka.meteorplus.utils.CustomSpeedUtils;
 
 public class Vulcan extends SpeedMode {
 	public Vulcan() {
@@ -60,24 +61,16 @@ public class Vulcan extends SpeedMode {
 
 	@Override
 	public void onPlayerMoveEvent(PlayerMoveEvent event) {
-		if (mc.player.hasStatusEffect(StatusEffects.SPEED) && mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
-			Vec3d vel = PlayerUtils.getHorizontalVelocity(settings.speedVulcan.get());
-			double velX = vel.getX();
-			double velZ = vel.getZ();
-
-			if (mc.player.hasStatusEffect(StatusEffects.SPEED)) {
-				double value = (mc.player.getStatusEffect(StatusEffects.SPEED).getAmplifier() + 1) * 0.205;
-				velX += velX * value;
-				velZ += velZ * value;
+		if (mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
+			if (mc.player.hasStatusEffect(StatusEffects.SPEED) && mc.player.getStatusEffect(StatusEffects.SPEED).getAmplifier() == 1) {
+				CustomSpeedUtils.applySpeed(event, settings.speedVulcanef2.get());
 			}
-
-			Anchor anchor = Modules.get().get(Anchor.class);
-			if (anchor.isActive() && anchor.controlMovement) {
-				velX = anchor.deltaX;
-				velZ = anchor.deltaZ;
+			else if (mc.player.hasStatusEffect(StatusEffects.SPEED) && mc.player.getStatusEffect(StatusEffects.SPEED).getAmplifier() == 0) {
+				CustomSpeedUtils.applySpeed(event, settings.speedVulcanef1.get());
 			}
-
-			((IVec3d) event.movement).set(velX, event.movement.y, velZ);
+			else {
+				CustomSpeedUtils.applySpeed(event, settings.speedVulcanef0.get());
+			}
 		}
 	}
 }

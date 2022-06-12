@@ -34,13 +34,36 @@ public class SpeedPlus extends Module {
 		.build()
 	);
 
-	public final Setting<Double> speedVulcan = sgGeneral.add(new DoubleSetting.Builder()
-		.name("Speed")
-		.description("Speed.")
-		.defaultValue(15)
+	public final Setting<Double> speedVulcanef2 = sgGeneral.add(new DoubleSetting.Builder()
+		.name("Speed-effect-2")
+		.description("Speed 2 effect.")
+		.defaultValue(45)
+		.max(75)
+		.sliderRange(0, 75)
 		.visible(() -> speedMode.get() == SpeedModes.Vulcan)
 		.build()
 	);
+
+	public final Setting<Double> speedVulcanef1 = sgGeneral.add(new DoubleSetting.Builder()
+		.name("Speed-effect-1")
+		.description("Speed 1 effect.")
+		.defaultValue(45)
+		.max(75)
+		.sliderRange(0, 75)
+		.visible(() -> speedMode.get() == SpeedModes.Vulcan)
+		.build()
+	);
+
+	public final Setting<Double> speedVulcanef0 = sgGeneral.add(new DoubleSetting.Builder()
+		.name("Speed-effect-0")
+		.description("Speed 0 effect.")
+		.defaultValue(35)
+		.max(75)
+		.sliderRange(0, 75)
+		.visible(() -> speedMode.get() == SpeedModes.Vulcan)
+		.build()
+	);
+
 
 	public final Setting<Boolean> autoSwapVulcan = sgGeneral.add(new BoolSetting.Builder()
 		.name("auto-swap")
