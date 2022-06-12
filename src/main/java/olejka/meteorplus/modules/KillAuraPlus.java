@@ -124,7 +124,7 @@ public class KillAuraPlus extends Module {
 		.name("rotation-randomize")
 		.description("Rotation randomize.")
 		.defaultValue(RotationRandimize.None)
-		.visible(() -> rotationSmooth.get() != Smooth.SmoothType.None)
+		.visible(() -> rotationSmooth.get() != Smooth.SmoothType.None && rotationSmooth.isVisible())
 		.build()
 	);
 
@@ -134,7 +134,7 @@ public class KillAuraPlus extends Module {
 		.defaultValue(4)
 		.range(0, 32)
 		.sliderRange(0, 32)
-		.visible(() -> rotationRandomize.get() != RotationRandimize.None)
+		.visible(() -> rotationRandomize.get() != RotationRandimize.None && rotationSmooth.isVisible())
 		.build()
 	);
 
@@ -143,7 +143,7 @@ public class KillAuraPlus extends Module {
 		.name("rotation-tick-smooth")
 		.description("Rotation randomize.")
 		.defaultValue(RotationTickSmooth.None)
-		.visible(() -> rotationSmooth.get() != Smooth.SmoothType.None)
+		.visible(() -> rotationSmooth.get() != Smooth.SmoothType.None && rotationSmooth.isVisible())
 		.build()
 	);
 
@@ -153,7 +153,7 @@ public class KillAuraPlus extends Module {
 		.defaultValue(2)
 		.range(0, 32)
 		.sliderRange(0, 32)
-		.visible(() -> rotationTickSmooth.get() != RotationTickSmooth.None && rotationTickSmooth.get() != RotationTickSmooth.Random)
+		.visible(() -> rotationTickSmooth.get() != RotationTickSmooth.None && rotationTickSmooth.get() != RotationTickSmooth.Random && rotationSmooth.isVisible())
 		.build()
 	);
 
@@ -164,7 +164,7 @@ public class KillAuraPlus extends Module {
 		.defaultValue(180)
 		.range(0, 180)
 		.sliderRange(0, 180)
-		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant)
+		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant && rotationSmooth.isVisible())
 		.build()
 	);
 
@@ -174,14 +174,14 @@ public class KillAuraPlus extends Module {
 		.defaultValue(180)
 		.range(0, 180)
 		.sliderRange(0, 180)
-		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant)
+		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant && rotationSmooth.isVisible())
 		.build()
 	);
 
 	private final Setting<Boolean> rayTraceRotate = sgGeneral.add(new BoolSetting.Builder()
 		.name("raytrace-rotate")
 		.description("RayTrace rotate")
-		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
+		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None && rotationSmooth.isVisible())
 		.defaultValue(false)
 		.build()
 	);
@@ -189,7 +189,7 @@ public class KillAuraPlus extends Module {
 	private final Setting<Boolean> rayTraceAttack = sgGeneral.add(new BoolSetting.Builder()
 		.name("raytrace-attack")
 		.description("RayTrace attack")
-		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
+		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None && rotationSmooth.isVisible())
 		.defaultValue(false)
 		.build()
 	);
@@ -200,7 +200,7 @@ public class KillAuraPlus extends Module {
 		.defaultValue(0.7)
 		.range(0, 1)
 		.sliderRange(0, 1)
-		.visible(() -> rayTraceRotate.get())
+		.visible(() -> rayTraceRotate.isVisible())
 		.build()
 	);
 
@@ -210,7 +210,7 @@ public class KillAuraPlus extends Module {
 		.defaultValue(0.7)
 		.range(0, 1)
 		.sliderRange(0, 1)
-		.visible(() -> rayTraceAttack.get())
+		.visible(() -> rayTraceAttack.isVisible())
 		.build()
 	);
 
@@ -476,11 +476,11 @@ public class KillAuraPlus extends Module {
 		if(mc.interactionManager != null) {
 			if (target instanceof LivingEntity livingEntity) {
 				EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceAttackBoxStretch.get());
-				if (result != null && result.getEntity() != null && rayTraceAttack.get()) {
+				if (result != null && result.getEntity() != null && rayTraceAttack.get() && rayTraceAttack.isVisible()) {
 					mc.interactionManager.attackEntity(mc.player, target);
 					mc.player.swingHand(Hand.MAIN_HAND);
 				}
-				else if (!rayTraceAttack.get()) {
+				else if (!rayTraceAttack.get() || !rayTraceAttack.isVisible()) {
 					mc.interactionManager.attackEntity(mc.player, target);
 					mc.player.swingHand(Hand.MAIN_HAND);
 				}
