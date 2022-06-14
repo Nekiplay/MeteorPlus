@@ -82,13 +82,15 @@ public class XrayBruteforce extends Module {
 		.description("Save rendered ores.")
 		.defaultValue(false)
 		.onChanged((c) -> {
-			Thread saveth = new Thread(() ->
-			{
-				for (RenderOre ore : ores.toArray(new RenderOre[0]))
-					saveRenderOre(ore);
-				info("Saving complete");
-			});
-			saveth.start();
+			if (isActive()) {
+				Thread saveth = new Thread(() ->
+				{
+					for (RenderOre ore : ores.toArray(new RenderOre[0]))
+						saveRenderOre(ore);
+					info("Saving complete");
+				});
+				saveth.start();
+			}
 		})
 		.build()
 	);
@@ -98,8 +100,10 @@ public class XrayBruteforce extends Module {
 		.description("Load rendered ores.")
 		.defaultValue(false)
 		.onChanged((c) -> {
-			loadSaveOres();
-			info("Loaded");
+			if (isActive()) {
+				loadSaveOres();
+				info("Loaded");
+			}
 		})
 		.build()
 	);
@@ -720,6 +724,7 @@ public class XrayBruteforce extends Module {
         if (clear_cache_blocks.get())
         {
             scanned.clear();
+			need_rescan.clear();
             clear_cache_blocks.set(false);
             ChatUtils.info("Xray BruteForce", "Cache checked blocks cleared");
         }
