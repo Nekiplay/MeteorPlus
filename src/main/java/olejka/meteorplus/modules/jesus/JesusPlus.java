@@ -12,7 +12,6 @@ import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.modules.jesus.modes.MatrixZoom;
 import olejka.meteorplus.modules.jesus.modes.MatrixZoom2;
 import olejka.meteorplus.modules.jesus.modes.Vulcan;
-import olejka.meteorplus.modules.speed.SpeedModes;
 
 
 public class JesusPlus extends Module {

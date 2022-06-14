@@ -536,7 +536,7 @@ public class KillAuraPlus extends Module {
 			}
 			return yaw;
 		}
-		else if (!rayTraceRotate.get()) {
+		else if (!rayTraceRotate.get() || !rayTraceRotate.isVisible()) {
 			var yaw = calculateSpeed(target);
 			if (rotationRandomize.get() == RotationRandimize.Perlin) {
 				int yawNoice = noice(rotationRandomizeMultiply.get());

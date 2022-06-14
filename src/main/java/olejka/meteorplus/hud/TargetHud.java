@@ -39,7 +39,7 @@ public class TargetHud extends HudElement {
 
 	private final Setting<Integer> sides = sgGeneral.add(new IntSetting.Builder()
 		.name("sides")
-		.description("The scale of the image.")
+		.description("The sides.")
 		.defaultValue(90)
 		.min(0)
 		.build()
