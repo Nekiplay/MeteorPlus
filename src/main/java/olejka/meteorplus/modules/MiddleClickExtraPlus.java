@@ -99,13 +99,13 @@ public class MiddleClickExtraPlus extends Module {
 		switch (mode.get().type) {
 			case Immediate -> {
 				if (mc.interactionManager != null){
-					mc.interactionManager.interactItem(mc.player, mc.world, Hand.MAIN_HAND);
+					mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
 					InvUtils.swapBack();
 				}
 			}
 			case LongerSingleClick ->{
 				if (mc.interactionManager != null){
-					mc.interactionManager.interactItem(mc.player, mc.world, Hand.MAIN_HAND);
+					mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
 				}
 			}
 			case Longer -> {

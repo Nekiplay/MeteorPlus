@@ -117,9 +117,9 @@ public class BedrockStorageBruteforce extends Module {
 						if (conn != null) {
 							last = posible;
 							scanned.add(posible);
-							PlayerActionC2SPacket abortPacket = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, posible, Direction.UP);
+							PlayerActionC2SPacket abortPacket = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, posible, Direction.UP, 0);
 							conn.sendPacket(abortPacket);
-							PlayerActionC2SPacket abortPacket2 = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, posible, Direction.UP);
+							PlayerActionC2SPacket abortPacket2 = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, posible, Direction.UP, 0);
 							conn.sendPacket(abortPacket2);
 							millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + Utils.random(delaymin.get(), delaymax.get());
 						}

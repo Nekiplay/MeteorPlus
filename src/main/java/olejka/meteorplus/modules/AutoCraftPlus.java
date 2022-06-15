@@ -95,7 +95,7 @@ public class AutoCraftPlus extends Module {
 		Vec3d tableVec = new Vec3d(tablePos.getX(), tablePos.getY(), tablePos.getZ());
 		BlockHitResult table = new BlockHitResult(tableVec, Direction.UP, tablePos, false);
 		assert mc.interactionManager != null;
-		mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, table);
+		mc.interactionManager.interactBlock(mc.player, Hand.MAIN_HAND, table);
 	}
 
 	private void placeCraftingTable(FindItemResult craftTable) {

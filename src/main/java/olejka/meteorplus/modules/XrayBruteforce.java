@@ -912,15 +912,15 @@ public class XrayBruteforce extends Module {
 
 	private PlayerActionC2SPacket getPacket(BlockPos blockpos, Setting<PacketMode> setting) {
 		if (setting.get() == PacketMode.Abort) {
-			PlayerActionC2SPacket abort = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
+			PlayerActionC2SPacket abort = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP, 0);
 			return abort;
 		}
 		else if (setting.get() == PacketMode.Start) {
-			PlayerActionC2SPacket start = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
+			PlayerActionC2SPacket start = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP, 0);
 			return start;
 		}
 		else if (setting.get() == PacketMode.Stop) {
-			PlayerActionC2SPacket stop = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP);
+			PlayerActionC2SPacket stop = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, new BlockPos(blockpos), Direction.UP, 0);
 			return stop;
 		}
 		return null;

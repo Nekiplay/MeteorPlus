@@ -9,7 +9,6 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.scoreboard.ScoreboardPlayerScore;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
@@ -51,7 +50,7 @@ public class ScoreBoardRenderEvent {
 		while (var11.hasNext()) {
 			scoreboardPlayerScore = (ScoreboardPlayerScore)var11.next();
 			Team team = scoreboard.getPlayerTeam(scoreboardPlayerScore.getPlayerName());
-			text2 = Team.decorateName(team, new LiteralText(scoreboardPlayerScore.getPlayerName()));
+			text2 = Team.decorateName(team, Text.literal(scoreboardPlayerScore.getPlayerName()));
 			event.text.add(text2);
 		}
 

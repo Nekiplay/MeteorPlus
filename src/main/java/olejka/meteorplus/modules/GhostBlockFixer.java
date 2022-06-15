@@ -81,7 +81,7 @@ public class GhostBlockFixer extends Module {
 					BlockState state = mc.world.getBlockState(block);
 					if (distance <= range.get() && state.getMaterial() == Material.AIR) {
 						millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + delay.get();
-						PlayerActionC2SPacket packet = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, block, Direction.UP);
+						PlayerActionC2SPacket packet = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, block, Direction.UP, 0);
 						conn.sendPacket(packet);
 						blocks.remove();
 					}

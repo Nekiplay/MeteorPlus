@@ -8,7 +8,7 @@ import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.DisconnectS2CPacket;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import olejka.meteorplus.MeteorPlus;
 import meteordevelopment.meteorclient.events.entity.EntityAddedEvent;
 import meteordevelopment.orbit.EventHandler;
@@ -57,13 +57,13 @@ public class AutoLeave extends Module {
 					mc.player.sendChatMessage(command_str.get());
 					info((String.format("player §c%s§r was detected", event.entity.getEntityName())));
 				} else {
-					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
+					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
 				}
 			if (AutoDisable.get()) this.toggle();
 			}
 		}
 		else if (event.entity.isPlayer()){
-				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText (String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
+				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
 				if (AutoDisable.get()) this.toggle();
 		}
 	}
