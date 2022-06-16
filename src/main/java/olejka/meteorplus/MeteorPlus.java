@@ -48,6 +48,7 @@ public class MeteorPlus extends MeteorAddon {
 		//Modules
 		LOG.info("MeteorPlus initializing modules...");
 		Modules modules = Modules.get();
+		modules.add(new ServerSpoofPlus());
 		modules.add(new TriggerBot());
 		modules.add(new EyeFinder());
 		modules.add(new InventoryMovePlus());
