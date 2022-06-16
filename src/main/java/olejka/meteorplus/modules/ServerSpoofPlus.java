@@ -66,9 +66,6 @@ public class ServerSpoofPlus extends Module {
 					} else if (id.toString().equals("minecraft:register")) {
 						event.cancel();
 					}
-					else {
-						info(id.toString());
-					}
 				}
 			}
 		}
@@ -80,9 +77,6 @@ public class ServerSpoofPlus extends Module {
 				}
 				else if (payload.getChannel().toString().equals("minecraft:register")) {
 					event.cancel();
-				}
-				else {
-					info(payload.getChannel().toString());
 				}
 			}
 		}
@@ -110,7 +104,7 @@ public class ServerSpoofPlus extends Module {
 				if (payload.getChannel().toString().equals("fabric:registry/sync")) {
 					event.cancel();
 				}
-				info(payload.getChannel().toString());
+
 			}
 		}
 	}
