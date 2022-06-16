@@ -101,7 +101,7 @@ public class MeteorPlus extends MeteorAddon {
 
 	@Override
 	public GithubRepo getRepo() {
-		return new GithubRepo("Nekiplay", "MeteorPlus", "1.18,2");
+		return new GithubRepo("Nekiplay", "MeteorPlus", "1.18.2");
 	}
 
 	@Override
