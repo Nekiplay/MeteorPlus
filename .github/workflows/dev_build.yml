@@ -18,6 +18,6 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           automatic_release_tag: latest-1.18.2
           prerelease: true
-          title: 1.18.2 Build Build
+          title: 1.18.2 Build
           files: |
             ./build/libs/*.jar
