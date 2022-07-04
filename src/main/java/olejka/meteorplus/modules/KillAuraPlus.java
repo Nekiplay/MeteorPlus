@@ -179,7 +179,7 @@ public class KillAuraPlus extends Module {
 
 	private final Setting<Boolean> rayTraceRotate = sgGeneral.add(new BoolSetting.Builder()
 		.name("raytrace-rotate")
-		.description("RayTrace rotate")
+		.description("Not rotate if you head see player")
 		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None && rotationSmooth.isVisible())
 		.defaultValue(false)
 		.build()
@@ -187,7 +187,7 @@ public class KillAuraPlus extends Module {
 
 	private final Setting<Boolean> rayTraceAttack = sgGeneral.add(new BoolSetting.Builder()
 		.name("raytrace-attack")
-		.description("RayTrace attack")
+		.description("Not attack if you head don't see player")
 		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None && rotationSmooth.isVisible())
 		.defaultValue(false)
 		.build()
