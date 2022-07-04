@@ -124,19 +124,24 @@ public class AutoAccept extends Module {
 				MeteorPlus.LOG.info(message);
 			}
 			Thread th = new Thread(() -> {
-				try {
-					Thread.sleep(Delay.get());
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				TPPattern custom = new TPPattern(custom_pattern.get(), custom_group.get(), accept_command.get());
 				String nickname = getName(message);
 				TPPattern pattern = getPattern(message);
 				if (pattern != null && mode.get() == Mode.Custom) {
+					try {
+						Thread.sleep(Delay.get());
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					AutoAccept(nickname, pattern);
 				}
 				else {
 					nickname = getName(custom, message);
+					try {
+						Thread.sleep(Delay.get());
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					Accept(nickname, custom);
 				}
 			});
