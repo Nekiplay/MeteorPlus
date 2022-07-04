@@ -137,12 +137,14 @@ public class AutoAccept extends Module {
 				}
 				else {
 					nickname = getName(custom, message);
-					try {
-						Thread.sleep(Delay.get());
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					if (!nickname.equals("")) {
+						try {
+							Thread.sleep(Delay.get());
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						Accept(nickname, custom);
 					}
-					Accept(nickname, custom);
 				}
 			});
 			th.start();
