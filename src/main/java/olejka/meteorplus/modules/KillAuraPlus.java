@@ -1,7 +1,6 @@
 package olejka.meteorplus.modules;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
-import jdk.jfr.Percentage;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixininterface.IPlayerInteractEntityC2SPacket;
@@ -30,7 +29,6 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.utils.Perlin2D;
@@ -496,8 +494,9 @@ public class KillAuraPlus extends Module {
 		if (diffAngle > 180.0) diffAngle = 180.0;
 
 		double speeds = 180;
-
-		speeds = Smooth.getDouble(rotationSmooth.get(), diffAngle, minRotationSpeed.get(), maxRotationSpeed.get());
+		if (rotationSmooth.get() != Smooth.SmoothType.None) {
+			speeds = Smooth.getDouble(rotationSmooth.get(), diffAngle, minRotationSpeed.get(), maxRotationSpeed.get());
+		}
 
 		if (rotation.get() == RotationMode.LiquidBounce) {
 			return RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) (Math.random() * (maxRotationSpeed.get() - minRotationSpeed.get()) + minRotationSpeed.get()));

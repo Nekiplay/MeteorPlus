@@ -83,28 +83,26 @@ public class ServerSpoofPlus extends Module {
 
 		@EventHandler
 		private void onPacketRecieve(PacketEvent.Receive event) {
-			if (isActive() && resourcePack.get()) {
-				if (event.packet instanceof ResourcePackSendS2CPacket packet) {
-					event.cancel();
-					MutableText msg = Text.literal("This server has ");
-					msg.append(packet.isRequired() ? "a required " : "an optional ");
-					MutableText link = Text.literal("resource pack");
-					link.setStyle(link.getStyle()
-						.withColor(Formatting.BLUE)
-						.withUnderline(true)
-						.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, packet.getURL()))
-						.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click to download")))
-					);
-					msg.append(link);
-					msg.append(".");
-					info(msg);
-				}
+			if (!isActive()) return;
+			if (resourcePack.get() && event.packet instanceof ResourcePackSendS2CPacket packet) {
+				event.cancel();
+				MutableText msg = Text.literal("This server has ");
+				msg.append(packet.isRequired() ? "a required " : "an optional ");
+				MutableText link = Text.literal("resource pack");
+				link.setStyle(link.getStyle()
+					.withColor(Formatting.BLUE)
+					.withUnderline(true)
+					.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, packet.getURL()))
+					.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click to download")))
+				);
+				msg.append(link);
+				msg.append(".");
+				info(msg);
 			}
 			if (event.packet instanceof CustomPayloadS2CPacket payload) {
 				if (payload.getChannel().toString().equals("fabric:registry/sync")) {
 					event.cancel();
 				}
-
 			}
 		}
 	}

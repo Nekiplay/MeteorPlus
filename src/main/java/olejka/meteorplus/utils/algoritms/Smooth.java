@@ -1,7 +1,5 @@
 package olejka.meteorplus.utils.algoritms;
 
-import olejka.meteorplus.modules.KillAuraPlus;
-
 public class Smooth {
 	public static double getDouble(SmoothType type, double diffAngle, double minRotation, double maxRotation) {
 		double speeds = 180;
