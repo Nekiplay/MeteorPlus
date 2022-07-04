@@ -127,7 +127,7 @@ public class AutoAccept extends Module {
 				TPPattern custom = new TPPattern(custom_pattern.get(), custom_group.get(), accept_command.get());
 				String nickname = getName(message);
 				TPPattern pattern = getPattern(message);
-				if (pattern != null && mode.get() == Mode.Custom) {
+				if (pattern != null && mode.get() != Mode.Custom) {
 					try {
 						Thread.sleep(Delay.get());
 					} catch (InterruptedException e) {
