@@ -34,6 +34,7 @@ import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.utils.Perlin2D;
 import olejka.meteorplus.utils.RaycastUtils;
 import olejka.meteorplus.utils.RotationUtils;
+import olejka.meteorplus.utils.algoritms.RandomUtils;
 import olejka.meteorplus.utils.algoritms.Smooth;
 
 
@@ -499,7 +500,7 @@ public class KillAuraPlus extends Module {
 		}
 
 		if (rotation.get() == RotationMode.LiquidBounce) {
-			return RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) (Math.random() * (maxRotationSpeed.get() - minRotationSpeed.get()) + minRotationSpeed.get()));
+			return RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) RandomUtils.nextDouble(minRotationSpeed.get(), maxRotationSpeed.get()));
 		}
 		else {
 			return RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) speeds);
