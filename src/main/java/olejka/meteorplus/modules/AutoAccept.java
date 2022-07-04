@@ -80,9 +80,9 @@ public class AutoAccept extends Module {
 	@Override
 	public void onActivate() {
 		patterns.clear();
-		TPPattern MST_Network = new TPPattern(".*Игрок (.*) просит телепортироваться к вам!.*", 1, "/cmi tpaccept {username} tpa");
-		TPPattern HolyWorld = new TPPattern("(.*) просит телепортироваться.*", 1, "/tpaccept");
-		TPPattern SimpleTpa = new TPPattern(".*\\[SimpleTpa\\] (.*) has sent you a teleport request!.*", 1, "/tpaccept");
+		TPPattern MST_Network = new TPPattern(".*Игрок (.*) просит телепортироваться к вам!.*", 1, "cmi tpaccept {username} tpa");
+		TPPattern HolyWorld = new TPPattern("(.*) просит телепортироваться.*", 1, "tpaccept");
+		TPPattern SimpleTpa = new TPPattern(".*\\[SimpleTpa\\] (.*) has sent you a teleport request!.*", 1, "tpaccept");
 		patterns.add(MST_Network);
 		patterns.add(HolyWorld);
 		patterns.add(SimpleTpa);
@@ -93,25 +93,30 @@ public class AutoAccept extends Module {
 		patterns.clear();
 	}
 
-	private void AutoAccept(String username, TPPattern pattern1) {
+	private void BetterAccept(String username, TPPattern pattern) {
 		if (mc.player != null && FriendsOnly.get() && isFriend(username)) {
 			info("Accepting request from " + "§c" + username);
-			mc.player.sendChatMessage(pattern1.command.replace("{username}", username));
+			mc.player.sendCommand(pattern.command.replace("{username}", username));
 		} else if (!FriendsOnly.get()) {
 			info("Accepting request from " + "§c" + username);
-			mc.player.sendChatMessage(pattern1.command.replace("{username}", username));
+			mc.player.sendCommand(pattern.command.replace("{username}", username));
 		}
 	}
 
-	private void Accept(String username, TPPattern pattern) {
+	private void Accept(String username, TPPattern pattern, String message) {
 		if (mc.player != null && mode.get() == Mode.Custom) {
+			TPPattern pattern1 = new TPPattern(custom_pattern.get(), custom_group.get(), accept_command.get());
+			username = getName(pattern, message);
 			if (FriendsOnly.get() && isFriend(username)) {
 				info("Accepting request from " + "§c" + username);
-				mc.player.sendChatMessage(accept_command.get().replace("{username}", username));
+				mc.player.sendCommand(accept_command.get().replace("{username}", username));
 			} else if (!FriendsOnly.get()) {
 				info("Accepting request from " + "§c" + username);
-				mc.player.sendChatMessage(accept_command.get().replace("{username}", username));
+				mc.player.sendCommand(accept_command.get().replace("{username}", username));
 			}
+		}
+		else {
+			BetterAccept(username, pattern);
 		}
 	}
 
@@ -133,7 +138,7 @@ public class AutoAccept extends Module {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					AutoAccept(nickname, pattern);
+					Accept(nickname, pattern, message);
 				}
 				else {
 					nickname = getName(custom, message);
@@ -143,7 +148,7 @@ public class AutoAccept extends Module {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						Accept(nickname, custom);
+						Accept(nickname, pattern, message);
 					}
 				}
 			});
