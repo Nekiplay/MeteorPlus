@@ -1,6 +1,7 @@
 package olejka.meteorplus.modules;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import meteordevelopment.meteorclient.events.entity.player.SendMovementPacketsEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixininterface.IPlayerInteractEntityC2SPacket;
@@ -558,29 +559,36 @@ public class KillAuraPlus extends Module {
 		}
 		return null;
 	}
-
+	private RotationUtils.Rotation lastRotate = null;
 	private void rotate(Entity target, Runnable callback) {
 		RotationUtils.Rotation rotation = getRotate(target);
 		if (rotation != null) {
 			if (rotationTickSmooth.get() == RotationTickSmooth.Perlin) {
 				int noice = noice(rotationTickSmoothMultiply.get());
 				if (noice != 0) {
+					lastRotate = rotation;
 					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
 				}
 			}
 			else if (rotationTickSmooth.get() == RotationTickSmooth.Random) {
 				if (ThreadLocalRandom.current().nextBoolean()) {
+					lastRotate = rotation;
 					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
 				}
 			}
 			else if (rotationTickSmooth.get() == RotationTickSmooth.RandomPerlin) {
 				if (ThreadLocalRandom.current().nextBoolean() && noice(rotationTickSmoothMultiply.get()) != 0) {
+					lastRotate = rotation;
 					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
 				}
 			}
 			else {
+				lastRotate = rotation;
 				Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
 			}
+		}
+		else if (lastRotate != null) {
+			Rotations.rotate(lastRotate.getYaw(), lastRotate.getPitch(), null);
 		}
 	}
 
