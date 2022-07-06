@@ -1,6 +1,7 @@
 package olejka.meteorplus.modules;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.entity.player.SendMovementPacketsEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -32,10 +33,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.GameMode;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import olejka.meteorplus.utils.Perlin2D;
 import olejka.meteorplus.utils.RaycastUtils;
 import olejka.meteorplus.utils.RotationUtils;
 import olejka.meteorplus.utils.algoritms.RandomUtils;
+import olejka.meteorplus.utils.algoritms.ShadyRotation;
 import olejka.meteorplus.utils.algoritms.Smooth;
 
 
@@ -52,17 +55,6 @@ public class KillAuraPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final SettingGroup sgTargeting = settings.createGroup("Targeting");
 	private final SettingGroup sgDelay = settings.createGroup("Delay");
-
-
-	public enum RotationSmooth
-	{
-		None,
-		Linear,
-		Quad,
-		Sine,
-		QuadSine,
-		Perlin,
-	}
 
 	public enum RotationTickSmooth
 	{
@@ -87,6 +79,7 @@ public class KillAuraPlus extends Module {
 		Instant,
 		LiquidBounce,
 		SmoothCenter,
+		Shady,
 	}
 
 	// General
@@ -117,6 +110,16 @@ public class KillAuraPlus extends Module {
 		.description("Determines when you should rotate towards the target.")
 		.defaultValue(Smooth.SmoothType.None)
 		.visible(() -> rotation.get() != RotationMode.Instant && rotation.get() != RotationMode.None)
+		.build()
+	);
+
+	private final Setting<Integer> rotationShadySpeed = sgGeneral.add(new IntSetting.Builder()
+		.name("rotation-speed")
+		.description("Speed.")
+		.defaultValue(4)
+		.range(-32, 32)
+		.sliderRange(0, 32)
+		.visible(() -> rotation.get() == RotationMode.Shady)
 		.build()
 	);
 
@@ -164,7 +167,7 @@ public class KillAuraPlus extends Module {
 		.defaultValue(180)
 		.range(0, 180)
 		.sliderRange(0, 180)
-		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant && rotationSmooth.isVisible())
+		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Shady && rotation.get() != RotationMode.Instant && rotationSmooth.isVisible())
 		.build()
 	);
 
@@ -174,7 +177,7 @@ public class KillAuraPlus extends Module {
 		.defaultValue(180)
 		.range(0, 180)
 		.sliderRange(0, 180)
-		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Instant && rotationSmooth.isVisible())
+		.visible(() -> rotation.get() != RotationMode.None && rotation.get() != RotationMode.Shady && rotation.get() != RotationMode.Instant && rotationSmooth.isVisible())
 		.build()
 	);
 
@@ -355,7 +358,6 @@ public class KillAuraPlus extends Module {
 	@EventHandler
 	private void onTick(TickEvent.Pre event) {
 		if (mc.player != null && !mc.player.isAlive() || PlayerUtils.getGameMode() == GameMode.SPECTATOR) return;
-
 		TargetUtils.getList(targets, this::entityCheck, priority.get(), maxTargets.get());
 
 		if (targets.size() > 0) {
@@ -498,12 +500,18 @@ public class KillAuraPlus extends Module {
 		double speeds = 180;
 		if (rotationSmooth.get() != Smooth.SmoothType.None) {
 			speeds = Smooth.getDouble(rotationSmooth.get(), diffAngle, minRotationSpeed.get(), maxRotationSpeed.get());
+			return RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) speeds);
 		}
-
-		if (rotation.get() == RotationMode.LiquidBounce) {
+		else if (rotation.get() == RotationMode.LiquidBounce) {
 			return RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) RandomUtils.nextDouble(minRotationSpeed.get(), maxRotationSpeed.get()));
 		}
-		else {
+		else if (rotation.get() == RotationMode.Shady) {
+			ShadyRotation.Rotation rot = ShadyRotation.getRotationToEntity(target);
+			ShadyRotation.smoothLook(rot,rotationShadySpeed.get(), () -> {});
+			return new RotationUtils.Rotation(rot.yaw, rot.pitch);
+		}
+		else
+		{
 			return RotationUtils.limitAngleChange(new RotationUtils.Rotation(Rotations.serverYaw, Rotations.serverPitch), new RotationUtils.Rotation(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body)), (float) speeds);
 		}
 	}
@@ -519,7 +527,12 @@ public class KillAuraPlus extends Module {
 		EntityHitResult result = RaycastUtils.raycastEntity(6, Rotations.serverYaw, Rotations.serverPitch, rayTraceRotateBoxStretch.get());
 		if ((result == null || result.getEntity() == null || result.getEntity() != target) && rayTraceRotate.get()) {
 			var yaw = calculateSpeed(target);
-			if (rotationRandomize.get() == RotationRandimize.Perlin) {
+			if (rotation.get() == RotationMode.Shady) {
+				Rotations.serverPitch = yaw.getPitch();
+				Rotations.serverYaw = yaw.getYaw();
+				return yaw;
+			}
+			else if (rotationRandomize.get() == RotationRandimize.Perlin) {
 				int yawNoice = noice(rotationRandomizeMultiply.get());
 				int pitchNoice = noice(rotationRandomizeMultiply.get());
 				yaw.setYaw(yaw.getYaw() + yawNoice);
@@ -561,30 +574,37 @@ public class KillAuraPlus extends Module {
 	}
 	private RotationUtils.Rotation lastRotate = null;
 	private void rotate(Entity target, Runnable callback) {
-		RotationUtils.Rotation rotation = getRotate(target);
-		if (rotation != null) {
-			if (rotationTickSmooth.get() == RotationTickSmooth.Perlin) {
+		RotationUtils.Rotation rotation2 = getRotate(target);
+		if (rotation2 != null) {
+			if (rotation.get() == RotationMode.Shady) {
+				Rotations.serverYaw = rotation2.getYaw();
+				Rotations.serverPitch = rotation2.getPitch();
+				Rotations.rotate(rotation2.getYaw(), rotation2.getPitch(), null);
+				Rotations.serverYaw = rotation2.getYaw();
+				Rotations.serverPitch = rotation2.getPitch();
+			}
+			else if (rotationTickSmooth.get() == RotationTickSmooth.Perlin) {
 				int noice = noice(rotationTickSmoothMultiply.get());
 				if (noice != 0) {
-					lastRotate = rotation;
-					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
+					lastRotate = rotation2;
+					Rotations.rotate(rotation2.getYaw(), rotation2.getPitch(), null);
 				}
 			}
 			else if (rotationTickSmooth.get() == RotationTickSmooth.Random) {
 				if (ThreadLocalRandom.current().nextBoolean()) {
-					lastRotate = rotation;
-					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
+					lastRotate = rotation2;
+					Rotations.rotate(rotation2.getYaw(), rotation2.getPitch(), null);
 				}
 			}
 			else if (rotationTickSmooth.get() == RotationTickSmooth.RandomPerlin) {
 				if (ThreadLocalRandom.current().nextBoolean() && noice(rotationTickSmoothMultiply.get()) != 0) {
-					lastRotate = rotation;
-					Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
+					lastRotate = rotation2;
+					Rotations.rotate(rotation2.getYaw(), rotation2.getPitch(), null);
 				}
 			}
 			else {
-				lastRotate = rotation;
-				Rotations.rotate(rotation.getYaw(), rotation.getPitch(), null);
+				lastRotate = rotation2;
+				Rotations.rotate(rotation2.getYaw(), rotation2.getPitch(), null);
 			}
 		}
 		else if (lastRotate != null) {

@@ -22,6 +22,7 @@ import olejka.meteorplus.modules.fly.FlyPlus;
 import olejka.meteorplus.modules.jesus.JesusPlus;
 import olejka.meteorplus.modules.speed.SpeedPlus;
 import olejka.meteorplus.modules.spider.SpiderPlus;
+import olejka.meteorplus.utils.algoritms.ShadyRotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
@@ -30,6 +31,7 @@ public class MeteorPlus extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
 	public static final Category CATEGORY = new Category("Meteor Plus", Items.EMERALD_BLOCK.getDefaultStack());
 
+	public static final ShadyRotation shadyRotation = new ShadyRotation();
 
 	@Override
 	public void onInitialize() {
@@ -37,7 +39,7 @@ public class MeteorPlus extends MeteorAddon {
 
 		// Required when using @EventHandler
 		MeteorClient.EVENT_BUS.registerLambdaFactory("olejka.meteorplus", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
-
+		shadyRotation.Init();
 		//Commands
 		LOG.info("MeteorPlus initializing commands...");
 		Commands commands = Commands.get();
