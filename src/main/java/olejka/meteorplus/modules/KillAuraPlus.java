@@ -198,8 +198,8 @@ public class KillAuraPlus extends Module {
 		.name("raytrace-rotate-box-stretch")
 		.description("raytrace-rotate-box-stretch.")
 		.defaultValue(0.7)
-		.range(0, 1)
-		.sliderRange(0, 1)
+		.range(-1, 1)
+		.sliderRange(-1, 1)
 		.visible(() -> rayTraceRotate.isVisible())
 		.build()
 	);
@@ -208,8 +208,8 @@ public class KillAuraPlus extends Module {
 		.name("raytrace-attack-box-stretch")
 		.description("raytrace-attack-box-stretch.")
 		.defaultValue(0.7)
-		.range(0, 1)
-		.sliderRange(0, 1)
+		.range(-1, 1)
+		.sliderRange(-1, 1)
 		.visible(() -> rayTraceAttack.isVisible())
 		.build()
 	);

@@ -36,9 +36,9 @@ public class RaycastUtils {
 	}
 
 	public static Vec3d getNearestPoint(Vec3d eyes, Box box) {
-		double x = eyes.z;;
-		double y = eyes.z;;
-		double z = eyes.z;;
+		double x = eyes.z;
+		double y = eyes.z;
+		double z = eyes.z;
 		for (int i = 0; i < 3; i++) {
 			if (eyes.x > box.maxX) {
 				x = box.maxX;
