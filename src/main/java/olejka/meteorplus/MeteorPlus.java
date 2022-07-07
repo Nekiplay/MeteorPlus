@@ -6,16 +6,17 @@ import meteordevelopment.meteorclient.systems.commands.Commands;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 import olejka.meteorplus.commands.InventoryProfiles;
-import olejka.meteorplus.hud.CustomImageHud;
+//import olejka.meteorplus.hud.CustomImageHud;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
-import olejka.meteorplus.hud.AnimeHud;
-import olejka.meteorplus.hud.TargetHud;
+//import olejka.meteorplus.hud.AnimeHud;
+//import olejka.meteorplus.hud.TargetHud;
 import olejka.meteorplus.modules.*;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.systems.hud.HUD;
+import meteordevelopment.meteorclient.systems.hud.Hud;
+import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import net.minecraft.item.Items;
 import olejka.meteorplus.modules.AutoSell;
 import olejka.meteorplus.modules.fly.FlyPlus;
@@ -29,7 +30,8 @@ import java.lang.invoke.MethodHandles;
 
 public class MeteorPlus extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
-	public static final Category CATEGORY = new Category("Meteor Plus", Items.EMERALD_BLOCK.getDefaultStack());
+	public static final Category CATEGORY = new Category("MeteorPlus", Items.EMERALD_BLOCK.getDefaultStack());
+	public static final HudGroup HUD_GROUP = new HudGroup("MeteorPlusHud");
 
 	public static final ShadyRotation shadyRotation = new ShadyRotation();
 
@@ -80,11 +82,15 @@ public class MeteorPlus extends MeteorAddon {
 
 		// Hud
 		LOG.info("MeteorPlus initializing hud...");
-		HUD hud = Systems.get(HUD.class);
-		//hud.elements.add(new TargetHud(hud));
+
+		/*
 		hud.elements.add(new CustomImageHud(hud));
 		hud.elements.add(new AnimeHud(hud));
 		hud.elements.add(new MeteorPlusLogoHud(hud));
+		 */
+
+		Hud.get().register(MeteorPlusLogoHud.INFO);
+
 		LOG.info("MeteorPlus loaded hud");
 
 		LOG.info("MeteorPlus loaded");
