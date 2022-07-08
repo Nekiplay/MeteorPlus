@@ -8,7 +8,7 @@ import olejka.meteorplus.commands.Eclip;
 import olejka.meteorplus.commands.InventoryProfiles;
 //import olejka.meteorplus.hud.CustomImageHud;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
-//import olejka.meteorplus.hud.AnimeHud;
+import olejka.meteorplus.hud.AnimeHud;
 //import olejka.meteorplus.hud.TargetHud;
 import olejka.meteorplus.modules.*;
 import meteordevelopment.meteorclient.MeteorClient;
@@ -90,6 +90,7 @@ public class MeteorPlus extends MeteorAddon {
 		 */
 
 		Hud.get().register(MeteorPlusLogoHud.INFO);
+		Hud.get().register(AnimeHud.INFO);
 
 		LOG.info("MeteorPlus loaded hud");
 
