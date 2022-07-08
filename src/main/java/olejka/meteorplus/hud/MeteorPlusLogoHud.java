@@ -50,13 +50,13 @@ public class MeteorPlusLogoHud extends HudElement {
 
 	@Override
 	public void render(HudRenderer renderer) {
-		GL.bindTexture(TEXTURE);
-		renderer.begin();
+		//GL.bindTexture(TEXTURE);
+		//renderer.begin();
 		if (!invert.get()) {
 			renderer.texture(TEXTURE, box.getRenderX(), box.getRenderY(), 64 * scale.get(), 50 * scale.get(), WHITE);
 		} else {
 			renderer.texture(TEXTURE, box.getRenderX()+(64 * scale.get()), box.getRenderY(), -(64 * scale.get()), 50 * scale.get(), WHITE);
 		}
-		renderer.end();
+		//renderer.end();
 	}
 }
