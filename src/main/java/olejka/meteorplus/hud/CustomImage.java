@@ -65,6 +65,13 @@ public class CustomImage extends HudElement  {
 		.build()
 	);
 
+	private final Setting<Boolean> Invert = sgGeneral.add(new BoolSetting.Builder()
+		.name("Invert")
+		.description("Inverts the image.")
+		.defaultValue(false)
+		.build()
+	);
+
 	public CustomImage() {
 		super(INFO);
 		calculateSize();
@@ -82,10 +89,18 @@ public class CustomImage extends HudElement  {
 		}
 		if ((onInventory.get() && mc != null && mc.currentScreen != null) || isInEditor()) {
 			if (noChat.get() && !isInEditor() && mc.currentScreen instanceof ChatScreen) return;
-			renderer.texture(TEXID, box.getRenderX(), box.getRenderY(), imgWidth.get(), imgHeight.get(), WHITE);
+			if (!Invert.get()){
+				renderer.texture(TEXID, box.getRenderX(), box.getRenderY(), imgWidth.get(), imgHeight.get(), WHITE);
+			} else {
+				renderer.texture(TEXID, box.getRenderX()+imgWidth.get(), box.getRenderY(), -(imgWidth.get()), imgHeight.get(), WHITE);
+			}
 		}
 		else if (!onInventory.get()) {
-			renderer.texture(TEXID, box.getRenderX(), box.getRenderY(), imgWidth.get(), imgHeight.get(), WHITE);
+			if (!Invert.get()){
+				renderer.texture(TEXID, box.getRenderX(), box.getRenderY(), imgWidth.get(), imgHeight.get(), WHITE);
+			} else {
+				renderer.texture(TEXID, box.getRenderX()+imgWidth.get(), box.getRenderY(), -(imgWidth.get()), imgHeight.get(), WHITE);
+			}
 		}
 	}
 
