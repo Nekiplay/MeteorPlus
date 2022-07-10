@@ -143,8 +143,7 @@ public class ShadyRotation {
 		MeteorClient.EVENT_BUS.subscribe(this);
 	}
 
-	@EventHandler
-	public void onTick(TickEvent.Pre event) {
+	private void rotatorWorker() {
 		if(mc.player == null) return;
 		if(tickCounter < ticks) {
 			running = true;
@@ -161,8 +160,17 @@ public class ShadyRotation {
 		}
 		else
 		{
-			//Rotations.serverYaw = mc.player.getYaw();
-			//Rotations.serverPitch = mc.player.getPitch();
+			running = false;
 		}
+	}
+
+	@EventHandler
+	public void onTick(TickEvent.Pre event) {
+		rotatorWorker();
+	}
+
+	@EventHandler
+	public void onTick2(TickEvent.Post event) {
+		rotatorWorker();
 	}
 }

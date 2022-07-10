@@ -14,42 +14,19 @@ import olejka.meteorplus.MeteorPlus;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static meteordevelopment.meteorclient.utils.render.color.Color.WHITE;
 
-public class AnimeHud extends HudElement  {
+public class CustomImage extends HudElement  {
 
-	public static final HudElementInfo<AnimeHud> INFO = new HudElementInfo<>(MeteorPlus.HUD_GROUP, "AnimeHud", "Shows the MeteorPlus logo in the HUD.", AnimeHud::new);
+	public static final HudElementInfo<CustomImage> INFO = new HudElementInfo<>(MeteorPlus.HUD_GROUP, "CustomImage", "Shows the MeteorPlus logo in the HUD.", CustomImage::new);
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
-
-
-	public enum Image {
-		Astolfo1,
-		Astolfo2,
-		Neko,
-	}
-
-	private final Setting<Image> image = sgGeneral.add(new EnumSetting.Builder<Image>()
-		.name("image")
-		.description("Image.")
-		.defaultValue(Image.Astolfo1)
-		.onModuleActivated((a) -> loadImage(getLinkByImage(a.get())))
-		.onChanged((a) -> loadImage(getLinkByImage(a)))
+	private final Setting<String> link = sgGeneral.add(new StringSetting.Builder()
+		.name("Link")
+		.description("Image link.")
+		.defaultValue("https://i.ibb.co/khQw7B4/comhiclipartyaiob-removebg-preview.png")
+		.onChanged(this::loadImage)
 		.build()
 	);
-
-
-	public String getLinkByImage(Image image) {
-		if (image == Image.Astolfo1) {
-			return "https://i.ibb.co/gv31zjS/l-Og-TN5x-removebg-preview.png";
-		}
-		else if (image == Image.Astolfo2) {
-			return "https://i.ibb.co/6br3pcc/1619388386-30-pibig-info-p-astolfo-tyan-anime-krasivo-34-removebg-preview.png";
-		}
-		else if (image == Image.Neko) {
-			return "https://i.ibb.co/Zmh2mnF/da5a1f3816dd4e17935e303361152456-removebg-preview.png";
-		}
-		return "";
-	}
 
 	private final Setting<Double> imgWidth = sgGeneral.add(new DoubleSetting.Builder()
 		.name("width")
@@ -88,7 +65,7 @@ public class AnimeHud extends HudElement  {
 		.build()
 	);
 
-	public AnimeHud() {
+	public CustomImage() {
 		super(INFO);
 		calculateSize();
 	}
@@ -100,7 +77,7 @@ public class AnimeHud extends HudElement  {
 	@Override
 	public void render(HudRenderer renderer) {
 		if (empty) {
-			loadImage(String.valueOf(getLinkByImage(image.get())));
+			loadImage(link.get());
 			return;
 		}
 		if ((onInventory.get() && mc != null && mc.currentScreen != null) || isInEditor()) {
@@ -115,8 +92,9 @@ public class AnimeHud extends HudElement  {
 	private boolean locked = false;
 	private boolean empty = true;
 	private void loadImage(String url) {
-		if (locked)
+		if (locked) {
 			return;
+		}
 		new Thread(() -> {
 			try {
 				locked = true;
@@ -124,7 +102,7 @@ public class AnimeHud extends HudElement  {
 				mc.getTextureManager().registerTexture(TEXID, new NativeImageBackedTexture(img));
 				empty = false;
 			} catch (Exception ignored) {
-
+				empty = true;
 			} finally {
 				locked = false;
 			}

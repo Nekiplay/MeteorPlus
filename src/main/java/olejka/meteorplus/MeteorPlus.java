@@ -1,14 +1,13 @@
 package olejka.meteorplus;
 
 import meteordevelopment.meteorclient.addons.GithubRepo;
-import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.systems.commands.Commands;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 import olejka.meteorplus.commands.InventoryProfiles;
 //import olejka.meteorplus.hud.CustomImageHud;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
-import olejka.meteorplus.hud.AnimeHud;
+import olejka.meteorplus.hud.CustomImage;
 //import olejka.meteorplus.hud.TargetHud;
 import olejka.meteorplus.modules.*;
 import meteordevelopment.meteorclient.MeteorClient;
@@ -57,7 +56,7 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new EyeFinder());
 		modules.add(new InventoryMovePlus());
 		modules.add(new MiddleClickExtraPlus());
-		modules.add(new KillAuraPlus());
+		modules.add(new KillAuraBetter());
 		modules.add(new AutoDropPlus());
 		modules.add(new NoFallPlus());
 		modules.add(new SpeedPlus());
@@ -90,7 +89,7 @@ public class MeteorPlus extends MeteorAddon {
 		 */
 
 		Hud.get().register(MeteorPlusLogoHud.INFO);
-		Hud.get().register(AnimeHud.INFO);
+		Hud.get().register(CustomImage.INFO);
 
 		LOG.info("MeteorPlus loaded hud");
 

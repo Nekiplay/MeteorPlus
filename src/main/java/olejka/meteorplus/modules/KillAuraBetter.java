@@ -1,8 +1,6 @@
 package olejka.meteorplus.modules;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
-import meteordevelopment.meteorclient.MeteorClient;
-import meteordevelopment.meteorclient.events.entity.player.SendMovementPacketsEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixininterface.IPlayerInteractEntityC2SPacket;
@@ -33,7 +31,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.GameMode;
 import olejka.meteorplus.MeteorPlus;
-import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import olejka.meteorplus.utils.Perlin2D;
 import olejka.meteorplus.utils.RaycastUtils;
 import olejka.meteorplus.utils.RotationUtils;
@@ -47,11 +44,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static meteordevelopment.meteorclient.MeteorClient.mc;
-
-public class KillAuraPlus extends Module {
-	public KillAuraPlus() {
-		super(MeteorPlus.CATEGORY, "killaura-plus", "Better killaura on player.");
+public class KillAuraBetter extends Module {
+	public KillAuraBetter() {
+		super(MeteorPlus.CATEGORY, "killaura-better", "Better killaura on player.");
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -584,7 +579,9 @@ public class KillAuraPlus extends Module {
 				if (noice != 0) {
 					lastRotate = rotation2;
 					if (rotation.get() == RotationMode.Shady) {
-						ShadyRotation.smoothLook(rotation2, rotationShadySpeed.get(), clientLook.get(), (() -> {}));
+						if (!ShadyRotation.running) {
+							ShadyRotation.smoothLook(rotation2, rotationShadySpeed.get(), clientLook.get(), (() -> {}));
+						}
 					}
 					else {
 						Rotations.rotate(rotation2.getYaw(), rotation2.getPitch(), 0, clientLook.get(), null);
@@ -599,7 +596,9 @@ public class KillAuraPlus extends Module {
 				if (ThreadLocalRandom.current().nextBoolean()) {
 					lastRotate = rotation2;
 					if (rotation.get() == RotationMode.Shady) {
-						ShadyRotation.smoothLook(rotation2, rotationShadySpeed.get(), clientLook.get(), (() -> {}));
+						if (!ShadyRotation.running) {
+							ShadyRotation.smoothLook(rotation2, rotationShadySpeed.get(), clientLook.get(), (() -> {}));
+						}
 					}
 					else {
 						Rotations.rotate(rotation2.getYaw(), rotation2.getPitch(), 0, clientLook.get(), null);
@@ -614,7 +613,9 @@ public class KillAuraPlus extends Module {
 				if (ThreadLocalRandom.current().nextBoolean() && noice(rotationTickSmoothMultiply.get()) != 0) {
 					lastRotate = rotation2;
 					if (rotation.get() == RotationMode.Shady) {
-						ShadyRotation.smoothLook(rotation2, rotationShadySpeed.get(), clientLook.get(), (() -> {}));
+						if (!ShadyRotation.running) {
+							ShadyRotation.smoothLook(rotation2, rotationShadySpeed.get(), clientLook.get(), (() -> {}));
+						}
 					}
 					else {
 						Rotations.rotate(rotation2.getYaw(), rotation2.getPitch(), 0, clientLook.get(), null);
@@ -628,7 +629,9 @@ public class KillAuraPlus extends Module {
 			else {
 				lastRotate = rotation2;
 				if (rotation.get() == RotationMode.Shady) {
-					ShadyRotation.smoothLook(rotation2, rotationShadySpeed.get(), clientLook.get(), (() -> {}));
+					if (!ShadyRotation.running) {
+						ShadyRotation.smoothLook(rotation2, rotationShadySpeed.get(), clientLook.get(), (() -> {}));
+					}
 				}
 				else {
 					Rotations.rotate(rotation2.getYaw(), rotation2.getPitch(), 0, clientLook.get(), null);
