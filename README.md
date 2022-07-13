@@ -16,9 +16,6 @@
 	<a href="https://www.codefactor.io/repository/github/nekiplay/meteorplus"><img src="https://www.codefactor.io/repository/github/nekiplay/meteorplus/badge" alt="CodeFactor" /></a>
 	<img src="https://img.shields.io/github/commit-activity/w/MeteorDevelopment/meteor-client" alt="GitHub commit activity"/>
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.19-lightgreen" alt="Minecraft version"/></a>
-	<br/><br/>
-  	<a href="https://discord.gg/syHrs2ePyQ"><img src="https://invidget.switchblade.xyz/syHrs2ePyQ" alt="Discord server"></a>
-	<br/><br/>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
 </div>
 
