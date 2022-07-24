@@ -201,8 +201,11 @@ public class AutoAccept extends Module {
 	private boolean isFriend(String username)
 	{
 		Friends friends = Friends.get();
-		if (friends != null && friends.get(username) != null) {
-			return true;
+		var it = friends.iterator();
+		while (it.hasNext()) {
+			var f = it.next();
+			if (f.name.equals(username))
+				return true;
 		}
 		return false;
 	}
