@@ -123,4 +123,9 @@ public class MeteorPlus extends MeteorAddon {
 			.getAsString();
 		return commit.isEmpty() ? null : commit.trim();
 	}
+
+	@Override
+	public String getPackage() {
+		return "olejka.meteorplus";
+	}
 }
