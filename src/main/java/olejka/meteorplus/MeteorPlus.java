@@ -39,7 +39,7 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info("MeteorPlus initializing...");
 
 		// Required when using @EventHandler
-		MeteorClient.EVENT_BUS.registerLambdaFactory("olejka.meteorplus", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
+		// MeteorClient.EVENT_BUS.registerLambdaFactory("olejka.meteorplus", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
 		shadyRotation.Init();
 		//Commands
 		LOG.info("MeteorPlus initializing commands...");
