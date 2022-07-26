@@ -35,6 +35,7 @@
 - Boat aura 
 - Freeze
 - Ghost block fixer
+- Fly Plus (Matrix bypass)
 - Speed Plus (Matrix, ACC, Vulcan bypass)
 - Spider Plus (Matrix, Vulcan bypass)
 - Jesus Plus (Matrix, Vulcan bypass)
