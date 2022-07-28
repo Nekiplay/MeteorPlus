@@ -15,7 +15,7 @@
 	<a href="https://github.com/Nekiplay/MeteorPlus/graphs/contributors"><img src="https://img.shields.io/github/contributors/Nekiplay/MeteorPlus" alt="Github contributors"/></a>
 	<a href="https://www.codefactor.io/repository/github/nekiplay/meteorplus"><img src="https://www.codefactor.io/repository/github/nekiplay/meteorplus/badge" alt="CodeFactor" /></a>
 	<br/><br/>
-  	<a href="https://discord.gg/R9dmsMHvDU"><img src="https://invidget.switchblade.xyz/R9dmsMHvDU" alt="Discord server"></a>
+  	<a href="https://discord.gg/NUCqxgxAnk"><img src="https://invidget.switchblade.xyz/NUCqxgxAnk" alt="Discord server"></a>
 	<br/><br/>
 	<img src="https://img.shields.io/github/commit-activity/w/MeteorDevelopment/meteor-client" alt="GitHub commit activity"/>
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.19-lightgreen" alt="Minecraft version"/></a>
