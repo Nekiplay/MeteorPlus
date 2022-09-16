@@ -30,7 +30,7 @@ public class RaycastUtils {
 		return ProjectileUtil.raycast(camera, cameraVec, vec3d3, box, new Predicate<Entity>() {
 			@Override
 			public boolean test(Entity entity) {
-				return !entity.isSpectator() && entity.collides();
+				return !entity.isSpectator() && entity.isCollidable();
 			}
 		}, 0);
 	}

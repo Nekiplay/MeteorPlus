@@ -18,6 +18,7 @@ import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -92,7 +93,7 @@ public class AutoPortalMine extends Module {
 			isMine = true;
 			if ((obsidians.size() == 0 || blocks.size() == 0)) {
 				if (mc.player != null && commandDelay >= delayCommand.get()) {
-					mc.player.sendChatMessage(command.get());
+					mc.player.sendChatMessage(command.get(), Text.empty());
 					canTeleport = false;
 					commandDelay = 0;
 				}

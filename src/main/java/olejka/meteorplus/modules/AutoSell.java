@@ -10,6 +10,7 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.text.Text;
 import olejka.meteorplus.MeteorPlus;
 
 import java.time.LocalDateTime;
@@ -75,7 +76,7 @@ public class AutoSell extends Module {
 					else if (mc.player != null && tick == 1 && mc.player.getInventory().selectedSlot == 8) {
 						ItemStack item = mc.player.getInventory().getStack(SlotUtils.HOTBAR_END);
 						int cc = Integer.parseInt(cost.get()) * item.getCount();
-						mc.player.sendChatMessage(command.get().replace("{cost}", Integer.toString(cc)));
+						mc.player.sendChatMessage(command.get().replace("{cost}", Integer.toString(cc)), Text.empty());
 						info("Selling §c" + item.getName().getString() + " x" + item.getCount() + " §rfor §6" + cc);
 						tick++;
 					}
