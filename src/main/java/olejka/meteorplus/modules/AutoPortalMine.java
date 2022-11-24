@@ -1,17 +1,13 @@
 package olejka.meteorplus.modules;
 
 import baritone.api.BaritoneAPI;
-import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.systems.modules.world.Nuker;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.Pool;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
-import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.world.BlockIterator;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
@@ -71,9 +67,6 @@ public class AutoPortalMine extends Module {
 
 	private int commandDelay = 0;
 
-	private boolean isTeleport = false;
-	private boolean canTeleport = false;
-
 	@EventHandler
 	private void onTick(TickEvent.Pre event) {
 
@@ -82,19 +75,16 @@ public class AutoPortalMine extends Module {
 		}
 		if (PlayerUtils.getDimension() == Dimension.Overworld) {
 			commandDelay = 0;
-			isTeleport = false;
 			isMine = false;
 			if (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
 				BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto nether_portal");
 			}
-		}
-		else if (PlayerUtils.getDimension() == Dimension.Nether) {
+		} else if (PlayerUtils.getDimension() == Dimension.Nether) {
 			List<BlockPos> obsidians = getPortalBlocks();
 			isMine = true;
 			if ((obsidians.size() == 0 || blocks.size() == 0)) {
 				if (mc.player != null && commandDelay >= delayCommand.get()) {
 					mc.player.sendChatMessage(command.get(), Text.empty());
-					canTeleport = false;
 					commandDelay = 0;
 				}
 			}
@@ -107,19 +97,6 @@ public class AutoPortalMine extends Module {
 
 	private final Double range = 5.5;
 
-
-	private final Integer range_up = 6;
-
-	private final Integer range_down = 0;
-
-	private final Integer range_left = 2;
-
-	private final Integer range_right = 2;
-
-	private final Integer range_forward = 0;
-
-	private final Integer range_back = 0;
-
 	private final Integer maxBlocksPerTick = 1;
 
 	private final AutoPortalMine.SortMode sortMode = SortMode.Closest;
@@ -127,17 +104,14 @@ public class AutoPortalMine extends Module {
 	private final Pool<BlockPos.Mutable> blockPosPool = new Pool<>(BlockPos.Mutable::new);
 	private final List<BlockPos.Mutable> blocks = new ArrayList<>();
 
-	private final Pool<Nuker.RenderBlock> renderBlockPool = new Pool<>(Nuker.RenderBlock::new);
-	private final List<Nuker.RenderBlock> renderBlocks = new ArrayList<>();
-
 	private boolean firstBlock;
 	private final BlockPos.Mutable lastBlockPos = new BlockPos.Mutable();
 
 	private int timer;
 	private int noBlockTimer;
 
-	private BlockPos.Mutable pos1 = new BlockPos.Mutable(); // Rendering for cubes
-	private BlockPos.Mutable pos2 = new BlockPos.Mutable();
+	private final BlockPos.Mutable pos1 = new BlockPos.Mutable(); // Rendering for cubes
+	private final BlockPos.Mutable pos2 = new BlockPos.Mutable();
 	private Box box;
 	int maxh = 0;
 	int maxv = 0;
@@ -146,20 +120,15 @@ public class AutoPortalMine extends Module {
 	public void onActivate() {
 		commandDelay = delayCommand.get();
 		firstBlock = true;
-		for (Nuker.RenderBlock renderBlock : renderBlocks) renderBlockPool.free(renderBlock);
-		renderBlocks.clear();
 		timer = 0;
 		noBlockTimer = 0;
 	}
 
 	@Override
-	public void onDeactivate()
-	{
+	public void onDeactivate() {
 		if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
 			BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
 		}
-		for (Nuker.RenderBlock renderBlock : renderBlocks) renderBlockPool.free(renderBlock);
-		renderBlocks.clear();
 	}
 
 	private boolean isMine = false;
@@ -170,8 +139,6 @@ public class AutoPortalMine extends Module {
 
 	@EventHandler
 	private void onTickPre(TickEvent.Pre event) {
-		renderBlocks.forEach(Nuker.RenderBlock::tick);
-
 		// Update timer
 		if (timer > 0) {
 			timer--;
@@ -196,47 +163,53 @@ public class AutoPortalMine extends Module {
 
 		if (shape == AutoPortalMine.Shape.UniformCube) {
 			pX_ += 1; // weired position stuff
-			pos1.set(pX_ - r, pY - r + 1, pZ - r+1); // down
-			pos2.set(pX_ + r-1, pY + r, pZ + r); // up
+			pos1.set(pX_ - r, pY - r + 1, pZ - r + 1); // down
+			pos2.set(pX_ + r - 1, pY + r, pZ + r); // up
 		} else {
 			int direction = Math.round((mc.player.getRotationClient().y % 360) / 90);
-			direction = (direction == 4 || direction == -4)? 0: direction;
-			direction = direction == -2? 2: direction == -1? 3: direction == -3? 1: direction; // stupid java not doing modulo shit
+			direction = (direction == 4 || direction == -4) ? 0 : direction;
+			direction = direction == -2 ? 2 : direction == -1 ? 3 : direction == -3 ? 1 : direction; // stupid java not doing modulo shit
 
 			// direction == 1
+			int range_down = 0;
+			int range_right = 2;
+			int range_forward = 0;
 			pos1.set(pX_ - (range_forward), Math.ceil(pY) - range_down, pZ_ - range_right); // down
-			pos2.set(pX_ + range_back+1, Math.ceil(pY + range_up + 1), pZ_ + range_left+1); // up
+			int range_up = 6;
+			int range_back = 0;
+			int range_left = 2;
+			pos2.set(pX_ + range_back + 1, Math.ceil(pY + range_up + 1), pZ_ + range_left + 1); // up
 
 			// Only change me if you want to mess with 3D rotations:
 			if (direction == 2) {
 				pX_ += 1;
 				pZ_ += 1;
-				pos1.set(pX_ - (range_left+1), Math.ceil(pY) - range_down, pZ_ - (range_forward+1)); // down
+				pos1.set(pX_ - (range_left + 1), Math.ceil(pY) - range_down, pZ_ - (range_forward + 1)); // down
 				pos2.set(pX_ + range_right, Math.ceil(pY + range_up + 1), pZ_ + range_back); // up
 			} else if (direction == 3) {
 				pX_ += 1;
-				pos1.set(pX_ - (range_back+1), Math.ceil(pY) - range_down, pZ_ - range_left); // down
-				pos2.set(pX_ + range_forward, Math.ceil(pY + range_up + 1), pZ_ + range_right+1); // up
+				pos1.set(pX_ - (range_back + 1), Math.ceil(pY) - range_down, pZ_ - range_left); // down
+				pos2.set(pX_ + range_forward, Math.ceil(pY + range_up + 1), pZ_ + range_right + 1); // up
 			} else if (direction == 0) {
 				pZ_ += 1;
 				pX_ += 1;
-				pos1.set(pX_ - (range_right+1), Math.ceil(pY) - range_down, pZ_ - (range_back+1)); // down
+				pos1.set(pX_ - (range_right + 1), Math.ceil(pY) - range_down, pZ_ - (range_back + 1)); // down
 				pos2.set(pX_ + range_left, Math.ceil(pY + range_up + 1), pZ_ + range_forward); // up
 			}
 
 			// get largest horizontal
-			maxh = 1 + Math.max(Math.max(Math.max(range_back,range_right),range_forward),range_left);
+			maxh = 1 + Math.max(Math.max(Math.max(range_back, range_right), range_forward), range_left);
 			maxv = 1 + Math.max(range_up, range_down);
 		}
 
-		if (mode == AutoPortalMine.Mode.Flatten){
+		if (mode == AutoPortalMine.Mode.Flatten) {
 			pos1.setY((int) Math.floor(pY));
 		}
 		box = new Box(pos1, pos2);
 
 
 		// Find blocks to break
-		BlockIterator.register(Math.max((int) Math.ceil(range+1), maxh), Math.max((int) Math.ceil(range), maxv), (blockPos, blockState) -> {
+		BlockIterator.register(Math.max((int) Math.ceil(range + 1), maxh), Math.max((int) Math.ceil(range), maxv), (blockPos, blockState) -> {
 			// Check for air, unbreakable blocks and distance
 			boolean toofarSphere = Utils.squaredDistance(pX, pY, pZ, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5) > rangeSq;
 			boolean toofarUniformCube = maxDist(Math.floor(pX), Math.floor(pY), Math.floor(pZ), blockPos.getX(), blockPos.getY(), blockPos.getZ()) >= range;
@@ -303,7 +276,6 @@ public class AutoPortalMine extends Module {
 					boolean canInstaMine = BlockUtils.canInstaBreak(block);
 
 					BlockUtils.breakBlock(block, swingHand.get());
-					renderBlocks.add(renderBlockPool.get().set(block));
 
 					lastBlockPos.set(block);
 
@@ -333,6 +305,7 @@ public class AutoPortalMine extends Module {
 		TopDown
 
 	}
+
 	public enum Shape {
 		Cube,
 		UniformCube,
@@ -348,50 +321,16 @@ public class AutoPortalMine extends Module {
 		return Math.max(Math.max(dX, dY), dZ);
 	}
 
-	public static class RenderBlock {
-		public BlockPos.Mutable pos = new BlockPos.Mutable();
-		public int ticks;
-
-		public AutoPortalMine.RenderBlock set(BlockPos blockPos) {
-			pos.set(blockPos);
-			ticks = 8;
-
-			return this;
-		}
-
-		public void tick() {
-			ticks--;
-		}
-
-		public void render(Render3DEvent event, Color sides, Color lines, ShapeMode shapeMode) {
-			int preSideA = sides.a;
-			int preLineA = lines.a;
-
-			sides.a *= (double) ticks / 8;
-			lines.a *= (double) ticks / 8;
-
-			event.renderer.box(pos, sides, lines, shapeMode, 0);
-
-			sides.a = preSideA;
-			lines.a = preLineA;
-		}
-	}
-
-	private List<BlockPos> getPortalBlocks()
-	{
-		List<BlockPos> temp = new ArrayList<BlockPos>();
-		for (int i = 0; i < 6; i++)
-		{
-			for (int i2 = -4; i2 < 4; i2++)
-			{
-				for (int i3 = -4; i3 < 4; i3++)
-				{
+	private List<BlockPos> getPortalBlocks() {
+		List<BlockPos> temp = new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			for (int i2 = -4; i2 < 4; i2++) {
+				for (int i3 = -4; i3 < 4; i3++) {
 					assert mc.player != null;
 					assert mc.world != null;
 					BlockPos pos = mc.player.getBlockPos().add(i2, i, i3);
 					BlockState state = mc.world.getBlockState(pos);
-					if (state.getBlock() == Blocks.OBSIDIAN)
-					{
+					if (state.getBlock() == Blocks.OBSIDIAN) {
 						temp.add(pos);
 					}
 				}
