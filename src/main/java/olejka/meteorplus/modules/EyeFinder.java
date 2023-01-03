@@ -97,17 +97,19 @@ public class EyeFinder extends Module {
 
 	@EventHandler
 	public void tickEvent(TickEvent.Pre event) {
-		Iterator<Entity> entityIterator = mc.world.getEntities().iterator();
-		HashMap<Entity, HitResult> cachMap = new HashMap<Entity, HitResult>();
-		while (entityIterator.hasNext()) {
-			Entity entity = entityIterator.next();
-			if (entity instanceof PlayerEntity && entity != mc.player) {
-				HitResult result = entity.raycast(5, mc.getTickDelta(), false);
-				cachMap.put(entity, result);
+		if (mc.world != null) {
+			Iterator<Entity> entityIterator = mc.world.getEntities().iterator();
+			HashMap<Entity, HitResult> cachMap = new HashMap<Entity, HitResult>();
+			while (entityIterator.hasNext()) {
+				Entity entity = entityIterator.next();
+				if (entity instanceof PlayerEntity && entity != mc.player) {
+					HitResult result = entity.raycast(5, mc.getTickDelta(), false);
+					cachMap.put(entity, result);
+				}
 			}
+			resultMap.clear();
+			resultMap.putAll(cachMap);
 		}
-		resultMap.clear();
-		resultMap.putAll(cachMap);
 	}
 
 	@EventHandler
