@@ -495,14 +495,12 @@ public class XrayBruteforce extends Module {
 		public ShapeMode shapeMode = null;
     }
 
-	public ArrayList<XBlock> oresV2 = new ArrayList<XBlock>();
 	private final List<XGroup> groups = new UnorderedArrayList<>();
-
+	public HashMap<BlockPos, XBlock> oresV3 = new HashMap<BlockPos, XBlock>();
 	public XBlock getSBlockData(BlockPos pos) {
-		for (XBlock ore : oresV2.toArray(new XBlock[0])) {
-			if (ore.x == pos.getX() && ore.y == pos.getY() && ore.z == pos.getZ()) {
-				return ore;
-			}
+		if (oresV3.containsKey(pos))
+		{
+			return oresV3.get(pos);
 		}
 		return null;
 	}
@@ -858,10 +856,10 @@ public class XrayBruteforce extends Module {
     @Override
     public String getInfoString() {
 		if (pause_toggle) {
-			return "paused, rendered " + renderedBlocks;
+			return "paused";
 		}
         else {
-			return "rendered " + renderedBlocks + ", scan delay " + timescan;
+			return renderedBlocks + "b, " + timescan + "t";
 		}
     }
 

@@ -1,6 +1,8 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.entity.EntityRemovedEvent;
 import meteordevelopment.meteorclient.events.entity.player.InteractBlockEvent;
+import meteordevelopment.meteorclient.events.game.OpenScreenEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.ConnectToServerEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -9,6 +11,10 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.client.gui.screen.LevelLoadingScreen;
+import net.minecraft.client.gui.screen.LoadingDisplay;
+import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.MeteorPlus;
@@ -119,6 +125,16 @@ public class Freeze extends Module {
 		if (mc.player != null) {
 			mc.player.setVelocity(0, 0, 0);
 			mc.player.setPos(position.x, position.y, position.z);
+		}
+	}
+	@EventHandler
+	private void remove(EntityRemovedEvent event)
+	{
+		if (event.entity == mc.player)
+		{
+			if (isActive()) {
+				toggle();
+			}
 		}
 	}
 }

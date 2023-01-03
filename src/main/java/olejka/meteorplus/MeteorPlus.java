@@ -6,7 +6,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 //import olejka.meteorplus.hud.CustomImageHud;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
-import olejka.meteorplus.hud.CustomImage;
 //import olejka.meteorplus.hud.TargetHud;
 import olejka.meteorplus.modules.*;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
@@ -16,6 +15,7 @@ import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import net.minecraft.item.Items;
 import olejka.meteorplus.modules.AutoSell;
+import olejka.meteorplus.modules.fastladder.FastLadderPlus;
 import olejka.meteorplus.modules.fly.FlyPlus;
 import olejka.meteorplus.modules.jesus.JesusPlus;
 import olejka.meteorplus.modules.speed.SpeedPlus;
@@ -47,6 +47,9 @@ public class MeteorPlus extends MeteorAddon {
 		//Modules
 		LOG.info("MeteorPlus initializing modules...");
 		Modules modules = Modules.get();
+		modules.getList().remove(modules.get("No Fall"));
+
+		modules.add(new FastLadderPlus());
 		modules.add(new ServerSpoofPlus());
 		modules.add(new TriggerBot());
 		modules.add(new EyeFinder());
@@ -85,7 +88,6 @@ public class MeteorPlus extends MeteorAddon {
 		 */
 
 		Hud.get().register(MeteorPlusLogoHud.INFO);
-		Hud.get().register(CustomImage.INFO);
 
 		LOG.info("MeteorPlus loaded hud");
 
