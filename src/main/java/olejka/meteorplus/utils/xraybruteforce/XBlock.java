@@ -3,7 +3,7 @@ package olejka.meteorplus.utils.xraybruteforce;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
+import meteordevelopment.meteorclient.systems.modules.render.blockesp.ESPBlockData;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +46,7 @@ public class XBlock {
 	public int neighbours;
 
 	public XGroup group;
-	
+
 	public XBlock(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -188,7 +188,7 @@ public class XBlock {
 				z2 = z + shape.getMax(Direction.Axis.Z);
 			}
 
-			SBlockData blockData = search.getBlockData(ore.block);
+			ESPBlockData blockData = search.getBlockData(ore.block);
 
 			ShapeMode shapeMode = blockData.shapeMode;
 			Color lineColor = blockData.lineColor;

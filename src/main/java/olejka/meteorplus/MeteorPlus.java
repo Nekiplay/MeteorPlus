@@ -4,13 +4,11 @@ import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.systems.commands.Commands;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
-import olejka.meteorplus.commands.InventoryProfiles;
 //import olejka.meteorplus.hud.CustomImageHud;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import olejka.meteorplus.hud.CustomImage;
 //import olejka.meteorplus.hud.TargetHud;
 import olejka.meteorplus.modules.*;
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
@@ -25,7 +23,6 @@ import olejka.meteorplus.modules.spider.SpiderPlus;
 import olejka.meteorplus.utils.algoritms.ShadyRotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.lang.invoke.MethodHandles;
 
 public class MeteorPlus extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
@@ -45,7 +42,6 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info("MeteorPlus initializing commands...");
 		Commands commands = Commands.get();
 		commands.add(new Eclip());
-		commands.add(new InventoryProfiles());
 		LOG.info("MeteorPlus loaded commands");
 
 		//Modules

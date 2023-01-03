@@ -3,7 +3,7 @@ package olejka.meteorplus.utils.xraybruteforce;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
+import meteordevelopment.meteorclient.systems.modules.render.blockesp.ESPBlockData;
 import meteordevelopment.meteorclient.utils.misc.UnorderedArrayList;
 import meteordevelopment.meteorclient.utils.render.RenderUtils;
 import net.minecraft.block.Block;
@@ -136,7 +136,7 @@ public class XGroup {
 	}
 
 	public void render(Render3DEvent event) {
-		SBlockData blockData = search.getBlockData(block);
+		ESPBlockData blockData = search.getBlockData(block);
 
 		if (blockData.tracer) {
 			event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, sumX / blocks.size() + 0.5, sumY / blocks.size() + 0.5, sumZ / blocks.size() + 0.5, blockData.tracerColor);

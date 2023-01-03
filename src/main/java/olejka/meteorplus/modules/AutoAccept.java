@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.text.Text;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.utils.ColorRemover;
 
@@ -98,10 +99,10 @@ public class AutoAccept extends Module {
 	private void BetterAccept(String username, TPPattern pattern) {
 		if (mc.player != null && FriendsOnly.get() && isFriend(username)) {
 			info("Accepting request from " + "§c" + username);
-			mc.player.sendCommand(pattern.command.replace("{username}", username));
+			mc.player.sendMessage(Text.of(pattern.command.replace("{username}", username)));
 		} else if (!FriendsOnly.get()) {
 			info("Accepting request from " + "§c" + username);
-			mc.player.sendCommand(pattern.command.replace("{username}", username));
+			mc.player.sendMessage(Text.of(pattern.command.replace("{username}", username)));
 		}
 	}
 
@@ -111,10 +112,10 @@ public class AutoAccept extends Module {
 			username = getName(pattern, message);
 			if (FriendsOnly.get() && isFriend(username)) {
 				info("Accepting request from " + "§c" + username);
-				mc.player.sendCommand(accept_command.get().replace("{username}", username));
+				mc.player.sendMessage(Text.of(accept_command.get().replace("{username}", username)));
 			} else if (!FriendsOnly.get()) {
 				info("Accepting request from " + "§c" + username);
-				mc.player.sendCommand(accept_command.get().replace("{username}", username));
+				mc.player.sendMessage(Text.of(accept_command.get().replace("{username}", username)));
 			}
 		}
 		else {

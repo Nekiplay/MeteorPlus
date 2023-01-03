@@ -1,6 +1,5 @@
 package olejka.meteorplus.utils;
 
-import meteordevelopment.meteorclient.utils.misc.Vec3;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -28,8 +27,8 @@ public class RotationUtils {
 		return Math.hypot(getAngleDifference(a.yaw, b.yaw), a.getPitch() - b.getPitch());
 	}
 
-	public static Rotation toRotation(final Vec3 vec, final boolean predict) {
-		final Vec3 eyesPos = new Vec3(mc.player.getX(), mc.player.getBoundingBox().minY +
+	public static Rotation toRotation(final Vec3d vec, final boolean predict) {
+		final Vec3d eyesPos = new Vec3d(mc.player.getX(), mc.player.getBoundingBox().minY +
 			mc.player.getEyeHeight(mc.player.getPose()), mc.player.getZ());
 
 		if(predict) {
@@ -47,8 +46,8 @@ public class RotationUtils {
 			(float) (-Math.toDegrees(Math.atan2(diffY, Math.sqrt(diffX * diffX + diffZ * diffZ)))));
 	}
 
-	public static Vec3 getCenter(final Box bb) {
-		return new Vec3(bb.minX + (bb.maxX - bb.minX) * 0.5, bb.minY + (bb.maxY - bb.minY) * 0.5, bb.minZ + (bb.maxZ - bb.minZ) * 0.5);
+	public static Vec3d getCenter(final Box bb) {
+		return new Vec3d(bb.minX + (bb.maxX - bb.minX) * 0.5, bb.minY + (bb.maxY - bb.minY) * 0.5, bb.minZ + (bb.maxZ - bb.minZ) * 0.5);
 	}
 
 	public static Rotation limitAngleChange(final Rotation currentRotation, final Rotation targetRotation, final float turnSpeed) {

@@ -84,7 +84,7 @@ public class AutoPortalMine extends Module {
 			isMine = true;
 			if ((obsidians.size() == 0 || blocks.size() == 0)) {
 				if (mc.player != null && commandDelay >= delayCommand.get()) {
-					mc.player.sendChatMessage(command.get(), Text.empty());
+					mc.player.sendMessage(Text.of(command.get()));
 					commandDelay = 0;
 				}
 			}

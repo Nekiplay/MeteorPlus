@@ -76,7 +76,7 @@ public class Damage extends FlyMode {
 	@Override
 	public void onDamage(DamageEvent event) {
 		if (event.entity == mc.player) {
-			if (event.source != DamageSource.FALL && event.source != DamageSource.FALLING_BLOCK) {
+			if (event.source != DamageSource.FALL) {
 				damaged = true;
 				ticks = 0;
 

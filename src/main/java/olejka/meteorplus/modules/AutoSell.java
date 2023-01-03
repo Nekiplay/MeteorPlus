@@ -76,7 +76,7 @@ public class AutoSell extends Module {
 					else if (mc.player != null && tick == 1 && mc.player.getInventory().selectedSlot == 8) {
 						ItemStack item = mc.player.getInventory().getStack(SlotUtils.HOTBAR_END);
 						int cc = Integer.parseInt(cost.get()) * item.getCount();
-						mc.player.sendChatMessage(command.get().replace("{cost}", Integer.toString(cc)), Text.empty());
+						mc.player.sendMessage(Text.of(command.get().replace("{cost}", Integer.toString(cc))));
 						info("Selling §c" + item.getName().getString() + " x" + item.getCount() + " §rfor §6" + cc);
 						tick++;
 					}

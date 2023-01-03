@@ -7,9 +7,9 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
-import meteordevelopment.meteorclient.systems.modules.render.search.SBlock;
-import meteordevelopment.meteorclient.systems.modules.render.search.SBlockData;
-import meteordevelopment.meteorclient.systems.modules.render.search.SChunk;
+import meteordevelopment.meteorclient.systems.modules.render.blockesp.ESPBlock;
+import meteordevelopment.meteorclient.systems.modules.render.blockesp.ESPBlockData;
+import meteordevelopment.meteorclient.systems.modules.render.blockesp.ESPChunk;
 import meteordevelopment.meteorclient.utils.misc.Keybind;
 import meteordevelopment.meteorclient.utils.misc.UnorderedArrayList;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
@@ -205,11 +205,11 @@ public class XrayBruteforce extends Module {
     );
 
 
-	private final Setting<SBlockData> defaultBlockConfig = sgGeneral.add(new GenericSetting.Builder<SBlockData>()
+	private final Setting<ESPBlockData> defaultBlockConfig = sgGeneral.add(new GenericSetting.Builder<ESPBlockData>()
 		.name("whitelist-default-config")
 		.description("Default block config.")
 		.defaultValue(
-			new SBlockData(
+			new ESPBlockData(
 				ShapeMode.Lines,
 				new SettingColor(0, 255, 200),
 				new SettingColor(0, 255, 200, 25),
@@ -220,14 +220,14 @@ public class XrayBruteforce extends Module {
 		.build()
 	);
 
-	private final Setting<Map<Block, SBlockData>> blockConfigs = sgGeneral.add(new BlockDataSetting.Builder<SBlockData>()
+	private final Setting<Map<Block, ESPBlockData>> blockConfigs = sgGeneral.add(new BlockDataSetting.Builder<ESPBlockData>()
 		.name("whitelist-block-configs")
 		.description("Config for each block.")
 		.defaultData(defaultBlockConfig)
 		.onChanged(v -> {
 			synchronized (ores) {
 				for (RenderOre ore : ores) {
-					SBlockData data = getBlockData(ore.block);
+					ESPBlockData data = getBlockData(ore.block);
 					ore.linecolor = data.lineColor;
 					ore.sidecolor = data.sideColor;
 					ore.tracercolor = data.tracerColor;
@@ -448,9 +448,9 @@ public class XrayBruteforce extends Module {
 				if (defaultBlockConfig != null && blockConfigs != null && defaultBlockConfig.get() != null) {
 					defaultBlockConfig.get().tickRainbow();
 					if (blockConfigs.get() != null) {
-						Collection<SBlockData> datas = blockConfigs.get().values();
+						Collection<ESPBlockData> datas = blockConfigs.get().values();
 						if (datas.size() > 0) {
-							for (SBlockData blockData : datas) {
+							for (ESPBlockData blockData : datas) {
 								if (blockData != null) {
 									blockData.tickRainbow();
 								}
@@ -536,7 +536,7 @@ public class XrayBruteforce extends Module {
 			if (ore.block == Blocks.AIR) {
 				ore.block = state.getBlock();
 			}
-			SBlockData blockdata = getBlockData(state.getBlock());
+			ESPBlockData blockdata = getBlockData(state.getBlock());
 			XBlock sbp = new XBlock(ore.blockPos.getX(), ore.blockPos.getY(), ore.blockPos.getZ());
 
 			ore.sBlock = sbp;
@@ -645,8 +645,8 @@ public class XrayBruteforce extends Module {
 		}
     }
 
-	public SBlockData getBlockData(Block block) {
-		SBlockData blockData = blockConfigs.get().get(block);
+	public ESPBlockData getBlockData(Block block) {
+		ESPBlockData blockData = blockConfigs.get().get(block);
 		return blockData == null ? defaultBlockConfig.get() : blockData;
 	}
 
@@ -703,7 +703,7 @@ public class XrayBruteforce extends Module {
         if (ore.block != null && mc.world != null && ore.tracercolor != null && ore.sidecolor != null && ore.linecolor != null) {
 			BlockState state = mc.world.getBlockState(ore.blockPos);
             VoxelShape shape = state.getOutlineShape(mc.world, ore.blockPos);
-			SBlockData blockdata = getBlockData(ore.block);
+			ESPBlockData blockdata = getBlockData(ore.block);
 			if (shape.isEmpty()) return;
             for (Box b : shape.getBoundingBoxes()) {
                 event.renderer.box(ore.blockPos.getX() + b.minX, ore.blockPos.getY() + b.minY, ore.blockPos.getZ() + b.minZ, ore.blockPos.getX() + b.maxX, ore.blockPos.getY() + b.maxY, ore.blockPos.getZ() + b.maxZ, ore.sidecolor, ore.linecolor, blockdata.shapeMode, 0);
@@ -760,9 +760,9 @@ public class XrayBruteforce extends Module {
 		if (scanPriority.get() == ScanPriority.Caves) {
 			ArrayList<Block> caf = new ArrayList<Block>();
 			caf.add(Blocks.AIR);
-			SChunk s = SChunk.searchChunk(chunk, caf);
+			ESPChunk s = ESPChunk.searchChunk(chunk, caf);
 			if (s.blocks != null) {
-				for (SBlock sBlock : s.blocks.values()) {
+				for (ESPBlock sBlock : s.blocks.values()) {
 					for (Block bp : whblocks.get()) {
 						boolean newGeneration = generationType.get() == GenerationType.New;
 						GenerationBlock generationBlock = GenerationBlock.getGenerationBlock(bp, newGeneration);
@@ -787,9 +787,9 @@ public class XrayBruteforce extends Module {
 			Iterable<Chunk> chunks = Utils.chunks();
 			for (Chunk chunk : chunks) {
 				if (expanded.get()) {
-					SChunk s = SChunk.searchChunk(chunk, whblocks.get());
+					ESPChunk s = ESPChunk.searchChunk(chunk, whblocks.get());
 					if (s.blocks != null) {
-						for (SBlock sBlock : s.blocks.values()) {
+						for (ESPBlock sBlock : s.blocks.values()) {
 							BlockPos pos = new BlockPos(sBlock.x, sBlock.y, sBlock.z);
 							if (whblocks.get().contains(mc.world.getBlockState(pos).getBlock())) {
 								if (isExposedOre(pos)) {

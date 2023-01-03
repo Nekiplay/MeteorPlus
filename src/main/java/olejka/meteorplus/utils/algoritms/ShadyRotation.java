@@ -3,11 +3,11 @@ package olejka.meteorplus.utils.algoritms;
 import meteordevelopment.meteorclient.Main;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.utils.misc.Vec3;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.utils.RotationUtils;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
@@ -70,7 +70,7 @@ public class ShadyRotation {
 		return new Rotation(pitch, yaw);
 	}
 
-	public static Rotation vec3ToRotation(Vec3 vec) {
+	public static Rotation vec3ToRotation(Vec3d vec) {
 		double diffX = vec.x - mc.player.getPos().x;
 		double diffY = vec.y - mc.player.getPos().y - mc.player.getEyeY();
 		double diffZ = vec.z - mc.player.getPos().z;

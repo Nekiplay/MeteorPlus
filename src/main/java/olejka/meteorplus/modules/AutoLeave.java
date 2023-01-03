@@ -54,7 +54,7 @@ public class AutoLeave extends Module {
 		if (visualRangeIgnoreFriends.get()) {
 			if (event.entity.isPlayer() && !Friends.get().isFriend((PlayerEntity) event.entity) && !Objects.equals(event.entity.getEntityName(), mc.player.getEntityName()) && !Objects.equals(event.entity.getEntityName(), "FreeCamera")) {
 				if (Command.get()) {
-					mc.player.sendChatMessage(command_str.get(), Text.empty());
+					mc.player.sendMessage(Text.of(command_str.get()));
 					info((String.format("player §c%s§r was detected", event.entity.getEntityName())));
 				} else {
 					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));

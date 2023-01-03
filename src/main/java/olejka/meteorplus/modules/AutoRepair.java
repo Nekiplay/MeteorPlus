@@ -56,7 +56,7 @@ public class AutoRepair extends Module {
 			event.setCancelled(true);
 			if (LocalDateTime.now().isBefore(start.plusSeconds(Interval.get()))) return;
 			info("Repairing §2" + currentStack.getItem().getName().getString());
-			mc.player.sendChatMessage(Command.get(), Text.empty());
+			mc.player.sendMessage(Text.of(Command.get()));
 			start = LocalDateTime.now();
 		}
 	}
@@ -67,19 +67,19 @@ public class AutoRepair extends Module {
 			if (LocalDateTime.now().isBefore(start.plusSeconds(Interval.get()))) return;
 
 			if (mc.player != null && mc.player.getEquippedStack(EquipmentSlot.HEAD) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.HEAD))) {
-				mc.player.sendChatMessage(Command.get(), Text.empty());
+				mc.player.sendMessage(Text.of(Command.get()));
 				start = LocalDateTime.now();
 			}
 			else if (mc.player.getEquippedStack(EquipmentSlot.CHEST) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.CHEST))) {
-				mc.player.sendChatMessage(Command.get(), Text.empty());
+				mc.player.sendMessage(Text.of(Command.get()));
 				start = LocalDateTime.now();
 			}
 			else if (mc.player.getEquippedStack(EquipmentSlot.LEGS) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.LEGS))) {
-				mc.player.sendChatMessage(Command.get(), Text.empty());
+				mc.player.sendMessage(Text.of(Command.get()));
 				start = LocalDateTime.now();
 			}
 			else if (mc.player.getEquippedStack(EquipmentSlot.FEET) != null && shouldStopUsing(mc.player.getEquippedStack(EquipmentSlot.FEET))) {
-				mc.player.sendChatMessage(Command.get(), Text.empty());
+				mc.player.sendMessage(Text.of(Command.get()));
 				start = LocalDateTime.now();
 			}
 		}
