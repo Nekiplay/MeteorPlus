@@ -30,7 +30,6 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.entity.EntityUtils;
-import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.render.RenderUtils;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
@@ -724,13 +723,13 @@ public class XrayBruteforce extends Module {
             scanned.clear();
 			need_rescan.clear();
             clear_cache_blocks.set(false);
-            ChatUtils.info("Xray BruteForce", "Cache checked blocks cleared");
+            info("Cache checked blocks cleared");
         }
         if (clear_cache_ores.get())
         {
             ores.clear();
             clear_cache_ores.set(false);
-            ChatUtils.info("Xray BruteForce", "Cache render ores cleared");
+            info("Cache render ores cleared");
         }
 		if (currentScanBlock != null) {
 			BlockPos bp = currentScanBlock;
