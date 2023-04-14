@@ -153,7 +153,7 @@ public class AutoCraftPlus extends Module {
 			List<RecipeResultCollection> recipeResultCollectionList = mc.player.getRecipeBook().getOrderedResults();
 			for (RecipeResultCollection recipeResultCollection : recipeResultCollectionList) {
 				for (Recipe<?> recipe : recipeResultCollection.getRecipes(true)) {
-					if (!itemList.contains(recipe.getOutput().getItem())) continue;
+					if (!itemList.contains(recipe.getOutput(mc.getNetworkHandler().getRegistryManager()).getItem())) continue;
 					if (isContainsIngredients(recipe)) {
 						mc.interactionManager.clickRecipe(currentScreenHandler.syncId, recipe, craftAll.get());
 						mc.interactionManager.clickSlot(currentScreenHandler.syncId, 0, 1,

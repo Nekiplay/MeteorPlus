@@ -2,7 +2,6 @@ package olejka.meteorplus.modules;
 
 import meteordevelopment.meteorclient.events.entity.EntityRemovedEvent;
 import meteordevelopment.meteorclient.events.entity.player.InteractBlockEvent;
-import meteordevelopment.meteorclient.events.game.OpenScreenEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.ConnectToServerEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -11,10 +10,6 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.client.gui.screen.LevelLoadingScreen;
-import net.minecraft.client.gui.screen.LoadingDisplay;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.MeteorPlus;
@@ -70,7 +65,7 @@ public class Freeze extends Module {
 
 	private boolean rotate = false;
 
-	private void setFreezeLook(PacketEvent event, PlayerMoveC2SPacket playerMove)
+	private void setFreezeLook(PacketEvent.Send event, PlayerMoveC2SPacket playerMove)
 	{
 		if (playerMove.changesLook() && FreezeLook.get() && FreezeLookSilent.get() && !rotate) {
 			event.setCancelled(true);
@@ -99,7 +94,7 @@ public class Freeze extends Module {
 	}
 
 	@EventHandler
-	private void onMovePacket(PacketEvent.Sent event) {
+	private void onMovePacket(PacketEvent.Send event) {
 		if (event.packet instanceof PlayerMoveC2SPacket playerMove) {
 			if (Packet.get()) {
 				setFreezeLook(event, playerMove);

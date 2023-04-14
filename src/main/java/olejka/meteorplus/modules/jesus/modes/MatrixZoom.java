@@ -43,7 +43,7 @@ public class MatrixZoom extends JesusMode {
 			velX -= right.x * s * speedValue;
 			velZ -= right.z * s * speedValue;
 		}
-		if (mc.world.getBlockState(new BlockPos(mc.player.getPos().x, mc.player.getPos().y + range, mc.player.getPos().z)).getBlock() == Blocks.WATER && !mc.player.horizontalCollision) {
+		if (mc.world.getBlockState(new BlockPos(mc.player.getBlockX(), (int) (mc.player.getBlockY() + range), mc.player.getBlockZ())).getBlock() == Blocks.WATER && !mc.player.horizontalCollision) {
 			((IVec3d) mc.player.getVelocity()).set(velX, 0, velZ);
 		}
 	}

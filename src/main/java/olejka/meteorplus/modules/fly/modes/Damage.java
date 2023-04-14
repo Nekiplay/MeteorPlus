@@ -10,9 +10,13 @@ import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.damage.DamageScaling;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.modules.fly.FlyMode;
 import olejka.meteorplus.modules.fly.FlyModes;
@@ -76,7 +80,7 @@ public class Damage extends FlyMode {
 	@Override
 	public void onDamage(DamageEvent event) {
 		if (event.entity == mc.player) {
-			if (event.source != DamageSource.FALL) {
+			if (event.source.getType() != mc.world.getDamageSources().fall().getType()) {
 				damaged = true;
 				ticks = 0;
 

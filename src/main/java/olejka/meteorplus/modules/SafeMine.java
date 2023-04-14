@@ -121,7 +121,7 @@ public class SafeMine extends Module {
 	{
 		if (mc.player != null && mc.world != null) {
 			Vec3d underpos = mc.player.getPos().add(0, -1, 0);
-			BlockPos under = new BlockPos(underpos.x, underpos.y, underpos.z);
+			BlockPos under = new BlockPos((int) underpos.x, (int) underpos.y, (int) underpos.z);
 			if (mc.world.getBlockState(under).getMaterial() == Material.LAVA) {
 				if (solidLavaFreeze.get() && mc.player.isOnGround()) {
 					if (!freeze) {
@@ -150,7 +150,7 @@ public class SafeMine extends Module {
 
 	@EventHandler
 	private void onFluidCollisionShape(CollisionShapeEvent event) {
-		if (event.type == CollisionShapeEvent.CollisionType.FLUID) {
+		if (event.state.getMaterial().isLiquid()) {
 			if (mc.player != null && event.state != null && event.state.getMaterial() == Material.LAVA && !mc.player.isInLava() && solidLava.get()) {
 				event.shape = VoxelShapes.fullCube();
 			}
@@ -261,7 +261,7 @@ public class SafeMine extends Module {
 
 	private boolean rotate = false;
 
-	private void setFreezeLook(PacketEvent event, PlayerMoveC2SPacket playerMove)
+	private void setFreezeLook(PacketEvent.Send event, PlayerMoveC2SPacket playerMove)
 	{
 		if (playerMove.changesLook() && FreezeLook.get() && FreezeLookSilent.get() && !rotate) {
 			event.setCancelled(true);
@@ -290,7 +290,7 @@ public class SafeMine extends Module {
 	}
 
 	@EventHandler
-	private void onMovePacket(PacketEvent.Sent event) {
+	private void onMovePacket(PacketEvent.Send event) {
 		if (freeze) {
 			if (event.packet instanceof PlayerMoveC2SPacket playerMove) {
 				if (Packet.get()) {
