@@ -20,7 +20,7 @@ public class NCPHop extends SpeedMode {
 	@Override
 	public void onDeactivate() {
 		Modules.get().get(Timer.class).setOverride(Timer.OFF);
-		mc.player.airStrafingSpeed = 0.02f;
+		mc.player.getAbilities().setFlySpeed(0.02f);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class NCPHop extends SpeedMode {
 		Timer timer = Modules.get().get(Timer.class);
 		if (PlayerUtils.isMoving() && mc.player.isOnGround()) {
 			mc.player.jump();
-			mc.player.airStrafingSpeed = 0.0223f;
+			mc.player.getAbilities().setFlySpeed(0.0223f);
 		}
 		else {
 			timer.setOverride(1);

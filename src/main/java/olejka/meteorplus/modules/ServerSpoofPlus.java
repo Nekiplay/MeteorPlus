@@ -70,7 +70,7 @@ public class ServerSpoofPlus extends Module {
 			}
 		}
 		@EventHandler
-		private void onPacketSent(PacketEvent.Sent event) {
+		private void onPacketSent(PacketEvent.Send event) {
 			if (event.packet instanceof CustomPayloadS2CPacket payload) {
 				if (payload.getChannel().toString().equals("fabric:registry/sync")) {
 					event.setCancelled(true);

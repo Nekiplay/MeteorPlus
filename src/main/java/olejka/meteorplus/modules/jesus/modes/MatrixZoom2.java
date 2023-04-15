@@ -12,7 +12,7 @@ import net.minecraft.block.Material;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Items;
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -56,7 +56,7 @@ public class MatrixZoom2 extends JesusMode {
 			velX -= right.x * s * speedValue;
 			velZ -= right.z * s * speedValue;
 		}
-		if (mc.world.getBlockState(new BlockPos(mc.player.getPos().x, mc.player.getPos().y + range, mc.player.getPos().z)).getBlock() == Blocks.WATER && !mc.player.horizontalCollision) {
+		if (mc.world.getBlockState(new BlockPos((int) mc.player.getPos().x, (int) (mc.player.getPos().y + range), (int) mc.player.getPos().z)).getBlock() == Blocks.WATER && !mc.player.horizontalCollision) {
 			if (tick == 0) {
 				((IVec3d) mc.player.getVelocity()).set(velX, 0.030091, velZ);
 			}

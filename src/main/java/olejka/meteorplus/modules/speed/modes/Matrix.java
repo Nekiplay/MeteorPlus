@@ -16,7 +16,7 @@ public class Matrix extends SpeedMode {
 	public void onDeactivate() {
 		Modules.get().get(Timer.class).setOverride(Timer.OFF);
 		if (mc.player != null) {
-			mc.player.airStrafingSpeed = 0.02f;
+			mc.player.getAbilities().setFlySpeed(0.02f);
 		}
 	}
 
@@ -29,7 +29,7 @@ public class Matrix extends SpeedMode {
 		if (PlayerUtils.isMoving()) {
 			if (mc.player.isOnGround()) {
 				mc.player.jump();
-				mc.player.airStrafingSpeed = 0.02098f;
+				mc.player.getAbilities().setFlySpeed(0.02098f);
 				timer.setOverride(1.055f);
 			}
 		}

@@ -19,7 +19,7 @@ public class Matrix6_7_0 extends SpeedMode {
 
 	@Override
 	public void onDeactivate() {
-		mc.player.airStrafingSpeed = 0.02f;
+		mc.player.getAbilities().setFlySpeed(0.02f);
 	}
 
 	@Override
@@ -52,18 +52,18 @@ public class Matrix6_7_0 extends SpeedMode {
 				MovementUtils.strafe(0.2177f);
 			}
 		}
-		if (Math.abs(mc.player.airStrafingSpeed) < 0.1) {
-			mc.player.airStrafingSpeed = 0.026f;
+		if (Math.abs(mc.player.getAbilities().getFlySpeed()) < 0.1) {
+			mc.player.getAbilities().setFlySpeed(0.026f);
 		}
 		else {
-			mc.player.airStrafingSpeed = 0.0247f;
+			mc.player.getAbilities().setFlySpeed(0.0247f);
 		}
 		if (mc.player.isOnGround() && PlayerUtils.isMoving()) {
 			mc.options.jumpKey.setPressed(false);
 			mc.player.jump();
 			IVec3d v = (IVec3d) mc.player.getVelocity();
 			v.setY(0.41050001145141919810);
-			if (Math.abs(mc.player.airStrafingSpeed) < 0.1) {
+			if (Math.abs(mc.player.getAbilities().getFlySpeed()) < 0.1) {
 				MovementUtils.strafe(MovementUtils.getSpeed());
 			}
 		}
