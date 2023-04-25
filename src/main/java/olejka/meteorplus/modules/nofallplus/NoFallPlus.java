@@ -29,7 +29,7 @@ public class NoFallPlus extends Module {
 	);
 
 	public NoFallPlus() {
-		super(MeteorPlus.CATEGORY, "nofall-plus", "Bypass nofall");
+		super(MeteorPlus.CATEGORY, "no-fall-plus", "Bypass fall damage or reduce fall damage");
 		onModeChanged(mode.get());
 	}
 

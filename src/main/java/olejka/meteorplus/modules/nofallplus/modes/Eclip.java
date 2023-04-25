@@ -43,9 +43,10 @@ public class Eclip extends NofallMode {
 			groundcheck = false;
 			cliped = false;
 			ChatUtils.infoPrefix("No Fall Plus", "Grounded in " + teleports + " teleports");
+			mc.player.fallDistance = 0;
 			teleports = 0;
 		}
-		else if (mc.player.fallDistance > 3) {
+		else if (mc.player.fallDistance > 2) {
 			BlockHitResult result = mc.world.raycast(new RaycastContext(mc.player.getPos(), mc.player.getPos().subtract(0, 10, 0), RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, mc.player));
 			if (result != null && result.getType() == HitResult.Type.BLOCK) {
 				blocks = result.getBlockPos().add(0, 1, 0).getY();
@@ -93,11 +94,11 @@ public class Eclip extends NofallMode {
 				}
 				case 1: {
 					groundcheck = true;
-					mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true));
+					mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(false));
 					ticks++;
 				}
 				case 2: {
-					mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true));
+					mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(false));
 					ticks++;
 				}
 				case 3: {
