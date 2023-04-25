@@ -1,19 +1,19 @@
-package olejka.meteorplus.modules.spider;
+package olejka.meteorplus.modules.nofallplus;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.MinecraftClient;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.modules.spider.SpiderModes;
+import olejka.meteorplus.modules.spider.SpiderPlus;
 
-public class SpiderMode {
+public class NofallMode {
 	protected final MinecraftClient mc;
-	protected final SpiderPlus settings;
-	private final SpiderModes type;
+	protected final NoFallPlus settings;
+	private final NoFallModes type;
 
-	public SpiderMode(SpiderModes type) {
-		this.settings = MeteorPlus.getInstance().modules.spiderPlus;
+	public NofallMode(NoFallModes type) {
+		this.settings = MeteorPlus.getInstance().modules.noFallPlus;
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}

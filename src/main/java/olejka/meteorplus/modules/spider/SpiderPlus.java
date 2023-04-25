@@ -3,11 +3,13 @@ package olejka.meteorplus.modules.spider;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.EnumSetting;
+import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.modules.spider.modes.Eclip;
 import olejka.meteorplus.modules.spider.modes.Matrix;
 import olejka.meteorplus.modules.spider.modes.Vulcan;
 
@@ -25,6 +27,22 @@ public class SpiderPlus extends Module {
 		.defaultValue(SpiderModes.Matrix)
 		.onModuleActivated(spiderModesSetting -> onSpiderModeChanged(spiderModesSetting.get()))
 		.onChanged(this::onSpiderModeChanged)
+		.build()
+	);
+
+	public final Setting<Integer> Interval = sgGeneral.add(new IntSetting.Builder()
+		.name("interval")
+		.defaultValue(3)
+		.description("Don't touch if you don't know what it does.")
+		.range(0, 10)
+		.build()
+	);
+
+	public final Setting<Integer> Blocks = sgGeneral.add(new IntSetting.Builder()
+		.name("blocks")
+		.defaultValue(3)
+		.description("Don't touch if you don't know what it does.")
+		.range(0, 10)
 		.build()
 	);
 
@@ -63,6 +81,7 @@ public class SpiderPlus extends Module {
 		switch (mode) {
 			case Matrix:   currentMode = new Matrix(); break;
 			case Vulcan:   currentMode = new Vulcan(); break;
+			case Elytraclip:   currentMode = new Eclip(); break;
 		}
 	}
 }

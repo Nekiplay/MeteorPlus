@@ -34,6 +34,9 @@ public class Eclip extends Command {
 				blocks = blocks2;
 				MeteorClient.EVENT_BUS.subscribe(this);
 			}
+			else {
+				ticks = 0;
+			}
 			return SINGLE_SUCCESS;
 		}));
 		builder.then(literal("up").executes(c -> {
@@ -41,12 +44,18 @@ public class Eclip extends Command {
 				blocks = findBlock(true, 15);
 				MeteorClient.EVENT_BUS.subscribe(this);
 			}
+			else {
+				ticks = 0;
+			}
 			return SINGLE_SUCCESS;
 		}));
 		builder.then(literal("down").executes(c -> {
 			if (work()) {
 				blocks = findBlock(false, 15);
 				MeteorClient.EVENT_BUS.subscribe(this);
+			}
+			else {
+				ticks = 0;
 			}
 			return SINGLE_SUCCESS;
 		}));

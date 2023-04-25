@@ -31,8 +31,17 @@ public class MeteorPlus extends MeteorAddon {
 
 	public static final ShadyRotation shadyRotation = new ShadyRotation();
 
+	public MeteorPlusModules modules = new MeteorPlusModules();
+
+	private static MeteorPlus instance;
+
+	public static MeteorPlus getInstance() {
+		return instance;
+	}
+
 	@Override
 	public void onInitialize() {
+		instance = this;
 		LOG.info("MeteorPlus initializing...");
 
 		// Required when using @EventHandler
@@ -46,36 +55,7 @@ public class MeteorPlus extends MeteorAddon {
 
 		//Modules
 		LOG.info("MeteorPlus initializing modules...");
-		Modules modules = Modules.get();
-		modules.getList().remove(modules.get("No Fall"));
-
-		modules.add(new FastLadderPlus());
-		modules.add(new ServerSpoofPlus());
-		modules.add(new TriggerBot());
-		modules.add(new EyeFinder());
-		modules.add(new InventoryMovePlus());
-		modules.add(new MiddleClickExtraPlus());
-		modules.add(new KillAuraBetter());
-		modules.add(new AutoDropPlus());
-		modules.add(new NoFallPlus());
-		modules.add(new SpeedPlus());
-		modules.add(new FlyPlus());
-		modules.add(new SpiderPlus());
-		modules.add(new JesusPlus());
-		modules.add(new BoatAura());
-		modules.add(new BedrockStorageBruteforce());
-		modules.add(new AutoSell());
-		modules.add(new AutoCraftPlus());
-		modules.add(new AutoPortalMine());
-		modules.add(new XrayBruteforce());
-		modules.add(new AutoLeave());
-		modules.add(new AutoAccept());
-		modules.add(new AutoRepair());
-		modules.add(new GhostBlockFixer());
-		modules.add(new SafeMine());
-		modules.add(new Freeze());
-		modules.add(new Noclip());
-		modules.add(new AntiBotPlus());
+		modules.Register();
 		LOG.info("MeteorPlus loaded modules");
 
 		// Hud
