@@ -247,13 +247,13 @@
             <td><b>Spider Plus<b></td>
              <td><b>Vulcan<b></td>
              <td><b><b></td>
-             <td><b>Only forward, not more jumps<b></td>
+             <td><b><b></td>
         </tr>
          <tr>
             <td><b>Speed Plus<b></td>
              <td><b>Matrix 3<b></td>
              <td><b>New mode<b></td>
-             <td><b><b></td>
+             <td><b>Only forward, not more jumps<b></td>
         </tr>
         <tr>
             <td><b>Jesus Plus<b></td>
