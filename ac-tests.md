@@ -194,7 +194,7 @@
         <tr>
             <td><b>Spider Plus<b></td>
              <td><b>Matrix<b></td>
-             <td><b> 7<b></td>
+             <td><b><b></td>
              <td><b><b></td>
         </tr>
          <tr>
@@ -205,7 +205,7 @@
         </tr>
     </tbody>
 </table>
-<h2> <a https://www.spigotmc.org/resources/kauri-anticheat-best-in-class-performance-destroy-cheaters-1-7-10-1-18-1.53721//">Kauri</a></h2>
+<h2> <a href="https://www.spigotmc.org/resources/kauri-anticheat-best-in-class-performance-destroy-cheaters-1-7-10-1-18-1.53721/">Kauri</a></h2>
 <b>Modules</b>
 <table align="center">
     <thead>
