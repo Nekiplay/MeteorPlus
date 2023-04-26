@@ -1,3 +1,4 @@
+
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>MeteorPlus</h1>
@@ -13,7 +14,8 @@
 	<a href="https://github.com/Nekiplay/MeteorPlus"><img src="https://img.shields.io/github/languages/code-size/Nekiplay/MeteorPlus" alt="Code size"/></a>
 	<br>
 	<a href="https://github.com/Nekiplay/MeteorPlus/graphs/contributors"><img src="https://img.shields.io/github/contributors/Nekiplay/MeteorPlus" alt="Github contributors"/></a>
-	<a href="https://www.codefactor.io/repository/github/nekiplay/meteorplus"><img src="https://www.codefactor.io/repository/github/nekiplay/meteorplus/badge" alt="CodeFactor" /></a>
+	<br/><br/>
+	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/Anticheats-AAC%2C%20Spartan%2C%20Vulcan%2C%20Matrix%2C%20Wraith-green" alt="AntiChests" /></a>
 	<br/><br/>
   	<a href="https://discord.gg/NUCqxgxAnk"><img src="https://invidget.switchblade.xyz/NUCqxgxAnk" alt="Discord server"></a>
 	<br/><br/>
