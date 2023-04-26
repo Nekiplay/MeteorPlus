@@ -1,32 +1,187 @@
+
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>MeteorPlus settings for anticheats</h1>
+	<h2> Anti Aura </h2>
+	<b>Modules</b>
+	<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Speed Plus<b></td>
+             <td><b>Matrix Exploit 2<b></td>
+             <td><b>75<b></td>
+             <td><b>Not more jumps<b></td>
+        </tr>
+        <tr>
+            <td><b>Jesus Plus<b></td>
+             <td><b>Vulcan<b></td>
+             <td><b>4<b></td>
+             <td><b>Not more jumps<b></td>
+        </tr>
+    </tbody>
+</table>
+<h2> Verus </h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Fly Plus<b></td>
+             <td><b>Matrix Exploit 2<b></td>
+             <td><b>1<b></td>
+             <td><b>None<b></td>
+        </tr>
+    </tbody>
+</table>
+<h2> Cerberus</h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Fly Plus<b></td>
+             <td><b>Matrix Exploit 2<b></td>
+             <td><b> 0.070<b></td>
+             <td><b>Dont enable in water<b></td>
+        </tr>
+         <tr>
+            <td><b>Jesus Plus<b></td>
+             <td><b>Matrix Zoom 2<b></td>
+             <td><b> 0.070<b></td>
+             <td><b>Dont jumps<b></td>
+        </tr>
+         <tr>
+            <td><b>Spider Plus<b></td>
+             <td><b>Matrix<b></td>
+             <td><b>None<b></td>
+             <td><b>None<b></td>
+        </tr>
+         <tr>
+             <td><b>NoFall Plus<b></td>
+              <td><b>Matrix<b></td>
+              <td><b>New Mode<b></td>
+              <td><b>None<b></td>
+        </tr>
+    </tbody>
+</table>
+<b>Commands</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Command</th>
+            <th>Minimum</th>
+            <th>Maximum</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>.eclip<b></td>
+             <td><b>0<b></td>
+             <td><b> 15<b></td>
+        </tr>
+        <tr>
+            <td><b>.vclip <b></td>
+             <td><b>0<b></td>
+             <td><b> 10<b></td>
+        </tr>
+    </tbody>
+</table>
+<h2> Taka AC</h2>
+<b>Commands</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Command</th>
+            <th>Minimum</th>
+            <th>Maximum</th>
+            <th>Attemps</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>.eclip<b></td>
+             <td><b>0<b></td>
+             <td><b> 15<b></td>
+             <td><b> 2<b></td>
+        </tr>
+        <tr>
+            <td><b>.vclip <b></td>
+             <td><b>0<b></td>
+             <td><b> 0.5<b></td>
+             <td><b> 0<b></td>
+        </tr>
+    </tbody>
+</table>
+<h2> Spartan</h2>
+<img src="https://www.spigotmc.org/data/resource_icons/25/25638.jpg?1662263547" alt="meteor-plus" width="200px"/>
+<b></b>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Fly Plus<b></td>
+             <td><b>Matrix Exploit 2<b></td>
+             <td><b> 0.190<b></td>
+             <td><b>Don't long<b></td>
+        </tr>
+         <tr>
+            <td><b>Fast Ladder<b></td>
+             <td><b>Vulcan<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>
+<b>Commands</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Command</th>
+            <th>Minimum</th>
+            <th>Maximum</th>
+            <th>Attemps</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>.eclip<b></td>
+             <td><b>0<b></td>
+             <td><b> 15<b></td>
+             <td><b> 0<b></td>
+        </tr>
+    </tbody>
+</table>
 </div>
-
-1. AntiAura
-Speed Plus - Matrix Exploit 2 - preset 75 not recomended more jumps
-Jesus Plus - Vulcan - preset 4.000 not recomended jumps
-
-2. Verus
-Fly - Matrix Exploit 2 - preset 1
-
-3. Cerberus
-Fly Plus - Matrix Exploit 2 - preset 0.070, dont enable in water
-Jesus Plus - Matrix Zoom 2 - preset 0.070, dont jumps
-Spider Plus - Matrix
-NoFall Plus - Matrix, new mode
-.eclip - 15/15
-.vclip - 10/10
-
-4. Taka AC
-.eclip - 15/15 in 2 attemps
-.vclip - 0.5/15 in 0 attemps
-
-5. Spartan
-Fly Plus - Matrix Exploit 2 - preset 0.190, dont long
-NoFall Plus - Matrix 3, new mode
-Fast Ladder - Vulcan
-.eclip - 15/15
 
 6. Fiona
 Spider Plus - Matrix 7/infinity
