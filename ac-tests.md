@@ -388,7 +388,7 @@
         <tr>
             <td><b>NoFall Plus<b></td>
              <td><b>Matrix 3<b></td>
-             <td><b>0.3<b></td>
+             <td><b><b></td>
              <td><b><b></td>
         </tr>
         <tr>
@@ -424,19 +424,90 @@
         </tr>
     </tbody>
 </table>
+<h2> <a href="https://www.spigotmc.org/resources/kizuki-anticheat-1-8-8-1-12-2.90468/">Kizuki</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>NoFall Plus<b></td>
+             <td><b>Matrix 3<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>
+<h2> <a href="https://www.spigotmc.org/resources/aac-advanced-anti-cheat-hack-kill-aura-blocker.6442/">AAC</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Spider Plus<b></td>
+             <td><b>Matrix<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>
+<h2> <a href="https://www.spigotmc.org/threads/reflex-anticheat.572425/">Reflex</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Spider Plus<b></td>
+             <td><b>Matrix<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+         <tr>
+            <td><b>Fast Ladder Plus<b></td>
+             <td><b>Spartan<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>
+<h2> <a href="https://www.spigotmc.org/resources/horizon-powerful-cheat-detection-in-new-era-1-8-1-12-1-13-1-14.65830/">Horizon</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Fast Ladder Plus<b></td>
+             <td><b>Spartan<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>
 </div>
-
-12. Kizuki
-NoFall Plus - Matrix 3
-
-13. AAC 5.2.0
-Spider Plus - Matrix
-
-14. Reflex
-Spider Plus - Matrix
-Fast Ladder Plus - Spartan
-NoFall - Matrix 4 its give you fly
-NoFall - Matrix 3, new mode - nofall damage
-
-15. Horizon
-Fast Ladder Plus - Spartan
