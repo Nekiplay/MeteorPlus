@@ -1,3 +1,8 @@
+<div align="center">
+	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
+	<h1>MeteorPlus settings for anticheats</h1>
+</div>
+
 1. AntiAura
 Speed Plus - Matrix Exploit 2 - preset 75 not recomended more jumps
 Jesus Plus - Vulcan - preset 4.000 not recomended jumps
