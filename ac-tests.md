@@ -1,4 +1,5 @@
 
+
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>MeteorPlus settings for anticheats</h1>
@@ -28,7 +29,7 @@
         </tr>
     </tbody>
 </table>
-<h2> Verus </h2>
+<h2> <a href="https://verus.ac/">Verus</a></h2>
 <b>Modules</b>
 <table align="center">
     <thead>
@@ -48,7 +49,7 @@
         </tr>
     </tbody>
 </table>
-<h2> Cerberus</h2>
+<h2> <a href="https://www.spigotmc.org/resources/cerberus-anticheat.71114/">Cerberus</a></h2>
 <b>Modules</b>
 <table align="center">
     <thead>
@@ -108,7 +109,7 @@
         </tr>
     </tbody>
 </table>
-<h2> Taka AC</h2>
+<h2> <a href="https://www.spigotmc.org/resources/taka-anticheat-takaac-cheap-and-reliable-solution.45167/">Taka AntiCheat</a></h2>
 <b>Commands</b>
 <table align="center">
     <thead>
