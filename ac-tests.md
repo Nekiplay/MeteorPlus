@@ -179,16 +179,59 @@
         </tr>
     </tbody>
 </table>
+<h2> <a href="https://github.com/funkemunky/Fiona-Anticheat/">Fiona</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Spider Plus<b></td>
+             <td><b>Matrix<b></td>
+             <td><b> 7<b></td>
+             <td><b><b></td>
+        </tr>
+         <tr>
+            <td><b>NoFall Plus<b></td>
+             <td><b>Matrix 3<b></td>
+             <td><b>New mode<b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>
+<h2> <a https://www.spigotmc.org/resources/kauri-anticheat-best-in-class-performance-destroy-cheaters-1-7-10-1-18-1.53721//">Kauri</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Spider Plus<b></td>
+             <td><b>Matrix<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+         <tr>
+            <td><b>NoFall Plus<b></td>
+             <td><b>Matrix 3<b></td>
+             <td><b>New mode<b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>
 </div>
-
-6. Fiona
-Spider Plus - Matrix 7/infinity
-NoFall Plus - Matrix 3, new mode
-.eclip - 15/15
-
-7. Kauri
-Spider Plus - Matrix 7/infinity
-NoFall Plus - Matrix 3, new mode
 
 8. Vulcan
 Spider Plus - Vulcan
