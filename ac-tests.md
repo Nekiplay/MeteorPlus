@@ -134,9 +134,7 @@
         </tr>
     </tbody>
 </table>
-<h2> Spartan</h2>
-<img src="https://www.spigotmc.org/data/resource_icons/25/25638.jpg?1662263547" alt="meteor-plus" width="200px"/>
-<b></b>
+<h2> <a href="https://www.spigotmc.org/resources/spartan-anti-cheat%E2%84%A2-advanced-cheat-detection-hack-blocker-1-7-1-19-4.25638/">Spartan </a></h2>
 <b>Modules</b>
 <table align="center">
     <thead>
