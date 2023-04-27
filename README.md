@@ -1,7 +1,7 @@
 
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
-	<h1>MeteorPlus</h1>
+	<h1>Meteor Plus</h1>
 	<br>
 		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
 	<br/><br/>
