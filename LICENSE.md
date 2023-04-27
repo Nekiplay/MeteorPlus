@@ -1,6 +1,6 @@
 All Rights Reserved
 
-Copyright (c) ${project.inceptionYear} ${owner}
+Copyright (c) 2023 Danilov Roman
 
 Created by Techcable
 
