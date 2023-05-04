@@ -46,7 +46,7 @@ public class Eclip extends NofallMode {
 			mc.player.fallDistance = 0;
 			teleports = 0;
 		}
-		else if (mc.player.fallDistance > 2) {
+		else if (mc.player.fallDistance > 3) {
 			BlockHitResult result = mc.world.raycast(new RaycastContext(mc.player.getPos(), mc.player.getPos().subtract(0, 10, 0), RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, mc.player));
 			if (result != null && result.getType() == HitResult.Type.BLOCK) {
 				blocks = result.getBlockPos().add(0, 1, 0).getY();
