@@ -1,6 +1,7 @@
+
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
-	<h1>MeteorPlus</h1>
+	<h1>Meteor Plus</h1>
 	<br>
 		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
 	<br/><br/>
@@ -13,12 +14,13 @@
 	<a href="https://github.com/Nekiplay/MeteorPlus"><img src="https://img.shields.io/github/languages/code-size/Nekiplay/MeteorPlus" alt="Code size"/></a>
 	<br>
 	<a href="https://github.com/Nekiplay/MeteorPlus/graphs/contributors"><img src="https://img.shields.io/github/contributors/Nekiplay/MeteorPlus" alt="Github contributors"/></a>
-	<a href="https://www.codefactor.io/repository/github/nekiplay/meteorplus"><img src="https://www.codefactor.io/repository/github/nekiplay/meteorplus/badge" alt="CodeFactor" /></a>
+	<br/><br/>
+	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/Anticheats-AAC%2C%20Spartan%2C%20Vulcan%2C%20Matrix%2C%20Wraith-brightgreen" alt="AntiChests" /></a>
 	<br/><br/>
   	<a href="https://discord.gg/NUCqxgxAnk"><img src="https://invidget.switchblade.xyz/NUCqxgxAnk" alt="Discord server"></a>
 	<br/><br/>
 	<img src="https://img.shields.io/github/commit-activity/w/MeteorDevelopment/meteor-client" alt="GitHub commit activity"/>
-	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.19.3-lightgreen" alt="Minecraft version"/></a>
+	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.19.4-brightgreen" alt="Minecraft version"/></a>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
 </div>
 
