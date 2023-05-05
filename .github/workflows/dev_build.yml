@@ -18,6 +18,6 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           automatic_release_tag: "latest-dev-build-0.5.3-1.19.4"
           prerelease: true
-          title: "Dev build 0.5.3 #1820 | 1.19.4 Build"
+          title: "Dev build 0.5.3 #1835 | 1.19.4 Build"
           files: |
             ./build/libs/*.jar
