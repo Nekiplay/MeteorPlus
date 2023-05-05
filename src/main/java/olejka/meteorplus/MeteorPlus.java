@@ -1,7 +1,7 @@
 package olejka.meteorplus;
 
 import meteordevelopment.meteorclient.addons.GithubRepo;
-import meteordevelopment.meteorclient.systems.commands.Commands;
+import meteordevelopment.meteorclient.commands.Commands;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 //import olejka.meteorplus.hud.CustomImageHud;
@@ -49,8 +49,7 @@ public class MeteorPlus extends MeteorAddon {
 		shadyRotation.Init();
 		//Commands
 		LOG.info("MeteorPlus initializing commands...");
-		Commands commands = Commands.get();
-		commands.add(new Eclip());
+		Commands.add(new Eclip());
 		LOG.info("MeteorPlus loaded commands");
 
 		//Modules

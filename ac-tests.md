@@ -1,5 +1,3 @@
-
-
 <div align="center">
 	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>Meteor Plus settings for anticheats</h1>

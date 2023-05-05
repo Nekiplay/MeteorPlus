@@ -47,7 +47,6 @@
 
 ### Hud:
 - MeteorPlusLogo
-- AnimeHud
 
 ### Commands:
 - InventoryProfile (save and load items)
