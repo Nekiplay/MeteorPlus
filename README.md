@@ -5,7 +5,7 @@
 	<br>
 		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
 	<br/><br/>
-    <a href="https://anticope.ml/pages/MeteorAddons.html"><img src="https://img.shields.io/badge/verified%20addon-Yes-blueviolet" alt="verified addon Yes"/></a>
+    <a href="https://anticope.ml/addons/?addon=Nekiplay%2FMeteorPlus"><img src="https://img.shields.io/badge/verified%20addon-Yes-blueviolet" alt="verified addon Yes"/></a>
 	<a href="https://GitHub.com/Nekiplay/MeteorPlus/issues/"><img src="https://img.shields.io/github/issues/Nekiplay/MeteorPlus" alt="GitHub issues"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/stargazers"><img src="https://badgen.net/github/stars/Nekiplay/MeteorPlus" alt="GitHub stars"/></a>
 	<br>
