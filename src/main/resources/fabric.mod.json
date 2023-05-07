@@ -7,8 +7,7 @@
   "authors": [
     "Olejka",
 		"Neki_play",
-		"Vazgen005",
-		"Cloudburst"
+		"Vazgen005"
   ],
   "contact": {
 		"homepage": "https://github.com/Nekiplay/MeteorPlus",
@@ -17,7 +16,7 @@
 		"discord": "https://discord.gg/syHrs2ePyQ"
   },
 
-	"license": "GNU AGPLv3",
+	"license": "ARR",
   "icon": "assets/plus/icon.png",
   "environment": "client",
   "entrypoints": {
