@@ -8,9 +8,7 @@ import meteordevelopment.meteorclient.gui.WidgetScreen;
 import meteordevelopment.meteorclient.mixin.CreativeInventoryScreenAccessor;
 import meteordevelopment.meteorclient.mixin.KeyBindingAccessor;
 import meteordevelopment.meteorclient.settings.*;
-import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.input.Input;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
@@ -20,9 +18,9 @@ import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
+import net.minecraft.util.math.MathHelper;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.events.ClickWindowEvent;
 
@@ -188,7 +186,7 @@ public class InventoryMovePlus extends Module {
 				if (Input.isKeyPressed(GLFW_KEY_DOWN)) pitch += 0.5;
 			}
 
-			pitch = Utils.clamp(pitch, -90, 90);
+			pitch = MathHelper.clamp(pitch, -90, 90);
 
 			mc.player.setYaw(yaw);
 			mc.player.setPitch(pitch);

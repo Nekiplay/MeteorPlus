@@ -42,6 +42,7 @@ import olejka.meteorplus.utils.algoritms.Smooth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class KillAuraBetter extends Module {
@@ -238,7 +239,7 @@ public class KillAuraBetter extends Module {
 	);
 
 	// Targeting
-	private final Setting<Object2BooleanMap<EntityType<?>>> entities = sgTargeting.add(new EntityTypeListSetting.Builder()
+	private final Setting<Set<EntityType<?>>> entities = sgTargeting.add(new EntityTypeListSetting.Builder()
 		.name("entities")
 		.description("Entities to attack.")
 		.onlyAttackable()
@@ -440,7 +441,7 @@ public class KillAuraBetter extends Module {
 		if (entity.equals(mc.player) || entity.equals(mc.cameraEntity)) return false;
 		if ((entity instanceof LivingEntity && ((LivingEntity) entity).isDead()) || !entity.isAlive()) return false;
 		if (PlayerUtils.distanceTo(entity) > range.get()) return false;
-		if (!entities.get().getBoolean(entity.getType())) return false;
+		if (!entities.get().contains(entity.getType())) return false;
 		if (!nametagged.get() && entity.hasCustomName()) return false;
 		if (!PlayerUtils.canSeeEntity(entity) && PlayerUtils.distanceTo(entity) > wallsRange.get()) return false;
 		if (entity instanceof PlayerEntity) {

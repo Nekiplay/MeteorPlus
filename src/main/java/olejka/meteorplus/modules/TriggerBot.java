@@ -19,6 +19,7 @@ import olejka.meteorplus.MeteorPlus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class TriggerBot extends Module {
 	public TriggerBot() {
@@ -33,7 +34,7 @@ public class TriggerBot extends Module {
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
-	private final Setting<Object2BooleanMap<EntityType<?>>> entities = sgGeneral.add(new EntityTypeListSetting.Builder()
+	private final Setting<Set<EntityType<?>>> entities = sgGeneral.add(new EntityTypeListSetting.Builder()
 		.name("entities")
 		.description("Entities to attack.")
 		.onlyAttackable()
@@ -88,7 +89,7 @@ public class TriggerBot extends Module {
 	private boolean entityCheck(Entity entity) {
 		if (entity.equals(mc.player) || entity.equals(mc.cameraEntity)) return false;
 		if ((entity instanceof LivingEntity && ((LivingEntity) entity).isDead()) || !entity.isAlive()) return false;
-		if (!entities.get().getBoolean(entity.getType())) return false;
+		if (!entities.get().contains(entity.getType())) return false;
 		if (entity instanceof Tameable tameable
 			&& tameable.getOwnerUuid() != null
 			&& tameable.getOwnerUuid().equals(mc.player.getUuid())) return false;

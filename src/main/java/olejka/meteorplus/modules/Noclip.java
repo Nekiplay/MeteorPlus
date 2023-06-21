@@ -13,7 +13,7 @@ public class Noclip extends Module {
 
 	@EventHandler
 	private void onCollision(CollisionShapeEvent event) {
-		if (event.state.getMaterial().isLiquid() || mc.player == null) return;
+		if (!event.state.getFluidState().isEmpty() || mc.player == null) return;
 		if (event.pos.getY() >= mc.player.getPos().y) {
 			event.shape = VoxelShapes.empty();
 		}

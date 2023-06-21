@@ -36,7 +36,6 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
@@ -595,7 +594,7 @@ public class XrayBruteforce extends Module {
 
     @EventHandler
     public void blockUpdateEvent(BlockUpdateEvent event) {
-		if (event.oldState.getMaterial() != Material.AIR) {
+		if (!event.oldState.isAir()) {
 			if (scanned.contains(event.pos)) {
 				BlockState state = mc.world.getBlockState(event.pos);
 				if (whblocks.get().contains(state.getBlock()) && !pause_toggle) {
@@ -607,7 +606,7 @@ public class XrayBruteforce extends Module {
 				}
 			}
 		}
-		if (event.newState.getBlock() == Blocks.AIR) {
+		if (event.newState.isAir()) {
 			RenderOre render = get(event.pos);
 			if (render != null) {
 				synchronized (ores) {
@@ -1115,7 +1114,7 @@ public class XrayBruteforce extends Module {
                     if (EntityUtils.isInRenderDistance(blockPos)) {
 						assert mc.world != null;
 						BlockState state = mc.world.getBlockState(blockPos);
-                        if (state.getMaterial() == Material.STONE) {
+                        if (state.isOf(Blocks.STONE)) {
                             if (!scanned.contains(blockPos)) {
                                 temp.add(blockPos);
                             }

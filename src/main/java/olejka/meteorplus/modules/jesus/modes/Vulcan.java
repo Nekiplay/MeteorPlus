@@ -11,18 +11,15 @@ import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.SlotUtils;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.scoreboard.AbstractTeam;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import olejka.meteorplus.modules.jesus.JesusMode;
 import olejka.meteorplus.modules.jesus.JesusModes;
-import org.apache.commons.compress.compressors.lz77support.LZ77Compressor;
 
 public class Vulcan extends JesusMode {
 	public Vulcan() {
@@ -65,8 +62,8 @@ public class Vulcan extends JesusMode {
 	}
 	@Override
 	public void onCollisionShape(CollisionShapeEvent event) {
-		if (event.state.getMaterial().isLiquid() && mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
-			if (mc.player != null && event.state != null && event.state.getMaterial() == Material.WATER && !mc.player.isTouchingWater()) {
+		if (!event.state.getFluidState().isEmpty() && mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
+			if (mc.player != null && event.state != null && event.state.isOf(Blocks.WATER) && !mc.player.isTouchingWater()) {
 				event.shape = VoxelShapes.fullCube();
 			}
 		}

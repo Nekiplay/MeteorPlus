@@ -75,7 +75,7 @@ public class Eclip extends Command {
 		}
 	}
 	private Block getBlock(BlockPos pos) {
-		return mc.player.world.getBlockState(pos).getBlock();
+		return mc.player.getWorld().getBlockState(pos).getBlock();
 	}
 
 	private double findBlock(boolean up, int maximum) {
