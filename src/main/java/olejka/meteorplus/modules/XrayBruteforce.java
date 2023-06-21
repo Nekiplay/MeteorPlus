@@ -1114,7 +1114,9 @@ public class XrayBruteforce extends Module {
                     if (EntityUtils.isInRenderDistance(blockPos)) {
 						assert mc.world != null;
 						BlockState state = mc.world.getBlockState(blockPos);
-                        if (state.isOf(Blocks.STONE) && !scanned.contains(blockPos)) {
+						boolean isScanContainsBlockPos = scanned.contains(blockPos);
+						boolean isStone = state.isOf(Blocks.STONE);
+                        if (isStone && !isScanContainsBlockPos) {
 							temp.add(blockPos);
                         }
                     }
