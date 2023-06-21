@@ -1110,7 +1110,7 @@ public class XrayBruteforce extends Module {
             if ((startPos.getY() + dy) < 1 || (startPos.getY() + dy) > 255) continue;
             for (int dz = -radius; dz <= radius; dz++) {
                 for (int dx = -radius; dx <= radius; dx++) {
-                    BlockPos blockPos = new BlockPos(startPos.getX() + dx, startPos.getY() + dy, startPos.getZ() + dz);
+                    BlockPos blockPos = startPos.add(dx, dy, dz);
 					BlockState state = mc.world.getBlockState(blockPos);
 					boolean isStone = state.isOf(Blocks.STONE);
 					boolean isInRenderDistance = EntityUtils.isInRenderDistance(blockPos);
