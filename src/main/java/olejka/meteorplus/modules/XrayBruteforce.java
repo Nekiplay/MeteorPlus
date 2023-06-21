@@ -1111,14 +1111,12 @@ public class XrayBruteforce extends Module {
             for (int dz = -radius; dz <= radius; dz++) {
                 for (int dx = -radius; dx <= radius; dx++) {
                     BlockPos blockPos = new BlockPos(startPos.getX() + dx, startPos.getY() + dy, startPos.getZ() + dz);
-                    if (EntityUtils.isInRenderDistance(blockPos)) {
-						assert mc.world != null;
-						BlockState state = mc.world.getBlockState(blockPos);
-						boolean isScanContainsBlockPos = scanned.contains(blockPos);
-						boolean isStone = state.isOf(Blocks.STONE);
-                        if (isStone && !isScanContainsBlockPos) {
-							temp.add(blockPos);
-                        }
+					BlockState state = mc.world.getBlockState(blockPos);
+					boolean isStone = state.isOf(Blocks.STONE);
+					boolean isInRenderDistance = EntityUtils.isInRenderDistance(blockPos);
+					boolean isBlockPosNotInList = !scanned.contains(blockPos);
+                    if (isStone && isInRenderDistance && isBlockPosNotInList) {
+						temp.add(blockPos);
                     }
                 }
             }
