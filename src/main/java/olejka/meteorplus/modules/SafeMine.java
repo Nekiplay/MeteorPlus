@@ -15,7 +15,7 @@ import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
-import net.minecraft.block.Material;
+import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
@@ -122,7 +122,7 @@ public class SafeMine extends Module {
 		if (mc.player != null && mc.world != null) {
 			Vec3d underpos = mc.player.getPos().add(0, -1, 0);
 			BlockPos under = new BlockPos((int) underpos.x, (int) underpos.y, (int) underpos.z);
-			if (mc.world.getBlockState(under).getMaterial() == Material.LAVA) {
+			if (mc.world.getBlockState(under).isOf(Blocks.LAVA)) {
 				if (solidLavaFreeze.get() && mc.player.isOnGround()) {
 					if (!freeze) {
 						freeze = true;
@@ -150,8 +150,8 @@ public class SafeMine extends Module {
 
 	@EventHandler
 	private void onFluidCollisionShape(CollisionShapeEvent event) {
-		if (event.state.getMaterial().isLiquid()) {
-			if (mc.player != null && event.state != null && event.state.getMaterial() == Material.LAVA && !mc.player.isInLava() && solidLava.get()) {
+		if (!event.state.getFluidState().isEmpty()) {
+			if (mc.player != null && event.state != null && event.state.isOf(Blocks.LAVA )&& !mc.player.isInLava() && solidLava.get()) {
 				event.shape = VoxelShapes.fullCube();
 			}
 		}
@@ -189,25 +189,25 @@ public class SafeMine extends Module {
 	{
 		ArrayList<BlockPos> blocks = new ArrayList<>();
 		if (mc.world != null) {
-			if (mc.world.getBlockState(pos).getMaterial() == Material.LAVA) {
+			if (mc.world.getBlockState(pos).isOf(Blocks.LAVA)) {
 				blocks.add(pos);
 			}
-			if (mc.world.getBlockState(pos.add(1, 0, 0)).getMaterial() == Material.LAVA) {
+			if (mc.world.getBlockState(pos.add(1, 0, 0)).isOf(Blocks.LAVA)) {
 				blocks.add(pos.add(1, 0, 0));
 			}
-			if (mc.world.getBlockState(pos.add(-1, 0, 0)).getMaterial() == Material.LAVA) {
+			if (mc.world.getBlockState(pos.add(-1, 0, 0)).isOf(Blocks.LAVA)) {
 				blocks.add(pos.add(-1, 0, 0));
 			}
-			if (mc.world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.LAVA) {
+			if (mc.world.getBlockState(pos.add(0, 1, 0)).isOf(Blocks.LAVA)) {
 				blocks.add(pos.add(0,1, 0));
 			}
-			if (mc.world.getBlockState(pos.add(0, -1, 0)).getMaterial() == Material.LAVA) {
+			if (mc.world.getBlockState(pos.add(0, -1, 0)).isOf(Blocks.LAVA)) {
 				blocks.add(pos.add(0,-1, 0));
 			}
-			if (mc.world.getBlockState(pos.add(0, 0, 1)).getMaterial() == Material.LAVA) {
+			if (mc.world.getBlockState(pos.add(0, 0, 1)).isOf(Blocks.LAVA)) {
 				blocks.add(pos.add(0,0, 1));
 			}
-			if (mc.world.getBlockState(pos.add(0, 0, -1)).getMaterial() == Material.LAVA) {
+			if (mc.world.getBlockState(pos.add(0, 0, -1)).isOf(Blocks.LAVA)) {
 				blocks.add(pos.add(0,0, -1));
 			}
 		}

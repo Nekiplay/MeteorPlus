@@ -9,7 +9,6 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
@@ -79,13 +78,13 @@ public class GhostBlockFixer extends Module {
 					assert mc.world != null;
 					double distance = mc.player.squaredDistanceTo(block.getX(), block.getY(), block.getZ());
 					BlockState state = mc.world.getBlockState(block);
-					if (distance <= range.get() && state.getMaterial() == Material.AIR) {
+					if (distance <= range.get() && state.isAir()) {
 						millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + delay.get();
 						PlayerActionC2SPacket packet = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, block, Direction.UP, 0);
 						conn.sendPacket(packet);
 						blocks.remove();
 					}
-					else if (state.getMaterial() != Material.AIR) {
+					else if (!state.isAir()) {
 						blocks.remove();
 					}
 				}
