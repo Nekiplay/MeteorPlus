@@ -22,7 +22,9 @@
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.19.4-brightgreen" alt="Minecraft version"/></a>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
 </div>
+
 # Features
+
 ### Modules:
 - Anti Bot (Ignores bots)
 - Auto accept (Automatically accepts teleport requests)
