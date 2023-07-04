@@ -17,7 +17,6 @@
 	<br/><br/>
 	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/Anticheats-AAC%2C%20Spartan%2C%20Vulcan%2C%20Matrix%2C%20Wraith-brightgreen" alt="AntiChests" /></a>
 	<br/><br/>
-	
 	<a href="https://www.guilded.gg/i/27dAlJKk"> alt="Guilded server"/></a>
 	<br/><br/>
 	<img src="https://img.shields.io/github/commit-activity/w/MeteorDevelopment/meteor-client" alt="GitHub commit activity"/>
