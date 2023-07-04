@@ -16,7 +16,7 @@
 	<br/><br/>
 	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/Anticheats-AAC%2C%20Spartan%2C%20Vulcan%2C%20Matrix%2C%20Wraith-brightgreen" alt="AntiChests" /></a>
 	<br/><br/>
-	<a><script src="https://www.guilded.gg/canvas_index.html?route=%2Fcanvas%2Fembed%2Fteamcard%2FOj1vm6rR"></script></a>
+	 <iframe frameborder=0 style="min-width: 200px; width: 60%; height: 460px;" scrolling="no" seamless="seamless" srcdoc='<html><body><style type="text/css">.gist .gist-data { height: 400px; }</style><script src="https://gist.github.com/sundbry/55bb902b66a39c0ff83629d9a8015ca4.js"></script></body></html>'></iframe> 
 	<br/><br/>
 	<img src="https://img.shields.io/github/commit-activity/w/MeteorDevelopment/meteor-client" alt="GitHub commit activity"/>
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.19.4-brightgreen" alt="Minecraft version"/></a>
