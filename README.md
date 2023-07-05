@@ -53,6 +53,6 @@
 - EClip (Elytra Clip Matrix bypass)
 
 # Installation Guide
-1. Install [minecraft](https://www.minecraft.net/) 1.19 (Older versions are still available on the release pages)
+1. Install [minecraft](https://www.minecraft.net/) 1.20 (Older versions are still available on the release pages)
 0. Install latest [fabric](https://fabricmc.net/) and [fabric api](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 0. Install latest [meteor client dev build](https://meteorclient.com/download?devBuild=latest) and [MeteorPlus](https://github.com/Nekiplay/MeteorPlus/releases) in the mods folder
