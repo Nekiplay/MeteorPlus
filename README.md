@@ -6,20 +6,18 @@
 	<br>
 	</br>
 	<a href="https://github.com/Nekiplay/MeteorPlus/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/MeteorPlus/total" alt="Downloads"/></a>
-    <a href="https://anticope.ml/addons/?addon=Nekiplay%2FMeteorPlus"><img src="https://img.shields.io/badge/verified%20addon-Yes-blueviolet" alt="verified addon Yes"/></a>
+    <a href="https://anticope.ml/addons/?addon=Nekiplay%2FMeteorPlus"><img src="https://img.shields.io/badge/verified%20addon-yes-blueviolet" alt="verified addon Yes"/></a>
 	<a href="https://GitHub.com/Nekiplay/MeteorPlus/issues/"><img src="https://img.shields.io/github/issues/Nekiplay/MeteorPlus" alt="GitHub issues"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/stargazers"><img src="https://badgen.net/github/stars/Nekiplay/MeteorPlus" alt="GitHub stars"/></a>
 	<br>
-	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/Anticheats-AAC%2C%20Spartan%2C%20Vulcan%2C%20Matrix%2C%20Wraith%2C%20NCP-brightgreen" alt="AntiChests" /></a>
-	<br>
-	<img src="https://img.shields.io/github/commit-activity/w/MeteorDevelopment/meteor-client" alt="GitHub commit activity"/>
-	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.19.4-brightgreen" alt="Minecraft version"/></a>
-	<br>
 	<a href="https://github.com/Nekiplay/MeteorPlus/commits/main"><img src="https://img.shields.io/github/last-commit/Nekiplay/MeteorPlus" alt="GitHub last commit"/></a>
-	<a href="https://github.com/Nekiplay/MeteorPlus"><img src="https://img.shields.io/github/languages/code-size/Nekiplay/MeteorPlus" alt="Code size"/></a>
-	<br>
-	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://shields.yoki-labs.xyz/shields/i/27dAlJKk" alt="Guilded"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/graphs/contributors"><img src="https://img.shields.io/github/contributors/Nekiplay/MeteorPlus" alt="Github contributors"/></a>
+	<img src="https://img.shields.io/github/commit-activity/w/MeteorDevelopment/meteor-client" alt="GitHub commit activity"/>
+	<br>
+	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/anticheats-aac%2C%20spartan%2C%20vulcan%2C%20matrix%2C%20wraith%2C%20ncp-brightgreen" alt="AntiChests" /></a>
+	<br>
+	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.19.4-brightgreen" alt="Minecraft version"/></a>
+	<a href="(https://www.guilded.gg/i/27dAlJKk"><img src="https://img.shields.io/badge/suport/help-guilded-brightgreen" alt="Guilded"/></a>
 	<br>
 	</br>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
@@ -36,7 +34,7 @@
 | **Safe mine** | **Prevents player from lava** | **Matrix** |
 | **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator** |
 | **KillAura Plus** | **Shield Breaker KillAura** | |
-| **Anti Bot** | **Ignores bots for Better KillAura** | |
+| **Anti Bot** | **Ignores bots for KillAura Plus** | |
 
 ## Commands
 | Command | Description | Bypasses |
