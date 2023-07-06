@@ -47,5 +47,5 @@
 1. Install [minecraft](https://www.minecraft.net) 1.19.4 or 1.20
 2. Install [fabric](https://fabricmc.net) and [fabric api](https://www.curseforge.com/minecraft/mc-mods/fabric-api) for your version of minecraft
 3. Download [meteor client](https://meteorclient.com) for your version of minecraft
-4. Download [meteor plus](https://github.com/Nekiplay/MeteorPlus/releases) (older meteor plus versions are still available on the [release pages](https://github.com/Nekiplay/MeteorPlus/releases) and on [guilded server](https://www.guilded.gg/i/27dAlJKk) in the mods folder
+4. Download [meteor plus](https://github.com/Nekiplay/MeteorPlus/releases) for your version of minecraft
 5. Place the meteor client and meteor plus in your mods folder
