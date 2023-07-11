@@ -1,6 +1,7 @@
 package olejka.meteorplus.modules;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -14,6 +15,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.modules.spider.SpiderModes;
@@ -34,37 +36,60 @@ public class MarioMode extends Module {
 		.defaultValue(MarioModes.ElytraClip)
 		.build()
 	);
+	public final Setting<Boolean> center = sgGeneral.add(new BoolSetting.Builder()
+		.name("auto center")
+		.description("Auto center player on block.")
+		.defaultValue(true)
+		.build()
+	);
 	@EventHandler
 	public void onAction(TickEvent.Pre event) {
 		if (ticks == -1) {
 			if (mc.options.jumpKey.isPressed()) {
-				blocks = findBlock(true, 15);
-				if (mode.get() == MarioModes.ElytraClip) {
-					if (blocks != 0) {
+				double tempblocks= findBlock(true, 15);
+				if (tempblocks != 0 && center.get()) {
+					double x = MathHelper.floor(mc.player.getX());
+					double z = MathHelper.floor(mc.player.getZ());
+					mc.player.setPosition(x, mc.player.getY(), z);
+					mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY(), mc.player.getZ(), mc.player.isOnGround()));
+				}
+				if (tempblocks != 0) {
+					if (mode.get() == MarioModes.ElytraClip) {
+
 						Vec3d current = mc.player.getVelocity();
 						mc.player.setVelocity(current.x, 0, current.y);
 						mc.options.jumpKey.setPressed(false);
 						ticks = 0;
+						blocks = tempblocks;
 					}
-				}
-				else if (blocks != 0) {
-					mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY() + blocks, mc.player.getZ(), true));
-					mc.player.setPosition(mc.player.getX(), mc.player.getY() + blocks, mc.player.getZ());
+					else {
+						mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY() + tempblocks, mc.player.getZ(), true));
+						mc.player.setPosition(mc.player.getX(), mc.player.getY() + tempblocks, mc.player.getZ());
+					}
 				}
 			}
-			if (mc.options.sneakKey.isPressed()) {
-				blocks = findBlock(false, 15);
-				if (mode.get() == MarioModes.ElytraClip) {
-					if (blocks != 0) {
+			else if (mc.options.sneakKey.isPressed()) {
+				double tempblocks= findBlock(false, 15);
+				if (tempblocks != 0 && center.get()) {
+					double x = MathHelper.floor(mc.player.getX());
+					double z = MathHelper.floor(mc.player.getZ());
+					mc.player.setPosition(x, mc.player.getY(), z);
+					mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY(), mc.player.getZ(), mc.player.isOnGround()));
+				}
+				if (tempblocks != 0) {
+					if (mode.get() == MarioModes.ElytraClip) {
+
 						Vec3d current = mc.player.getVelocity();
 						mc.player.setVelocity(current.x, 0, current.y);
 						mc.options.jumpKey.setPressed(false);
 						ticks = 0;
+						blocks = tempblocks;
+
 					}
-				}
-				else if (blocks != 0) {
-					mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY() + blocks, mc.player.getZ(), true));
-					mc.player.setPosition(mc.player.getX(), mc.player.getY() - blocks, mc.player.getZ());
+					else {
+						mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY() - tempblocks, mc.player.getZ(), true));
+						mc.player.setPosition(mc.player.getX(), mc.player.getY() - tempblocks, mc.player.getZ());
+					}
 				}
 			}
 		}
@@ -74,13 +99,18 @@ public class MarioMode extends Module {
 		return mc.player.getWorld().getBlockState(pos).getBlock();
 	}
 
+	private boolean isValidBlock(BlockPos pos) {
+		Block block = getBlock(pos);
+		return block == Blocks.AIR || block == Blocks.CAVE_AIR;
+	}
+
 	private double findBlock(boolean up, int maximum) {
 		if (up) {
 			BlockPos pos = mc.player.getBlockPos();
-			for (int i = maximum; i >= 1; i--) {
-				if (getBlock(pos.add(0, i, 0)) == Blocks.AIR
-					&& getBlock(pos.add(0, i + 1, 0)) == Blocks.AIR
-					&& getBlock(pos.add(0, i - 1, 0)) != Blocks.AIR
+			for (int i = 0; i <= maximum; i++) {
+				if (isValidBlock(pos.add(0, i, 0))
+					&& isValidBlock(pos.add(0, i + 1, 0))
+					&& !isValidBlock(pos.add(0, i - 1, 0))
 				) {
 					return i;
 				}
@@ -89,9 +119,9 @@ public class MarioMode extends Module {
 		else {
 			BlockPos pos = mc.player.getBlockPos();
 			for (int i = -maximum; i <= 1; i++) {
-				if (getBlock(pos.add(0, i, 0)) == Blocks.AIR
-					&& getBlock(pos.add(0, i + 1, 0)) == Blocks.AIR
-					&& getBlock(pos.add(0, i - 1, 0)) != Blocks.AIR
+				if (isValidBlock(pos.add(0, i, 0))
+					&& isValidBlock(pos.add(0, i + 1, 0))
+					&& !isValidBlock(pos.add(0, i - 1, 0))
 				) {
 					return i;
 				}
