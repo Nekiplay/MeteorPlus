@@ -71,7 +71,8 @@ public class BoatAura extends Module {
 					mc.interactionManager.interactEntity(mc.player, entity, Hand.MAIN_HAND);
 
 					if (singleUse.get()) {
-						this.toggle();
+						toggle();
+						info("Disabled");
 						return;
 					}
 

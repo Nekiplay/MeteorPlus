@@ -12,12 +12,13 @@ import olejka.meteorplus.modules.spider.SpiderPlus;
 public class MeteorPlusModules {
 	public SpiderPlus spiderPlus;
 	public NoFallPlus noFallPlus;
-
+	public AntiBotPlus antiBotPlus;
 	public void Register() {
 		Modules modules = Modules.get();
 
 		spiderPlus = new SpiderPlus();
 		noFallPlus = new NoFallPlus();
+		antiBotPlus = new AntiBotPlus();
 
 		modules.add(new FastLadderPlus());
 		modules.add(new TriggerBot());
@@ -42,6 +43,6 @@ public class MeteorPlusModules {
 		modules.add(new SafeMine());
 		modules.add(new Freeze());
 		modules.add(new Noclip());
-		modules.add(new AntiBotPlus());
+		modules.add(antiBotPlus);
 	}
 }
