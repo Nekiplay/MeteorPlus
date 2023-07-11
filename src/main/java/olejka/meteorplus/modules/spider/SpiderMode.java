@@ -13,7 +13,7 @@ public class SpiderMode {
 	private final SpiderModes type;
 
 	public SpiderMode(SpiderModes type) {
-		this.settings = MeteorPlus.getInstance().modules.spiderPlus;
+		this.settings = MeteorPlus.getInstance().spiderPlus;
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}

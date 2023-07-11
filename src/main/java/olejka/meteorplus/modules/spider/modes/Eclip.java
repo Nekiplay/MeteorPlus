@@ -25,7 +25,7 @@ public class Eclip extends SpiderMode {
 	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
 		if (work() && mc.player.horizontalCollision) {
-			blocks = MeteorPlus.getInstance().modules.spiderPlus.Blocks.get();
+			blocks = MeteorPlus.getInstance().spiderPlus.Blocks.get();
 			clip();
 		} else {
 			ticks = 0;

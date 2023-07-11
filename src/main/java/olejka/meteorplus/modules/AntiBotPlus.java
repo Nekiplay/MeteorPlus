@@ -1,5 +1,6 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.entity.EntityAddedEvent;
 import meteordevelopment.meteorclient.events.entity.EntityRemovedEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.ConnectToServerEvent;
@@ -130,7 +131,7 @@ public class AntiBotPlus extends Module {
 		if (!isActive())
 			return false;
 
-		if (hash.contains(entity.getId())) {
+		if (useHash.get() && hash.contains(entity.getId())) {
 			return true;
 		}
 
@@ -203,6 +204,11 @@ public class AntiBotPlus extends Module {
 		}
 
 		return entity.getName().getString().isEmpty() || entity.getName() == mc.player.getName();
+	}
+
+	@EventHandler
+	private void onEntityAdd(EntityAddedEvent event) {
+		isBot(event.entity);
 	}
 
 	@EventHandler

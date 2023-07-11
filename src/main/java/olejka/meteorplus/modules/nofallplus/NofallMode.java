@@ -13,7 +13,7 @@ public class NofallMode {
 	private final NoFallModes type;
 
 	public NofallMode(NoFallModes type) {
-		this.settings = MeteorPlus.getInstance().modules.noFallPlus;
+		this.settings = MeteorPlus.getInstance().noFallPlus;
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}
