@@ -16,7 +16,7 @@
 	<br>
 	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/anticheats-aac%2C%20spartan%2C%20vulcan%2C%20matrix%2C%20wraith%2C%20ncp-brightgreen" alt="AntiChests" /></a>
 	<br>
-	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.19.4-brightgreen" alt="Minecraft version"/></a>
+	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.20.1-brightgreen" alt="Minecraft version"/></a>
 	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://img.shields.io/badge/suport/help-guilded-brightgreen" alt="Guilded"/></a>
 	<br>
 	</br>

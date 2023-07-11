@@ -23,6 +23,15 @@ public class Eclip extends SpiderMode {
 	private double blocks = 0;
 
 	@Override
+	public void onActivate() {
+		FindItemResult elytra = InvUtils.find(Items.ELYTRA);
+		if (!elytra.found()) {
+			settings.error("Elytra not found");
+			settings.toggle();
+		}
+	}
+
+	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
 		if (work() && mc.player.horizontalCollision) {
 			blocks = MeteorPlus.getInstance().spiderPlus.Blocks.get();
