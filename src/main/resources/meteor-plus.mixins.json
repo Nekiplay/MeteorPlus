@@ -9,6 +9,7 @@
   },
   "mixins": [
     "ClientPlayerInteractionManagerMixin",
-    "InGameHudMixin"
+    "InGameHudMixin",
+		"meteorclient.FreecamMixin"
   ]
 }
