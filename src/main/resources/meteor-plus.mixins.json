@@ -12,6 +12,7 @@
     "InGameHudMixin",
 		"meteorclient.FreecamMixin",
 		"meteorclient.ESPMixin",
-		"meteorclient.TracersMixin"
-  ]
+		"meteorclient.TracersMixin",
+		"meteorclient.KillAuraMixin"
+	]
 }

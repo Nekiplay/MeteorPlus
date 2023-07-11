@@ -14,7 +14,7 @@ public class ESPMixin {
 	@Inject(method = "shouldSkip", at = @At("RETURN"), cancellable = true)
 	protected void shouldSkip(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		AntiBotPlus antiBotPlus = Modules.get().get(AntiBotPlus.class);
-		if (antiBotPlus != null && antiBotPlus.isActive()) {
+		if (antiBotPlus != null && antiBotPlus.isActive() && !cir.getReturnValue()) {
 			cir.setReturnValue(antiBotPlus.isBot(entity));
 		}
 	}

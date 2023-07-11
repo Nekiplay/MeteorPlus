@@ -24,17 +24,17 @@
 </div>
 
 ## Modules
-| Module | Description | Bypasses |
-|--|--|--|
-| **Fly Plus** | **Flight for Anti-Cheats** | **Matrix** |
-| **Speed Plus** | **Speed for Anti-Cheats** |  **Matrix, ACC, Vulcan, NCP**  |
-| **Spider Plus** | **Spiderfor Anti-Cheats** | **Matrix, Vulcan** |
-| **Jesus Plus** | **Jesus for Anti-Cheats** | **Matrix, Vulcan** |
-| **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats** | **Spartan** |
-| **Safe mine** | **Prevents player from lava** | **Matrix** |
-| **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator** |
-| **KillAura Plus** | **Shield Breaker KillAura** | |
-| **Anti Bot** | **Ignores bots for KillAura Plus** | |
+| Module | Description                                      | Bypasses |
+|--|--------------------------------------------------|--|
+| **Fly Plus** | **Flight for Anti-Cheats**                       | **Matrix** |
+| **Speed Plus** | **Speed for Anti-Cheats**                        |  **Matrix, ACC, Vulcan, NCP**  |
+| **Spider Plus** | **Spiderfor Anti-Cheats**                        | **Matrix, Vulcan** |
+| **Jesus Plus** | **Jesus for Anti-Cheats**                        | **Matrix, Vulcan** |
+| **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats**                  | **Spartan** |
+| **Safe mine** | **Prevents player from lava**                    | **Matrix** |
+| **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2**    | **Ore Obfuscator** |
+| **KillAura Plus** | **Shield Breaker KillAura**                      | |
+| **Anti Bot** | **Ignores bots for KillAura Plus, ESP, Tracers** | |
 
 ## Commands
 | Command | Description | Bypasses |
