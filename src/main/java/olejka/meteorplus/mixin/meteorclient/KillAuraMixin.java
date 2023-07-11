@@ -3,6 +3,7 @@ package olejka.meteorplus.mixin.meteorclient;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import olejka.meteorplus.modules.AntiBotPlus;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,8 +15,7 @@ public class KillAuraMixin {
 	@Inject(method = "entityCheck", at = @At("RETURN"), cancellable = true)
 	protected void entityCheck(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		AntiBotPlus antiBotPlus = Modules.get().get(AntiBotPlus.class);
-		if (antiBotPlus != null && antiBotPlus.isActive()) {
-			System.out.println(cir.getReturnValueZ());
+		if (antiBotPlus != null && antiBotPlus.isActive() && entity instanceof PlayerEntity) {
 			if (cir.getReturnValueZ()) {
 				cir.setReturnValue(!antiBotPlus.isBot(entity));
 			}
