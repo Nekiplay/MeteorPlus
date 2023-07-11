@@ -11,6 +11,7 @@
     "ClientPlayerInteractionManagerMixin",
     "InGameHudMixin",
 		"meteorclient.FreecamMixin",
-		"meteorclient.ESPMixin"
+		"meteorclient.ESPMixin",
+		"meteorclient.TracersMixin"
   ]
 }
