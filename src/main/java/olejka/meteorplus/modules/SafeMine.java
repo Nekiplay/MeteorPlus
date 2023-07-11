@@ -169,22 +169,6 @@ public class SafeMine extends Module {
 		}
 	}
 
-	private List<BlockPos> getBlocks(BlockPos startPos, int y_radius, int radius)
-	{
-		List<BlockPos> temp = new ArrayList<>();
-		for (int dy = -y_radius; dy <= y_radius; dy++) {
-			for (int dz = -radius; dz <= radius; dz++) {
-				for (int dx = -radius; dx <= radius; dx++) {
-					BlockPos blockPos = new BlockPos(startPos.getX() + dx, startPos.getY() + dy, startPos.getZ() + dz);
-					if (EntityUtils.isInRenderDistance(blockPos)) {
-						temp.add(blockPos);
-					}
-				}
-			}
-		}
-		return temp;
-	}
-
 	private ArrayList<BlockPos> isExposedLava(BlockPos pos)
 	{
 		ArrayList<BlockPos> blocks = new ArrayList<>();

@@ -99,23 +99,22 @@ public class AutoAccept extends Module {
 	private void BetterAccept(String username, TPPattern pattern) {
 		if (mc.player != null && FriendsOnly.get() && isFriend(username)) {
 			info("Accepting request from " + "§c" + username);
-			mc.player.sendMessage(Text.of(pattern.command.replace("{username}", username)));
+			mc.player.sendMessage(Text.of(pattern.command.replace("{username}", username)), false);
 		} else if (!FriendsOnly.get()) {
 			info("Accepting request from " + "§c" + username);
-			mc.player.sendMessage(Text.of(pattern.command.replace("{username}", username)));
+			mc.player.sendMessage(Text.of(pattern.command.replace("{username}", username)), false);
 		}
 	}
 
 	private void Accept(String username, TPPattern pattern, String message) {
 		if (mc.player != null && mode.get() == Mode.Custom) {
-			TPPattern pattern1 = new TPPattern(custom_pattern.get(), custom_group.get(), accept_command.get());
 			username = getName(pattern, message);
 			if (FriendsOnly.get() && isFriend(username)) {
 				info("Accepting request from " + "§c" + username);
-				mc.player.sendMessage(Text.of(accept_command.get().replace("{username}", username)));
+				mc.player.sendMessage(Text.of(accept_command.get().replace("{username}", username)), false);
 			} else if (!FriendsOnly.get()) {
 				info("Accepting request from " + "§c" + username);
-				mc.player.sendMessage(Text.of(accept_command.get().replace("{username}", username)));
+				mc.player.sendMessage(Text.of(accept_command.get().replace("{username}", username)), false);
 			}
 		}
 		else {

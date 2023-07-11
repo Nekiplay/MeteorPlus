@@ -20,7 +20,6 @@ public class MeteorPlusModules {
 		noFallPlus = new NoFallPlus();
 
 		modules.add(new FastLadderPlus());
-		modules.add(new ServerSpoofPlus());
 		modules.add(new TriggerBot());
 		modules.add(new EyeFinder());
 		modules.add(new InventoryMovePlus());
@@ -34,13 +33,11 @@ public class MeteorPlusModules {
 		modules.add(new JesusPlus());
 		modules.add(new BoatAura());
 		modules.add(new BedrockStorageBruteforce());
-		modules.add(new AutoSell());
 		modules.add(new AutoCraftPlus());
 		modules.add(new AutoPortalMine());
 		modules.add(new XrayBruteforce());
 		modules.add(new AutoLeave());
 		modules.add(new AutoAccept());
-		modules.add(new AutoRepair());
 		modules.add(new GhostBlockFixer());
 		modules.add(new SafeMine());
 		modules.add(new Freeze());
