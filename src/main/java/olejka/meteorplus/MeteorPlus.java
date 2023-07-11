@@ -65,7 +65,6 @@ public class MeteorPlus extends MeteorAddon {
 		noFallPlus = new NoFallPlus();
 		antiBotPlus = new AntiBotPlus();
 
-		modules.add(new MarioMode());
 		modules.add(new FastLadderPlus());
 		modules.add(new TriggerBot());
 		modules.add(new EyeFinder());
