@@ -1,5 +1,6 @@
 package olejka.meteorplus.modules;
 
+import meteordevelopment.meteorclient.events.entity.EntityRemovedEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.ConnectToServerEvent;
 import meteordevelopment.meteorclient.settings.*;
@@ -14,10 +15,7 @@ import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.utils.ColorRemover;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AntiBotPlus extends Module {
 	public AntiBotPlus() {
@@ -106,7 +104,14 @@ public class AntiBotPlus extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> useHash = sgFilters.add(new BoolSetting.Builder()
+		.name("Memorize bots")
+		.description("Prevent attacking and blinking esp.")
+		.defaultValue(true)
+		.build()
+	);
 
+	private ArrayList<Integer> hash = new ArrayList<Integer>();
 	private ArrayList<Integer> swings = new ArrayList<Integer>();
 	private ArrayList<Integer> grounds = new ArrayList<Integer>();
 	private ArrayList<Integer> airs = new ArrayList<Integer>();
@@ -125,23 +130,51 @@ public class AntiBotPlus extends Module {
 		if (!isActive())
 			return false;
 
-		if (color.get() && entity.getDisplayName().getString().replace("§r", "").contains("§"))
+		if (hash.contains(entity.getId())) {
 			return true;
+		}
 
-		if (ground.get() && !grounds.contains(entity.getId()))
+		if (color.get() && entity.getDisplayName().getString().replace("§r", "").contains("§")) {
+			if (useHash.get()) {
+				hash.add(entity.getId());
+			}
 			return true;
+		}
 
-		if (InvalidGround.get() && invalidGrounds.getOrDefault(entity.getId(), 0) >= 10)
+		if (ground.get() && !grounds.contains(entity.getId())) {
+			if (useHash.get()) {
+				hash.add(entity.getId());
+			}
 			return true;
+		}
 
-		if (entityID.get() && (entity.getId() >= 1000000000 || entity.getId() <= -1))
+		if (InvalidGround.get() && invalidGrounds.getOrDefault(entity.getId(), 0) >= 10) {
+			if (useHash.get()) {
+				hash.add(entity.getId());
+			}
 			return true;
+		}
 
-		if (derp.get() && (entity.getPitch() > 90f || entity.getPitch() < -90))
+		if (entityID.get() && (entity.getId() >= 1000000000 || entity.getId() <= -1)) {
+			if (useHash.get()) {
+				hash.add(entity.getId());
+			}
 			return true;
+		}
 
-		if (swing.get() && !swings.contains(entity.getId()))
+		if (derp.get() && (entity.getPitch() > 90f || entity.getPitch() < -90)) {
+			if (useHash.get()) {
+				hash.add(entity.getId());
+			}
 			return true;
+		}
+
+		if (swing.get() && !swings.contains(entity.getId())) {
+			if (useHash.get()) {
+				hash.add(entity.getId());
+			}
+			return true;
+		}
 
 
 		if (tab.get()) {
@@ -162,11 +195,27 @@ public class AntiBotPlus extends Module {
 						}
 					}
 				}
+				if (useHash.get()) {
+					hash.add(entity.getId());
+				}
 				return true;
 			}
 		}
 
 		return entity.getName().getString().isEmpty() || entity.getName() == mc.player.getName();
+	}
+
+	@EventHandler
+	private void onEntityRemove(EntityRemovedEvent event) {
+		if (hash.contains(event.entity.getId())) {
+			Iterator<Integer> iterator = hash.iterator();
+			while (iterator.hasNext()) {
+				if (iterator.next() == event.entity.getId()) {
+					iterator.remove();
+					return;
+				}
+			}
+		}
 	}
 
 	@EventHandler

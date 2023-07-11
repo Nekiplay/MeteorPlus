@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 public class EyeFinder extends Module {
 	public EyeFinder() {
-		super(MeteorPlus.CATEGORY, "EyeFinder", "Find block player look.");
+		super(MeteorPlus.CATEGORY, "Eye Finder", "Find block player look.");
 	}
 	private HashMap<Entity, HitResult> resultMap = new HashMap<Entity, HitResult>();
 
