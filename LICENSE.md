@@ -1,6 +1,6 @@
 All Rights Reserved
 
-Copyright (c) 2020-2023 by developer Danilov Roman
+Copyright (c) 2022-2023 by developer Danilov Roman
 
 Created by SkillShop
 
