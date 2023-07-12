@@ -8,7 +8,6 @@
 	<br>
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.20.1-brightgreen" alt="Minecraft version"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/MeteorPlus/total" alt="Downloads"/></a>
-    <a href="https://anticope.ml/addons/?addon=Nekiplay%2FMeteorPlus"><img src="https://img.shields.io/badge/verified%20addon-yes-blueviolet" alt="verified addon Yes"/></a>
 	<a href="https://GitHub.com/Nekiplay/MeteorPlus/issues/"><img src="https://img.shields.io/github/issues/Nekiplay/MeteorPlus" alt="GitHub issues"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/stargazers"><img src="https://badgen.net/github/stars/Nekiplay/MeteorPlus" alt="GitHub stars"/></a>
 	<br>
@@ -43,3 +42,4 @@
 3. Download [meteor client](https://meteorclient.com) for your version of minecraft
 4. Download [meteor plus](https://github.com/Nekiplay/MeteorPlus/releases) for your version of minecraft
 5. Place the meteor client and meteor plus in your mods folder
+
