@@ -6,9 +6,6 @@
 		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
 	<br>
 	<br>
-		https://ru.petitions.net/anticope_putting_your_own_products_on_the_first_places_when_another_addon_has_more_points AntiCoope blatabt publish their development on the first places not depending on who is on what place by stars on GitHub and other 	parametersIf the petition fails, I urge everyone not to use this service, as it is designed to advertise their products and put them in the first place
-	<br>
-	<br>
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.20.1-brightgreen" alt="Minecraft version"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/MeteorPlus/total" alt="Downloads"/></a>
     <a href="https://anticope.ml/addons/?addon=Nekiplay%2FMeteorPlus"><img src="https://img.shields.io/badge/verified%20addon-yes-blueviolet" alt="verified addon Yes"/></a>
