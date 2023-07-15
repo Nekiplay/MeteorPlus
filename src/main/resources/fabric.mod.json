@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "meteorplus",
   "version": "${version}",
-  "name": "MeteorPlus",
+  "name": "Meteor Plus",
   "description": "An addon for Meteor client that adds many blatant features.",
   "authors": [
     "Olejka",
@@ -16,7 +16,7 @@
 		"discord": "https://discord.gg/syHrs2ePyQ"
   },
 
-	"license": "ARR",
+	"license": "GPL-3.0",
   "icon": "assets/plus/icon.png",
   "environment": "client",
   "entrypoints": {

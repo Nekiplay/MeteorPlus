@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class BedrockStorageBruteforce extends Module {
 	public BedrockStorageBruteforce() {
-		super(MeteorPlus.CATEGORY, "Bedrock Storage BF", "Scan storage's in bedrock from 1 to 4 height.");
+		super(MeteorPlus.CATEGORY, "bedrock-storage-BF", "scan-storage's-in-bedrock-from-1-to-4 height.");
 	}
 
 	public ArrayList<BlockPos> scanned = new ArrayList<>();
@@ -40,8 +40,8 @@ public class BedrockStorageBruteforce extends Module {
 	private final SettingGroup SCSettings = settings.createGroup("Scanner Settings");
 
 	public final Setting<Boolean> clear_cache_blocks = SCSettings.add(new BoolSetting.Builder()
-		.name("Clear-cache")
-		.description("Clear saved cache.")
+		.name("clear-cache")
+		.description("clear-saved-cache.")
 		.defaultValue(false)
 		.onChanged(a -> scanned.clear())
 		.build()
@@ -51,7 +51,7 @@ public class BedrockStorageBruteforce extends Module {
 		.name("Scan range")
 		.description("Bruteforce delay min .")
 		.defaultValue(8)
-		.min(0)
+		.min(3)
 		.sliderRange(8, 64)
 		.build()
 	);

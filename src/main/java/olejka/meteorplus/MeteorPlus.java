@@ -2,9 +2,11 @@ package olejka.meteorplus;
 
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
+import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 //import olejka.meteorplus.hud.CustomImageHud;
+import olejka.meteorplus.gui.tabs.HiddenModulesTab;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
 //import olejka.meteorplus.hud.TargetHud;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
@@ -29,8 +31,6 @@ public class MeteorPlus extends MeteorAddon {
 	public static final Category CATEGORY = new Category("MeteorPlus", Items.EMERALD_BLOCK.getDefaultStack());
 	public static final HudGroup HUD_GROUP = new HudGroup("MeteorPlusHud");
 
-	public static final ShadyRotation shadyRotation = new ShadyRotation();
-
 
 	//region Modules
 	public SpiderPlus spiderPlus;
@@ -47,18 +47,17 @@ public class MeteorPlus extends MeteorAddon {
 	@Override
 	public void onInitialize() {
 		instance = this;
-		LOG.info("MeteorPlus initializing...");
+		LOG.info("Meteor Plus initializing...");
 
-		// Required when using @EventHandler
-		// MeteorClient.EVENT_BUS.registerLambdaFactory("olejka.meteorplus", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
-		shadyRotation.Init();
-		//Commands
-		LOG.info("MeteorPlus initializing commands...");
+		//region Commands
+		LOG.info("Meteor Plus initializing commands...");
+
 		Commands.add(new Eclip());
-		LOG.info("MeteorPlus loaded commands");
 
+		LOG.info("Meteor Plus loaded commands");
+		//endregion
 		//region Modules
-		LOG.info("MeteorPlus initializing modules...");
+		LOG.info("Meteor Plus initializing modules...");
 		Modules modules = Modules.get();
 
 		spiderPlus = new SpiderPlus();
@@ -70,7 +69,6 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new EyeFinder());
 		modules.add(new InventoryMovePlus());
 		modules.add(new MiddleClickExtraPlus());
-		modules.add(new KillAuraBetter());
 		modules.add(new AutoDropPlus());
 		modules.add(noFallPlus);
 		modules.add(new SpeedPlus());
@@ -91,20 +89,22 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(antiBotPlus);
 		LOG.info("MeteorPlus loaded modules");
 		//endregion
-		// Hud
-		LOG.info("MeteorPlus initializing hud...");
-
-		/*
-		hud.elements.add(new CustomImageHud(hud));
-		hud.elements.add(new AnimeHud(hud));
-		hud.elements.add(new MeteorPlusLogoHud(hud));
-		 */
+		//region Hud
+		LOG.info("Meteor Plus initializing hud...");
 
 		Hud.get().register(MeteorPlusLogoHud.INFO);
 
-		LOG.info("MeteorPlus loaded hud");
+		LOG.info("Meteor Plus loaded hud");
+		//endregion
+		//region Tabs
+		LOG.info("Meteor Plus initializing tabs...");
 
-		LOG.info("MeteorPlus loaded");
+		Tabs.add(new HiddenModulesTab());
+
+		LOG.info("Meteor Plus loaded hud");
+		//endregion
+
+		LOG.info("Meteor Plus loaded");
 	}
 
 	@Override
