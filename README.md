@@ -18,7 +18,7 @@
 	<br>
 </div>
 
-![Alt](https://repobeats.axiom.co/api/embed/c8a6c7c47fde8fcbe3727a21eab46e6b39dff60d.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/869469d8757653eb3fc621df1708036d196fc1db.svg "Repobeats analytics image")
 
 ## Modules
 | Module | Description                                      | Bypasses                     |
