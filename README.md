@@ -16,8 +16,9 @@
 	<br>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
 	<br>
-	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://repobeats.axiom.co/api/embed/869469d8757653eb3fc621df1708036d196fc1db.svg" alt="Guilded"/></a>
 </div>
+
+![Alt](https://repobeats.axiom.co/api/embed/c8a6c7c47fde8fcbe3727a21eab46e6b39dff60d.svg "Repobeats analytics image")
 
 ## Modules
 | Module | Description                                      | Bypasses                     |
