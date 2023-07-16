@@ -28,8 +28,7 @@
 | **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats** | **Spartan**                  |
 | **Safe mine** | **Prevents player from lava** | **Matrix**                   |
 | **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2**    | **Ore Obfuscator**           |
-| **KillAura Plus** | **Shield Breaker KillAura** |                              |
-| **Anti Bot** | **Ignores bots for KillAura Plus, ESP, Tracers** |                              |
+| **Anti Bot** | **Ignores bots for KillAura, ESP, Tracers** |                              |
 
 ## Commands
 | Command | Description | Bypasses             |
