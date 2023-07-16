@@ -6,16 +6,17 @@
 		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
 	<br>
 	<br>
+	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/anticheats-aac%2C%20spartan%2C%20vulcan%2C%20matrix%2C%20wraith%2C%20ncp%2C%20verus%2C%20cerberus%2C%20taka%2C%20fiona-brightgreen" alt="AntiChests" /></a>
+	<br>
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.20.1-brightgreen" alt="Minecraft version"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/MeteorPlus/total" alt="Downloads"/></a>
-	<a href="https://GitHub.com/Nekiplay/MeteorPlus/issues/"><img src="https://img.shields.io/github/issues/Nekiplay/MeteorPlus" alt="GitHub issues"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/stargazers"><img src="https://badgen.net/github/stars/Nekiplay/MeteorPlus" alt="GitHub stars"/></a>
-	<br>
-	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/anticheats-aac%2C%20spartan%2C%20vulcan%2C%20matrix%2C%20wraith%2C%20ncp%2C%20verus%2C%20cerberus%2C%20taka%2C%20fiona-brightgreen" alt="AntiChests" /></a>
 	<br>
 	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://img.shields.io/badge/suport/help-guilded-brightgreen" alt="Guilded"/></a>
 	<br>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
+	<br>
+	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://repobeats.axiom.co/api/embed/869469d8757653eb3fc621df1708036d196fc1db.svg" alt="Guilded"/></a>
 </div>
 
 ## Modules
