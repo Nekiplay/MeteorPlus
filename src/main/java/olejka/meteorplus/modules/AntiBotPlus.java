@@ -192,7 +192,7 @@ public class AntiBotPlus extends Module {
 							}
 						}
 						else if (tabMode.get() == TabMode.ContainsLowerCase) {
-							if (targetname.toLowercase().equals(networkName.toLowercase())) {
+							if (targetname.toLowerCase().equals(networkName.toLowerCase())) {
 								return false;
 							}
 						}
