@@ -31,7 +31,8 @@ public class AntiBotPlus extends Module {
 
 	public enum TabMode {
 		Equals,
-		Contains
+		Contains,
+		ContainsLowerCase
 	}
 
 	private final Setting<Boolean> tab = sgFilters.add(new BoolSetting.Builder()
@@ -189,7 +190,13 @@ public class AntiBotPlus extends Module {
 							if (targetname.equals(networkName)) {
 								return false;
 							}
-						} else {
+						}
+						else if (tabMode.get() == TabMode.ContainsLowerCase) {
+							if (targetname.toLowercase().equals(networkName.toLowercase())) {
+								return false;
+							}
+						}
+						else {
 							if (targetname.contains(networkName)) {
 								return false;
 							}
