@@ -6,7 +6,6 @@ import meteordevelopment.meteorclient.gui.themes.meteor.widgets.WMeteorModule;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import olejka.meteorplus.mixininterface.meteorclient.IModule;
-import olejka.meteorplus.mixininterface.meteorclient.IWMeteorModule;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,12 +17,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(WMeteorModule.class)
-public class WMeteorModuleMixin implements IWMeteorModule {
+public class WMeteorModuleMixin {
 	@Shadow(remap = false)
 	@Final
 	private Module module;
 
-	WMeteorModule _this = (WMeteorModule) (Object) this;
 	Color textColor;
 
 	@Inject(method = "onPressed", at = @At("TAIL"), remap = false)
@@ -41,15 +39,5 @@ public class WMeteorModuleMixin implements IWMeteorModule {
 		if (textColor != null) {
 			args.set(3, textColor);
 		}
-	}
-
-	@Override
-	public Module getModule() {
-		return module;
-	}
-
-	@Override
-	public void setColor(Color color) {
-		textColor = color;
 	}
 }
