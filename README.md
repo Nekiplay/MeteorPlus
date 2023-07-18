@@ -31,6 +31,7 @@
 | **Safe mine** | **Prevents player from lava** | **Matrix**                   |
 | **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2**    | **Ore Obfuscator**           |
 | **Anti Bot** | **Ignores bots for KillAura, ESP, Tracers** |                              |
+| **Trigger Bot** | **AutoAttack on look at entity** |                              |
 
 ## Commands
 | Command | Description | Bypasses             |
