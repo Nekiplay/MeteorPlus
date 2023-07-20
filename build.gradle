@@ -16,7 +16,6 @@ dependencies {
 
     // Meteor client
 	modImplementation files("libs\\baritone-api-1.20.1-SNAPSHOT")
-	modImplementation files("libs\\baritone-api-1.20.1-SNAPSHOT")
     modImplementation files("libs\\meteor-client-0.5.4-1862.jar")
 }
 
