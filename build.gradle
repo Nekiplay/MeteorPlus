@@ -8,25 +8,15 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-repositories {
-    maven {
-        name = "meteor-maven"
-        url = "https://maven.meteordev.org/releases"
-    }
-    maven {
-        name = "meteor-maven-snapshots"
-        url = "https://maven.meteordev.org/snapshots"
-    }
-}
-
 dependencies {
     // Fabric
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // Meteor
-    modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
+    // Meteor client
+	modImplementation files("libs\\baritone-common-1.20.1-SNAPSHOT.jar")
+    modImplementation files("libs\\meteor-client-0.5.4-1862.jar")
 }
 
 processResources {
