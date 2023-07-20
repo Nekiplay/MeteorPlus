@@ -15,7 +15,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Meteor client
-	modImplementation files("libs\\baritone-common-1.20.1-SNAPSHOT.jar")
+	modImplementation files("libs\\baritone-api-1.20.1-SNAPSHOT")
+	modImplementation files("libs\\baritone-api-1.20.1-SNAPSHOT")
     modImplementation files("libs\\meteor-client-0.5.4-1862.jar")
 }
 
