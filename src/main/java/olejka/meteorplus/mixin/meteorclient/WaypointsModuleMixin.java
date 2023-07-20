@@ -34,7 +34,7 @@ import static meteordevelopment.meteorclient.utils.render.color.Color.GRAY;
 
 @Mixin(WaypointsModule.class)
 public class WaypointsModuleMixin {
-	private final Freecam waypoints = (Freecam)(Object) this;
+	private final WaypointsModule waypoints = (WaypointsModule)(Object) this;
 
 	private final SettingGroup meteorPlusTab = waypoints.settings.createGroup("Meteor Plus");
 
