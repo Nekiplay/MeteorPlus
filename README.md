@@ -57,3 +57,8 @@
 4. Download [meteor plus](https://github.com/Nekiplay/MeteorPlus/releases) for your version of minecraft
 5. Place the meteor client and meteor plus in your mods folder
 
+  ## Possible questions and answers
+  1. How long will Meteor Plus be around?
+A: Meteor Plus will be updated for life as long as there is a Maven repository Meteor Plus as we see Maven repository Meteor Client is not available yet and Meteor Plus updates are coming out which makes you realize that the addon is not planned to be abandoned, while we are inventing and looking for new workarounds and porting them our community is trying to update our addon faster than we are.
+
+2. What happens if in friend Meteor Client stops support, currently we copy every Commit Meteor Client after their hosting goes down to continue their client, ours and other addons
