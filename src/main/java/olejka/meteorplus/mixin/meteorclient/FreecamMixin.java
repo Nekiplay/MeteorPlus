@@ -53,6 +53,8 @@ public class FreecamMixin {
 
 			BlockPos blockPos = ((BlockHitResult) mc.crosshairTarget).getBlockPos();
 
+			if (mc.world == null) return;
+
 			if (mc.world.getBlockState(blockPos).isAir()) return;
 
 			Block mineBlock = mc.world.getBlockState(blockPos).getBlock();
@@ -62,9 +64,6 @@ public class FreecamMixin {
 					GoalBlock goal = new GoalBlock(blockPos.up());
 					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
 					event.cancel();
-				}
-				else if (mainhand != null && mainhand.getItem() instanceof BlockItem) {
-
 				}
 				if (mineBlock instanceof CropBlock) {
 					BaritoneAPI.getProvider().getPrimaryBaritone().getFarmProcess().farm((int)mc.player.getPos().distanceTo(blockPos.toCenterPos()) + 1);
