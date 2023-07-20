@@ -33,6 +33,12 @@
 | **Anti Bot** | **Ignores bots for KillAura, ESP, Tracers** |                              |
 | **Trigger Bot** | **AutoAttack on look at entity** |                              |
 
+## Meteor Client improvements
+| Module | Enhancements |
+|--|-------------------------------------------------|
+| **FreeCam** | **Added basic baritone control via Freecam**          
+| **Waypoints** | **Added display of distances in label names for quick access to your stash**     
+
 ## Commands
 | Command | Description | Bypasses             |
 |--|--|----------------------|
