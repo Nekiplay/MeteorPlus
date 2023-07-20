@@ -14,11 +14,12 @@
 		"meteorclient.ESPMixin",
 		"meteorclient.FreecamMixin",
 		"meteorclient.KillAuraMixin",
-		"meteorclient.ModuleMixin",
-		"meteorclient.TracersMixin",
-		"meteorclient.WMeteorModuleMixin",
-		"meteorclient.WPressableMixin",
 		"meteorclient.LeftRightSettingsScreenMixin",
-		"meteorclient.ModulesScreenMixin"
+		"meteorclient.ModuleMixin",
+		"meteorclient.ModulesScreenMixin",
+		"meteorclient.TracersMixin",
+		"meteorclient.WaypointsModuleMixin",
+		"meteorclient.WMeteorModuleMixin",
+		"meteorclient.WPressableMixin"
 	]
 }

@@ -16,8 +16,8 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          automatic_release_tag: "latest-dev-build-0.5.4-1.20.1"
+          automatic_release_tag: "1.20.1 beta"
           prerelease: true
-          title: "Dev build 0.5.4 | 1.20.1 Build"
+          title: "1.20.1 Beta"
           files: |
             ./build/libs/*.jar

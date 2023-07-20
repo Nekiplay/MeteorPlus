@@ -10,6 +10,7 @@ import meteordevelopment.meteorclient.systems.modules.render.Freecam;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.CropBlock;
 import net.minecraft.item.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -54,12 +55,16 @@ public class FreecamMixin {
 
 			if (mc.world.getBlockState(blockPos).isAir()) return;
 
+			Block mineBlock = mc.world.getBlockState(blockPos).getBlock();
+
 			if (smartBaritoneControl.get()) {
 				if (mainhand != null && mainhand.getItem() instanceof BlockItem) {
 
 				}
+				if (mineBlock instanceof CropBlock) {
+					BaritoneAPI.getProvider().getPrimaryBaritone().getFarmProcess().farm((int)mc.player.getPos().distanceTo(blockPos.toCenterPos()) + 1);
+				}
 				else if (mainhand != null && (mainhand.getItem() instanceof PickaxeItem || mainhand.getItem() instanceof AxeItem || mainhand.getItem() instanceof ShovelItem)) {
-					Block mineBlock = mc.world.getBlockState(blockPos).getBlock();
 					BaritoneAPI.getProvider().getPrimaryBaritone().getMineProcess().mine(mineBlock);
 					event.cancel();
 				}

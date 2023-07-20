@@ -19,6 +19,10 @@ dependencies {
     modImplementation files("libs\\meteor-client-0.5.4-1862.jar")
 }
 
+loom {
+	//accessWidenerPath = file("src/main/resources/meteor-plus.accesswidener")
+}
+
 processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.mod_version, "mc_version": project.minecraft_version, "gh_hash": (System.getenv("GITHUB_SHA") ?: "")
