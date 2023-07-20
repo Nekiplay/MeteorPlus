@@ -38,6 +38,12 @@
 |--|--|----------------------|
 | **eclip** | **Vertical clip** | **Matrix, Wraith, Spartan** |
 
+# Note
+
+<div>
+	<p>If the Meteor Client site does not work use the Meteor Client from <a href="https://www.guilded.gg/i/27dAlJKk">guilded</a></p>
+</div>
+
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net) 1.19.4 or 1.20 or 1.20.1
 2. Install [fabric](https://fabricmc.net) and [fabric api](https://www.curseforge.com/minecraft/mc-mods/fabric-api) for your version of minecraft
