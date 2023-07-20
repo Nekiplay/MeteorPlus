@@ -58,8 +58,10 @@ public class FreecamMixin {
 			Block mineBlock = mc.world.getBlockState(blockPos).getBlock();
 
 			if (smartBaritoneControl.get()) {
-				if (mainhand == null) {
-
+				if (mainhand == null || mainhand.getItem() == Items.AIR) {
+					GoalBlock goal = new GoalBlock(blockPos.up());
+					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+					event.cancel();
 				}
 				else if (mainhand != null && mainhand.getItem() instanceof BlockItem) {
 
