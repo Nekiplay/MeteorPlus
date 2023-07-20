@@ -58,7 +58,10 @@ public class FreecamMixin {
 			Block mineBlock = mc.world.getBlockState(blockPos).getBlock();
 
 			if (smartBaritoneControl.get()) {
-				if (mainhand != null && mainhand.getItem() instanceof BlockItem) {
+				if (mainhand == null) {
+
+				}
+				else if (mainhand != null && mainhand.getItem() instanceof BlockItem) {
 
 				}
 				if (mineBlock instanceof CropBlock) {
