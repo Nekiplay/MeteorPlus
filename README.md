@@ -59,6 +59,13 @@
 
   ## Possible questions and answers
   1. How long will Meteor Plus exist?
+<br>
      A: Meteor Plus will be updated as long as the Meteor Plus Maven repository exists, as we can see the Meteor Client Maven repository is not available yet and Meteor Plus updates are coming out, which makes it clear that the addon is not planned to be abandoned, as long as we invent and look for new workarounds and migrate them, our community is trying to update the addon faster than I can.
-     2. I have an implementation to bypass the anti-chit or server
+<br>
+</br>
+
+
+
+2. I have an implementation to bypass the anti-chit or server
+<br>
     A: Make Commit we welcome anyone who makes a useful contribution to our free open source product
