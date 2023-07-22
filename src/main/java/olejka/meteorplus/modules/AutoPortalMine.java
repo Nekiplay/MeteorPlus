@@ -247,7 +247,7 @@ public class AutoPortalMine extends Module {
 			int range_forward = 2;
 			pos1.set(pX_ - (range_forward), Math.ceil(pY) - range_down, pZ_ - range_right); // down
 			int range_up = 6;
-			int range_back = 0;
+			int range_back = 2;
 			int range_left = 2;
 			pos2.set(pX_ + range_back + 1, Math.ceil(pY + range_up + 1), pZ_ + range_left + 1); // up
 
