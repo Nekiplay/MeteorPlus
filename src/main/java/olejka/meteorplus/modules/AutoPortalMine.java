@@ -126,25 +126,38 @@ public class AutoPortalMine extends Module {
 		}
 		else if (workingMode.get() == WorkingMode.Vanila) {
 			if (PlayerUtils.getDimension() == Dimension.Overworld) {
-				List<BlockPos> obsidians = getPortalBlocks();
-				if (obsidians.size() > 0 || blocks.size() > 0) {
-					isMine = true;
+
+				BlockPos to =  twoPortalPosition.get();
+				double distance = mc.player.getPos().distanceTo(to.toCenterPos().multiply(8));
+				if (distance <= 100) {
+					List<BlockPos> obsidians = getPortalBlocks();
+					isMine = obsidians.size() > 0 || blocks.size() > 0;
 				}
+				else {
+					isMine = false;
+				}
+
+
 				if (!isMine) {
 					if (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
-						BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(new GoalBlock(mainPortalPosition.get()));
+						to =  mainPortalPosition.get();
+						BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto " + to.getX() + " " + to.getY() + " " + to.getZ());
 					}
+				}
+				else if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
+					BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
 				}
 			}
 			else if (PlayerUtils.getDimension() == Dimension.Nether) {
 				if (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(new GoalBlock(twoPortalPosition.get()));
+					BlockPos to =  twoPortalPosition.get();
+					BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto " + to.getX() + " " + to.getY() + " " + to.getZ());
 				}
 			}
 		}
 	}
 
-	private final AutoPortalMine.Shape shape = Shape.Cube;
+	private final AutoPortalMine.Shape shape = Shape.UniformCube;
 
 	private final AutoPortalMine.Mode mode = Mode.All;
 
@@ -224,7 +237,7 @@ public class AutoPortalMine extends Module {
 			direction = direction == -2 ? 2 : direction == -1 ? 3 : direction == -3 ? 1 : direction; // stupid java not doing modulo shit
 
 			// direction == 1
-			int range_down = 0;
+			int range_down = 1;
 			int range_right = 2;
 			int range_forward = 0;
 			pos1.set(pX_ - (range_forward), Math.ceil(pY) - range_down, pZ_ - range_right); // down
