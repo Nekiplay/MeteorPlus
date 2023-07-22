@@ -15,11 +15,13 @@ import meteordevelopment.meteorclient.utils.world.BlockIterator;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.MeteorPlus;
 
@@ -131,10 +133,11 @@ public class AutoPortalMine extends Module {
 				double distance = mc.player.getPos().distanceTo(to.toCenterPos().multiply(8));
 				if (distance <= 150) {
 					List<BlockPos> obsidians = getPortalBlocks();
+					Block down = mc.world.getBlockState(mc.player.getBlockPos().add(0, -1, 0)).getBlock();
 					if (obsidians.size() == 0) {
 						isMine = false;
 					}
-					else {
+					else if (down == Blocks.OBSIDIAN) {
 						isMine = true;
 					}
 				}
