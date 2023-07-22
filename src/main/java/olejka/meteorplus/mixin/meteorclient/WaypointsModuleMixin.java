@@ -35,6 +35,9 @@ import static meteordevelopment.meteorclient.utils.render.color.Color.GRAY;
 
 @Mixin(WaypointsModule.class)
 public class WaypointsModuleMixin {
+
+	private final AtomicReference<GuiTheme> themeRef = new AtomicReference<>();
+	private final AtomicReference<WTable> tableRef = new AtomicReference<>();
 	private final WaypointsModule waypoints = (WaypointsModule)(Object) this;
 
 	private final SettingGroup meteorPlusTab = waypoints.settings.createGroup("Meteor Plus");
@@ -42,6 +45,13 @@ public class WaypointsModuleMixin {
 	private final Setting<Boolean> showDistance = meteorPlusTab.add(new BoolSetting.Builder()
 		.name("show-distance")
 		.description("show-distance-in-this-gui.")
+		.onChanged((a) ->  {
+			GuiTheme t = themeRef.get();
+			WTable tab = tableRef.get();
+			if (t != null && tab != null) {
+				initTable(t, tab);
+			}
+		})
 		.build()
 	);
 
@@ -49,11 +59,15 @@ public class WaypointsModuleMixin {
 		.name("sort-mode")
 		.description("show-distance-in-this-gui.")
 		.defaultValue(WaypointsModuleModes.SortMode.Distance)
+		.onChanged((a) ->  {
+			GuiTheme t = themeRef.get();
+			WTable tab = tableRef.get();
+			if (t != null && tab != null) {
+				initTable(t, tab);
+			}
+		})
 		.build()
 	);
-
-	private final AtomicReference<GuiTheme> themeRef = new AtomicReference<>();
-	private final AtomicReference<WTable> tableRef = new AtomicReference<>();
 
 	private final Setting<String> search = meteorPlusTab.add(new StringSetting.Builder()
 		.name("search")

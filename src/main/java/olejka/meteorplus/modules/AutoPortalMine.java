@@ -129,9 +129,14 @@ public class AutoPortalMine extends Module {
 
 				BlockPos to =  twoPortalPosition.get();
 				double distance = mc.player.getPos().distanceTo(to.toCenterPos().multiply(8));
-				if (distance <= 100) {
+				if (distance <= 150) {
 					List<BlockPos> obsidians = getPortalBlocks();
-					isMine = obsidians.size() > 0 || blocks.size() > 0;
+					if (obsidians.size() == 0) {
+						isMine = false;
+					}
+					else {
+						isMine = true;
+					}
 				}
 				else {
 					isMine = false;
@@ -144,7 +149,7 @@ public class AutoPortalMine extends Module {
 						BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto " + to.getX() + " " + to.getY() + " " + to.getZ());
 					}
 				}
-				else if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
+				else if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().getPath().isPresent()) {
 					BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
 				}
 			}
@@ -157,7 +162,7 @@ public class AutoPortalMine extends Module {
 		}
 	}
 
-	private final AutoPortalMine.Shape shape = Shape.UniformCube;
+	private final AutoPortalMine.Shape shape = Shape.Cube;
 
 	private final AutoPortalMine.Mode mode = Mode.All;
 
@@ -237,9 +242,9 @@ public class AutoPortalMine extends Module {
 			direction = direction == -2 ? 2 : direction == -1 ? 3 : direction == -3 ? 1 : direction; // stupid java not doing modulo shit
 
 			// direction == 1
-			int range_down = 1;
+			int range_down = 0;
 			int range_right = 2;
-			int range_forward = 0;
+			int range_forward = 2;
 			pos1.set(pX_ - (range_forward), Math.ceil(pY) - range_down, pZ_ - range_right); // down
 			int range_up = 6;
 			int range_back = 0;
