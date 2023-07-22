@@ -8,26 +8,27 @@ import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.renderer.GuiRenderer;
 import meteordevelopment.meteorclient.gui.widgets.WLabel;
 import meteordevelopment.meteorclient.gui.widgets.containers.WTable;
+import meteordevelopment.meteorclient.gui.widgets.input.WTextBox;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WMinus;
-import meteordevelopment.meteorclient.settings.BoolSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.systems.modules.render.Freecam;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.render.WaypointsModule;
 import meteordevelopment.meteorclient.systems.waypoints.Waypoint;
 import meteordevelopment.meteorclient.systems.waypoints.Waypoints;
 import meteordevelopment.meteorclient.utils.Utils;
 import olejka.meteorplus.mixininterface.meteorclient.EditWaypointScreen;
 import olejka.meteorplus.mixininterface.meteorclient.WIcon;
-import olejka.meteorplus.modules.speed.SpeedModes;
-import olejka.meteorplus.modules.speed.modes.*;
+import olejka.meteorplus.mixininterface.meteorclient.WaypointsModuleModes;
 import org.spongepowered.asm.mixin.Mixin;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WCheckbox;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static meteordevelopment.meteorclient.utils.render.color.Color.GRAY;
@@ -44,12 +45,29 @@ public class WaypointsModuleMixin {
 		.build()
 	);
 
-	private void onSpeedModeChanged(Boolean aBoolean) {
-		if (aBoolean) {
+	private final Setting<WaypointsModuleModes.SortMode> sortMode = meteorPlusTab.add(new EnumSetting.Builder<WaypointsModuleModes.SortMode>()
+		.name("sort-mode")
+		.description("show-distance-in-this-gui.")
+		.defaultValue(WaypointsModuleModes.SortMode.Distance)
+		.build()
+	);
 
-		}
-	}
+	private final AtomicReference<GuiTheme> themeRef = new AtomicReference<>();
+	private final AtomicReference<WTable> tableRef = new AtomicReference<>();
 
+	private final Setting<String> search = meteorPlusTab.add(new StringSetting.Builder()
+		.name("search")
+		.description("search waypoint by text")
+		.defaultValue("")
+			.onChanged((a) ->  {
+				GuiTheme t = themeRef.get();
+				WTable tab = tableRef.get();
+				if (t != null && tab != null) {
+					initTable(t, tab);
+				}
+			})
+		.build()
+	);
 	@Inject(method = "getWidget", at = @At("HEAD"), remap = false, cancellable = true)
 	private void getWidget(GuiTheme theme, CallbackInfoReturnable<WWidget> cir) {
 		if (!Utils.canUpdate()) {
@@ -58,6 +76,8 @@ public class WaypointsModuleMixin {
 
 		WTable table = theme.table();
 		initTable(theme, table);
+		themeRef.set(theme);
+		tableRef.set(table);
 		cir.setReturnValue(table);
 	}
 
@@ -65,20 +85,48 @@ public class WaypointsModuleMixin {
 	private void initTable(GuiTheme theme, WTable table) {
 		table.clear();
 
-		for (Waypoint waypoint : Waypoints.get()) {
+		AtomicReference<Map<String, Waypoint>> waypoints = new AtomicReference<>();
+		waypoints.set(Waypoints.get().waypoints);
+
+		if (sortMode.get() == WaypointsModuleModes.SortMode.Distance) {
+			WaypointsModuleModes.DistanceComparator bvc = new WaypointsModuleModes.DistanceComparator(Waypoints.get().waypoints);
+			TreeMap<String, Waypoint> sorted_map = new TreeMap<String, Waypoint>(bvc);
+			sorted_map.putAll(waypoints.get());
+			waypoints.set(sorted_map);
+		}
+		else if (sortMode.get() == WaypointsModuleModes.SortMode.Name) {
+			WaypointsModuleModes.NameComparator bvc = new WaypointsModuleModes.NameComparator(Waypoints.get().waypoints);
+			TreeMap<String, Waypoint> sorted_map = new TreeMap<String, Waypoint>(bvc);
+			sorted_map.putAll(waypoints.get());
+			waypoints.set(sorted_map);
+		}
+
+		Map<String, Waypoint> filtered = new HashMap<>();
+
+		if (!search.get().isEmpty()) {
+			for (Waypoint waypoint : waypoints.get().values()) {
+				if (waypoint.name.get().toLowerCase().contains(search.get().toLowerCase())) {
+					filtered.put(waypoint.name.get(), waypoint);
+				}
+			}
+			waypoints.set(filtered);
+		}
+
+		for (Waypoint waypoint : waypoints.get().values()) {
 			boolean validDim = Waypoints.checkDimension(waypoint);
 
 			table.add(new WIcon(waypoint));
 
-			WLabel name = table.add(theme.label(waypoint.name.get())).expandCellX().widget();
+			WLabel name = theme.label(waypoint.name.get());
 			if (showDistance.get()) {
 				if (mc.player == null)
-					name = table.add(theme.label(waypoint.name.get() + " (unknown)")).expandCellX().widget();
+					name = theme.label(waypoint.name.get() + " (unknown)");
 				else {
 					long distance = Math.round(mc.player.getPos().distanceTo(waypoint.getPos().toCenterPos()));
-					name = table.add(theme.label(waypoint.name.get() + " (" + distance + "m)")).expandCellX().widget();
+					name = theme.label(waypoint.name.get() + " (" + distance + "m)");
 				}
 			}
+			table.add(name).expandCellX().widget();
 			if (!validDim) name.color = GRAY;
 
 			WCheckbox visible = table.add(theme.checkbox(waypoint.visible.get())).widget();

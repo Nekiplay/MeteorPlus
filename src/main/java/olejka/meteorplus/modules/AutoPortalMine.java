@@ -1,6 +1,9 @@
 package olejka.meteorplus.modules;
 
 import baritone.api.BaritoneAPI;
+import baritone.api.pathing.goals.Goal;
+import baritone.api.pathing.goals.GoalBlock;
+import baritone.api.pathing.goals.GoalTwoBlocks;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -30,10 +33,39 @@ public class AutoPortalMine extends Module {
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
+
+	public enum WorkingMode
+	{
+		Vanila,
+		Homes
+	}
+
+	private final Setting<WorkingMode> workingMode = sgGeneral.add(new EnumSetting.Builder<WorkingMode>()
+		.name("mode")
+		.description("Working mode.")
+		.defaultValue(WorkingMode.Vanila)
+		.build()
+	);
+
+	private final Setting<BlockPos> mainPortalPosition = sgGeneral.add(new BlockPosSetting.Builder()
+		.name("portal location 1")
+		.description("the position of the portal to hell")
+		.visible(() -> workingMode.get() == WorkingMode.Vanila)
+		.build()
+	);
+
+	private final Setting<BlockPos> twoPortalPosition = sgGeneral.add(new BlockPosSetting.Builder()
+		.name("portal location 2")
+		.description("portal position in hell for new portal generations")
+		.visible(() -> workingMode.get() == WorkingMode.Vanila)
+		.build()
+	);
+
 	private final Setting<String> command = sgGeneral.add(new StringSetting.Builder()
 		.name("command")
 		.description("Send command.")
 		.defaultValue("/home")
+		.visible(() -> workingMode.get() == WorkingMode.Homes)
 		.build()
 	);
 
@@ -41,6 +73,7 @@ public class AutoPortalMine extends Module {
 		.name("command-delay")
 		.description("Ticks delay.")
 		.defaultValue(700)
+		.visible(() -> workingMode.get() == WorkingMode.Homes)
 		.build()
 	);
 
@@ -73,19 +106,39 @@ public class AutoPortalMine extends Module {
 		if (commandDelay <= delayCommand.get()) {
 			commandDelay++;
 		}
-		if (PlayerUtils.getDimension() == Dimension.Overworld) {
-			commandDelay = 0;
-			isMine = false;
-			if (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto nether_portal");
+		if (workingMode.get() == WorkingMode.Homes) {
+			if (PlayerUtils.getDimension() == Dimension.Overworld) {
+				commandDelay = 0;
+				isMine = false;
+				if (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
+					BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto nether_portal");
+				}
+			} else if (PlayerUtils.getDimension() == Dimension.Nether) {
+				List<BlockPos> obsidians = getPortalBlocks();
+				isMine = true;
+				if ((obsidians.size() == 0 || blocks.size() == 0)) {
+					if (mc.player != null && commandDelay >= delayCommand.get()) {
+						mc.player.sendMessage(Text.of(command.get()), false);
+						commandDelay = 0;
+					}
+				}
 			}
-		} else if (PlayerUtils.getDimension() == Dimension.Nether) {
-			List<BlockPos> obsidians = getPortalBlocks();
-			isMine = true;
-			if ((obsidians.size() == 0 || blocks.size() == 0)) {
-				if (mc.player != null && commandDelay >= delayCommand.get()) {
-					mc.player.sendMessage(Text.of(command.get()), false);
-					commandDelay = 0;
+		}
+		else if (workingMode.get() == WorkingMode.Vanila) {
+			if (PlayerUtils.getDimension() == Dimension.Overworld) {
+				List<BlockPos> obsidians = getPortalBlocks();
+				if (obsidians.size() > 0 || blocks.size() > 0) {
+					isMine = true;
+				}
+				if (!isMine) {
+					if (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
+						BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(new GoalBlock(mainPortalPosition.get()));
+					}
+				}
+			}
+			else if (PlayerUtils.getDimension() == Dimension.Nether) {
+				if (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
+					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(new GoalBlock(twoPortalPosition.get()));
 				}
 			}
 		}
