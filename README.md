@@ -58,3 +58,4 @@
 4. Download [meteor plus](https://github.com/Nekiplay/MeteorPlus/releases) for your version of minecraft
 5. Place the meteor client and meteor plus in your mods folder
 
+    A: Make Commit we welcome anyone who makes a useful contribution to our free open source product
