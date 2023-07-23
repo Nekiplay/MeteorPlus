@@ -86,6 +86,13 @@ public class AutoPortalMine extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> noBaritoneBreaking = sgGeneral.add(new BoolSetting.Builder()
+		.name("disable-baritone-breaking-if-not-mine-portal")
+		.description("No break blocks if is not mining portal.")
+		.defaultValue(true)
+		.build()
+	);
+
 	private final Setting<Boolean> rotate = sgGeneral.add(new BoolSetting.Builder()
 		.name("rotate")
 		.description("Rotate to block.")
@@ -147,16 +154,23 @@ public class AutoPortalMine extends Module {
 
 
 				if (!isMine) {
+					if (noBaritoneBreaking.get()) {
+						BaritoneAPI.getSettings().allowBreak.value = false;
+					}
 					if (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
 						to =  mainPortalPosition.get();
 						BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto " + to.getX() + " " + to.getY() + " " + to.getZ());
 					}
 				}
 				else if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().getPath().isPresent()) {
+					BaritoneAPI.getSettings().allowBreak.value = true;
 					BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
 				}
 			}
 			else if (PlayerUtils.getDimension() == Dimension.Nether) {
+				if (noBaritoneBreaking.get()) {
+					BaritoneAPI.getSettings().allowBreak.value = false;
+				}
 				if (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
 					BlockPos to =  twoPortalPosition.get();
 					BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto " + to.getX() + " " + to.getY() + " " + to.getZ());
@@ -189,6 +203,7 @@ public class AutoPortalMine extends Module {
 	private Box box;
 	int maxh = 0;
 	int maxv = 0;
+	private boolean baritoneBreakSaved = false;
 
 	@Override
 	public void onActivate() {
@@ -196,12 +211,18 @@ public class AutoPortalMine extends Module {
 		firstBlock = true;
 		timer = 0;
 		noBlockTimer = 0;
+		if (noBaritoneBreaking.get()) {
+			baritoneBreakSaved = BaritoneAPI.getSettings().allowBreak.value;
+		}
 	}
 
 	@Override
 	public void onDeactivate() {
 		if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
 			BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
+		}
+		if (noBaritoneBreaking.get()) {
+			BaritoneAPI.getSettings().allowBreak.value = baritoneBreakSaved;
 		}
 	}
 
