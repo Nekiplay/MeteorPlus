@@ -41,8 +41,8 @@
 ## Meteor Client improvements
 | Module | Enhancements |
 |--|-------------------------------------------------|
-| **FreeCam** | **Added basic baritone control via Freecam**          
-| **Waypoints** | **Added display of distances in label names, sorting, name search added**
+| **FreeCam** | **Added good baritone control via Freecam**          
+| **Waypoints** | **Added display of distances in label names, sorting, name search**
 | **Hidden module** | **Hiding original modules and third-party modules from the GUI** |
 
 # Note
