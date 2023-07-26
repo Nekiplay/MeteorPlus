@@ -44,7 +44,7 @@ public class WaypointsModuleMixin {
 
 	private final Setting<Boolean> showDistance = meteorPlusTab.add(new BoolSetting.Builder()
 		.name("show-distance")
-		.description("show-distance-in-this-gui.")
+		.description("Show distance in this gui.")
 		.onChanged((a) ->  {
 			GuiTheme t = themeRef.get();
 			WTable tab = tableRef.get();
@@ -57,7 +57,7 @@ public class WaypointsModuleMixin {
 
 	private final Setting<WaypointsModuleModes.SortMode> sortMode = meteorPlusTab.add(new EnumSetting.Builder<WaypointsModuleModes.SortMode>()
 		.name("sort-mode")
-		.description("show-distance-in-this-gui.")
+		.description("Sorting waypoints mode.")
 		.defaultValue(WaypointsModuleModes.SortMode.Distance)
 		.onChanged((a) ->  {
 			GuiTheme t = themeRef.get();
@@ -71,7 +71,7 @@ public class WaypointsModuleMixin {
 
 	private final Setting<String> search = meteorPlusTab.add(new StringSetting.Builder()
 		.name("search")
-		.description("search waypoint by text")
+		.description("Search waypoint by text")
 		.defaultValue("")
 			.onChanged((a) ->  {
 				GuiTheme t = themeRef.get();

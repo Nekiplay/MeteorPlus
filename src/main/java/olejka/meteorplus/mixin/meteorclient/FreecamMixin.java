@@ -11,6 +11,7 @@ import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.CropBlock;
+import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.item.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -65,8 +66,9 @@ public class FreecamMixin {
 					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
 					event.cancel();
 				}
-				if (mineBlock instanceof CropBlock) {
+				if (mineBlock instanceof CropBlock || mineBlock instanceof SugarCaneBlock) {
 					BaritoneAPI.getProvider().getPrimaryBaritone().getFarmProcess().farm((int)mc.player.getPos().distanceTo(blockPos.toCenterPos()) + 1);
+					event.cancel();
 				}
 				else if (mainhand != null && (mainhand.getItem() instanceof PickaxeItem || mainhand.getItem() instanceof AxeItem || mainhand.getItem() instanceof ShovelItem)) {
 					BaritoneAPI.getProvider().getPrimaryBaritone().getMineProcess().mine(mineBlock);

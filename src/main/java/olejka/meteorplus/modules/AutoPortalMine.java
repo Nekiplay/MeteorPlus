@@ -94,8 +94,8 @@ public class AutoPortalMine extends Module {
 	);
 
 	private final Setting<Boolean> rotate = sgGeneral.add(new BoolSetting.Builder()
-		.name("rotate")
-		.description("Rotate to block.")
+		.name("Rotate")
+		.description("Rotate to breaking block.")
 		.defaultValue(false)
 		.build()
 	);
