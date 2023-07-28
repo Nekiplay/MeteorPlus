@@ -1,19 +1,20 @@
-package olejka.meteorplus.modules.nofallplus;
+package olejka.meteorplus.modules.timer;
 
+import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.utils.Utils;
 import net.minecraft.client.MinecraftClient;
 import olejka.meteorplus.MeteorPlus;
-import olejka.meteorplus.modules.spider.SpiderModes;
-import olejka.meteorplus.modules.spider.SpiderPlus;
 
-public class NofallMode {
+public class TimerMode {
 	protected final MinecraftClient mc;
-	protected final NoFallPlus settings;
-	private final NoFallModes type;
+	protected final TimerPlus settings;
+	private final TimerModes type;
 
-	public NofallMode(NoFallModes type) {
-		this.settings = MeteorPlus.getInstance().noFallPlus;
+	public TimerMode(TimerModes type) {
+		this.settings = MeteorPlus.getInstance().timerPlus;
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}

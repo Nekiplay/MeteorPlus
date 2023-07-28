@@ -35,9 +35,8 @@ import static meteordevelopment.meteorclient.utils.render.color.Color.GRAY;
 
 @Mixin(WaypointsModule.class)
 public class WaypointsModuleMixin {
-
-	private final AtomicReference<GuiTheme> themeRef = new AtomicReference<>();
-	private final AtomicReference<WTable> tableRef = new AtomicReference<>();
+	public final AtomicReference<GuiTheme> themeRef = new AtomicReference<>();
+	public final AtomicReference<WTable> tableRef = new AtomicReference<>();
 	private final WaypointsModule waypoints = (WaypointsModule)(Object) this;
 
 	private final SettingGroup meteorPlusTab = waypoints.settings.createGroup("Meteor Plus");
@@ -96,7 +95,7 @@ public class WaypointsModuleMixin {
 	}
 
 	@Unique
-	private void initTable(GuiTheme theme, WTable table) {
+	public void initTable(GuiTheme theme, WTable table) {
 		table.clear();
 
 		AtomicReference<Map<String, Waypoint>> waypoints = new AtomicReference<>();

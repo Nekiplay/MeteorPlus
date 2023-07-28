@@ -1,19 +1,14 @@
-package olejka.meteorplus.modules.nofallplus;
+package olejka.meteorplus.modules.nofall;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import olejka.meteorplus.MeteorPlus;
-import olejka.meteorplus.modules.nofallplus.modes.Eclip;
-import olejka.meteorplus.modules.spider.SpiderMode;
-import olejka.meteorplus.modules.spider.SpiderModes;
-import olejka.meteorplus.modules.spider.modes.Matrix;
-import olejka.meteorplus.modules.spider.modes.Vulcan;
+import olejka.meteorplus.modules.nofall.modes.Eclip;
 
 public class NoFallPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();

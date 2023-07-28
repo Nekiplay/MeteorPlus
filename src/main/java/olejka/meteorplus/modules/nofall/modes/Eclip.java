@@ -1,28 +1,20 @@
-package olejka.meteorplus.modules.nofallplus.modes;
+package olejka.meteorplus.modules.nofall.modes;
 
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixin.PlayerMoveC2SPacketAccessor;
 import meteordevelopment.meteorclient.mixininterface.IPlayerMoveC2SPacket;
-import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
-import meteordevelopment.orbit.EventHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
-import olejka.meteorplus.MeteorPlus;
-import olejka.meteorplus.modules.nofallplus.NoFallModes;
-import olejka.meteorplus.modules.nofallplus.NofallMode;
+import olejka.meteorplus.modules.nofall.NoFallModes;
+import olejka.meteorplus.modules.nofall.NofallMode;
 import olejka.meteorplus.utils.ElytraUtils;
 
 public class Eclip extends NofallMode {

@@ -6,8 +6,6 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.effect.StatusEffects;
-import olejka.meteorplus.modules.spider.SpiderModes;
-import olejka.meteorplus.modules.spider.SpiderPlus;
 
 public class SpeedMode {
 	protected final MinecraftClient mc;

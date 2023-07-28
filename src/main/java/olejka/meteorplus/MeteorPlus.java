@@ -15,14 +15,15 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import net.minecraft.item.Items;
+import olejka.meteorplus.hud.TimerPlusCharge;
 import olejka.meteorplus.modules.*;
 import olejka.meteorplus.modules.fastladder.FastLadderPlus;
 import olejka.meteorplus.modules.fly.FlyPlus;
 import olejka.meteorplus.modules.jesus.JesusPlus;
-import olejka.meteorplus.modules.nofallplus.NoFallPlus;
+import olejka.meteorplus.modules.nofall.NoFallPlus;
 import olejka.meteorplus.modules.speed.SpeedPlus;
 import olejka.meteorplus.modules.spider.SpiderPlus;
-import olejka.meteorplus.utils.algoritms.ShadyRotation;
+import olejka.meteorplus.modules.timer.TimerPlus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,7 @@ public class MeteorPlus extends MeteorAddon {
 	public SpiderPlus spiderPlus;
 	public NoFallPlus noFallPlus;
 	public AntiBotPlus antiBotPlus;
+	public TimerPlus timerPlus;
 	//endregion
 
 	private static MeteorPlus instance;
@@ -63,6 +65,7 @@ public class MeteorPlus extends MeteorAddon {
 		spiderPlus = new SpiderPlus();
 		noFallPlus = new NoFallPlus();
 		antiBotPlus = new AntiBotPlus();
+		timerPlus = new TimerPlus();
 
 		modules.add(new FastLadderPlus());
 		modules.add(new TriggerBot());
@@ -71,6 +74,7 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new MiddleClickExtraPlus());
 		modules.add(new AutoDropPlus());
 		modules.add(noFallPlus);
+		modules.add(timerPlus);
 		modules.add(new SpeedPlus());
 		modules.add(new FlyPlus());
 		modules.add(spiderPlus);
@@ -93,6 +97,7 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info("Meteor Plus initializing hud...");
 
 		Hud.get().register(MeteorPlusLogoHud.INFO);
+		Hud.get().register(TimerPlusCharge.INFO);
 
 		LOG.info("Meteor Plus loaded hud");
 		//endregion
@@ -100,10 +105,8 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info("Meteor Plus initializing tabs...");
 
 		Tabs.add(new HiddenModulesTab());
-
-		LOG.info("Meteor Plus loaded hud");
+		LOG.info("Meteor Plus loaded tabs");
 		//endregion
-
 		LOG.info("Meteor Plus loaded");
 	}
 

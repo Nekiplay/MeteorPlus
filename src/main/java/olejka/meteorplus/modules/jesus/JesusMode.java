@@ -7,8 +7,6 @@ import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.MinecraftClient;
-import olejka.meteorplus.modules.speed.SpeedModes;
-import olejka.meteorplus.modules.speed.SpeedPlus;
 
 public class JesusMode {
 	protected final MinecraftClient mc;
