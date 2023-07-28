@@ -40,10 +40,11 @@
 
 ## Meteor Client improvements
 | Module | Enhancements |
-|--|-------------------------------------------------|
+|------------------|-------------------------------------------------|
 | **FreeCam** | **Added good baritone control via Freecam**          
 | **Waypoints** | **Added display of distances in label names, sorting, name search**
 | **Hidden module** | **Hiding original modules and third-party modules from the GUI** |
+| **UI, Hud, ESP** | **Added support for the Russian language in Minecraft** |
 
 # Note
 
