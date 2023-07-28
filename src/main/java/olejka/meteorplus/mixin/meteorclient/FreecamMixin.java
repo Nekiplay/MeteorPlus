@@ -14,7 +14,10 @@ import net.minecraft.block.CropBlock;
 import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.item.*;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import olejka.meteorplus.utils.RaycastUtils;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -28,13 +31,13 @@ public class FreecamMixin {
 
 	private final Setting<Boolean> baritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
 		.name("baritone-control")
-		.description("Left-click-to-set-the-destination-on-the-selected-block.-Right-click-to-cancel.")
+		.description("Left-click to set the destination on the selected block. Right-click to cancel.")
 		.build()
 	);
 
 	private final Setting<Boolean> smartBaritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
 		.name("smart-baritone-control")
-		.description("For-the-baritone-task,-consider-the-notes-in-your-hand.")
+		.description("For the baritone task, consider the notes in your hand.")
 		.visible(baritoneControl::get)
 		.build()
 	);
@@ -50,9 +53,18 @@ public class FreecamMixin {
 		ItemStack offhand = mc.player.getOffHandStack();
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-			if (!(mc.crosshairTarget instanceof BlockHitResult)) return;
+			BlockPos blockPos = null;
+			if (blockPos == null) {
+				Vec3d yaw = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
+				Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
+				HitResult result = RaycastUtils.raycast(pos, yaw, 64 * 4, mc.getTickDelta(), true);
+				if (result.getType() == HitResult.Type.BLOCK) {
+					BlockHitResult blockHitResult = (BlockHitResult)result;
+					blockPos = blockHitResult.getBlockPos();
+				}
+			}
 
-			BlockPos blockPos = ((BlockHitResult) mc.crosshairTarget).getBlockPos();
+			if (blockPos == null) return;
 
 			if (mc.world == null) return;
 

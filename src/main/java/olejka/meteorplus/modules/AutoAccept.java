@@ -4,6 +4,7 @@ import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.misc.text.TextUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.text.Text;
 import olejka.meteorplus.MeteorPlus;

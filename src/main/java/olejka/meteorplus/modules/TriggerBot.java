@@ -132,7 +132,6 @@ public class TriggerBot extends Module {
 	}
 
 	private void hitEntity(Entity target) {
-
 		mc.interactionManager.attackEntity(mc.player, target);
 		mc.player.swingHand(Hand.MAIN_HAND);
 	}
