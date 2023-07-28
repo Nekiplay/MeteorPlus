@@ -54,14 +54,12 @@ public class FreecamMixin {
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
 			BlockPos blockPos = null;
-			if (blockPos == null) {
-				Vec3d yaw = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
-				Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
-				HitResult result = RaycastUtils.raycast(pos, yaw, 64 * 4, mc.getTickDelta(), true);
-				if (result.getType() == HitResult.Type.BLOCK) {
-					BlockHitResult blockHitResult = (BlockHitResult)result;
-					blockPos = blockHitResult.getBlockPos();
-				}
+			Vec3d yaw = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
+			Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
+			HitResult result = RaycastUtils.raycast(pos, yaw, 64 * 4, mc.getTickDelta(), true);
+			if (result.getType() == HitResult.Type.BLOCK) {
+				BlockHitResult blockHitResult = (BlockHitResult) result;
+				blockPos = blockHitResult.getBlockPos();
 			}
 
 			if (blockPos == null) return;
@@ -79,20 +77,17 @@ public class FreecamMixin {
 					event.cancel();
 				}
 				if (mineBlock instanceof CropBlock || mineBlock instanceof SugarCaneBlock) {
-					BaritoneAPI.getProvider().getPrimaryBaritone().getFarmProcess().farm((int)mc.player.getPos().distanceTo(blockPos.toCenterPos()) + 1);
+					BaritoneAPI.getProvider().getPrimaryBaritone().getFarmProcess().farm((int) mc.player.getPos().distanceTo(blockPos.toCenterPos()) + 1);
 					event.cancel();
-				}
-				else if (mainhand != null && (mainhand.getItem() instanceof PickaxeItem || mainhand.getItem() instanceof AxeItem || mainhand.getItem() instanceof ShovelItem)) {
+				} else if (mainhand != null && (mainhand.getItem() instanceof PickaxeItem || mainhand.getItem() instanceof AxeItem || mainhand.getItem() instanceof ShovelItem)) {
 					BaritoneAPI.getProvider().getPrimaryBaritone().getMineProcess().mine(mineBlock);
 					event.cancel();
-				}
-				else {
+				} else {
 					GoalBlock goal = new GoalBlock(blockPos.up());
 					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
 					event.cancel();
 				}
-			}
-			else {
+			} else {
 				GoalBlock goal = new GoalBlock(blockPos.up());
 				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
 				event.cancel();
