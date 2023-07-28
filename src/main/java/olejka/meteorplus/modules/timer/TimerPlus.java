@@ -26,7 +26,7 @@ public class TimerPlus extends Module {
 		.defaultValue(true)
 		.build()
 	);
-
+//
 	public TimerPlus() {
 		super(MeteorPlus.CATEGORY, "timer-plus", "Bypass timer.");
 		autoSubscribe = false;
