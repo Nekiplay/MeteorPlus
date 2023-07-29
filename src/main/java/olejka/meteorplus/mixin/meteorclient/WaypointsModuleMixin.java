@@ -95,7 +95,7 @@ public class WaypointsModuleMixin {
 	}
 
 	@Unique
-	public void initTable(GuiTheme theme, WTable table) {
+	private void initTable(GuiTheme theme, WTable table) {
 		table.clear();
 
 		AtomicReference<Map<String, Waypoint>> waypoints = new AtomicReference<>();

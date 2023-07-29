@@ -11,8 +11,6 @@
 	"mixins": [
 		"ClientPlayerInteractionManagerMixin",
 		"InGameHudMixin",
-		"accessors.ModuleAccessor",
-		"accessors.ModulesAccessor",
 		"meteorclient.ESPMixin",
 		"meteorclient.FontsMixin",
 		"meteorclient.FreecamMixin",
