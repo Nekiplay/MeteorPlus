@@ -18,6 +18,11 @@ public class NCP extends TimerMode {
 	}
 
 	@Override
+	public void onDeactivate() {
+		timer.setOverride(Timer.OFF);
+	}
+
+	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
 		if (mc.player == null) return;
 		if (rechargeTimer == 0) {

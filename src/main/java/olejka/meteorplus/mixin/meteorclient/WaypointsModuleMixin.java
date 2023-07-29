@@ -19,6 +19,7 @@ import meteordevelopment.meteorclient.utils.Utils;
 import olejka.meteorplus.mixininterface.meteorclient.EditWaypointScreen;
 import olejka.meteorplus.mixininterface.meteorclient.WIcon;
 import olejka.meteorplus.mixininterface.meteorclient.WaypointsModuleModes;
+import olejka.meteorplus.utils.NumeralUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WCheckbox;
 import org.spongepowered.asm.mixin.Unique;
@@ -51,6 +52,22 @@ public class WaypointsModuleMixin {
 				initTable(t, tab);
 			}
 		})
+		.defaultValue(true)
+		.build()
+	);
+
+	private final Setting<Boolean> showCompactDistance = meteorPlusTab.add(new BoolSetting.Builder()
+		.name("show-compact-distance")
+		.description("Show compact distance in this gui.")
+		.onChanged((a) ->  {
+			GuiTheme t = themeRef.get();
+			WTable tab = tableRef.get();
+			if (t != null && tab != null) {
+				initTable(t, tab);
+			}
+		})
+		.visible(showDistance::get)
+		.defaultValue(true)
 		.build()
 	);
 
@@ -132,11 +149,14 @@ public class WaypointsModuleMixin {
 
 			WLabel name = theme.label(waypoint.name.get());
 			if (showDistance.get()) {
-				if (mc.player == null)
-					name = theme.label(waypoint.name.get() + " (unknown)");
-				else {
+				if (mc.player != null) {
 					long distance = Math.round(mc.player.getPos().distanceTo(waypoint.getPos().toCenterPos()));
-					name = theme.label(waypoint.name.get() + " (" + distance + "m)");
+					if (showCompactDistance.get()) {
+						name = theme.label(waypoint.name.get() + " (" + NumeralUtils.FormatNumber(distance) + ")");
+					}
+					else {
+						name = theme.label(waypoint.name.get() + " (" + distance + "m)");
+					}
 				}
 			}
 			table.add(name).expandCellX().widget();

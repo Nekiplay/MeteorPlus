@@ -3,8 +3,11 @@ package olejka.meteorplus.modules.timer;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.gui.GuiTheme;
+import meteordevelopment.meteorclient.gui.widgets.containers.WTable;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import meteordevelopment.orbit.EventHandler;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.modules.jesus.JesusModes;
@@ -42,12 +45,22 @@ public class TimerPlus extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> rechargeOnDisable = sgGeneral.add(new BoolSetting.Builder()
+		.name("recharge-on-disable")
+		.description("Recharge timer delay on disable.")
+		.defaultValue(false)
+		.build()
+	);
+
 	private final Setting<Integer> rechargeDelaySetting = sgGeneral.add(new IntSetting.Builder()
 		.name("recharge-delay")
 		.description("Recharge timer delay.")
 		.defaultValue(352)
 		.visible(() -> mode.get() == TimerModes.Custom)
-		.onChanged((a) -> rechargeDelay = a)
+		.onChanged((a) ->  {
+			rechargeDelay = a;
+			rechargeTimer = 0;
+		})
 		.build()
 	);
 
@@ -56,7 +69,10 @@ public class TimerPlus extends Module {
 		.description("Working timer delay.")
 		.defaultValue(27)
 		.visible(() -> mode.get() == TimerModes.Custom)
-		.onChanged((a) -> workingDelay = a)
+		.onChanged((a) -> {
+			workingDelay = a;
+			workingTimer = 0;
+		})
 		.build()
 	);
 
@@ -77,25 +93,19 @@ public class TimerPlus extends Module {
 				break;
 			}
 		}
-		if (oldMode != currentMode) {
-			oldMode = currentMode;
-			workingTimer = 0;
-			rechargeTimer = 0;
-		}
 	}
 
 	@Override
 	public void onActivate() {
-		if (oldMode != currentMode) {
-			oldMode = currentMode;
-			workingTimer = 0;
-			rechargeTimer = 0;
-		}
 		currentMode.onActivate();
 	}
 
 	@Override
 	public void onDeactivate() {
+		if (rechargeOnDisable.get()) {
+			workingTimer = 0;
+			rechargeTimer = 0;
+		}
 		currentMode.onDeactivate();
 	}
 
