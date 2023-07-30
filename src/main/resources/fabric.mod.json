@@ -5,8 +5,8 @@
   "name": "Meteor Plus",
   "description": "An addon for Meteor client that adds many blatant features.",
   "authors": [
-    "Olejka",
 		"Neki_play",
+    "Olejka",
 		"Vazgen005"
   ],
   "contact": {
@@ -18,11 +18,14 @@
 
 	"license": "GPL-3.0",
   "icon": "assets/plus/icon.png",
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
     "meteor": [
 			"olejka.meteorplus.MeteorPlus"
-    ]
+    ],
+		"journeymap": [
+			"olejka.meteorplus.journeymap.JourneyMapMeteorPlus"
+		]
   },
   "mixins": [
     "meteor-plus.mixins.json"

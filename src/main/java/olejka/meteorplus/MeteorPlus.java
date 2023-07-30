@@ -3,12 +3,11 @@ package olejka.meteorplus;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
-//import olejka.meteorplus.hud.CustomImageHud;
 import olejka.meteorplus.gui.tabs.HiddenModulesTab;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
-//import olejka.meteorplus.hud.TargetHud;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
@@ -27,7 +26,7 @@ import olejka.meteorplus.modules.timer.TimerPlus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MeteorPlus extends MeteorAddon {
+public class MeteorPlus extends MeteorAddon implements ClientModInitializer {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
 	public static final Category CATEGORY = new Category("MeteorPlus", Items.EMERALD_BLOCK.getDefaultStack());
 	public static final HudGroup HUD_GROUP = new HudGroup("MeteorPlusHud");
@@ -45,6 +44,7 @@ public class MeteorPlus extends MeteorAddon {
 	public static MeteorPlus getInstance() {
 		return instance;
 	}
+
 
 	@Override
 	public void onInitialize() {
@@ -141,5 +141,10 @@ public class MeteorPlus extends MeteorAddon {
 	@Override
 	public String getPackage() {
 		return "olejka.meteorplus";
+	}
+
+	@Override
+	public void onInitializeClient() {
+
 	}
 }

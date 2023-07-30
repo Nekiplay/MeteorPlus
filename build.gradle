@@ -8,6 +8,26 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+configurations.all {
+	// Check for snapshots more frequently than Gradle's default of 1 day. 0 = every build.
+	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+repositories {
+	maven {
+		url "https://jm.gserv.me/repository/maven-public/"
+		content {
+			includeGroup "info.journeymap"
+		}
+	}
+	maven {
+		url "https://api.modrinth.com/maven/"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
+}
+
 dependencies {
     // Fabric
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -17,6 +37,10 @@ dependencies {
     // Meteor client
 	modImplementation files("libs\\baritone-fabric-1.20.1-SNAPSHOT.jar")
     modImplementation files("libs\\meteor-client-0.5.4-1870.jar")
+
+	// Journey Map
+	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true
+	modRuntimeOnly "maven.modrinth:journeymap:${project.jm_fabric_version}"
 }
 
 loom {
@@ -27,7 +51,6 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.mod_version, "mc_version": project.minecraft_version, "gh_hash": (System.getenv("GITHUB_SHA") ?: "")
     }
-
 }
 
 tasks.withType(JavaCompile).configureEach {
