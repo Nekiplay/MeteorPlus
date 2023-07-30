@@ -97,8 +97,10 @@ public class FreecamMixin {
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
 			if (smartBaritoneControl.get()) {
 				if ((offhand == null || !(offhand.getItem() instanceof BlockItem)) && (mainhand == null || !(mainhand.getItem() instanceof BlockItem))) {
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-					event.cancel();
+					if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath()) {
+						BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
+						event.cancel();
+					}
 				}
 			}
 			else {

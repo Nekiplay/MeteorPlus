@@ -22,7 +22,7 @@ import java.util.ArrayDeque;
 
 public class GhostBlockFixer extends Module {
 	public GhostBlockFixer() {
-		super(MeteorPlus.CATEGORY, "Ghost Block Fixer", "Automatically fix ghost blocks.");
+		super(MeteorPlus.CATEGORY, "auto-ghost-block-fixer", "Automatically fix ghost blocks.");
 	}
 	private final SettingGroup GBSettings = settings.createGroup("Ghost Block Fixer Settings");
 

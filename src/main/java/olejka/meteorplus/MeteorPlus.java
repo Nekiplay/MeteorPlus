@@ -26,11 +26,11 @@ import olejka.meteorplus.modules.timer.TimerPlus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MeteorPlus extends MeteorAddon implements ClientModInitializer {
+public class MeteorPlus extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
 	public static final Category CATEGORY = new Category("MeteorPlus", Items.EMERALD_BLOCK.getDefaultStack());
 	public static final HudGroup HUD_GROUP = new HudGroup("MeteorPlusHud");
-
+	public static final String LOGPREFIX = "[Meteor Plus]";
 
 	//region Modules
 	public SpiderPlus spiderPlus;
@@ -49,17 +49,17 @@ public class MeteorPlus extends MeteorAddon implements ClientModInitializer {
 	@Override
 	public void onInitialize() {
 		instance = this;
-		LOG.info("Meteor Plus initializing...");
+		LOG.info(LOGPREFIX + " initializing...");
 
 		//region Commands
-		LOG.info("Meteor Plus initializing commands...");
+		LOG.info(LOGPREFIX + " initializing commands...");
 
 		Commands.add(new Eclip());
 
-		LOG.info("Meteor Plus loaded commands");
+		LOG.info(LOGPREFIX + " loaded commands");
 		//endregion
 		//region Modules
-		LOG.info("Meteor Plus initializing modules...");
+		LOG.info(LOGPREFIX + " initializing modules...");
 		Modules modules = Modules.get();
 
 		spiderPlus = new SpiderPlus();
@@ -91,30 +91,30 @@ public class MeteorPlus extends MeteorAddon implements ClientModInitializer {
 		modules.add(new Freeze());
 		modules.add(new Noclip());
 		modules.add(antiBotPlus);
-		LOG.info("MeteorPlus loaded modules");
+		LOG.info(LOGPREFIX + " loaded modules");
 		//endregion
 		//region Hud
-		LOG.info("Meteor Plus initializing hud...");
+		LOG.info(LOGPREFIX + " initializing hud...");
 
 		Hud.get().register(MeteorPlusLogoHud.INFO);
 		Hud.get().register(TimerPlusCharge.INFO);
 
-		LOG.info("Meteor Plus loaded hud");
+		LOG.info(LOGPREFIX + " loaded hud");
 		//endregion
 		//region Tabs
-		LOG.info("Meteor Plus initializing tabs...");
+		LOG.info(LOGPREFIX + " initializing tabs...");
 
 		Tabs.add(new HiddenModulesTab());
-		LOG.info("Meteor Plus loaded tabs");
+		LOG.info(LOGPREFIX + " loaded tabs");
 		//endregion
-		LOG.info("Meteor Plus loaded");
+		LOG.info(LOGPREFIX + " loaded");
 	}
 
 	@Override
 	public void onRegisterCategories() {
-		LOG.info("MeteorPlus registering categories...");
+		LOG.info(LOGPREFIX + " registering categories...");
 		Modules.registerCategory(CATEGORY);
-		LOG.info("MeteorPlus register categories");
+		LOG.info(LOGPREFIX + " register categories");
 	}
 
 	@Override
@@ -141,10 +141,5 @@ public class MeteorPlus extends MeteorAddon implements ClientModInitializer {
 	@Override
 	public String getPackage() {
 		return "olejka.meteorplus";
-	}
-
-	@Override
-	public void onInitializeClient() {
-
 	}
 }

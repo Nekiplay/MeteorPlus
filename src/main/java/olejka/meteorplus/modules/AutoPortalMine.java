@@ -9,6 +9,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.Pool;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.meteorclient.utils.world.BlockIterator;
@@ -127,7 +128,7 @@ public class AutoPortalMine extends Module {
 				isMine = true;
 				if ((obsidians.size() == 0 || blocks.size() == 0)) {
 					if (mc.player != null && commandDelay >= delayCommand.get()) {
-						mc.player.sendMessage(Text.of(command.get()), false);
+						ChatUtils.sendPlayerMsg(command.get());
 						commandDelay = 0;
 					}
 				}

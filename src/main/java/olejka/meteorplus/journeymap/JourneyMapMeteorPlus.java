@@ -12,8 +12,10 @@ import olejka.meteorplus.MeteorPlus;
 import java.util.EnumSet;
 
 import static journeymap.client.api.event.ClientEvent.Type.*;
+import static olejka.meteorplus.MeteorPlus.LOGPREFIX;
 
 public class JourneyMapMeteorPlus implements IClientPlugin {
+	public final String JourneyMapLOGPREFIX = "[Journey Map]";
 	// API reference
 	private IClientAPI jmAPI = null;
 
@@ -27,10 +29,10 @@ public class JourneyMapMeteorPlus implements IClientPlugin {
 	@Override
 	public void initialize(final IClientAPI jmClientApi) {
 
-		MeteorPlus.LOG.info("Loading Journey Map integrate");
+		MeteorPlus.LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " loading Journey Map integrate");
 		jmAPI = jmClientApi;
 		FabricEvents.FULLSCREEN_POPUP_MENU_EVENT.register(event -> {
-			MeteorPlus.LOG.info("Register fullscreen Journey Map");
+			MeteorPlus.LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register fullscreen Journey Map");
 			ModPopupMenu popupMenu = event.getPopupMenu();
 
 			popupMenu.addMenuItem("Goto", p -> {
@@ -38,11 +40,11 @@ public class JourneyMapMeteorPlus implements IClientPlugin {
 				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
 			});
 
-			MeteorPlus.LOG.info("Register fullscreen Journey Map done");
+			MeteorPlus.LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register fullscreen Journey Map done");
 		});
 
 		FabricEvents.WAYPOINT_POPUP_MENU_EVENT.register(event -> {
-			MeteorPlus.LOG.info("Register waypoints Journey Map");
+			MeteorPlus.LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register waypoints Journey Map");
 			ModPopupMenu popupMenu = event.getPopupMenu();
 
 			popupMenu.addMenuItem("Goto", p -> {
@@ -50,13 +52,10 @@ public class JourneyMapMeteorPlus implements IClientPlugin {
 				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
 			});
 
-			MeteorPlus.LOG.info("Register waypoints Journey Map done");
+			MeteorPlus.LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register waypoints Journey Map done");
 		});
 
-		// Subscribe to desired ClientEvent types from JourneyMap
-		this.jmAPI.subscribe(getModId(), EnumSet.of(DEATH_WAYPOINT, MAPPING_STARTED, MAPPING_STOPPED, REGISTRY));
-
-		MeteorPlus.LOG.info("Journey Map integrate loaded");
+		MeteorPlus.LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " Journey Map integrate loaded");
 	}
 
 	@Override

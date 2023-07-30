@@ -6,6 +6,7 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.DisconnectS2CPacket;
 import net.minecraft.text.Text;
@@ -16,7 +17,7 @@ import java.util.Objects;
 
 public class AutoLeave extends Module {
 	public AutoLeave() {
-		super(MeteorPlus.CATEGORY, "Auto Leave", "Automatically logs out from the server when someone enters your render distance.");
+		super(MeteorPlus.CATEGORY, "auto-leave", "Automatically logs out from the server when someone enters your render distance.");
 	}
 	private final SettingGroup ALSettings = settings.createGroup("Auto Leave Settings");
 	private final Setting<Boolean> visualRangeIgnoreFriends = ALSettings.add(new BoolSetting.Builder()
@@ -54,7 +55,7 @@ public class AutoLeave extends Module {
 		if (visualRangeIgnoreFriends.get()) {
 			if (event.entity.isPlayer() && !Friends.get().isFriend((PlayerEntity) event.entity) && !Objects.equals(event.entity.getEntityName(), mc.player.getEntityName()) && !Objects.equals(event.entity.getEntityName(), "FreeCamera")) {
 				if (Command.get()) {
-					mc.player.sendMessage(Text.of(command_str.get()));
+					ChatUtils.sendPlayerMsg(command_str.get());
 					info((String.format("player §c%s§r was detected", event.entity.getEntityName())));
 				} else {
 					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
