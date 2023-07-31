@@ -1,7 +1,8 @@
 var apiRoot = "https://api.github.com/";
 
 window.onload = function(e){ 
-    if (window.location.href.match('index.html') != null) {
+    console.log(window.location)
+    if ( window.location.match("index") != null) {
         var total = 0;
         fetch(apiRoot + "repos/" + "NekiPlay" + "/" + "MeteorPlus" +        "/releases", {
             method: "GET"
