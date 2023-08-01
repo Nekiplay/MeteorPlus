@@ -17,7 +17,7 @@
   },
 
 	"license": "GPL-3.0",
-  "icon": "assets/plus/icon.png",
+  "icon": "assets/meteorplus/icon.png",
   "environment": "*",
   "entrypoints": {
     "meteor": [

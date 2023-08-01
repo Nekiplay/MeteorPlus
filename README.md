@@ -35,23 +35,23 @@
 | **Trigger Bot**      | **AutoAttack on look at entity**              |                              |
 
 ## Commands
-| Command | Description | Bypasses             |
-|--|--|----------------------|
+| Module    | Description       | Bypasses                    |
+|-----------|-------------------|-----------------------------|
 | **eclip** | **Vertical clip** | **Matrix, Wraith, Spartan** |
 
+
 ## Meteor Client improvements
-| Module | Enhancements |
-|------------------|-------------------------------------------------|
-| **FreeCam** | **Added good baritone control via Freecam**          
-| **Waypoints** | **Added display of distances in label names, sorting, name search**
-| **Hidden module** | **Hiding original modules and third-party modules from the GUI** |
-| **UI, Hud, ESP** | **Added support for the Russian language in Minecraft** |
+| Module            | Enhancements                                                        |
+|-------------------|---------------------------------------------------------------------|
+| **Freecam**       | **Added good baritone control via Freecam**                         |       
+| **Waypoints**     | **Added display of distances in label names, sorting, name search** |
+| **Hidden module** | **Hiding original modules and third-party modules from the GUI**    |
+| **UI, Hud, ESP**  | **Added support for the Russian language in Minecraft**             |
 
-# Note
-
-<div>
-	<p>If the Meteor Client site does not work use the Meteor Client from <a href="https://www.guilded.gg/i/27dAlJKk">guilded</a></p>
-</div>
+## Integrations with mods
+| Mod             | Integrated                                  |
+|-----------------|---------------------------------------------|
+| **Journey Map** | **Goto from Baritone for map context menu** |     
 
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net) 1.19.4 or 1.20 or 1.20.1

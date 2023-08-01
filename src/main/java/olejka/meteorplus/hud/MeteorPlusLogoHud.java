@@ -33,7 +33,7 @@ public class MeteorPlusLogoHud extends HudElement {
 		.build()
 	);
 
-	private final Identifier TEXTURE = new Identifier("plus", "logo.png");
+	private final Identifier TEXTURE = new Identifier("meteorplus", "logo.png");
 
 
 	public MeteorPlusLogoHud() {

@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.tabs.Tab;
 import meteordevelopment.meteorclient.gui.tabs.TabScreen;
 import meteordevelopment.meteorclient.gui.tabs.WindowTabScreen;
+import meteordevelopment.meteorclient.gui.widgets.input.WTextBox;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -26,6 +27,8 @@ public class HiddenModulesTab extends Tab {
 	public boolean isScreen(Screen screen) {
 		return screen instanceof HiddenModulesScreen;
 	}
+
+
 
 	public static class HiddenModulesScreen extends WindowTabScreen {
 		public HiddenModulesScreen(GuiTheme theme, Tab tab) {
