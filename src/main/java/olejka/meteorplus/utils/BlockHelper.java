@@ -1,6 +1,7 @@
 package olejka.meteorplus.utils;
 
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import meteordevelopment.meteorclient.utils.world.Dimension;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -63,6 +64,7 @@ public class BlockHelper {
 
 	public static Block getBlock(BlockPos p) {
 		if (p == null) return null;
+		if (mc.world == null) return null;
 		return mc.world.getBlockState(p).getBlock();
 	}
 
@@ -78,5 +80,22 @@ public class BlockHelper {
 
 	public static boolean outOfRange(BlockPos cityBlock) {
 		return MathHelper.sqrt((float) mc.player.squaredDistanceTo(cityBlock.getX(), cityBlock.getY(), cityBlock.getZ())) > mc.interactionManager.getReachDistance();
+	}
+
+	public static BlockPos opposite(BlockPos pos, Dimension dimension)
+	{
+		int x = pos.getX();
+		int z = pos.getZ();
+
+		if (dimension == Dimension.Overworld)
+		{
+			x /= 8;
+			z /= 8;
+		}
+		else if (dimension == Dimension.Nether) {
+			x *= 8;
+			z *= 8;
+		}
+		return new BlockPos(x, pos.getY(), z);
 	}
 }

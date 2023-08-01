@@ -172,15 +172,14 @@ public class XrayBruteforce extends Module {
 				e.printStackTrace();
 			}
 		}
-		FileWriter fileWriter = null;
 		try {
-			fileWriter = new FileWriter(file);
+			FileWriter fileWriter = new FileWriter(file);
+			PrintWriter printWriter = new PrintWriter(fileWriter);
+			printWriter.print(json);
+			printWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		PrintWriter printWriter = new PrintWriter(fileWriter);
-		printWriter.print(json);
-		printWriter.close();
 	}
 
 	public final Setting<Boolean> new_render = sgSRenderer.add(new BoolSetting.Builder()

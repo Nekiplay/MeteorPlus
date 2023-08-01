@@ -25,6 +25,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.utils.BlockHelper;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -102,7 +103,7 @@ public class AutoPortalMine extends Module {
 	);
 
 	private final Setting<Boolean> rotate = sgGeneral.add(new BoolSetting.Builder()
-		.name("Rotate")
+		.name("rotate")
 		.description("Rotate to breaking block.")
 		.defaultValue(false)
 		.build()
@@ -145,8 +146,9 @@ public class AutoPortalMine extends Module {
 			if (PlayerUtils.getDimension() == Dimension.Overworld) {
 
 				BlockPos to =  twoPortalPosition.get();
-				double distance = mc.player.getPos().distanceTo(to.toCenterPos().multiply(8));
-				if (distance <= 150) {
+				BlockPos dis = BlockHelper.opposite(to, Dimension.Nether);
+				double distance = Math.sqrt(PlayerUtils.squaredDistanceTo(dis.getX(), mc.player.getY(), dis.getZ()));
+				if (distance <= 20) {
 					List<BlockPos> obsidians = getPortalBlocks();
 					Block down = mc.world.getBlockState(mc.player.getBlockPos().add(0, -1, 0)).getBlock();
 					if (obsidians.size() == 0) {
@@ -176,6 +178,7 @@ public class AutoPortalMine extends Module {
 				}
 			}
 			else if (PlayerUtils.getDimension() == Dimension.Nether) {
+				isMine = false;
 				if (noBaritoneBreaking.get()) {
 					BaritoneAPI.getSettings().allowBreak.value = false;
 				}
