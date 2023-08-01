@@ -28,7 +28,9 @@ public class EditWaypointScreen extends EditSystemScreen<Waypoint> {
 
 	@Override
 	public boolean save() {
-		return !isNew || Waypoints.get().add(value);
+
+		boolean added = !isNew || Waypoints.get().add(value);
+		return added;
 
 	}
 

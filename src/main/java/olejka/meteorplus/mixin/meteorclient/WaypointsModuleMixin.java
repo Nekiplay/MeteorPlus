@@ -169,7 +169,9 @@ public class WaypointsModuleMixin {
 			};
 
 			WButton edit = table.add(theme.button(GuiRenderer.EDIT)).widget();
-			edit.action = () -> mc.setScreen(new EditWaypointScreen(theme, waypoint, null));
+			edit.action = () -> mc.setScreen(new EditWaypointScreen(theme, waypoint, () -> {
+				initTable(theme, table);
+			}));
 
 			// Goto
 			if (validDim) {
@@ -184,7 +186,7 @@ public class WaypointsModuleMixin {
 			WMinus remove = table.add(theme.minus()).widget();
 			remove.action = () -> {
 				Waypoints.get().remove(waypoint);
-				initTable(theme, table);
+				initTable(themeRef.get(), tableRef.get());
 			};
 
 			table.row();
@@ -194,6 +196,8 @@ public class WaypointsModuleMixin {
 		table.row();
 
 		WButton create = table.add(theme.button("Create")).expandX().widget();
-		create.action = () -> mc.setScreen(new EditWaypointScreen(theme, null, () -> initTable(theme, table)));
+		create.action = () -> mc.setScreen(new EditWaypointScreen(theme, null, () -> {
+			initTable(theme, table);
+		}));
 	}
 }

@@ -94,6 +94,13 @@ public class AutoPortalMine extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> noBaritonePlacing = sgGeneral.add(new BoolSetting.Builder()
+		.name("disable-baritone-place")
+		.description("No place blocks.")
+		.defaultValue(true)
+		.build()
+	);
+
 	private final Setting<Boolean> rotate = sgGeneral.add(new BoolSetting.Builder()
 		.name("Rotate")
 		.description("Rotate to breaking block.")
@@ -205,6 +212,7 @@ public class AutoPortalMine extends Module {
 	int maxh = 0;
 	int maxv = 0;
 	private boolean baritoneBreakSaved = false;
+	private boolean baritonePlaceSaved = false;
 
 	@Override
 	public void onActivate() {
@@ -215,6 +223,9 @@ public class AutoPortalMine extends Module {
 		if (noBaritoneBreaking.get()) {
 			baritoneBreakSaved = BaritoneAPI.getSettings().allowBreak.value;
 		}
+		if (noBaritonePlacing.get()) {
+			baritonePlaceSaved = BaritoneAPI.getSettings().allowPlace.value;
+		}
 	}
 
 	@Override
@@ -224,6 +235,9 @@ public class AutoPortalMine extends Module {
 		}
 		if (noBaritoneBreaking.get()) {
 			BaritoneAPI.getSettings().allowBreak.value = baritoneBreakSaved;
+		}
+		if (noBaritonePlacing.get()) {
+			BaritoneAPI.getSettings().allowPlace.value = baritonePlaceSaved;
 		}
 	}
 
