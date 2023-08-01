@@ -1,6 +1,6 @@
 
 <div align="center">
-	<img src="[src/main/resources/assets/plus/logo.png](https://github.com/Nekiplay/MeteorPlus/assets/35975332/5fa04a11-0de7-4423-8c9d-0b6fe9142df4)" alt="meteor-plus" width="200px"/>
+	<img src="https://github.com/Nekiplay/MeteorPlus/assets/35975332/5fa04a11-0de7-4423-8c9d-0b6fe9142df4" alt="meteor-plus" width="200px"/>
 	<h1>Meteor Plus</h1>
 	<br>
 		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
