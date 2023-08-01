@@ -15,7 +15,6 @@ public class JouneyMapTab extends Tab {
 		super("Journey Map");
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Settings getSettings() {
 		if (settings != null) return settings;
 
@@ -24,6 +23,11 @@ public class JouneyMapTab extends Tab {
 		SettingGroup fullMap = settings.createGroup("Full map");
 		fullMap.add(new BoolSetting.Builder()
 			.name("Baritone goto popup")
+			.defaultValue(true)
+			.build()
+		);
+		fullMap.add(new BoolSetting.Builder()
+			.name("Baritone goto in waypoints menu")
 			.defaultValue(true)
 			.build()
 		);

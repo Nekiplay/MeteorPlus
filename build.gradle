@@ -41,10 +41,11 @@ dependencies {
 	// Journey Map
 	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true
 	modRuntimeOnly "maven.modrinth:journeymap:${project.jm_fabric_version}"
+	modCompileOnly "maven.modrinth:journeymap:${project.jm_fabric_version}"
 }
 
 loom {
-	//accessWidenerPath = file("src/main/resources/meteor-plus.accesswidener")
+	accessWidenerPath = file("src/main/resources/meteor-plus.accesswidener")
 }
 
 processResources {

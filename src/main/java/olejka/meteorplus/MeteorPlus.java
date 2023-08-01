@@ -119,7 +119,7 @@ public class MeteorPlus extends MeteorAddon {
 
 	@Override
 	public String getWebsite() {
-		return "https://github.com/Nekiplay/MeteorPlus";
+		return "https://meteor-plus.com/";
 	}
 
 	@Override

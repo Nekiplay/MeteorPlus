@@ -28,8 +28,10 @@
 		]
   },
   "mixins": [
-    "meteor-plus.mixins.json"
+    "meteor-plus.mixins.json",
+		"meteor-plus-journeymap.mixins.json"
   ],
+	"accessWidener": "meteor-plus.accesswidener",
   "custom": {
     "meteor-client:color": "0,181,73",
 		"github:sha": "${gh_hash}"

@@ -1,0 +1,12 @@
+{
+	"required": false,
+	"package": "olejka.meteorplus.mixin.journeymap",
+	"compatibilityLevel": "JAVA_17",
+	"plugin": "olejka.meteorplus.MixinPlugin",
+	"client": [
+		"WaypointManagerItemMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
