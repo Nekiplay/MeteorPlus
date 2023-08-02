@@ -1,0 +1,13 @@
+{
+	"required": false,
+	"package": "olejka.meteorplus.mixin.xaeros.worldmap",
+	"compatibilityLevel": "JAVA_17",
+	"plugin": "olejka.meteorplus.MixinPlugin",
+	"client": [
+		"WaypointRendererMixin",
+		"GuiMapMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

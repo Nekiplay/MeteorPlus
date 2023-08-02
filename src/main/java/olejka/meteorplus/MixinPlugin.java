@@ -16,7 +16,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	private static final String mixinPackage = "olejka.meteorplus.mixin";
 
 	private static boolean loaded;
-	private static boolean isJourneyMapPresent;
+	public static boolean isJourneyMapPresent;
+	public static boolean isXaeroWorldMapresent;
+	public static boolean isXaeroMiniMapresent;
 
 	@Override
 	public void onLoad(String mixinPackage) {
@@ -56,6 +58,8 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		}
 
 		isJourneyMapPresent = FabricLoader.getInstance().isModLoaded("journeymap");
+		isXaeroWorldMapresent = FabricLoader.getInstance().isModLoaded("xaeroworldmap");
+		isXaeroMiniMapresent = FabricLoader.getInstance().isModLoaded("xaerominimap");
 
 		loaded = true;
 	}
@@ -72,6 +76,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".journeymap")) {
 			return isJourneyMapPresent;
+		}
+		else if (mixinClassName.startsWith(mixinPackage + ".xaeroworldmap")) {
+			return isXaeroWorldMapresent;
 		}
 		return true;
 	}

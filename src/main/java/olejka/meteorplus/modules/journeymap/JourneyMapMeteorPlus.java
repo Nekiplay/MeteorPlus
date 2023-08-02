@@ -1,4 +1,4 @@
-package olejka.meteorplus.journeymap;
+package olejka.meteorplus.modules.journeymap;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
@@ -7,7 +7,6 @@ import journeymap.client.api.IClientPlugin;
 import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.fabric.FabricEvents;
-import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import net.minecraft.text.Text;
 import olejka.meteorplus.gui.tabs.JouneyMapTab;
@@ -65,7 +64,7 @@ public class JourneyMapMeteorPlus implements IClientPlugin {
 
 		LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " initializing tab...");
 
-		Tabs.add(new JouneyMapTab());
+
 		LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " loaded tab");
 
 

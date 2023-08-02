@@ -7,6 +7,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 import olejka.meteorplus.gui.tabs.HiddenModulesTab;
+import olejka.meteorplus.gui.tabs.JouneyMapTab;
+import olejka.meteorplus.gui.tabs.XaerosWorldMapTab;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
@@ -104,6 +106,12 @@ public class MeteorPlus extends MeteorAddon {
 		//region Tabs
 		LOG.info(LOGPREFIX + " initializing tabs...");
 
+		if (MixinPlugin.isJourneyMapPresent) {
+			Tabs.add(new JouneyMapTab());
+		}
+		if (MixinPlugin.isXaeroWorldMapresent) {
+			Tabs.add(new XaerosWorldMapTab());
+		}
 		Tabs.add(new HiddenModulesTab());
 		LOG.info(LOGPREFIX + " loaded tabs");
 		//endregion

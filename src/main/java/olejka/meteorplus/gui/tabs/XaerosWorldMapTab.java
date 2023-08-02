@@ -8,11 +8,12 @@ import meteordevelopment.meteorclient.gui.widgets.input.WTextBox;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.Settings;
+import olejka.meteorplus.MixinPlugin;
 
-public class JouneyMapTab extends Tab {
+public class XaerosWorldMapTab extends Tab {
 	private static Settings settings;
-	public JouneyMapTab() {
-		super("Journey Map");
+	public XaerosWorldMapTab() {
+		super("Xaero's World Map");
 	}
 
 	public static Settings getSettings() {
@@ -26,11 +27,14 @@ public class JouneyMapTab extends Tab {
 			.defaultValue(true)
 			.build()
 		);
-		fullMap.add(new BoolSetting.Builder()
-			.name("Baritone goto in waypoints menu")
-			.defaultValue(true)
-			.build()
-		);
+		if (MixinPlugin.isXaeroMiniMapresent) {
+			SettingGroup waypoints = settings.createGroup("Waypoints");
+			waypoints.add(new BoolSetting.Builder()
+				.name("Baritone goto in context menu")
+				.defaultValue(true)
+				.build()
+			);
+		}
 		return settings;
 	}
 
@@ -41,7 +45,7 @@ public class JouneyMapTab extends Tab {
 
 	@Override
 	public boolean isScreen(net.minecraft.client.gui.screen.Screen screen) {
-		return screen instanceof Screen;
+		return screen instanceof JouneyMapTab.Screen;
 	}
 
 	public static class Screen extends WindowTabScreen {
