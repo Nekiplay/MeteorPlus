@@ -5,7 +5,8 @@
 	"plugin": "olejka.meteorplus.MixinPlugin",
 	"client": [
 		"WaypointRendererMixin",
-		"GuiMapMixin"
+		"GuiMapMixin",
+		"MapPixelAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

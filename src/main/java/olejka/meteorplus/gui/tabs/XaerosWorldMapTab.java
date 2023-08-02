@@ -27,6 +27,26 @@ public class XaerosWorldMapTab extends Tab {
 			.defaultValue(true)
 			.build()
 		);
+		fullMap.add(new BoolSetting.Builder()
+			.name("Show block in context menu")
+			.defaultValue(true)
+			.build()
+		);
+		fullMap.add(new BoolSetting.Builder()
+			.name("Show chunk in context menu")
+			.defaultValue(false)
+			.build()
+		);
+		fullMap.add(new BoolSetting.Builder()
+			.name("Show position in context menu")
+			.defaultValue(true)
+			.build()
+		);
+		fullMap.add(new BoolSetting.Builder()
+			.name("Show teleport in context menu")
+			.defaultValue(false)
+			.build()
+		);
 		if (MixinPlugin.isXaeroMiniMapresent) {
 			SettingGroup waypoints = settings.createGroup("Waypoints");
 			waypoints.add(new BoolSetting.Builder()
