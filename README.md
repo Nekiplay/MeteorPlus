@@ -49,9 +49,10 @@
 | **UI, Hud, ESP**  | **Added support for the Russian language in Minecraft**             |
 
 ## Integrations with mods
-| Mod             | Integrated                                  |
-|-----------------|---------------------------------------------|
-| **Journey Map** | **Goto from Baritone for map context menu** |     
+| Mod             		| Integrated                                  |
+|-----------------------|---------------------------------------------|
+| **Journey Map** 		| **Goto from Baritone for map context menu** |
+| **Xaero's World Map** | **Goto from Baritone for map context menu** |     
 
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net) 1.19.4 or 1.20 or 1.20.1
