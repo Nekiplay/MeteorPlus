@@ -10,7 +10,6 @@
 	},
 	"mixins": [
 		"ClientPlayerInteractionManagerMixin",
-		"InGameHudMixin",
 		"meteorclient.ESPMixin",
 		"meteorclient.FontsMixin",
 		"meteorclient.FreecamMixin",

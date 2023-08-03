@@ -51,7 +51,7 @@ public class WaypointManagerItemMixin {
 			gotoButton.drawHovered(drawHovered);
 		}
 	}
-	@Inject(method = "clickScrollable", at = @At(value = "HEAD"), remap = false)
+	@Inject(method = "clickScrollable", at = @At(value = "HEAD"), remap = false, cancellable = true)
 	private void onClickScrollable(double mouseX, double mouseY, CallbackInfoReturnable<Boolean> cir) {
 		if (gotoButton.mouseOver(mouseX, mouseY)) {
 			GoalBlock goal = new GoalBlock(waypoint.getBlockPos());

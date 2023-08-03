@@ -131,14 +131,14 @@ public abstract class GuiMapMixin {
 		MapTile mouseTile = chunk == null ? null : chunk.getTile(mouseBlockPosX >> 4 & 3, mouseBlockPosZ >> 4 & 3);
 
 
-		ICachedRegion region = BaritoneAPI.getProvider().getPrimaryBaritone().getWorldProvider().getCurrentWorld().getCachedWorld().getRegion(mouseBlockPosX >> 9, mouseBlockPosZ >> 9);
+		//ICachedRegion region = BaritoneAPI.getProvider().getPrimaryBaritone().getWorldProvider().getCurrentWorld().getCachedWorld().getRegion(mouseBlockPosX >> 9, mouseBlockPosZ >> 9);
 		if (group != null) {
 			BoolSetting showBlockInContextMenu = (BoolSetting)group.get("Show block in context menu");
 			if (mouseTile != null && showBlockInContextMenu.get()) {
-				//MapBlock block = mouseTile.getBlock(mouseBlockPosX & 15, mouseBlockPosZ & 15);
-				//MapPixelAccessor pixel = (MapPixelAccessor) block;
+				MapBlock block = mouseTile.getBlock(mouseBlockPosX & 15, mouseBlockPosZ & 15);
+				MapPixelAccessor pixel = (MapPixelAccessor) block;
 
-				options.add(new RightClickOption(Names.get(region.getBlock(new BlockPos(mouseBlockPosX >> 4 & 3 , rightClickY, mouseBlockPosZ >> 4 & 3)).getBlock()), options.size(), guiMap) {
+				options.add(new RightClickOption(Names.get(pixel.getBlockState().getBlock()), options.size(), guiMap) {
 					public void onAction(Screen screen) {
 					}
 				});
