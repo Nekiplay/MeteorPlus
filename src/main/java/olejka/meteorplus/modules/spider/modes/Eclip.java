@@ -1,14 +1,12 @@
 package olejka.meteorplus.modules.spider.modes;
 
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
-import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.modules.spider.SpiderMode;
 import olejka.meteorplus.modules.spider.SpiderModes;
 import olejka.meteorplus.modules.spider.SpiderPlus;
@@ -34,7 +32,7 @@ public class Eclip extends SpiderMode {
 	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
 		if (work() && mc.player.horizontalCollision) {
-			blocks = MeteorPlus.getInstance().spiderPlus.Blocks.get();
+			blocks = Modules.get().get(SpiderPlus.class).Blocks.get();
 			clip();
 		} else {
 			ticks = 0;

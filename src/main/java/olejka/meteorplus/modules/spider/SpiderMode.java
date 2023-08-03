@@ -2,8 +2,8 @@ package olejka.meteorplus.modules.spider;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.MinecraftClient;
-import olejka.meteorplus.MeteorPlus;
 
 public class SpiderMode {
 	protected final MinecraftClient mc;
@@ -11,7 +11,7 @@ public class SpiderMode {
 	private final SpiderModes type;
 
 	public SpiderMode(SpiderModes type) {
-		this.settings = MeteorPlus.getInstance().spiderPlus;
+		this.settings = Modules.get().get(SpiderPlus.class);
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}

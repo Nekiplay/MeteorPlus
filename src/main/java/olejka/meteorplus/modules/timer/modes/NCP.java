@@ -4,7 +4,6 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
-import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.modules.timer.TimerMode;
 import olejka.meteorplus.modules.timer.TimerModes;
 
@@ -32,12 +31,12 @@ public class NCP extends TimerMode {
 				timer.setOverride(Timer.OFF);
 			}
 			else {
-				if (MeteorPlus.getInstance().timerPlus.isActive()) {
-					if (MeteorPlus.getInstance().timerPlus.onlyInMove.get() && PlayerUtils.isMoving()) {
+				if (settings.isActive()) {
+					if (settings.onlyInMove.get() && PlayerUtils.isMoving()) {
 						workingTimer++;
 						timer.setOverride(2);
 					}
-					else if (!MeteorPlus.getInstance().timerPlus.onlyInMove.get()) {
+					else if (!settings.onlyInMove.get()) {
 						workingTimer++;
 						timer.setOverride(2);
 					}

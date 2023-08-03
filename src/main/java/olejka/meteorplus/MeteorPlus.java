@@ -3,12 +3,9 @@ package olejka.meteorplus;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
-import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 import olejka.meteorplus.gui.tabs.HiddenModulesTab;
-import olejka.meteorplus.gui.tabs.JouneyMapTab;
-import olejka.meteorplus.gui.tabs.XaerosWorldMapTab;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
@@ -34,23 +31,8 @@ public class MeteorPlus extends MeteorAddon {
 	public static final HudGroup HUD_GROUP = new HudGroup("MeteorPlusHud");
 	public static final String LOGPREFIX = "[Meteor Plus]";
 
-	//region Modules
-	public SpiderPlus spiderPlus;
-	public NoFallPlus noFallPlus;
-	public AntiBotPlus antiBotPlus;
-	public TimerPlus timerPlus;
-	//endregion
-
-	private static MeteorPlus instance;
-
-	public static MeteorPlus getInstance() {
-		return instance;
-	}
-
-
 	@Override
 	public void onInitialize() {
-		instance = this;
 		LOG.info(LOGPREFIX + " initializing...");
 
 		//region Commands
@@ -64,22 +46,17 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info(LOGPREFIX + " initializing modules...");
 		Modules modules = Modules.get();
 
-		spiderPlus = new SpiderPlus();
-		noFallPlus = new NoFallPlus();
-		antiBotPlus = new AntiBotPlus();
-		timerPlus = new TimerPlus();
-
 		modules.add(new FastLadderPlus());
 		modules.add(new TriggerBot());
 		modules.add(new EyeFinder());
 		modules.add(new InventoryMovePlus());
 		modules.add(new MiddleClickExtraPlus());
 		modules.add(new AutoDropPlus());
-		modules.add(noFallPlus);
-		modules.add(timerPlus);
+		modules.add(new NoFallPlus());
+		modules.add(new TimerPlus());
 		modules.add(new SpeedPlus());
 		modules.add(new FlyPlus());
-		modules.add(spiderPlus);
+		modules.add(new SpiderPlus());
 		modules.add(new JesusPlus());
 		modules.add(new BoatAura());
 		modules.add(new BedrockStorageBruteforce());
@@ -91,8 +68,11 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new GhostBlockFixer());
 		modules.add(new SafeMine());
 		modules.add(new Freeze());
-		modules.add(new Noclip());
-		modules.add(antiBotPlus);
+		modules.add(new AntiBotPlus());
+
+		if (MixinPlugin.isJourneyMapPresent || MixinPlugin.isXaeroWorldMapresent) {
+			modules.add(new MapModIntegration());
+		}
 		LOG.info(LOGPREFIX + " loaded modules");
 		//endregion
 		//region Hud
@@ -106,12 +86,6 @@ public class MeteorPlus extends MeteorAddon {
 		//region Tabs
 		LOG.info(LOGPREFIX + " initializing tabs...");
 
-		if (MixinPlugin.isJourneyMapPresent) {
-			Tabs.add(new JouneyMapTab());
-		}
-		if (MixinPlugin.isXaeroWorldMapresent) {
-			Tabs.add(new XaerosWorldMapTab());
-		}
 		Tabs.add(new HiddenModulesTab());
 		LOG.info(LOGPREFIX + " loaded tabs");
 		//endregion

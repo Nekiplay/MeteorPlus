@@ -7,68 +7,42 @@ import journeymap.client.api.IClientPlugin;
 import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.fabric.FabricEvents;
-import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.text.Text;
-import olejka.meteorplus.gui.tabs.JouneyMapTab;
+import olejka.meteorplus.modules.MapModIntegration;
+
 import static olejka.meteorplus.MeteorPlus.LOG;
 import static olejka.meteorplus.MeteorPlus.LOGPREFIX;
 
 public class JourneyMapMeteorPlus implements IClientPlugin {
 	public final String JourneyMapLOGPREFIX = "[Journey Map]";
-	// API reference
-	private IClientAPI jmAPI = null;
-
-	private static JourneyMapMeteorPlus INSTANCE;
-
-	public JourneyMapMeteorPlus()
-	{
-		INSTANCE = this;
-	}
 
 	@Override
 	public void initialize(final IClientAPI jmClientApi) {
-
 		LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " loading Journey Map integrate");
-		jmAPI = jmClientApi;
+
 		FabricEvents.FULLSCREEN_POPUP_MENU_EVENT.register(event -> {
 			LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register fullscreen Journey Map");
-			ModPopupMenu popupMenu = event.getPopupMenu();
-
-			BoolSetting setting = (BoolSetting) JouneyMapTab.getSettings().getGroup("Full map").get("Baritone goto popup");
-
-			if (setting.get()) {
-				popupMenu.addMenuItem(Text.translatable("journey.map.goto").getString(), p -> {
-					GoalBlock goal = new GoalBlock(p.up());
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-				});
-			}
-
+			addContextMenu(event.getPopupMenu());
 			LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register fullscreen Journey Map done");
 		});
 
 		FabricEvents.WAYPOINT_POPUP_MENU_EVENT.register(event -> {
 			LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register waypoints Journey Map");
-			ModPopupMenu popupMenu = event.getPopupMenu();
-
-			BoolSetting setting = (BoolSetting) JouneyMapTab.getSettings().getGroup("Full map").get("Baritone goto popup");
-
-			if (setting.get()) {
-				popupMenu.addMenuItem(Text.translatable("journey.map.goto").getString(), p -> {
-					GoalBlock goal = new GoalBlock(p.up());
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-				});
-			}
-
+			addContextMenu(event.getPopupMenu());
 			LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register waypoints Journey Map done");
 		});
 
-		LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " initializing tab...");
-
-
-		LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " loaded tab");
-
-
 		LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " Journey Map integrate loaded");
+	}
+
+	private void addContextMenu(ModPopupMenu popupMenu2) {
+		if (Modules.get().get(MapModIntegration.class).baritoneGotoInContextMenu()) {
+			popupMenu2.addMenuItem(Text.translatable("journey.map.goto").getString(), p -> {
+				GoalBlock goal = new GoalBlock(p.up());
+				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+			});
+		}
 	}
 
 	@Override
