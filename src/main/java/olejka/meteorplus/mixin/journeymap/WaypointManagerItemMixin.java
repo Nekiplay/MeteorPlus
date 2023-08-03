@@ -11,7 +11,7 @@ import journeymap.client.waypoint.Waypoint;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
-import olejka.meteorplus.gui.tabs.JouneyMapTab;
+import olejka.meteorplus.gui.tabs.JourneyMapTab;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,7 +37,7 @@ public class WaypointManagerItemMixin {
 	@Inject(method = "<init>", at = @At("JUMP"))
 	private void onInit(CallbackInfo info) {
 		gotoButton = new Button(Text.translatable("journey.map.goto").getString());
-		BoolSetting setting = (BoolSetting) JouneyMapTab.getSettings().getGroup("Full map").get("Baritone goto in waypoints menu");
+		BoolSetting setting = (BoolSetting) JourneyMapTab.getSettings().getGroup("Full map").get("Baritone goto in waypoints menu");
 		if (setting.get()) {
 			buttonListLeft.add(gotoButton);
 		}
@@ -46,7 +46,7 @@ public class WaypointManagerItemMixin {
 	@Inject(method = "render", at = @At(value = "HEAD"))
 	private void onRender(DrawContext graphics, int slotIndex, int y, int x, int rowWidth, int itemHeight, int mouseX, int mouseY, boolean isMouseOver, float partialTicks, CallbackInfo ci) {
 		boolean drawHovered = isMouseOver && this.displayHover;
-		BoolSetting setting = (BoolSetting) JouneyMapTab.getSettings().getGroup("Full map").get("Baritone goto in waypoints menu");
+		BoolSetting setting = (BoolSetting) JourneyMapTab.getSettings().getGroup("Full map").get("Baritone goto in waypoints menu");
 		if (setting.get()) {
 			gotoButton.drawHovered(drawHovered);
 		}

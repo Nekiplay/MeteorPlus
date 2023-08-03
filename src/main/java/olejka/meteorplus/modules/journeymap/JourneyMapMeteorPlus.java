@@ -9,7 +9,8 @@ import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.fabric.FabricEvents;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import net.minecraft.text.Text;
-import olejka.meteorplus.gui.tabs.JouneyMapTab;
+import olejka.meteorplus.gui.tabs.JourneyMapTab;
+
 import static olejka.meteorplus.MeteorPlus.LOG;
 import static olejka.meteorplus.MeteorPlus.LOGPREFIX;
 
@@ -34,7 +35,7 @@ public class JourneyMapMeteorPlus implements IClientPlugin {
 			LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register fullscreen Journey Map");
 			ModPopupMenu popupMenu = event.getPopupMenu();
 
-			BoolSetting setting = (BoolSetting) JouneyMapTab.getSettings().getGroup("Full map").get("Baritone goto popup");
+			BoolSetting setting = (BoolSetting) JourneyMapTab.getSettings().getGroup("Full map").get("Baritone goto popup");
 
 			if (setting.get()) {
 				popupMenu.addMenuItem(Text.translatable("journey.map.goto").getString(), p -> {
@@ -50,7 +51,7 @@ public class JourneyMapMeteorPlus implements IClientPlugin {
 			LOG.info(LOGPREFIX + " " + JourneyMapLOGPREFIX + " register waypoints Journey Map");
 			ModPopupMenu popupMenu = event.getPopupMenu();
 
-			BoolSetting setting = (BoolSetting) JouneyMapTab.getSettings().getGroup("Full map").get("Baritone goto popup");
+			BoolSetting setting = (BoolSetting) JourneyMapTab.getSettings().getGroup("Full map").get("Baritone goto popup");
 
 			if (setting.get()) {
 				popupMenu.addMenuItem(Text.translatable("journey.map.goto").getString(), p -> {

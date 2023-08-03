@@ -1,24 +1,27 @@
-package olejka.meteorplus.mixin.xaeros.worldmap;
+package olejka.meteorplus.mixin.xaero.worldmap;
 
 import baritone.api.BaritoneAPI;
+import baritone.api.cache.ICachedRegion;
 import baritone.api.pathing.goals.GoalBlock;
+import journeymap.client.ui.component.Button;
 import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.systems.modules.render.Freecam;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.registry.Registry;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import olejka.meteorplus.MeteorPlus;
-import olejka.meteorplus.gui.tabs.XaerosWorldMapTab;
+import olejka.meteorplus.gui.tabs.JourneyMapTab;
+import olejka.meteorplus.gui.tabs.XaeroWorldMapTab;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xaero.common.gui.MyTinyButton;
+import xaero.common.minimap.waypoints.Waypoint;
 import xaero.map.MapProcessor;
 import xaero.map.WorldMap;
 import xaero.map.controls.ControlsRegister;
@@ -28,7 +31,6 @@ import xaero.map.gui.dropdown.rightclick.RightClickOption;
 import xaero.map.misc.Misc;
 import xaero.map.mods.SupportMods;
 import xaero.map.region.*;
-import xaero.map.region.texture.RegionTexture;
 import xaero.map.teleport.MapTeleporter;
 import xaero.map.world.MapDimension;
 import meteordevelopment.meteorclient.utils.misc.Names;
@@ -38,19 +40,25 @@ import java.util.ArrayList;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 @Mixin(GuiMap.class)
-public class GuiMapMixin {
+public abstract class GuiMapMixin {
 	private final GuiMap guiMap = (GuiMap)(Object) this;
 	@Shadow(remap = false)
 
 	private MapTileSelection mapTileSelection;
 	@Shadow(remap = false)
-	private int rightClickX;
-	@Shadow(remap = false)
 	private double scale;
+	@Shadow(remap = false)
+	private int rightClickX;
 	@Shadow(remap = false)
 	private int rightClickY;
 	@Shadow(remap = false)
 	private int rightClickZ;
+	@Shadow(remap = false)
+	private int mouseBlockPosX = 100;
+	@Shadow(remap = false)
+	private int mouseBlockPosY = 100;
+	@Shadow(remap = false)
+	private int mouseBlockPosZ = 100;
 	@Shadow(remap = false)
 	private MapProcessor mapProcessor;
 	@Shadow(remap = false)
@@ -66,9 +74,19 @@ public class GuiMapMixin {
 	@Shadow(remap = false)
 	private double cameraZ = 0.0;
 
+	private SettingGroup group = XaeroWorldMapTab.getSettings().getGroup("Full map");
+
+	@Inject(method = "<init>", at = @At("JUMP"))
+	private void onInit(CallbackInfo info) {
+		EnumSetting<XaeroWorldMapTab.OpenMapMode> showChunkInContextMenu = (EnumSetting<XaeroWorldMapTab.OpenMapMode>)group.get("Open map mode");
+		if (showChunkInContextMenu.get() == XaeroWorldMapTab.OpenMapMode.Player) {
+			cameraX = ((float) mc.player.getX());
+			cameraZ = ((float) mc.player.getZ());
+		}
+	}
+
 	@Inject(method = "getRightClickOptions", at = @At("HEAD"), remap = false, cancellable = true)
 	private void rightClickOptins(CallbackInfoReturnable<ArrayList<RightClickOption>> cir) {
-		SettingGroup group = XaerosWorldMapTab.getSettings().getGroup("Full map");
 		ArrayList<RightClickOption> options = new ArrayList();
 		options.add(new RightClickOption("gui.xaero_right_click_map_title", options.size(), guiMap) {
 			public void onAction(Screen screen) {
@@ -111,13 +129,16 @@ public class GuiMapMixin {
 		MapRegion leafRegion = this.mapProcessor.getMapRegion(renderedCaveLayer, mouseBlockPosX >> 9, mouseBlockPosZ >> 9, false);
 		MapTileChunk chunk = leafRegion == null ? null : leafRegion.getChunk(mouseBlockPosX >> 6 & 7, mouseBlockPosZ >> 6 & 7);
 		MapTile mouseTile = chunk == null ? null : chunk.getTile(mouseBlockPosX >> 4 & 3, mouseBlockPosZ >> 4 & 3);
+
+
+		ICachedRegion region = BaritoneAPI.getProvider().getPrimaryBaritone().getWorldProvider().getCurrentWorld().getCachedWorld().getRegion(mouseBlockPosX >> 9, mouseBlockPosZ >> 9);
 		if (group != null) {
 			BoolSetting showBlockInContextMenu = (BoolSetting)group.get("Show block in context menu");
 			if (mouseTile != null && showBlockInContextMenu.get()) {
-				MapBlock block = mouseTile.getBlock(mouseBlockPosX & 15, mouseBlockPosZ & 15);
-				MapPixelAccessor pixel = (MapPixelAccessor) block;
+				//MapBlock block = mouseTile.getBlock(mouseBlockPosX & 15, mouseBlockPosZ & 15);
+				//MapPixelAccessor pixel = (MapPixelAccessor) block;
 
-				options.add(new RightClickOption(Names.get(pixel.getBlockState().getBlock()), options.size(), guiMap) {
+				options.add(new RightClickOption(Names.get(region.getBlock(new BlockPos(mouseBlockPosX >> 4 & 3 , rightClickY, mouseBlockPosZ >> 4 & 3)).getBlock()), options.size(), guiMap) {
 					public void onAction(Screen screen) {
 					}
 				});

@@ -1,4 +1,4 @@
-package olejka.meteorplus.mixin.xaeros.worldmap;
+package olejka.meteorplus.mixin.xaero.worldmap;
 
 import net.minecraft.block.BlockState;
 import org.spongepowered.asm.mixin.Mixin;

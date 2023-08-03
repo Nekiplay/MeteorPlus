@@ -3,12 +3,11 @@ package olejka.meteorplus;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
-import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 import olejka.meteorplus.gui.tabs.HiddenModulesTab;
-import olejka.meteorplus.gui.tabs.JouneyMapTab;
-import olejka.meteorplus.gui.tabs.XaerosWorldMapTab;
+import olejka.meteorplus.gui.tabs.JourneyMapTab;
+import olejka.meteorplus.gui.tabs.XaeroWorldMapTab;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
@@ -91,7 +90,6 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new GhostBlockFixer());
 		modules.add(new SafeMine());
 		modules.add(new Freeze());
-		modules.add(new Noclip());
 		modules.add(antiBotPlus);
 		LOG.info(LOGPREFIX + " loaded modules");
 		//endregion
@@ -106,11 +104,11 @@ public class MeteorPlus extends MeteorAddon {
 		//region Tabs
 		LOG.info(LOGPREFIX + " initializing tabs...");
 
-		if (MixinPlugin.isJourneyMapPresent) {
-			Tabs.add(new JouneyMapTab());
-		}
 		if (MixinPlugin.isXaeroWorldMapresent) {
-			Tabs.add(new XaerosWorldMapTab());
+			Tabs.add(new XaeroWorldMapTab());
+		}
+		else if (MixinPlugin.isJourneyMapPresent) {
+			Tabs.add(new JourneyMapTab());
 		}
 		Tabs.add(new HiddenModulesTab());
 		LOG.info(LOGPREFIX + " loaded tabs");

@@ -1,4 +1,4 @@
-package olejka.meteorplus.mixininterface.meteorclient;
+package olejka.meteorplus.mixinclasses;
 
 import meteordevelopment.meteorclient.systems.waypoints.Waypoint;
 

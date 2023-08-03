@@ -1,4 +1,4 @@
-package olejka.meteorplus.mixin.xaeros.worldmap;
+package olejka.meteorplus.mixin.xaero.worldmap;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
@@ -6,7 +6,7 @@ import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.BlockPos;
-import olejka.meteorplus.gui.tabs.XaerosWorldMapTab;
+import olejka.meteorplus.gui.tabs.XaeroWorldMapTab;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -45,7 +45,7 @@ public class WaypointRendererMixin {
 			}
 		}).setNameFormatArgs(new Object[]{"E"}));
 
-		SettingGroup group = XaerosWorldMapTab.getSettings().getGroup("Waypoints");
+		SettingGroup group = XaeroWorldMapTab.getSettings().getGroup("Waypoints");
 		if (group != null) {
 			BoolSetting settings = (BoolSetting)group.get("Baritone goto in context menu");
 			if (settings.get()) {

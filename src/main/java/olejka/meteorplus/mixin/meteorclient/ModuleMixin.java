@@ -2,7 +2,7 @@ package olejka.meteorplus.mixin.meteorclient;
 
 import meteordevelopment.meteorclient.systems.modules.Module;
 import net.minecraft.nbt.NbtCompound;
-import olejka.meteorplus.mixininterface.meteorclient.IModule;
+import olejka.meteorplus.mixinclasses.IModule;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

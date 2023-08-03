@@ -1,4 +1,4 @@
-package olejka.meteorplus.mixininterface.meteorclient;
+package olejka.meteorplus.mixinclasses;
 
 import meteordevelopment.meteorclient.renderer.Mesh;
 import meteordevelopment.meteorclient.renderer.text.CharData;

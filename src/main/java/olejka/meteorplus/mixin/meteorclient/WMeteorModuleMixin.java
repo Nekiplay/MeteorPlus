@@ -5,7 +5,7 @@ import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import meteordevelopment.meteorclient.gui.themes.meteor.widgets.WMeteorModule;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.color.Color;
-import olejka.meteorplus.mixininterface.meteorclient.IModule;
+import olejka.meteorplus.mixinclasses.IModule;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

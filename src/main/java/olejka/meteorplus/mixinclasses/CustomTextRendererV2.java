@@ -1,8 +1,7 @@
-package olejka.meteorplus.mixininterface.meteorclient;
+package olejka.meteorplus.mixinclasses;
 
 import meteordevelopment.meteorclient.renderer.*;
 import meteordevelopment.meteorclient.renderer.text.CustomTextRenderer;
-import meteordevelopment.meteorclient.renderer.text.Font;
 import meteordevelopment.meteorclient.renderer.text.FontFace;
 import meteordevelopment.meteorclient.renderer.text.TextRenderer;
 import meteordevelopment.meteorclient.utils.Utils;
