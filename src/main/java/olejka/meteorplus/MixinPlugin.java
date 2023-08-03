@@ -15,53 +15,15 @@ import java.util.Set;
 public class MixinPlugin implements IMixinConfigPlugin {
 	private static final String mixinPackage = "olejka.meteorplus.mixin";
 
-	private static boolean loaded;
 	public static boolean isJourneyMapPresent;
 	public static boolean isXaeroWorldMapresent;
 	public static boolean isXaeroMiniMapresent;
 
 	@Override
 	public void onLoad(String mixinPackage) {
-		if (loaded) return;
-
-		try {
-			// Get class loader
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			Class<?> classLoaderClass = classLoader.getClass();
-
-			// Get delegate
-			Field delegateField = classLoaderClass.getDeclaredField("delegate");
-			delegateField.setAccessible(true);
-			Object delegate = delegateField.get(classLoader);
-			Class<?> delegateClass = delegate.getClass();
-
-			// Get mixinTransformer field
-			Field mixinTransformerField = delegateClass.getDeclaredField("mixinTransformer");
-			mixinTransformerField.setAccessible(true);
-
-			// Get unsafe
-			Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
-			unsafeField.setAccessible(true);
-			Unsafe unsafe = (Unsafe) unsafeField.get(null);
-
-			// Create Asm
-			Asm.init();
-
-			// Change delegate
-			Asm.Transformer mixinTransformer = (Asm.Transformer) unsafe.allocateInstance(Asm.Transformer.class);
-			mixinTransformer.delegate = (IMixinTransformer) mixinTransformerField.get(delegate);
-
-			mixinTransformerField.set(delegate, mixinTransformer);
-		}
-		catch (NoSuchFieldException | IllegalAccessException | InstantiationException e) {
-			e.printStackTrace();
-		}
-
 		isJourneyMapPresent = FabricLoader.getInstance().isModLoaded("journeymap");
 		isXaeroWorldMapresent = FabricLoader.getInstance().isModLoaded("xaeroworldmap");
 		isXaeroMiniMapresent = FabricLoader.getInstance().isModLoaded("xaerominimap");
-
-		loaded = true;
 	}
 
 	@Override
@@ -77,8 +39,11 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		else if (mixinClassName.startsWith(mixinPackage + ".journeymap")) {
 			return isJourneyMapPresent;
 		}
-		else if (mixinClassName.startsWith(mixinPackage + ".xaeroworldmap")) {
+		else if (mixinClassName.startsWith(mixinPackage + ".xaerosworldmap")) {
 			return isXaeroWorldMapresent;
+		}
+		else if (mixinClassName.startsWith(mixinPackage + ".xaerosminimap")) {
+			return isXaeroMiniMapresent;
 		}
 		return true;
 	}
@@ -96,5 +61,4 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {}
-
 }

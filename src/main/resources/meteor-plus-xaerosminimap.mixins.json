@@ -1,0 +1,12 @@
+{
+	"required": false,
+	"package": "olejka.meteorplus.mixin.xaerosminimap",
+	"compatibilityLevel": "JAVA_17",
+	"plugin": "olejka.meteorplus.MixinPlugin",
+	"client": [
+		"WaypointRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

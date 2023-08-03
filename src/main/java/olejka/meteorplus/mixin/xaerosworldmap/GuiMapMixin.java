@@ -1,4 +1,4 @@
-package olejka.meteorplus.mixin.xaeros.worldmap;
+package olejka.meteorplus.mixin.xaerosworldmap;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;

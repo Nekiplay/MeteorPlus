@@ -30,7 +30,8 @@
   "mixins": [
     "meteor-plus.mixins.json",
 		"meteor-plus-journeymap.mixins.json",
-		"meteor-plus-xaeroworldmap.mixins.json"
+		"meteor-plus-xaerosworldmap.mixins.json",
+		"meteor-plus-xaerosminimap.mixins.json"
   ],
 	"accessWidener": "meteor-plus.accesswidener",
   "custom": {
