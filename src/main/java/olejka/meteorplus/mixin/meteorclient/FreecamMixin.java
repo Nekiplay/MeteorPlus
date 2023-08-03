@@ -20,6 +20,7 @@ import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.utils.RaycastUtils;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 
 import static baritone.api.utils.Helper.mc;
 
@@ -42,6 +43,7 @@ public class FreecamMixin {
 		.build()
 	);
 
+	@Unique
 	@EventHandler
 	private void onMouseButtonEvent(MouseButtonEvent event) {
 		if (!baritoneControl.get()) return;
