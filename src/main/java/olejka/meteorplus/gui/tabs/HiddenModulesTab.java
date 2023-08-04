@@ -10,7 +10,7 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.gui.screen.Screen;
-import olejka.meteorplus.mixininterface.meteorclient.IModule;
+import olejka.meteorplus.mixinclasses.IModule;
 
 public class HiddenModulesTab extends Tab {
 	public HiddenModulesTab() {

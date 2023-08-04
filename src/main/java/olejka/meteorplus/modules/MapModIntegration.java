@@ -1,6 +1,7 @@
 package olejka.meteorplus.modules;
 
 import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -30,6 +31,12 @@ public class MapModIntegration extends Module {
 		.build()
 	);
 
+	public final Setting<OpenMapMode> openMapMode = sgGeneral.add(new EnumSetting.Builder<OpenMapMode>()
+		.name("open-map-mode")
+		.defaultValue(OpenMapMode.Player)
+		.build()
+	);
+
 	public MapModIntegration() {
 		super(MeteorPlus.CATEGORY, "map-mod-integration", "Added baritone goto support to journey map & xaero map");
 	}
@@ -44,5 +51,10 @@ public class MapModIntegration extends Module {
 
 	public boolean baritoneGotoInWaypointsMenu() {
 		return isActive() && baritoneGotoInWaypointsMenu.get();
+	}
+
+	public enum OpenMapMode {
+		Player,
+		Spawn,
 	}
 }

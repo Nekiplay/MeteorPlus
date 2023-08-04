@@ -4,7 +4,8 @@
 	"compatibilityLevel": "JAVA_17",
 	"plugin": "olejka.meteorplus.MixinPlugin",
 	"client": [
-		"WaypointRendererMixin"
+		"WaypointRendererMixin",
+		"GuiWaypointsMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -34,7 +34,6 @@ public class WaypointRendererMixin {
 					return true;
 				}
 			}).setNameFormatArgs("G"));
-
 		}
 
 		cir.setReturnValue(rightClickOptions);

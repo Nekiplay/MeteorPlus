@@ -1,13 +1,11 @@
-package olejka.meteorplus.mixininterface.meteorclient;
+package olejka.meteorplus.mixinclasses;
 
 import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.screens.EditSystemScreen;
-import meteordevelopment.meteorclient.gui.widgets.containers.WTable;
 import meteordevelopment.meteorclient.settings.Settings;
 import meteordevelopment.meteorclient.systems.waypoints.Waypoint;
 import meteordevelopment.meteorclient.systems.waypoints.Waypoints;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
-import olejka.meteorplus.mixin.meteorclient.WaypointsModuleMixin;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 

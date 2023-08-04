@@ -11,11 +11,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xaero.map.MapProcessor;
 import xaero.map.gui.GuiMap;
 import xaero.map.gui.dropdown.rightclick.RightClickOption;
-import xaero.map.misc.Misc;
 import xaero.map.region.MapBlock;
 import xaero.map.region.MapRegion;
 import xaero.map.region.MapTile;
@@ -38,26 +38,29 @@ public class GuiMapMixin {
 	@Shadow(remap = false)
 	private MapProcessor mapProcessor;
 	@Shadow(remap = false)
+	private int mouseBlockPosX = 100;
+	@Shadow(remap = false)
+	private int mouseBlockPosZ = 100;
+	@Shadow(remap = false)
 	private double cameraX = 0.0;
 	@Shadow(remap = false)
 	private double cameraZ = 0.0;
+
+	private MapModIntegration module = Modules.get().get(MapModIntegration.class);
+
+	@Inject(method = "<init>", at = @At("JUMP"))
+	private void onInit(CallbackInfo info) {
+		if (module.isActive() && module.openMapMode.get() == MapModIntegration.OpenMapMode.Player) {
+			cameraX = ((float) mc.player.getX());
+			cameraZ = ((float) mc.player.getZ());
+		}
+	}
 
 	@Inject(method = "getRightClickOptions", at = @At("TAIL"), remap = false, cancellable = true)
 	private void getRightClickOptions(CallbackInfoReturnable<ArrayList<RightClickOption>> cir) {
 		ArrayList<RightClickOption> options = cir.getReturnValue();
 
-		if (Modules.get().get(MapModIntegration.class).showBlockInContextMenu()) {
-			int mouseXPos = (int) Misc.getMouseX(mc, false);
-			int mouseYPos = (int) Misc.getMouseY(mc, false);
-
-			int mouseFromCentreX = mouseXPos - mc.getWindow().getFramebufferWidth() / 2;
-			int mouseFromCentreY = mouseYPos - mc.getWindow().getFramebufferHeight() / 2;
-
-			double mousePosX = (double) mouseFromCentreX / this.scale + this.cameraX;
-			double mousePosZ = (double) mouseFromCentreY / this.scale + this.cameraZ;
-			int mouseBlockPosX = (int) Math.floor(mousePosX);
-			int mouseBlockPosZ = (int) Math.floor(mousePosZ);
-
+		if (module.showBlockInContextMenu()) {
 			int renderedCaveLayer = mapProcessor.getCurrentCaveLayer();
 			MapRegion leafRegion = this.mapProcessor.getMapRegion(renderedCaveLayer, mouseBlockPosX >> 9, mouseBlockPosZ >> 9, false);
 			MapTileChunk chunk = leafRegion == null ? null : leafRegion.getChunk(mouseBlockPosX >> 6 & 7, mouseBlockPosZ >> 6 & 7);
@@ -73,7 +76,7 @@ public class GuiMapMixin {
 			}
 		}
 
-		if (Modules.get().get(MapModIntegration.class).baritoneGotoInContextMenu()) {
+		if (module.baritoneGotoInContextMenu()) {
 			options.add(new RightClickOption("journey.map.goto", options.size(), (GuiMap) (Object) this) {
 				public void onAction(Screen screen) {
 					GoalBlock goal = new GoalBlock(new BlockPos(rightClickX, rightClickY, rightClickZ).up());

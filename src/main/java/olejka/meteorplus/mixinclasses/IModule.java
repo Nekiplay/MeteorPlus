@@ -1,4 +1,4 @@
-package olejka.meteorplus.mixininterface.meteorclient;
+package olejka.meteorplus.mixinclasses;
 
 public interface IModule {
 	boolean isHidden();

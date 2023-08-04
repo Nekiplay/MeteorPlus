@@ -1,14 +1,10 @@
 package olejka.meteorplus;
 
-import meteordevelopment.meteorclient.asm.Asm;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-import org.spongepowered.asm.mixin.transformer.IMixinTransformer;
-import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Set;
 
