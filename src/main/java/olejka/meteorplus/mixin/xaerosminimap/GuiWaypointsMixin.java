@@ -32,11 +32,12 @@ public class GuiWaypointsMixin extends Screen {
 	private WaypointsManager waypointsManager;
 	@Shadow(remap = false)
 	private ConcurrentSkipListSet<Integer> selectedListSet;
-	protected GuiWaypointsMixin() {
-		super(Text.of("Waypoints"));
+
+	protected GuiWaypointsMixin(Text title) {
+		super(title);
 	}
 
-	@Inject(method = "init", at = @At("HEAD"), remap = false)
+	@Inject(method = "init", at = @At("HEAD"))
 	private void init(CallbackInfo ci) {
 		if (Modules.get().get(MapModIntegration.class).baritoneGotoInWaypointsMenu()) {
 			addDrawableChild(new MyTinyButton(this.width / 2 - 120, this.height - 53, Text.literal("Goto"), (b) -> {
