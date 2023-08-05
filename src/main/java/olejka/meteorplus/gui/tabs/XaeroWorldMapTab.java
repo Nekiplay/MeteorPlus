@@ -21,6 +21,10 @@ public class XaeroWorldMapTab extends Tab {
 		Player,
 		Spawn,
 	}
+	public enum ShowBlockMode {
+		RenderDistance,
+		BaritoneCache,
+	}
 	public static Settings getSettings() {
 		if (settings != null) return settings;
 
@@ -32,11 +36,17 @@ public class XaeroWorldMapTab extends Tab {
 			.defaultValue(true)
 			.build()
 		);
-		fullMap.add(new BoolSetting.Builder()
+		BoolSetting showBlock = new BoolSetting.Builder()
 			.name("Show block in context menu")
 			.defaultValue(true)
-			.build()
-		);
+			.build();
+		fullMap.add(showBlock);
+		//fullMap.add(new EnumSetting.Builder<ShowBlockMode>()
+		//	.name("Show block mode")
+		//	.defaultValue(ShowBlockMode.BaritoneCache)
+		//	.visible(showBlock::get)
+		//	.build()
+		//);
 		fullMap.add(new BoolSetting.Builder()
 			.name("Show chunk in context menu")
 			.defaultValue(false)

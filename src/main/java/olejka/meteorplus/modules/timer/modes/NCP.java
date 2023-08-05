@@ -5,16 +5,20 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.modules.spider.SpiderPlus;
 import olejka.meteorplus.modules.timer.TimerMode;
 import olejka.meteorplus.modules.timer.TimerModes;
+import olejka.meteorplus.modules.timer.TimerPlus;
 
 import static olejka.meteorplus.modules.timer.TimerPlus.*;
 
 public class NCP extends TimerMode {
 	private Timer timer;
+	private TimerPlus timerPlus;
 	public NCP() {
 		super(TimerModes.NCP);
 		timer = Modules.get().get(Timer.class);
+		timerPlus = Modules.get().get(TimerPlus.class);
 	}
 
 	@Override
@@ -32,24 +36,29 @@ public class NCP extends TimerMode {
 				timer.setOverride(Timer.OFF);
 			}
 			else {
-				if (MeteorPlus.getInstance().timerPlus.isActive()) {
-					if (MeteorPlus.getInstance().timerPlus.onlyInMove.get() && PlayerUtils.isMoving()) {
+				if (timerPlus.isActive()) {
+					if (timerPlus.onlyInMove.get() && PlayerUtils.isMoving()) {
 						workingTimer++;
-						timer.setOverride(2);
+						timer.setOverride(timerMultiplier);
 					}
-					else if (!MeteorPlus.getInstance().timerPlus.onlyInMove.get()) {
+					else if (!timerPlus.onlyInMove.get()) {
 						workingTimer++;
-						timer.setOverride(2);
+						timer.setOverride(timerMultiplier);
 					}
 					else {
-						timer.setOverride(Timer.OFF);
+						timer.setOverride(timerMultiplierOnRecharge);
 					}
 				}
 			}
 		}
 		else {
 			rechargeTimer--;
-			timer.setOverride(Timer.OFF);
+			if (timerPlus.isActive()) {
+				timer.setOverride(timerMultiplierOnRecharge);
+			}
+			else {
+				timer.setOverride(Timer.OFF);
+			}
 		}
 	}
 }

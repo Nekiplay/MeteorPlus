@@ -1,18 +1,13 @@
 package olejka.meteorplus.mixin.xaero.worldmap;
 
 import baritone.api.BaritoneAPI;
-import baritone.api.cache.ICachedRegion;
 import baritone.api.pathing.goals.GoalBlock;
-import journeymap.client.ui.component.Button;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import olejka.meteorplus.gui.tabs.JourneyMapTab;
 import olejka.meteorplus.gui.tabs.XaeroWorldMapTab;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,8 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xaero.common.gui.MyTinyButton;
-import xaero.common.minimap.waypoints.Waypoint;
 import xaero.map.MapProcessor;
 import xaero.map.WorldMap;
 import xaero.map.controls.ControlsRegister;
@@ -54,11 +47,11 @@ public abstract class GuiMapMixin {
 	@Shadow(remap = false)
 	private int rightClickZ;
 	@Shadow(remap = false)
-	private int mouseBlockPosX = 100;
+	private int mouseBlockPosX = 0;
 	@Shadow(remap = false)
-	private int mouseBlockPosY = 100;
+	private int mouseBlockPosY = 0;
 	@Shadow(remap = false)
-	private int mouseBlockPosZ = 100;
+	private int mouseBlockPosZ = 0;
 	@Shadow(remap = false)
 	private MapProcessor mapProcessor;
 	@Shadow(remap = false)
@@ -130,11 +123,9 @@ public abstract class GuiMapMixin {
 		MapTileChunk chunk = leafRegion == null ? null : leafRegion.getChunk(mouseBlockPosX >> 6 & 7, mouseBlockPosZ >> 6 & 7);
 		MapTile mouseTile = chunk == null ? null : chunk.getTile(mouseBlockPosX >> 4 & 3, mouseBlockPosZ >> 4 & 3);
 
-
-		//ICachedRegion region = BaritoneAPI.getProvider().getPrimaryBaritone().getWorldProvider().getCurrentWorld().getCachedWorld().getRegion(mouseBlockPosX >> 9, mouseBlockPosZ >> 9);
-		if (group != null) {
+		if (group != null && mouseTile != null) {
 			BoolSetting showBlockInContextMenu = (BoolSetting)group.get("Show block in context menu");
-			if (mouseTile != null && showBlockInContextMenu.get()) {
+			if (showBlockInContextMenu.get()) {
 				MapBlock block = mouseTile.getBlock(mouseBlockPosX & 15, mouseBlockPosZ & 15);
 				MapPixelAccessor pixel = (MapPixelAccessor) block;
 

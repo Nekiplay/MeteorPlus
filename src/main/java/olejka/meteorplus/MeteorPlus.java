@@ -33,13 +33,6 @@ public class MeteorPlus extends MeteorAddon {
 	public static final HudGroup HUD_GROUP = new HudGroup("MeteorPlusHud");
 	public static final String LOGPREFIX = "[Meteor Plus]";
 
-	//region Modules
-	public SpiderPlus spiderPlus;
-	public NoFallPlus noFallPlus;
-	public AntiBotPlus antiBotPlus;
-	public TimerPlus timerPlus;
-	//endregion
-
 	private static MeteorPlus instance;
 
 	public static MeteorPlus getInstance() {
@@ -63,22 +56,17 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info(LOGPREFIX + " initializing modules...");
 		Modules modules = Modules.get();
 
-		spiderPlus = new SpiderPlus();
-		noFallPlus = new NoFallPlus();
-		antiBotPlus = new AntiBotPlus();
-		timerPlus = new TimerPlus();
-
 		modules.add(new FastLadderPlus());
 		modules.add(new TriggerBot());
 		modules.add(new EyeFinder());
 		modules.add(new InventoryMovePlus());
 		modules.add(new MiddleClickExtraPlus());
 		modules.add(new AutoDropPlus());
-		modules.add(noFallPlus);
-		modules.add(timerPlus);
+		modules.add(new NoFallPlus());
+		modules.add(new TimerPlus());
 		modules.add(new SpeedPlus());
 		modules.add(new FlyPlus());
-		modules.add(spiderPlus);
+		modules.add(new SpiderPlus());
 		modules.add(new JesusPlus());
 		modules.add(new BoatAura());
 		modules.add(new BedrockStorageBruteforce());
@@ -90,9 +78,10 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new GhostBlockFixer());
 		modules.add(new SafeMine());
 		modules.add(new Freeze());
-		modules.add(antiBotPlus);
+		modules.add(new AntiBotPlus());
 		LOG.info(LOGPREFIX + " loaded modules");
 		//endregion
+
 		//region Hud
 		LOG.info(LOGPREFIX + " initializing hud...");
 

@@ -18,7 +18,9 @@ public class TimerPlus extends Module {
 	public static int workingDelay = 27;
 	public static int workingTimer = 0;
 	public static int rechargeTimer = 0; // Reset timer
-	public static int rechargeDelay = 352; // Recharge Delay
+	public static int rechargeDelay = 352; // Recharge delay
+	public static double timerMultiplier = 2; // Timer multiplier
+	public static double timerMultiplierOnRecharge = 1; // Timer multiplier on recharge
 
 	private final SettingGroup settingsGroup = settings.getDefaultGroup();
 
@@ -76,21 +78,45 @@ public class TimerPlus extends Module {
 		.build()
 	);
 
+	private final Setting<Double> boostMultiplier = sgGeneral.add(new DoubleSetting.Builder()
+		.name("multiplier")
+		.description("Timer multiplier.")
+		.defaultValue(2)
+		.visible(() -> mode.get() == TimerModes.Custom)
+		.onChanged((a) -> {
+			timerMultiplier = a;
+		})
+		.build()
+	);
+
+	private final Setting<Double> boostMultiplierOnRecharge = sgGeneral.add(new DoubleSetting.Builder()
+		.name("multiplier-on-recharge")
+		.description("Timer multiplier on recharge.")
+		.defaultValue(1)
+		.visible(() -> mode.get() == TimerModes.Custom)
+		.onChanged((a) -> {
+			timerMultiplierOnRecharge = a;
+		})
+		.build()
+	);
+
 	private TimerMode currentMode;
 
 	private void onTimerModeChanged(TimerModes mode) {
 		switch (mode) {
-			case NCP: {
+			case NCP -> {
 				currentMode = new NCP();
 				workingDelay = 27;
 				rechargeDelay = 352;
-				break;
+				timerMultiplier = 2;
+				timerMultiplierOnRecharge = Timer.OFF;
 			}
-			case Custom: {
+			case Custom -> {
 				currentMode = new NCP();
 				workingDelay = boostDelaySetting.get();
 				rechargeDelay = rechargeDelaySetting.get();
-				break;
+				timerMultiplier = boostMultiplier.get();
+				timerMultiplierOnRecharge = boostMultiplierOnRecharge.get();
 			}
 		}
 	}

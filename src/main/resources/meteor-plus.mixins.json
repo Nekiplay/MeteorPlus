@@ -4,6 +4,7 @@
 	"compatibilityLevel": "JAVA_17",
 	"plugin": "olejka.meteorplus.MixinPlugin",
 	"client": [
+
 	],
 	"injectors": {
 		"defaultRequire": 1

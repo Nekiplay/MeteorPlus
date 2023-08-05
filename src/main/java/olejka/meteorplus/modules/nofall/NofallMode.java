@@ -2,6 +2,7 @@ package olejka.meteorplus.modules.nofall;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.MinecraftClient;
 import olejka.meteorplus.MeteorPlus;
 
@@ -11,7 +12,7 @@ public class NofallMode {
 	private final NoFallModes type;
 
 	public NofallMode(NoFallModes type) {
-		this.settings = MeteorPlus.getInstance().noFallPlus;
+		this.settings = Modules.get().get(NoFallPlus.class);
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}

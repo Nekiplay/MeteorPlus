@@ -4,12 +4,15 @@ import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.render.Freecam;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
+import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
 import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.item.*;
@@ -17,6 +20,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import olejka.meteorplus.gui.tabs.XaeroWorldMapTab;
 import olejka.meteorplus.utils.RaycastUtils;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,6 +39,11 @@ public class FreecamMixin {
 		.description("Left-click to set the destination on the selected block. Right-click to cancel.")
 		.build()
 	);
+	//private final EnumSetting<XaeroWorldMapTab.ShowBlockMode> raycastMode = freecamMeteorPlusSetting.add(new EnumSetting.Builder<XaeroWorldMapTab.ShowBlockMode>().Builder()
+	//	.name("raycast-mode")
+	//	.description("For raycast to unloaded chunks.")
+	//	.build()
+	//);
 
 	private final Setting<Boolean> smartBaritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
 		.name("smart-baritone-control")
@@ -68,7 +77,9 @@ public class FreecamMixin {
 
 			if (mc.world == null) return;
 
-			if (mc.world.getBlockState(blockPos).isAir()) return;
+			BlockState state = mc.world.getBlockState(blockPos);
+
+			if (state.isAir()) return;
 
 			Block mineBlock = mc.world.getBlockState(blockPos).getBlock();
 
@@ -90,9 +101,15 @@ public class FreecamMixin {
 					event.cancel();
 				}
 			} else {
-				GoalBlock goal = new GoalBlock(blockPos.up());
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-				event.cancel();
+				if (state.getBlock() instanceof CropBlock || BlockUtils.canPlace(blockPos)) {
+					GoalBlock goal = new GoalBlock(blockPos);
+					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+				}
+				else {
+					GoalBlock goal = new GoalBlock(blockPos.up());
+					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+					event.cancel();
+				}
 			}
 		}
 
@@ -107,6 +124,7 @@ public class FreecamMixin {
 			}
 			else {
 				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
+				BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
 				event.cancel();
 			}
 		}

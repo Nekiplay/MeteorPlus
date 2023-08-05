@@ -7,6 +7,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.Utils;
 import net.minecraft.client.MinecraftClient;
 import olejka.meteorplus.MeteorPlus;
+import olejka.meteorplus.modules.spider.SpiderPlus;
 
 public class TimerMode {
 	protected final MinecraftClient mc;
@@ -14,7 +15,7 @@ public class TimerMode {
 	private final TimerModes type;
 
 	public TimerMode(TimerModes type) {
-		this.settings = MeteorPlus.getInstance().timerPlus;
+		this.settings = Modules.get().get(TimerPlus.class);;
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}
