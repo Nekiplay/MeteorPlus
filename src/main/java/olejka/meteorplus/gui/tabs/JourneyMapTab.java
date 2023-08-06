@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.gui.widgets.input.WTextBox;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.Settings;
+import olejka.meteorplus.MixinPlugin;
 
 public class JourneyMapTab extends Tab {
 	private static Settings settings;

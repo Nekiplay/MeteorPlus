@@ -34,6 +34,7 @@ public class XaeroWorldMapTab extends Tab {
 		fullMap.add(new BoolSetting.Builder()
 			.name("Baritone goto in context menu")
 			.defaultValue(true)
+			.visible(() -> !MixinPlugin.isXaeroPlusMapresent)
 			.build()
 		);
 		BoolSetting showBlock = new BoolSetting.Builder()
@@ -41,32 +42,6 @@ public class XaeroWorldMapTab extends Tab {
 			.defaultValue(true)
 			.build();
 		fullMap.add(showBlock);
-		//fullMap.add(new EnumSetting.Builder<ShowBlockMode>()
-		//	.name("Show block mode")
-		//	.defaultValue(ShowBlockMode.BaritoneCache)
-		//	.visible(showBlock::get)
-		//	.build()
-		//);
-		fullMap.add(new BoolSetting.Builder()
-			.name("Show chunk in context menu")
-			.defaultValue(false)
-			.build()
-		);
-		fullMap.add(new BoolSetting.Builder()
-			.name("Show position in context menu")
-			.defaultValue(true)
-			.build()
-		);
-		fullMap.add(new BoolSetting.Builder()
-			.name("Show teleport in context menu")
-			.defaultValue(false)
-			.build()
-		);
-		fullMap.add(new EnumSetting.Builder<OpenMapMode>()
-			.name("Open map mode")
-			.defaultValue(OpenMapMode.Player)
-			.build()
-		);
 		if (MixinPlugin.isXaeroMiniMapresent) {
 			SettingGroup waypoints = settings.createGroup("Waypoints");
 			waypoints.add(new BoolSetting.Builder()

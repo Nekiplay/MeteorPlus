@@ -119,6 +119,11 @@ public class AntiBotPlus extends Module {
 	private ArrayList<Integer> airs = new ArrayList<Integer>();
 	private Map<Integer, Integer> invalidGrounds  = new HashMap<>();
 
+	@Override
+	public void onDeactivate() {
+		hash.clear();
+	}
+
 	public boolean isBot(Entity entity) {
 		if (entity instanceof LivingEntity living) {
 			return isBot(living);

@@ -7,7 +7,9 @@ import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.math.BlockPos;
+import olejka.meteorplus.MixinPlugin;
 import olejka.meteorplus.gui.tabs.XaeroWorldMapTab;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,7 +31,9 @@ import xaero.map.world.MapDimension;
 import meteordevelopment.meteorclient.utils.misc.Names;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import static java.util.Arrays.asList;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 @Mixin(GuiMap.class)
@@ -71,52 +75,24 @@ public abstract class GuiMapMixin {
 
 	@Inject(method = "<init>", at = @At("JUMP"))
 	private void onInit(CallbackInfo info) {
-		EnumSetting<XaeroWorldMapTab.OpenMapMode> showChunkInContextMenu = (EnumSetting<XaeroWorldMapTab.OpenMapMode>)group.get("Open map mode");
-		if (showChunkInContextMenu.get() == XaeroWorldMapTab.OpenMapMode.Player) {
-			cameraX = ((float) mc.player.getX());
-			cameraZ = ((float) mc.player.getZ());
-		}
+		cameraX = ((float) mc.player.getX());
+		cameraZ = ((float) mc.player.getZ());
 	}
 
-	@Inject(method = "getRightClickOptions", at = @At("HEAD"), remap = false, cancellable = true)
+	@Inject(method = "getRightClickOptions", at = @At(value = "RETURN"), remap = false)
 	private void rightClickOptins(CallbackInfoReturnable<ArrayList<RightClickOption>> cir) {
-		ArrayList<RightClickOption> options = new ArrayList();
-		options.add(new RightClickOption("gui.xaero_right_click_map_title", options.size(), guiMap) {
-			public void onAction(Screen screen) {
-			}
-		});
+		final ArrayList<RightClickOption> options = cir.getReturnValue();
 
-		if (WorldMap.settings.coordinates && (!SupportMods.minimap() || !SupportMods.xaeroMinimap.hidingWaypointCoordinates())) {
-			if (this.mapTileSelection != null) {
-				BoolSetting showChunkInContextMenu = (BoolSetting)group.get("Show chunk in context menu");
-				if (showChunkInContextMenu.get()) {
-					String chunkOption = this.mapTileSelection.getStartX() == this.mapTileSelection.getEndX() && this.mapTileSelection.getStartZ() == this.mapTileSelection.getEndZ() ? String.format("C: (%d;%d)", this.mapTileSelection.getLeft(), this.mapTileSelection.getTop()) : String.format("C: (%d;%d):(%d;%d)", this.mapTileSelection.getLeft(), this.mapTileSelection.getTop(), this.mapTileSelection.getRight(), this.mapTileSelection.getBottom());
-					options.add(new RightClickOption(chunkOption, options.size(), guiMap) {
-						public void onAction(Screen screen) {
-						}
-					});
-				}
-			}
-			BoolSetting showPositionInContextMenu = (BoolSetting)group.get("Show position in context menu");
-			if (showPositionInContextMenu.get()) {
-				options.add(new RightClickOption(String.format(this.rightClickY != 32767 ? "X: %1$d, Y: %2$d, Z: %3$d" : "X: %1$d, Z: %3$d", this.rightClickX, this.rightClickY, this.rightClickZ), options.size(), guiMap) {
-					public void onAction(Screen screen) {
-
-					}
-				});
-			}
-		}
-
-		int mouseXPos = (int)Misc.getMouseX(mc, false);
-		int mouseYPos = (int)Misc.getMouseY(mc, false);
+		int mouseXPos = (int) Misc.getMouseX(mc, false);
+		int mouseYPos = (int) Misc.getMouseY(mc, false);
 
 		int mouseFromCentreX = mouseXPos - mc.getWindow().getFramebufferWidth() / 2;
 		int mouseFromCentreY = mouseYPos - mc.getWindow().getFramebufferHeight() / 2;
 
-		double mousePosX = (double)mouseFromCentreX / this.scale + this.cameraX;
-		double mousePosZ = (double)mouseFromCentreY / this.scale + this.cameraZ;
-		int mouseBlockPosX = (int)Math.floor(mousePosX);
-		int mouseBlockPosZ = (int)Math.floor(mousePosZ);
+		double mousePosX = (double) mouseFromCentreX / this.scale + this.cameraX;
+		double mousePosZ = (double) mouseFromCentreY / this.scale + this.cameraZ;
+		int mouseBlockPosX = (int) Math.floor(mousePosX);
+		int mouseBlockPosZ = (int) Math.floor(mousePosZ);
 
 		int renderedCaveLayer = mapProcessor.getCurrentCaveLayer();
 		MapRegion leafRegion = this.mapProcessor.getMapRegion(renderedCaveLayer, mouseBlockPosX >> 9, mouseBlockPosZ >> 9, false);
@@ -124,101 +100,35 @@ public abstract class GuiMapMixin {
 		MapTile mouseTile = chunk == null ? null : chunk.getTile(mouseBlockPosX >> 4 & 3, mouseBlockPosZ >> 4 & 3);
 
 		if (group != null && mouseTile != null) {
-			BoolSetting showBlockInContextMenu = (BoolSetting)group.get("Show block in context menu");
+			BoolSetting showBlockInContextMenu = (BoolSetting) group.get("Show block in context menu");
 			if (showBlockInContextMenu.get()) {
 				MapBlock block = mouseTile.getBlock(mouseBlockPosX & 15, mouseBlockPosZ & 15);
 				MapPixelAccessor pixel = (MapPixelAccessor) block;
 
-				options.add(new RightClickOption(Names.get(pixel.getBlockState().getBlock()), options.size(), guiMap) {
-					public void onAction(Screen screen) {
-					}
-				});
-			}
+				options.addAll(2, List.of(
+					new RightClickOption(Names.get(pixel.getBlockState().getBlock()), options.size(), guiMap) {
+						@Override
+						public void onAction(Screen screen) {
 
-			BoolSetting baritoneGotoInContextMenu = (BoolSetting)group.get("Baritone goto in context menu");
+						}
+					}
+				));
+			}
+		}
+
+		if (!MixinPlugin.isXaeroPlusMapresent) {
+			BoolSetting baritoneGotoInContextMenu = (BoolSetting) group.get("Baritone goto in context menu");
 			if (baritoneGotoInContextMenu.get()) {
-				options.add(new RightClickOption("journey.map.goto", options.size(), guiMap) {
-					public void onAction(Screen screen) {
-						GoalBlock goal = new GoalBlock(new BlockPos(rightClickX, rightClickY, rightClickZ).up());
-						BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-					}
-				});
-			}
-		}
-
-		if (SupportMods.minimap() && WorldMap.settings.waypoints) {
-			options.add((new RightClickOption("gui.xaero_right_click_map_create_waypoint", options.size(), guiMap) {
-				public void onAction(Screen screen) {
-					SupportMods.xaeroMinimap.createWaypoint(guiMap, rightClickX, rightClickY == 32767 ? 32767 : rightClickY + 1, rightClickZ);
-				}
-			}).setNameFormatArgs(new Object[]{Misc.getKeyName(SupportMods.xaeroMinimap.getWaypointKeyBinding())}));
-			options.add((new RightClickOption("gui.xaero_right_click_map_create_temporary_waypoint", options.size(), guiMap) {
-				public void onAction(Screen screen) {
-					SupportMods.xaeroMinimap.createTempWaypoint(rightClickX, rightClickY == 32767 ? 32767 : rightClickY + 1, rightClickZ);
-				}
-			}).setNameFormatArgs(new Object[]{Misc.getKeyName(SupportMods.xaeroMinimap.getTempWaypointKeyBinding())}));
-		}
-		BoolSetting showTeleportInContextMenu = (BoolSetting)group.get("Show teleport in context menu");
-		if (showTeleportInContextMenu.get()) {
-			MapDimension currentDimension = this.mapProcessor.getMapWorld().getCurrentDimension();
-			if (mc.interactionManager.hasStatusBars() && (currentDimension == null || !currentDimension.currentMultiworldWritable)) {
-				options.add(new RightClickOption("gui.xaero_right_click_map_cant_teleport_world", options.size(), guiMap) {
-					public void onAction(Screen screen) {
-					}
-				});
-			} else if (!this.mapProcessor.getMapWorld().isTeleportAllowed() || this.rightClickY == 32767 && mc.interactionManager.hasStatusBars()) {
-				if (!this.mapProcessor.getMapWorld().isTeleportAllowed()) {
-					options.add(new RightClickOption("gui.xaero_wm_right_click_map_teleport_not_allowed", options.size(), guiMap) {
+				options.addAll(3, List.of(
+					new RightClickOption(I18n.translate("journey.map.goto"), options.size(), guiMap) {
+						@Override
 						public void onAction(Screen screen) {
+							GoalBlock goal = new GoalBlock(new BlockPos(rightClickX, rightClickY, rightClickZ).up());
+							BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
 						}
-					});
-				} else {
-					options.add(new RightClickOption("gui.xaero_right_click_map_cant_teleport", options.size(), guiMap) {
-						public void onAction(Screen screen) {
-						}
-					});
-				}
-			} else {
-				options.add(new RightClickOption("gui.xaero_right_click_map_teleport", options.size(), guiMap) {
-					public void onAction(Screen screen) {
-						MapDimension currentDimension = mapProcessor.getMapWorld().getCurrentDimension();
-						if ((!mc.interactionManager.hasStatusBars() || currentDimension != null && currentDimension.currentMultiworldWritable) && (rightClickY != 32767 || !mc.interactionManager.hasStatusBars())) {
-							(new MapTeleporter()).teleport(guiMap, mapProcessor.getMapWorld(), rightClickX, rightClickY == 32767 ? 32767 : rightClickY + 1, rightClickZ);
-						}
-
 					}
-				});
+				));
 			}
 		}
-		if (SupportMods.minimap()) {
-			options.add(new RightClickOption("gui.xaero_right_click_map_share_location", options.size(), guiMap) {
-				public void onAction(Screen screen) {
-					SupportMods.xaeroMinimap.shareLocation(guiMap, rightClickX, rightClickY == 32767 ? 32767 : rightClickY + 1, rightClickZ);
-				}
-			});
-			if (WorldMap.settings.waypoints) {
-				options.add((new RightClickOption("gui.xaero_right_click_map_waypoints_menu", options.size(), guiMap) {
-					public void onAction(Screen screen) {
-						SupportMods.xaeroMinimap.openWaypointsMenu(mc, guiMap);
-					}
-				}).setNameFormatArgs(new Object[]{Misc.getKeyName(SupportMods.xaeroMinimap.getTempWaypointsMenuKeyBinding())}));
-			}
-		}
-
-		if (SupportMods.pac()) {
-			SupportMods.xaeroPac.addRightClickOptions(guiMap, options, this.mapTileSelection);
-		}
-
-		options.add(new RightClickOption("gui.xaero_right_click_box_map_export", options.size(), guiMap) {
-			public void onAction(Screen screen) {
-				onExportButton(exportButton);
-			}
-		});
-		options.add((new RightClickOption("gui.xaero_right_click_box_map_settings", options.size(), guiMap) {
-			public void onAction(Screen screen) {
-				onSettingsButton(settingsButton);
-			}
-		}).setNameFormatArgs(new Object[]{Misc.getKeyName(ControlsRegister.keyOpenSettings)}));
-		cir.setReturnValue(options);
 	}
 }

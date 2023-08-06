@@ -19,6 +19,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	public static boolean isJourneyMapPresent;
 	public static boolean isXaeroWorldMapresent;
 	public static boolean isXaeroMiniMapresent;
+	public static boolean isXaeroPlusMapresent;
 
 	@Override
 	public void onLoad(String mixinPackage) {
@@ -27,6 +28,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		isJourneyMapPresent = FabricLoader.getInstance().isModLoaded("journeymap");
 		isXaeroWorldMapresent = FabricLoader.getInstance().isModLoaded("xaeroworldmap");
 		isXaeroMiniMapresent = FabricLoader.getInstance().isModLoaded("xaerominimap");
+		isXaeroPlusMapresent = FabricLoader.getInstance().isModLoaded("xaeroplus");
 
 		loaded = true;
 	}
