@@ -6,7 +6,6 @@ import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 import olejka.meteorplus.gui.tabs.HiddenModulesTab;
-import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
@@ -94,8 +93,7 @@ public class MeteorPlus extends MeteorAddon {
 
 		//region Hud
 		LOG.info(LOGPREFIX + " initializing hud...");
-
-		Hud.get().register(MeteorPlusLogoHud.INFO);
+		
 		Hud.get().register(TimerPlusCharge.INFO);
 
 		LOG.info(LOGPREFIX + " loaded hud");

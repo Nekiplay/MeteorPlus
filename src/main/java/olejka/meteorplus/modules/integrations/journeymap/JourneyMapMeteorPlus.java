@@ -16,12 +16,6 @@ import static olejka.meteorplus.MeteorPlus.LOGPREFIX;
 
 public class JourneyMapMeteorPlus implements IClientPlugin {
 	public final String JourneyMapLOGPREFIX = "[Journey Map]";
-
-	public JourneyMapMeteorPlus()
-	{
-		;
-	}
-
 	@Override
 	public void initialize(final IClientAPI jmClientApi) {
 		MapIntegration mapIntegration = Modules.get().get(MapIntegration.class);
