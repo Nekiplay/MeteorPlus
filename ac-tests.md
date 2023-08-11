@@ -152,8 +152,8 @@
              <td><b>Don't long<b></td>
         </tr>
          <tr>
-            <td><b>Fast Ladder<b></td>
-             <td><b>Vulcan<b></td>
+            <td><b>Fast Ladder Plus<b></td>
+             <td><b>Spartan<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
