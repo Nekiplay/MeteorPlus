@@ -64,4 +64,4 @@
     A: Make Commit we welcome anyone who makes a useful contribution to our free open source product
 
 ## For Contributors
-We use local builds of Meteor Client and Baritone from Meteor Client since Meteor Clienta hosting can sometimes not be paid on time 
+We use local builds of Meteor Client and Baritone from Meteor Client since Meteor Client a hosting can sometimes not be paid on time 
