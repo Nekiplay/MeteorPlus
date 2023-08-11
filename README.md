@@ -25,7 +25,7 @@
 |----------------------|-----------------------------------------------|------------------------------|
 | **Fly Plus**         | **Flight for Anti-Cheats**                    | **Matrix, Spartan**          |
 | **Speed Plus**       | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP** |
-| **Spider Plus**      | **Spiderfor Anti-Cheats**                     | **Matrix, Vulcan**           |
+| **Spider Plus**      | **Spider for Anti-Cheats**                     | **Matrix, Vulcan**           |
 | **Jesus Plus**       | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**           |
 | **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats**               | **Spartan**                  |
 | **Timer Plus**       | **Timer for Anti-Cheats**                     | **NCP**                      |
