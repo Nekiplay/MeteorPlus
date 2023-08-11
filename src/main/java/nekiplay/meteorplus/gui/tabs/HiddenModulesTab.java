@@ -20,6 +20,7 @@ import nekiplay.meteorplus.mixinclasses.IModule;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class HiddenModulesTab extends Tab {
 	public HiddenModulesTab() {
@@ -47,13 +48,19 @@ public class HiddenModulesTab extends Tab {
 		{
 			public boolean hasHidenModules;
 			public Category category;
+			public WSection section;
 		}
 
 		private List<GuiCategory> categoryList = new ArrayList<>();
 
 		@Override
-		public void initWidgets() {
+		protected void onClosed() {
+			super.onClosed();
 			categoryList.clear();
+		}
+
+		@Override
+		public void initWidgets() {
 			for (Category category : Modules.loopCategories()) {
 				GuiCategory guiCategory = new GuiCategory();
 				guiCategory.category = category;
@@ -61,16 +68,18 @@ public class HiddenModulesTab extends Tab {
 					boolean isVisible = !((IModule) module).isHidden();
 					if (isVisible) continue;
 					guiCategory.hasHidenModules = true;
-					categoryList.add(guiCategory);
+					if (categoryList.stream().noneMatch((a) -> a.category.name.equals(guiCategory.category.name))) {
+						categoryList.add(guiCategory);
+					}
 					break;
 				}
 			}
 			for (GuiCategory guiCategory : categoryList) {
-				WSection list = theme.section(guiCategory.category.name, false);
+				guiCategory.section = theme.section(guiCategory.category.name, guiCategory.section != null && guiCategory.section.isExpanded());
 
-				Cell<WSection> modulesCell = add(list).expandX();
+				Cell<WSection> modulesCell = add(guiCategory.section).expandX();
 
-				WTable table = list.add(theme.table()).expandX().widget();
+				WTable table = guiCategory.section.add(theme.table()).expandX().widget();
 
 				for (Module module : Modules.get().getGroup(guiCategory.category)) {
 					boolean isVisible = !((IModule) module).isHidden();
