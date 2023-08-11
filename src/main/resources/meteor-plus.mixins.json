@@ -12,7 +12,6 @@
 	"mixins": [
 		"minecraft.ClientPlayerInteractionManagerMixin",
 		"minecraft.MinecraftClientMixin",
-		"meteorclient.NametagsMixin",
 		"meteorclient.ESPMixin",
 		"meteorclient.FontsMixin",
 		"meteorclient.FreecamMixin",

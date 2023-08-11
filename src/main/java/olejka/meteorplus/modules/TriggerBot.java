@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.Entity;
@@ -85,13 +86,6 @@ public class TriggerBot extends Module {
 
 	private final List<Entity> targets = new ArrayList<>();
 
-	private final Setting<Boolean> multiActions = sgGeneral.add(new BoolSetting.Builder()
-		.name("multi-actions")
-		.description("Allow the use of a second hand when attacking a Trigger Bot.")
-		.defaultValue(true)
-		.build()
-	);
-
 	private int hitDelayTimer;
 
 	private boolean entityCheck(Entity entity) {
@@ -126,7 +120,8 @@ public class TriggerBot extends Module {
 	private void onTick(TickEvent.Pre event) {
 		if (!mc.player.isAlive() || PlayerUtils.getGameMode() == GameMode.SPECTATOR) return;
 		if (mc.targetedEntity == null) return;
-		if (!multiActions.get() && (mc.player.isUsingItem() || mc.interactionManager.isBreakingBlock())) return;
+		MultiTasks multiTasks = Modules.get().get(MultiTasks.class);
+		if (!multiTasks.isActive() && (mc.player.isUsingItem() || mc.interactionManager.isBreakingBlock())) return;
 
 		if (delayCheck()) hitEntity(mc.targetedEntity);
 	}

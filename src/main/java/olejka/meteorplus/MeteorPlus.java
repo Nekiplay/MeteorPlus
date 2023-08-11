@@ -93,7 +93,7 @@ public class MeteorPlus extends MeteorAddon {
 
 		//region Hud
 		LOG.info(LOGPREFIX + " initializing hud...");
-		
+
 		Hud.get().register(TimerPlusCharge.INFO);
 
 		LOG.info(LOGPREFIX + " loaded hud");
