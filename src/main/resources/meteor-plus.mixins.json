@@ -1,15 +1,9 @@
 {
 	"required": true,
-	"package": "olejka.meteorplus.mixin",
+	"package": "nekiplay.meteorplus.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"plugin": "olejka.meteorplus.MixinPlugin",
+	"plugin": "nekiplay.meteorplus.MixinPlugin",
 	"client": [
-
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"mixins": [
 		"minecraft.ClientPlayerInteractionManagerMixin",
 		"minecraft.MinecraftClientMixin",
 		"meteorclient.ESPMixin",
@@ -23,5 +17,10 @@
 		"meteorclient.WaypointsModuleMixin",
 		"meteorclient.WMeteorModuleMixin",
 		"meteorclient.WPressableMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"mixins": [
 	]
 }

@@ -1,8 +1,8 @@
 {
 	"required": false,
-	"package": "olejka.meteorplus.mixin.xaero.worldmap",
+	"package": "nekiplay.meteorplus.mixin.xaero.worldmap",
 	"compatibilityLevel": "JAVA_17",
-	"plugin": "olejka.meteorplus.MixinPlugin",
+	"plugin": "nekiplay.meteorplus.MixinPlugin",
 	"client": [
 		"WaypointRendererMixin",
 		"GuiMapMixin",

@@ -19,10 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "meteor": [
-			"olejka.meteorplus.MeteorPlus"
+      "nekiplay.meteorplus.MeteorPlus"
     ],
 		"journeymap": [
-			"olejka.meteorplus.modules.journeymap.JourneyMapMeteorPlus"
+			"nekiplay.meteorplus.modules.integrations.journeymap.JourneyMapMeteorPlus"
 		]
   },
   "mixins": [
