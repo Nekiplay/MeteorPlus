@@ -287,7 +287,7 @@
         </tr>
     </tbody>
 </table>
-<h2> <a href="https://www.spigotmc.org/resources/ness-anti-cheat-reloaded.75887/">Negativity</a></h2>
+<h2> <a href="https://www.spigotmc.org/resources/ac-negativity-spigot-1-7-1-19-sponge-bungeecord-velocity.48399/">Negativity</a></h2>
 <b>Modules</b>
 <table align="center">
     <thead>
@@ -326,7 +326,7 @@
         </tr>
     </tbody>
 </table>
-<h2> <a href="https://www.spigotmc.org/resources/ac-negativity-spigot-1-7-1-19-sponge-bungeecord-velocity.48399/">NESS</a></h2>
+<h2> <a href="https://www.spigotmc.org/resources/ness-anti-cheat-reloaded.75887/">NESS</a></h2>
 <b>Modules</b>
 <table align="center">
     <thead>
