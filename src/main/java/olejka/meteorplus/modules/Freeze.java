@@ -16,7 +16,7 @@ import olejka.meteorplus.MeteorPlus;
 
 public class Freeze extends Module {
 	public Freeze() {
-		super(MeteorPlus.CATEGORY, "Freeze", "Freezes your position.");
+		super(MeteorPlus.CATEGORY, "Freeze", "Freezes your position for server.");
 	}
 	private final SettingGroup FSettings = settings.createGroup("Freeze Settings");
 

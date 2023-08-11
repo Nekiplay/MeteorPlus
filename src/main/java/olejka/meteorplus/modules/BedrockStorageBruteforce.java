@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class BedrockStorageBruteforce extends Module {
 	public BedrockStorageBruteforce() {
-		super(MeteorPlus.CATEGORY, "bedrock-storage-BF", "scan-storage's-in-bedrock-from-1-to-4 height.");
+		super(MeteorPlus.CATEGORY, "bedrock-storage-BF", "scan-storage's-in-bedrock-from-1-to-4 height for 1.12.2.");
 	}
 
 	public ArrayList<BlockPos> scanned = new ArrayList<>();

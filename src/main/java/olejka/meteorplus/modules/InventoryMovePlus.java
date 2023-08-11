@@ -28,7 +28,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class InventoryMovePlus extends Module {
 	public InventoryMovePlus() {
-		super(MeteorPlus.CATEGORY, "Inventory Move Plus", "Move in inventories.");
+		super(MeteorPlus.CATEGORY, "Inventory Move", "Move in inventories.");
 	}
 	public enum Screens {
 		GUI,

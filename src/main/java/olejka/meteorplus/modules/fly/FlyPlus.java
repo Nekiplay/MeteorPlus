@@ -18,7 +18,7 @@ public class FlyPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
 	public FlyPlus() {
-		super(MeteorPlus.CATEGORY, "fly-plus", "Bypass fly");
+		super(MeteorPlus.CATEGORY, "fly+", "Bypass fly");
 		onFlyModeChanged(flyMode.get());
 	}
 

@@ -2,11 +2,10 @@ package olejka.meteorplus.mixin.xaero.worldmap;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
-import meteordevelopment.meteorclient.settings.BoolSetting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.BlockPos;
-import olejka.meteorplus.gui.tabs.XaeroWorldMapTab;
+import olejka.meteorplus.modules.integrations.MapIntegration;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,6 +24,7 @@ import java.util.ArrayList;
 public class WaypointRendererMixin {
 	@Inject(method = "getRightClickOptions(Lxaero/map/mods/gui/Waypoint;Lxaero/map/gui/IRightClickableElement;)Ljava/util/ArrayList;", at = @At("HEAD"), remap = false, cancellable = true)
 	private void rightClickOptins(Waypoint element, IRightClickableElement target, CallbackInfoReturnable<ArrayList<RightClickOption>> cir) {
+		MapIntegration mapIntegration = Modules.get().get(MapIntegration.class);
 		ArrayList<RightClickOption> rightClickOptions = new ArrayList();
 		rightClickOptions.add(new RightClickOption(element.getName(), rightClickOptions.size(), target) {
 			public void onAction(Screen screen) {
@@ -45,21 +45,17 @@ public class WaypointRendererMixin {
 			}
 		}).setNameFormatArgs(new Object[]{"E"}));
 
-		SettingGroup group = XaeroWorldMapTab.getSettings().getGroup("Waypoints");
-		if (group != null) {
-			BoolSetting settings = (BoolSetting)group.get("Baritone goto in context menu");
-			if (settings.get()) {
-				rightClickOptions.add((new RightClickOption("journey.map.goto", rightClickOptions.size(), target) {
-					public void onAction(Screen screen) {
-						GoalBlock goal = new GoalBlock(new BlockPos(element.getX(), element.getY(), element.getZ()));
-						BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-					}
+		if (mapIntegration != null && mapIntegration.baritoneGoto.get()) {
+			rightClickOptions.add((new RightClickOption("journey.map.goto", rightClickOptions.size(), target) {
+				public void onAction(Screen screen) {
+					GoalBlock goal = new GoalBlock(new BlockPos(element.getX(), element.getY(), element.getZ()));
+					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+				}
 
-					public boolean isActive() {
-						return true;
-					}
-				}).setNameFormatArgs(new Object[]{"G"}));
-			}
+				public boolean isActive() {
+					return true;
+				}
+			}).setNameFormatArgs(new Object[]{"G"}));
 		}
 
 		rightClickOptions.add((new RightClickOption("gui.xaero_right_click_waypoint_teleport", rightClickOptions.size(), target) {

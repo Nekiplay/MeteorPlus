@@ -1,9 +1,6 @@
 package olejka.meteorplus.modules;
 
 import baritone.api.BaritoneAPI;
-import baritone.api.pathing.goals.Goal;
-import baritone.api.pathing.goals.GoalBlock;
-import baritone.api.pathing.goals.GoalTwoBlocks;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -19,10 +16,8 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.utils.BlockHelper;
@@ -31,37 +26,37 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class AutoPortalMine extends Module {
-	public AutoPortalMine() {
-		super(MeteorPlus.CATEGORY, "Auto-portal-mine", "Automatically mine obsidian.");
+public class AutoObsidianMine extends Module {
+	public AutoObsidianMine() {
+		super(MeteorPlus.CATEGORY, "Auto-obsidian-mine", "Automatically mine obsidian.");
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
 	public enum WorkingMode
 	{
-		Vanila,
-		Homes
+		PortalsVanila,
+		PortalHomes
 	}
 
 	private final Setting<WorkingMode> workingMode = sgGeneral.add(new EnumSetting.Builder<WorkingMode>()
 		.name("mode")
 		.description("Working mode.")
-		.defaultValue(WorkingMode.Vanila)
+		.defaultValue(WorkingMode.PortalsVanila)
 		.build()
 	);
 
 	private final Setting<BlockPos> mainPortalPosition = sgGeneral.add(new BlockPosSetting.Builder()
 		.name("portal location 1")
 		.description("the position of the portal to hell")
-		.visible(() -> workingMode.get() == WorkingMode.Vanila)
+		.visible(() -> workingMode.get() == WorkingMode.PortalsVanila)
 		.build()
 	);
 
 	private final Setting<BlockPos> twoPortalPosition = sgGeneral.add(new BlockPosSetting.Builder()
 		.name("portal location 2")
 		.description("portal position in hell for new portal generations")
-		.visible(() -> workingMode.get() == WorkingMode.Vanila)
+		.visible(() -> workingMode.get() == WorkingMode.PortalsVanila)
 		.build()
 	);
 
@@ -69,7 +64,7 @@ public class AutoPortalMine extends Module {
 		.name("command")
 		.description("Send command.")
 		.defaultValue("/home")
-		.visible(() -> workingMode.get() == WorkingMode.Homes)
+		.visible(() -> workingMode.get() == WorkingMode.PortalHomes)
 		.build()
 	);
 
@@ -77,7 +72,7 @@ public class AutoPortalMine extends Module {
 		.name("command-delay")
 		.description("Ticks delay.")
 		.defaultValue(700)
-		.visible(() -> workingMode.get() == WorkingMode.Homes)
+		.visible(() -> workingMode.get() == WorkingMode.PortalHomes)
 		.build()
 	);
 
@@ -124,7 +119,7 @@ public class AutoPortalMine extends Module {
 		if (commandDelay <= delayCommand.get()) {
 			commandDelay++;
 		}
-		if (workingMode.get() == WorkingMode.Homes) {
+		if (workingMode.get() == WorkingMode.PortalHomes) {
 			if (PlayerUtils.getDimension() == Dimension.Overworld) {
 				commandDelay = 0;
 				isMine = false;
@@ -142,7 +137,7 @@ public class AutoPortalMine extends Module {
 				}
 			}
 		}
-		else if (workingMode.get() == WorkingMode.Vanila) {
+		else if (workingMode.get() == WorkingMode.PortalsVanila) {
 			if (PlayerUtils.getDimension() == Dimension.Overworld) {
 
 				BlockPos to =  twoPortalPosition.get();
@@ -190,15 +185,15 @@ public class AutoPortalMine extends Module {
 		}
 	}
 
-	private final AutoPortalMine.Shape shape = Shape.Cube;
+	private final AutoObsidianMine.Shape shape = Shape.Cube;
 
-	private final AutoPortalMine.Mode mode = Mode.All;
+	private final AutoObsidianMine.Mode mode = Mode.All;
 
 	private final Double range = 5.5;
 
 	private final Integer maxBlocksPerTick = 1;
 
-	private final AutoPortalMine.SortMode sortMode = SortMode.Closest;
+	private final AutoObsidianMine.SortMode sortMode = SortMode.Closest;
 
 	private final Pool<BlockPos.Mutable> blockPosPool = new Pool<>(BlockPos.Mutable::new);
 	private final List<BlockPos.Mutable> blocks = new ArrayList<>();
@@ -266,7 +261,7 @@ public class AutoPortalMine extends Module {
 
 		double rangeSq = Math.pow(range, 2);
 
-		if (shape == AutoPortalMine.Shape.UniformCube) Math.round(range);
+		if (shape == AutoObsidianMine.Shape.UniformCube) Math.round(range);
 
 		// Some render stuff
 
@@ -274,7 +269,7 @@ public class AutoPortalMine extends Module {
 		double pZ_ = pZ;
 		int r = (int) Math.round(range);
 
-		if (shape == AutoPortalMine.Shape.UniformCube) {
+		if (shape == AutoObsidianMine.Shape.UniformCube) {
 			pX_ += 1; // weired position stuff
 			pos1.set(pX_ - r, pY - r + 1, pZ - r + 1); // down
 			pos2.set(pX_ + r - 1, pY + r, pZ + r); // up
@@ -315,7 +310,7 @@ public class AutoPortalMine extends Module {
 			maxv = 1 + Math.max(range_up, range_down);
 		}
 
-		if (mode == AutoPortalMine.Mode.Flatten) {
+		if (mode == AutoObsidianMine.Mode.Flatten) {
 			pos1.setY((int) Math.floor(pY));
 		}
 		box = new Box(pos1, pos2);
@@ -331,16 +326,16 @@ public class AutoPortalMine extends Module {
 //            MeteorClient.LOG.info(box + " " + blockPos + " " + box.contains(Vec3d.ofCenter(blockPos)));
 
 			if (!BlockUtils.canBreak(blockPos, blockState)
-				|| (toofarSphere && shape == AutoPortalMine.Shape.Sphere)
-				|| (toofarUniformCube && shape == AutoPortalMine.Shape.UniformCube)
-				|| (toofarCube && shape == AutoPortalMine.Shape.Cube))
+				|| (toofarSphere && shape == AutoObsidianMine.Shape.Sphere)
+				|| (toofarUniformCube && shape == AutoObsidianMine.Shape.UniformCube)
+				|| (toofarCube && shape == AutoObsidianMine.Shape.Cube))
 				return;
 
 			// Flatten
-			if (mode == AutoPortalMine.Mode.Flatten && blockPos.getY() < Math.floor(mc.player.getY())) return;
+			if (mode == AutoObsidianMine.Mode.Flatten && blockPos.getY() < Math.floor(mc.player.getY())) return;
 
 			// Smash
-			if (mode == AutoPortalMine.Mode.Smash && blockState.getHardness(mc.world, blockPos) != 0) return;
+			if (mode == AutoObsidianMine.Mode.Smash && blockState.getHardness(mc.world, blockPos) != 0) return;
 
 			// Check for selected
 			if (blockState.getBlock() == Blocks.OBSIDIAN || blockState.getBlock() == Blocks.FIRE) {
@@ -352,10 +347,10 @@ public class AutoPortalMine extends Module {
 		BlockIterator.after(() -> {
 
 			if (isMine) {
-				if (sortMode != AutoPortalMine.SortMode.None) {
-					if (sortMode == AutoPortalMine.SortMode.Closest || sortMode == AutoPortalMine.SortMode.Furthest)
-						blocks.sort(Comparator.comparingDouble(value -> Utils.squaredDistance(pX, pY, pZ, value.getX() + 0.5, value.getY() + 0.5, value.getZ() + 0.5) * (sortMode == AutoPortalMine.SortMode.Closest ? 1 : -1)));
-					else if (sortMode == AutoPortalMine.SortMode.TopDown)
+				if (sortMode != AutoObsidianMine.SortMode.None) {
+					if (sortMode == AutoObsidianMine.SortMode.Closest || sortMode == AutoObsidianMine.SortMode.Furthest)
+						blocks.sort(Comparator.comparingDouble(value -> Utils.squaredDistance(pX, pY, pZ, value.getX() + 0.5, value.getY() + 0.5, value.getZ() + 0.5) * (sortMode == AutoObsidianMine.SortMode.Closest ? 1 : -1)));
+					else if (sortMode == AutoObsidianMine.SortMode.TopDown)
 						blocks.sort(Comparator.comparingDouble(value -> -1 * value.getY()));
 				}
 

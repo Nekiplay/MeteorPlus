@@ -5,9 +5,7 @@
   "name": "Meteor Plus",
   "description": "An addon for Meteor client that adds many blatant features.",
   "authors": [
-		"Neki_play",
-    "Olejka",
-		"Vazgen005"
+		"Neki_play"
   ],
   "contact": {
 		"homepage": "https://github.com/Nekiplay/MeteorPlus",

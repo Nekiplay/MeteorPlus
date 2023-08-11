@@ -18,7 +18,7 @@ public class JesusPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
 	public JesusPlus() {
-		super(MeteorPlus.CATEGORY, "jesus-plus", "Bypass jesus");
+		super(MeteorPlus.CATEGORY, "jesus+", "Bypass jesus");
 		onJesusModeChanged(jesusMode.get());
 	}
 
@@ -95,9 +95,9 @@ public class JesusPlus extends Module {
 
 	private void onJesusModeChanged(JesusModes mode) {
 		switch (mode) {
-			case MatrixZoom:   currentMode = new MatrixZoom(); break;
-			case MatrixZoom2:   currentMode = new MatrixZoom2(); break;
-			case Vulcan:   currentMode = new Vulcan(); break;
+			case MatrixZoom -> currentMode = new MatrixZoom();
+			case MatrixZoom2 -> currentMode = new MatrixZoom2();
+			case Vulcan -> currentMode = new Vulcan();
 		}
 	}
 }

@@ -11,12 +11,11 @@ import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.modules.fastladder.modes.Spartan;
 
 public class FastLadderPlus extends Module {
-	private final SettingGroup sgGeneral = settings.getDefaultGroup();
-
 	public FastLadderPlus() {
-		super(MeteorPlus.CATEGORY, "fast-ladder-plus", "Bypass fast-ladder");
+		super(MeteorPlus.CATEGORY, "fast-ladder+", "Bypass fast-ladder");
 		onSpiderModeChanged(spiderMode.get());
 	}
+	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
 	public final Setting<FastLadderModes> spiderMode = sgGeneral.add(new EnumSetting.Builder<FastLadderModes>()
 		.name("mode")

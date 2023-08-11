@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AutoDropPlus extends Module  {
 	public AutoDropPlus() {
-		super(MeteorPlus.CATEGORY, "auto-drop-plus", "Auto drop items in inventory.");
+		super(MeteorPlus.CATEGORY, "auto-drop", "Auto drop items in inventory.");
 	}
 
 	private final SettingGroup defaultGroup = settings.getDefaultGroup();

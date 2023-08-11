@@ -6,8 +6,6 @@ import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import net.fabricmc.loader.api.FabricLoader;
 import olejka.meteorplus.commands.Eclip;
 import olejka.meteorplus.gui.tabs.HiddenModulesTab;
-import olejka.meteorplus.gui.tabs.JourneyMapTab;
-import olejka.meteorplus.gui.tabs.XaeroWorldMapTab;
 import olejka.meteorplus.hud.MeteorPlusLogoHud;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
@@ -19,6 +17,8 @@ import olejka.meteorplus.hud.TimerPlusCharge;
 import olejka.meteorplus.modules.*;
 import olejka.meteorplus.modules.fastladder.FastLadderPlus;
 import olejka.meteorplus.modules.fly.FlyPlus;
+import olejka.meteorplus.modules.integrations.LitematicaPrinter;
+import olejka.meteorplus.modules.integrations.MapIntegration;
 import olejka.meteorplus.modules.jesus.JesusPlus;
 import olejka.meteorplus.modules.nofall.NoFallPlus;
 import olejka.meteorplus.modules.speed.SpeedPlus;
@@ -29,9 +29,10 @@ import org.slf4j.LoggerFactory;
 
 public class MeteorPlus extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
-	public static final Category CATEGORY = new Category("MeteorPlus", Items.EMERALD_BLOCK.getDefaultStack());
-	public static final HudGroup HUD_GROUP = new HudGroup("MeteorPlusHud");
-	public static final String LOGPREFIX = "[Meteor Plus]";
+	public static final Category CATEGORY = new Category("Meteor+", Items.EMERALD_BLOCK.getDefaultStack());
+	public static final Category CATEGORYMODS = new Category("Meteor+ Mods", Items.REDSTONE_BLOCK.getDefaultStack());
+	public static final HudGroup HUD_GROUP = new HudGroup("Meteor+ Hud");
+	public static final String LOGPREFIX = "[Meteor+]";
 
 	private static MeteorPlus instance;
 
@@ -71,7 +72,7 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new BoatAura());
 		modules.add(new BedrockStorageBruteforce());
 		modules.add(new AutoCraftPlus());
-		modules.add(new AutoPortalMine());
+		modules.add(new AutoObsidianMine());
 		modules.add(new XrayBruteforce());
 		modules.add(new AutoLeave());
 		modules.add(new AutoAccept());
@@ -79,6 +80,15 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new SafeMine());
 		modules.add(new Freeze());
 		modules.add(new AntiBotPlus());
+		modules.add(new MultiTasks());
+		if (MixinPlugin.isXaeroWorldMapresent || MixinPlugin.isJourneyMapPresent) {
+			modules.add(new MapIntegration());
+			LOG.info(LOGPREFIX + " loaded mini-map integration");
+		}
+		if (MixinPlugin.isLitematicaMapresent) {
+			modules.add(new LitematicaPrinter());
+			LOG.info(LOGPREFIX + " loaded litematica integration");
+		}
 		LOG.info(LOGPREFIX + " loaded modules");
 		//endregion
 
@@ -90,16 +100,12 @@ public class MeteorPlus extends MeteorAddon {
 
 		LOG.info(LOGPREFIX + " loaded hud");
 		//endregion
+
 		//region Tabs
 		LOG.info(LOGPREFIX + " initializing tabs...");
 
-		if (MixinPlugin.isXaeroWorldMapresent) {
-			Tabs.add(new XaeroWorldMapTab());
-		}
-		else if (MixinPlugin.isJourneyMapPresent) {
-			Tabs.add(new JourneyMapTab());
-		}
 		Tabs.add(new HiddenModulesTab());
+
 		LOG.info(LOGPREFIX + " loaded tabs");
 		//endregion
 		LOG.info(LOGPREFIX + " loaded");
@@ -108,6 +114,12 @@ public class MeteorPlus extends MeteorAddon {
 	@Override
 	public void onRegisterCategories() {
 		LOG.info(LOGPREFIX + " registering categories...");
+		if (MixinPlugin.isXaeroWorldMapresent ||
+			MixinPlugin.isJourneyMapPresent ||
+			MixinPlugin.isLitematicaMapresent
+		) {
+			Modules.registerCategory(CATEGORYMODS);
+		}
 		Modules.registerCategory(CATEGORY);
 		LOG.info(LOGPREFIX + " register categories");
 	}

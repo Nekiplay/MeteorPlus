@@ -14,7 +14,7 @@ import olejka.meteorplus.MeteorPlus;
 
 public class BoatAura extends Module {
 	public BoatAura() {
-		super(MeteorPlus.CATEGORY, "Boat Aura", "Automatically sit in boat");
+		super(MeteorPlus.CATEGORY, "Entity Interact Aura", "Automatically sit in boat");
 	}
 
 	private final SettingGroup boatAuraSettings = settings.createGroup("Boat Aura Settings");

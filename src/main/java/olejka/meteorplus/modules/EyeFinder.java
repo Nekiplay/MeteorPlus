@@ -31,21 +31,14 @@ public class EyeFinder extends Module {
 	public EyeFinder() {
 		super(MeteorPlus.CATEGORY, "Eye Finder", "Find block player look.");
 	}
-	private HashMap<Entity, HitResult> resultMap = new HashMap<Entity, HitResult>();
+	private final HashMap<Entity, HitResult> resultMap = new HashMap<Entity, HitResult>();
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final SettingGroup sgBlock = settings.createGroup("Block");
 
 	public void drawLine(Render3DEvent event, Entity entity, HitResult result) {
-		event.renderer.line(entity.getEyePos().x, entity.getEyePos().y, entity.getEyePos().z, result.getPos().x, result.getPos().y, result.getPos().z, lineColorSelf.get());
+		event.renderer.line(entity.getEyePos().x, entity.getEyePos().y, entity.getEyePos().z, result.getPos().x, result.getPos().y, result.getPos().z, lineColor.get());
 	}
-
-	private final Setting<SettingColor> lineColorSelf = sgGeneral.add(new ColorSetting.Builder()
-		.name("line-color")
-		.description("The line color.")
-		.defaultValue(new SettingColor(255, 255, 255, 255))
-		.build()
-	);
 
 
 	private final Setting<ShapeMode> shapeMode = sgBlock.add(new EnumSetting.Builder<ShapeMode>()

@@ -14,12 +14,12 @@ import olejka.meteorplus.modules.spider.modes.Matrix;
 import olejka.meteorplus.modules.spider.modes.Vulcan;
 
 public class SpiderPlus extends Module {
-	private final SettingGroup sgGeneral = settings.getDefaultGroup();
-
 	public SpiderPlus() {
-		super(MeteorPlus.CATEGORY, "spider-plus", "Bypass spider");
+		super(MeteorPlus.CATEGORY, "spider+", "Bypass spider");
 		onSpiderModeChanged(spiderMode.get());
 	}
+	private final SettingGroup sgGeneral = settings.getDefaultGroup();
+
 
 	public final Setting<SpiderModes> spiderMode = sgGeneral.add(new EnumSetting.Builder<SpiderModes>()
 		.name("mode")

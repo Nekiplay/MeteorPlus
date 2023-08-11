@@ -24,7 +24,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_MIDDLE;
 
 public class MiddleClickExtraPlus extends Module {
 	public MiddleClickExtraPlus() {
-		super(MeteorPlus.CATEGORY, "Middle-click-extra-plus", "Lets you use items when you middle click.");
+		super(MeteorPlus.CATEGORY, "Middle-click-extra+", "Lets you use items when you middle click.");
 	}
 	private enum Type {
 		Immediate,

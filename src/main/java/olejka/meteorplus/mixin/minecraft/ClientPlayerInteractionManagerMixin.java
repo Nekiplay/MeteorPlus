@@ -1,4 +1,4 @@
-package olejka.meteorplus.mixin;
+package olejka.meteorplus.mixin.minecraft;
 
 import meteordevelopment.meteorclient.MeteorClient;
 import net.minecraft.client.network.ClientPlayerInteractionManager;

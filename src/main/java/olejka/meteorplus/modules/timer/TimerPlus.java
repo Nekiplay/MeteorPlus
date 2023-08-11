@@ -14,6 +14,11 @@ import olejka.meteorplus.modules.jesus.JesusModes;
 import olejka.meteorplus.modules.timer.modes.NCP;
 
 public class TimerPlus extends Module {
+	public TimerPlus() {
+		super(MeteorPlus.CATEGORY, "timer+", "Bypass timer.");
+		autoSubscribe = false;
+		MeteorClient.EVENT_BUS.subscribe(this);
+	}
 	private static TimerMode oldMode = null;
 	public static int workingDelay = 27;
 	public static int workingTimer = 0;
@@ -30,12 +35,6 @@ public class TimerPlus extends Module {
 		.defaultValue(true)
 		.build()
 	);
-//
-	public TimerPlus() {
-		super(MeteorPlus.CATEGORY, "timer-plus", "Bypass timer.");
-		autoSubscribe = false;
-		MeteorClient.EVENT_BUS.subscribe(this);
-	}
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
 	private final Setting<TimerModes> mode = sgGeneral.add(new EnumSetting.Builder<TimerModes>()

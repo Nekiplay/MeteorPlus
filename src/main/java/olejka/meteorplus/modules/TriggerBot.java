@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class TriggerBot extends Module {
 	public TriggerBot() {
-		super(MeteorPlus.CATEGORY, "triggerbot", "Attacks specified entities around you.");
+		super(MeteorPlus.CATEGORY, "Trigger-bot", "Attacks specified entities around you.");
 	}
 
 	@Override

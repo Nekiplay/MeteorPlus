@@ -26,6 +26,8 @@ repositories {
 			includeGroup "maven.modrinth"
 		}
 	}
+	maven { url = "https://www.cursemaven.com" }
+	maven { url = "https://masa.dy.fi/maven" }
 }
 
 dependencies {
@@ -42,8 +44,13 @@ dependencies {
 	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true
 	modCompileOnly "maven.modrinth:journeymap:${project.jm_fabric_version}"
 
+	// Xaero's Mods
 	modCompileOnly "maven.modrinth:xaeros-world-map:${project.xwm_fabric_version}" // Xaero's World Map
 	modCompileOnly "maven.modrinth:xaeros-minimap:${project.xmm_fabric_version}" // Xaero's Minimap
+
+	// Litematica
+	modImplementation "curse.maven:litematica-${project.litematica_projectid}:${project.litematica_fileid}"
+	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
 }
 
 loom {

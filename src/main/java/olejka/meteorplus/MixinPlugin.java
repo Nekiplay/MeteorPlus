@@ -15,22 +15,19 @@ import java.util.Set;
 public class MixinPlugin implements IMixinConfigPlugin {
 	private static final String mixinPackage = "olejka.meteorplus.mixin";
 
-	private static boolean loaded;
 	public static boolean isJourneyMapPresent;
 	public static boolean isXaeroWorldMapresent;
 	public static boolean isXaeroMiniMapresent;
 	public static boolean isXaeroPlusMapresent;
+	public static boolean isLitematicaMapresent;
 
 	@Override
 	public void onLoad(String mixinPackage) {
-		if (loaded) return;
-
 		isJourneyMapPresent = FabricLoader.getInstance().isModLoaded("journeymap");
 		isXaeroWorldMapresent = FabricLoader.getInstance().isModLoaded("xaeroworldmap");
 		isXaeroMiniMapresent = FabricLoader.getInstance().isModLoaded("xaerominimap");
 		isXaeroPlusMapresent = FabricLoader.getInstance().isModLoaded("xaeroplus");
-
-		loaded = true;
+		isLitematicaMapresent = FabricLoader.getInstance().isModLoaded("litematica");
 	}
 
 	@Override

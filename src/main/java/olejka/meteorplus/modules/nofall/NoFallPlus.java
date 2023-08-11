@@ -11,6 +11,11 @@ import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.modules.nofall.modes.Eclip;
 
 public class NoFallPlus extends Module {
+	public NoFallPlus() {
+		super(MeteorPlus.CATEGORY, "no-fall+", "Bypass fall damage or reduce fall damage");
+		onModeChanged(mode.get());
+	}
+
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private NofallMode currentMode;
 
@@ -22,11 +27,6 @@ public class NoFallPlus extends Module {
 		.onChanged(this::onModeChanged)
 		.build()
 	);
-
-	public NoFallPlus() {
-		super(MeteorPlus.CATEGORY, "no-fall-plus", "Bypass fall damage or reduce fall damage");
-		onModeChanged(mode.get());
-	}
 
 	@Override
 	public void onActivate() {

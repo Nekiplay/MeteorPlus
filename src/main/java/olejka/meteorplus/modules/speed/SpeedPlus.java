@@ -10,12 +10,12 @@ import olejka.meteorplus.MeteorPlus;
 import olejka.meteorplus.modules.speed.modes.*;
 
 public class SpeedPlus extends Module {
-	private final SettingGroup sgGeneral = settings.getDefaultGroup();
-
 	public SpeedPlus() {
-		super(MeteorPlus.CATEGORY, "speed-plus", "Bypass speed");
+		super(MeteorPlus.CATEGORY, "speed+", "Bypass speed");
 		onSpeedModeChanged(speedMode.get());
 	}
+	private final SettingGroup sgGeneral = settings.getDefaultGroup();
+
 
 	public final Setting<SpeedModes> speedMode = sgGeneral.add(new EnumSetting.Builder<SpeedModes>()
 		.name("mode")
