@@ -527,5 +527,25 @@
              <td><b><b></td>
         </tr>
     </tbody>
-</table>				 
+</table>
+<h2> <a href="https://beta.intave.ac/frontpage">Intave</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Speed Plus<b></td>
+             <td><b>Matrix<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>				 				 
 </div>
