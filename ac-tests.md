@@ -508,4 +508,24 @@
         </tr>
     </tbody>
 </table>
+<h2> <a href="https://www.spigotmc.org/resources/nocheatplus.26/">NCP</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Timer Plus<b></td>
+             <td><b>NCP<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>				 
 </div>
