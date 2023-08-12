@@ -1,7 +1,7 @@
 <div align="center">
 	<img src="src/main/resources/assets/meteorplus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>Meteor Plus settings for anticheats</h1>
-	<h2> Anti Aura </h2>
+	<h2> <a href="https://www.spigotmc.org/resources/antiaura-v2-»-reliable-cheat-detection-»-machine-learning.1368/">AntiAura</a></h2>
 	<b>Modules</b>
 	<table align="center">
     <thead>
