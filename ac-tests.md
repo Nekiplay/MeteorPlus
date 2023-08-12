@@ -1,5 +1,5 @@
 <div align="center">
-	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
+	<img src="src/main/resources/assets/meteorplus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>Meteor Plus settings for anticheats</h1>
 	<h2> Anti Aura </h2>
 	<b>Modules</b>
