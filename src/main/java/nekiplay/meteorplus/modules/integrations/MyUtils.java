@@ -87,7 +87,6 @@ public class MyUtils {
 				BlockHitResult blockHitRes = ((BlockHitResult) res);
 				if(
 					res == null ||
-						res.getType() != HitResult.Type.BLOCK ||
 						!blockHitRes.getBlockPos().equals(placeAgainstPos) ||
 						blockHitRes.getSide() != direction
 				) continue;
