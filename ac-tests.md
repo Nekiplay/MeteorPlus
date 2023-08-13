@@ -1,7 +1,7 @@
 <div align="center">
-	<img src="src/main/resources/assets/plus/logo.png" alt="meteor-plus" width="200px"/>
+	<img src="src/main/resources/assets/meteorplus/logo.png" alt="meteor-plus" width="200px"/>
 	<h1>Meteor Plus settings for anticheats</h1>
-	<h2> Anti Aura </h2>
+	<h2> <a href="https://www.spigotmc.org/resources/antiaura-v2-»-reliable-cheat-detection-»-machine-learning.1368/">AntiAura</a></h2>
 	<b>Modules</b>
 	<table align="center">
     <thead>
@@ -508,4 +508,44 @@
         </tr>
     </tbody>
 </table>
+<h2> <a href="https://www.spigotmc.org/resources/nocheatplus.26/">NCP</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Timer Plus<b></td>
+             <td><b>NCP<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>
+<h2> <a href="https://beta.intave.ac/frontpage">Intave</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Speed Plus<b></td>
+             <td><b>Matrix<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>				 				 
 </div>
