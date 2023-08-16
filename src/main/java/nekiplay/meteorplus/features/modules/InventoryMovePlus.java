@@ -37,7 +37,6 @@ public class InventoryMovePlus extends Module {
 	}
 	public enum Bypass {
 		No_Open_Packet,
-		//Blink,
 		None;
 
 		@Override
