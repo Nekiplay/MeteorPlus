@@ -122,6 +122,11 @@ public class FlyPlus extends Module {
 	}
 
 	@EventHandler
+	public void onRecivePacket(PacketEvent.Receive event) {
+		currentMode.onRecivePacket(event);
+	}
+
+	@EventHandler
 	public void onCanWalkOnFluid(CanWalkOnFluidEvent event) {
 		currentMode.onCanWalkOnFluid(event);
 	}

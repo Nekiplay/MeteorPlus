@@ -12,6 +12,7 @@ import net.minecraft.util.math.Vec3d;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static meteordevelopment.meteorclient.utils.player.ChatUtils.info;
 
 public class VulcanClip extends FlyMode {
 	public VulcanClip() {
@@ -59,41 +60,6 @@ public class VulcanClip extends FlyMode {
 	}
 
 	@Override
-	public void onSentPacket(PacketEvent.Sent event) {
-		if (event.packet instanceof PlayerPositionLookS2CPacket && waitFlag) {
-			PlayerPositionLookS2CPacket packet = (PlayerPositionLookS2CPacket)event.packet;
-			Vec3d playerPos = mc.player.getPos();
-			waitFlag = false;
-			mc.player.setPosition(packet.getX(), packet.getY(), packet.getZ());
-			mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(playerPos.x, playerPos.y, playerPos.z, false));
-			mc.player.jump();
-			clip(0.127318f, 0f);
-			clip(3.425559f, 3.7f);
-			clip(3.14285f, 3.54f);
-			clip(2.88522f, 3.4f);
-			canGlide = true;
-		}
-	}
-
-	@Override
-	public void onSendPacket(PacketEvent.Send event) {
-		if (event.packet instanceof PlayerPositionLookS2CPacket && waitFlag) {
-			PlayerPositionLookS2CPacket packet = (PlayerPositionLookS2CPacket)event.packet;
-			Vec3d playerPos = mc.player.getPos();
-			waitFlag = false;
-			mc.player.setPosition(packet.getX(), packet.getY(), packet.getZ());
-			mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(playerPos.x, playerPos.y, playerPos.z, false));
-			event.setCancelled(true);
-			mc.player.jump();
-			clip(0.127318f, 0f);
-			clip(3.425559f, 3.7f);
-			clip(3.14285f, 3.54f);
-			clip(2.88522f, 3.4f);
-			canGlide = true;
-		}
-	}
-
-	@Override
 	public void onRecivePacket(PacketEvent.Receive event) {
 		if (event.packet instanceof PlayerPositionLookS2CPacket && waitFlag) {
 			PlayerPositionLookS2CPacket packet = (PlayerPositionLookS2CPacket)event.packet;
@@ -101,7 +67,7 @@ public class VulcanClip extends FlyMode {
 			waitFlag = false;
 			mc.player.setPosition(packet.getX(), packet.getY(), packet.getZ());
 			mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(playerPos.x, playerPos.y, playerPos.z, false));
-			event.setCancelled(true);
+			event.cancel();
 			mc.player.jump();
 			clip(0.127318f, 0f);
 			clip(3.425559f, 3.7f);
