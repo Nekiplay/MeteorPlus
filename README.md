@@ -6,13 +6,13 @@
 		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
 	<br>
 	<br>
-	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/anticheats-aac%2C%20spartan%2C%20vulcan%2C%20matrix%2C%20wraith%2C%20ncp%2C%20verus%2C%20cerberus%2C%20taka%2C%20fiona-brightgreen" alt="AntiChests" /></a>
+	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/anticheats-aac%2C%20spartan%2C%20vulcan%2C%20matrix%2C%20wraith%2C%20ncp%2C%20verus%2C%20cerberus%2C%20taka%2C%20fiona%2C%20intave-brightgreen" alt="AntiChests" /></a>
 	<br>
 	<a href="https://www.minecraft.net/"><img src="https://img.shields.io/badge/minecraft%20version-1.20.1-brightgreen" alt="Minecraft version"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/MeteorPlus/total" alt="Downloads"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/stargazers"><img src="https://badgen.net/github/stars/Nekiplay/MeteorPlus" alt="GitHub stars"/></a>
 	<br>
-	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://img.shields.io/badge/suport/help-guilded-brightgreen" alt="Guilded"/></a>
+	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://img.shields.io/badge/support/help-guilded-brightgreen" alt="Guilded"/></a>
 	<br>
 	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
 	<br>
@@ -25,7 +25,7 @@
 |----------------------|-----------------------------------------------|------------------------------|
 | **Fly Plus**         | **Flight for Anti-Cheats**                    | **Matrix, Spartan**          |
 | **Speed Plus**       | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP** |
-| **Spider Plus**      | **Spider for Anti-Cheats**                     | **Matrix, Vulcan**           |
+| **Spider Plus**      | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**           |
 | **Jesus Plus**       | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**           |
 | **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats**               | **Spartan**                  |
 | **Timer Plus**       | **Timer for Anti-Cheats**                     | **NCP**                      |
@@ -37,7 +37,7 @@
 ## Commands
 | Module    | Description       | Bypasses                    |
 |-----------|-------------------|-----------------------------|
-| **eclip** | **Vertical clip** | **Matrix, Wraith, Spartan** |
+| **eclip** | **Vertical clip** | **Matrix, Wraith, Spartan, Negativity** |
 
 
 ## Meteor Client improvements
