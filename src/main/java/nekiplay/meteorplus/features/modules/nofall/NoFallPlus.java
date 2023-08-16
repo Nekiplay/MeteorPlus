@@ -9,6 +9,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.features.modules.nofall.modes.Eclip;
+import nekiplay.meteorplus.features.modules.nofall.modes.MatrixNew;
 
 public class NoFallPlus extends Module {
 	public NoFallPlus() {
@@ -60,6 +61,7 @@ public class NoFallPlus extends Module {
 	private void onModeChanged(NoFallModes mode) {
 		switch (mode) {
 			case Elytra_Clip -> currentMode = new Eclip();
+			case Matrix_New -> currentMode = new MatrixNew();
 		}
 	}
 }

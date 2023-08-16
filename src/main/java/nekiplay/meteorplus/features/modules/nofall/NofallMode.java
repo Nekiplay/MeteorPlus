@@ -18,6 +18,7 @@ public class NofallMode {
 
 	public void onSendPacket(PacketEvent.Send event) {}
 	public void onSentPacket(PacketEvent.Sent event) {}
+	public void onReceivePacket(PacketEvent.Receive event) {}
 
 	public void onTickEventPre(TickEvent.Pre event) {}
 	public void onTickEventPost(TickEvent.Post event) {}
