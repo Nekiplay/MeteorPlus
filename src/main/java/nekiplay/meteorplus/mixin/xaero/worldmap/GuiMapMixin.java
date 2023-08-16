@@ -4,7 +4,7 @@ import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import nekiplay.meteorplus.MixinPlugin;
-import nekiplay.meteorplus.modules.integrations.MapIntegration;
+import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.math.BlockPos;

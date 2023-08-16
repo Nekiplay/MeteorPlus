@@ -7,7 +7,7 @@ import journeymap.client.ui.component.ButtonList;
 import journeymap.client.ui.waypoint.WaypointManagerItem;
 import journeymap.client.waypoint.Waypoint;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import nekiplay.meteorplus.modules.integrations.MapIntegration;
+import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;

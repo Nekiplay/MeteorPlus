@@ -3,7 +3,7 @@ package nekiplay.meteorplus.mixin.xaero.worldmap;
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import nekiplay.meteorplus.modules.integrations.MapIntegration;
+import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;

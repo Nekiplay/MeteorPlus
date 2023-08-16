@@ -38,7 +38,7 @@ dependencies {
 
     // Meteor client
 	modImplementation files("libs\\baritone-fabric-1.20.1-SNAPSHOT.jar")
-    modImplementation files("libs\\meteor-client-0.5.4-1870.jar")
+    modImplementation files("libs\\meteor-client-0.5.4-1907.jar")
 
 	// Journey Map
 	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true

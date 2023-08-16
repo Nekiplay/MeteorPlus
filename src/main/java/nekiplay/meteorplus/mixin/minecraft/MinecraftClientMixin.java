@@ -1,7 +1,7 @@
 package nekiplay.meteorplus.mixin.minecraft;
 
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import nekiplay.meteorplus.modules.MultiTasks;
+import nekiplay.meteorplus.features.modules.MultiTasks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
