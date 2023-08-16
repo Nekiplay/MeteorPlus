@@ -23,7 +23,7 @@
 ## Modules
 | Module               | Description                                   | Bypasses                     |
 |----------------------|-----------------------------------------------|------------------------------|
-| **Fly Plus**         | **Flight for Anti-Cheats**                    | **Matrix, Spartan**          |
+| **Fly Plus**         | **Flight for Anti-Cheats**                    | **Matrix, Spartan, Vulcan**  |
 | **Speed Plus**       | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP** |
 | **Spider Plus**      | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**           |
 | **Jesus Plus**       | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**           |

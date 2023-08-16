@@ -154,7 +154,10 @@ public class FlyPlus extends Module {
 		switch (mode) {
 			case Matrix_Exploit_2 -> currentMode = new MatrixExploit2();
 			case Matrix_Exploit -> currentMode = new MatrixExploit();
-			case Vulcan_Clip -> currentMode = new VulcanClip();
+			case Vulcan_Clip -> {
+				info("Vulcan fly work on 1.8.9 servers");
+				currentMode = new VulcanClip();
+			}
 			case Damage -> currentMode = new Damage();
 		}
 	}

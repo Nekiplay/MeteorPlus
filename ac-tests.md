@@ -266,6 +266,12 @@
              <td><b><b></td>
              <td><b><b></td>
         </tr>
+		<tr>
+            <td><b>Fly Plus<b></td>
+             <td><b>Vulcan Clip<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
     </tbody>
 </table>
 <b>Commands</b>
