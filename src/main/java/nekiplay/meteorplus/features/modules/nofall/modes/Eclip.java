@@ -17,6 +17,8 @@ import net.minecraft.world.RaycastContext;
 import nekiplay.meteorplus.features.modules.nofall.NoFallModes;
 import nekiplay.meteorplus.utils.ElytraUtils;
 
+import static meteordevelopment.meteorclient.utils.player.ChatUtils.error;
+
 public class Eclip extends NofallMode {
 	public Eclip() {
 		super(NoFallModes.Elytra_Clip);
@@ -31,6 +33,13 @@ public class Eclip extends NofallMode {
 	private int teleports = 0;
 	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
+		FindItemResult elytra = InvUtils.find(Items.ELYTRA);
+		if (!elytra.found()) {
+			error("Elytra not found");
+			settings.toggle();
+		}
+
+
 		if (mc.player.isOnGround() && groundcheck) {
 			groundcheck = false;
 			cliped = false;
@@ -62,17 +71,6 @@ public class Eclip extends NofallMode {
 		((PlayerMoveC2SPacketAccessor) event.packet).setOnGround(true);
 	}
 
-	private boolean work() {
-		ClientPlayerEntity player = mc.player;
-		assert player != null;
-		FindItemResult elytra = InvUtils.find(Items.ELYTRA);
-		if (elytra.found()) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
 	private void clip() {
 		if (blocks != 0) {
 			ClientPlayerEntity player = mc.player;
