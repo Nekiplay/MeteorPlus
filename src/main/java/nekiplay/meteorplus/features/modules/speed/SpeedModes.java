@@ -16,7 +16,7 @@ public enum SpeedModes {
 			return "Matrix 6.7.0";
 		}
 		if (name.equals("AAC_Hop_4_3_8")) {
-			return "Matrix 4.3.8";
+			return "AAC Hop 4.3.8";
 		}
 		return super.toString().replace('_', ' ');
 	}
