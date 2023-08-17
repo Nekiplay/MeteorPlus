@@ -10,7 +10,6 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.EnumSettingV2;
 import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.features.modules.fly.modes.Damage;
 import nekiplay.meteorplus.features.modules.fly.modes.MatrixExploit;

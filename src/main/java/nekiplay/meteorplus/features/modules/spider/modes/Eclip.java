@@ -2,6 +2,7 @@ package nekiplay.meteorplus.features.modules.spider.modes;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.utils.misc.Names;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -24,7 +25,7 @@ public class Eclip extends SpiderMode {
 	public void onActivate() {
 		FindItemResult elytra = InvUtils.find(Items.ELYTRA);
 		if (!elytra.found()) {
-			settings.error("Elytra not found");
+			settings.error(Names.get(Items.ELYTRA) + " not found");
 			settings.toggle();
 		}
 	}

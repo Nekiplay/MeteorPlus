@@ -16,6 +16,13 @@ public class MatrixNew extends NofallMode {
 		super(NoFallModes.Matrix_New);
 	}
 	private Timer timer;
+
+	@Override
+	public void onDeactivate() {
+		timer = Modules.get().get(Timer.class);
+		timer.setOverride(Timer.OFF);
+	}
+
 	@Override
 	public void onSendPacket(PacketEvent.Send event) {
 		if (event.packet instanceof PlayerMoveC2SPacket) {

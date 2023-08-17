@@ -81,10 +81,10 @@ public class AutoAccept extends Module {
 	@Override
 	public void onActivate() {
 		patterns.clear();
-		TPPattern MST_Network = new TPPattern(".*Игрок (.*) просит телепортироваться к вам!.*", 1, "cmi tpaccept {username} tpa");
-		TPPattern HolyWorld = new TPPattern("(.*) просит телепортироваться.*", 1, "tpaccept");
-		TPPattern SimpleTpa = new TPPattern(".*\\[SimpleTpa\\] (.*) has sent you a teleport request!.*", 1, "tpaccept");
-		TPPattern EssentialsEN = new TPPattern("(.*) has requested to teleport to you\\..*", 1, "tpaccept");
+		TPPattern MST_Network = new TPPattern(".*Игрок (.*) просит телепортироваться к вам!.*", 1, "/cmi tpaccept {username} tpa");
+		TPPattern HolyWorld = new TPPattern("(.*) просит телепортироваться.*", 1, "/tpaccept");
+		TPPattern SimpleTpa = new TPPattern(".*\\[SimpleTpa\\] (.*) has sent you a teleport request!.*", 1, "/tpaccept");
+		TPPattern EssentialsEN = new TPPattern("(.*) has requested to teleport to you\\..*", 1, "/tpaccept");
 		patterns.add(MST_Network);
 		patterns.add(HolyWorld);
 		patterns.add(SimpleTpa);

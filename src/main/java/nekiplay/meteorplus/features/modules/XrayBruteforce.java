@@ -19,6 +19,7 @@ import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.utils.GenerationBlock;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
 
@@ -105,11 +106,6 @@ public class XrayBruteforce extends Module {
 		})
 		.build()
 	);
-
-	private class SaveOreClass {
-		public BlockPos pos;
-		public Block block;
-	}
 
 	private void loadSaveOres() {
 		Thread loadth = new Thread(() ->
@@ -277,6 +273,20 @@ public class XrayBruteforce extends Module {
         .defaultValue(false)
         .build()
     );
+
+	public final Setting<Boolean> spoofTeleport = sgGeneral.add(new BoolSetting.Builder()
+		.name("spoof-teleport")
+		.description("Clear saved ores cache.")
+		.defaultValue(false)
+		.build()
+	);
+
+	public final Setting<Integer> rescanerDelay = sgDelayer.add(new IntSetting.Builder()
+		.name("rescaner-delay")
+		.description("Deley for rechecking blobk.")
+		.defaultValue(2000)
+		.build()
+	);
 
 	public final Setting<Boolean> tps_sync = sgDelayer.add(new BoolSetting.Builder()
 		.name("TPS-sync")
@@ -546,7 +556,7 @@ public class XrayBruteforce extends Module {
 	}
 
     public static final List<RenderOre> ores = new ArrayList<>();
-    private RenderOre get(BlockPos pos) {
+    private RenderOre getRenderOre(BlockPos pos) {
 		synchronized (ores) {
 			for (RenderOre cur : ores) {
 				if (cur != null && cur.block != null && cur.blockPos != null && cur.blockPos.equals(pos)) {
@@ -556,9 +566,14 @@ public class XrayBruteforce extends Module {
 			return null;
 		}
 	}
+	private void removeRenderOre(BlockPos pos) {
+		synchronized (ores) {
+			ores.removeIf(cur -> cur != null && cur.block != null && cur.blockPos != null && cur.blockPos.equals(pos));
+		}
+	}
     private void addRenderBlock(BlockPos blockPos) {
         synchronized (ores) {
-            RenderOre ore = get(blockPos);
+            RenderOre ore = getRenderOre(blockPos);
             if (ore == null) {
                 RenderOre ne = new RenderOre(blockPos);
                 ne.blockPos = blockPos;
@@ -595,18 +610,17 @@ public class XrayBruteforce extends Module {
     public void blockUpdateEvent(BlockUpdateEvent event) {
 		if (!event.oldState.isAir()) {
 			if (scanned.contains(event.pos)) {
-				BlockState state = mc.world.getBlockState(event.pos);
-				if (whblocks.get().contains(state.getBlock()) && !pause_toggle) {
-					addBlock(event.pos, false);
+				if (whblocks.get().contains(event.newState.getBlock()) && !pause_toggle) {
+					addBlock(event.pos, true);
 					List<BlockPos> post = getBlocks(event.pos, cavesRange.get(), cavesRangeY.get());
 					for (BlockPos pos2 : post) {
-						addBlock(pos2, false);
+						addBlock(pos2, true);
 					}
 				}
 			}
 		}
 		if (event.newState.isAir()) {
-			RenderOre render = get(event.pos);
+			RenderOre render = getRenderOre(event.pos);
 			if (render != null) {
 				synchronized (ores) {
 					ores.remove(render);
@@ -618,9 +632,10 @@ public class XrayBruteforce extends Module {
     @EventHandler
     private void minedBlock(BreakBlockEvent event) {
         new Thread(() -> {
-            RenderOre ore = get(event.blockPos);
+            RenderOre ore = getRenderOre(event.blockPos);
             if (ore != null) {
                 ore.block = Blocks.AIR;
+				updateRenderedOres();
 				synchronized (ores) {
 					ores.remove(ore);
 				}
@@ -875,7 +890,7 @@ public class XrayBruteforce extends Module {
 		}
 		else {
 			BlockState state = mc.world.getBlockState(blockpos);
-			if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.LAVA || state.getBlock() == Blocks.WATER) {
+			if (state.getBlock() == Blocks.WALL_TORCH || state.getBlock() == Blocks.TORCH || state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.LAVA || state.getBlock() == Blocks.WATER) {
 				sucess = false;
 			}
 		}
@@ -894,12 +909,12 @@ public class XrayBruteforce extends Module {
 			if (packet_tw != null) {
 				conn.sendPacket(packet_tw);
 			}
-			addNeedRescan(blockpos, 4500);
+			addNeedRescan(blockpos, rescanerDelay.get());
 		}
 		else {
-			currentScanBlock = null;
+			currentScanBlock = 	null;
 		}
-		if (!scanned.contains(blockpos)) {
+		if (sucess && !scanned.contains(blockpos)) {
 			scanned.add(blockpos);
 		}
         return sucess;
@@ -959,11 +974,11 @@ public class XrayBruteforce extends Module {
                 if (fps_sync.get()) {
                     if (!lagging) {
                         BlockPos block = blocksIterator.next();
-                        blocksIterator.remove();
                         if (send(block)) {
                             millis = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + Utils.random(delaymin.get(), delaymax.get());
                             lagging = true;
                         }
+						blocksIterator.remove();
                     }
                 }
                 else
@@ -1046,11 +1061,29 @@ public class XrayBruteforce extends Module {
 							addRenderBlock(blockscanned.pos);
 							for (BlockPos pos : getBlocks(blockscanned.pos, clusterRange.get(), clusterRange.get())) {
 								addBlock(pos, true);
-								//addRenderBlock(blockscanned.pos);
+								if (!scanned.contains(pos)) {
+									addNeedRescan(pos, rescanerDelay.get());
+								}
+							}
+						}
+						else {
+							RenderOre ore = getRenderOre(blockscanned.pos);
+							if (ore != null) {
+								removeRenderOre(blockscanned.pos);
 							}
 						}
 						iterator.remove();
 					}
+				}
+				else if (timeSinceLastTick > 1) {
+
+					int[] piArray = String.valueOf(1 / timeSinceLastTick)
+						.replaceAll("\\D", "")
+						.chars()
+						.map(Character::getNumericValue)
+						.toArray();
+
+					blockscanned.rescanTime += Arrays.stream(piArray).skip(1).max().getAsInt();
 				}
 			}
 		}
@@ -1106,15 +1139,14 @@ public class XrayBruteforce extends Module {
     {
         List<BlockPos> temp = new ArrayList<>();
         for (int dy = -y_radius; dy <= y_radius; dy++) {
-            if ((startPos.getY() + dy) < 1 || (startPos.getY() + dy) > 255) continue;
+            if ((startPos.getY() + dy) < -60 || (startPos.getY() + dy) > 360) continue;
             for (int dz = -radius; dz <= radius; dz++) {
                 for (int dx = -radius; dx <= radius; dx++) {
                     BlockPos blockPos = startPos.add(dx, dy, dz);
 					BlockState state = mc.world.getBlockState(blockPos);
-					boolean isStone = state.isOf(Blocks.STONE);
 					boolean isInRenderDistance = EntityUtils.isInRenderDistance(blockPos);
 					boolean isBlockPosNotInList = !scanned.contains(blockPos);
-                    if (isStone && isInRenderDistance && isBlockPosNotInList) {
+                    if (isInRenderDistance && isBlockPosNotInList) {
 						temp.add(blockPos);
                     }
                 }

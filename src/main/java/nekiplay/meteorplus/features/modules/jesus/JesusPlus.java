@@ -11,7 +11,7 @@ import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.features.modules.jesus.modes.MatrixZoom;
 import nekiplay.meteorplus.features.modules.jesus.modes.MatrixZoom2;
-import nekiplay.meteorplus.features.modules.jesus.modes.Vulcan;
+import nekiplay.meteorplus.features.modules.jesus.modes.VulcanExploit;
 
 
 public class JesusPlus extends Module {
@@ -44,7 +44,7 @@ public class JesusPlus extends Module {
 		.name("auto-swap")
 		.description("Auto swap.")
 		.defaultValue(true)
-		.visible(() -> jesusMode.get() == JesusModes.Vulcan)
+		.visible(() -> jesusMode.get() == JesusModes.Vulcan_Exploit)
 		.build()
 	);
 
@@ -97,7 +97,7 @@ public class JesusPlus extends Module {
 		switch (mode) {
 			case Matrix_Zoom -> currentMode = new MatrixZoom();
 			case Matrix_Zoom_2 -> currentMode = new MatrixZoom2();
-			case Vulcan -> currentMode = new Vulcan();
+			case Vulcan_Exploit -> currentMode = new VulcanExploit();
 		}
 	}
 }

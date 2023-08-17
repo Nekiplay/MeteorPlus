@@ -10,6 +10,7 @@ import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.features.modules.nofall.modes.Eclip;
 import nekiplay.meteorplus.features.modules.nofall.modes.MatrixNew;
+import nekiplay.meteorplus.features.modules.nofall.modes.Vulcan;
 
 public class NoFallPlus extends Module {
 	public NoFallPlus() {
@@ -62,6 +63,7 @@ public class NoFallPlus extends Module {
 		switch (mode) {
 			case Elytra_Clip -> currentMode = new Eclip();
 			case Matrix_New -> currentMode = new MatrixNew();
+			case Vulcan -> currentMode = new Vulcan();
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.features.modules.speed.modes;
+package nekiplay.meteorplus.features.modules.speed.modes.matrix;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;

@@ -11,6 +11,13 @@ public enum SpeedModes {
 
 	@Override
 	public String toString() {
+		String name = name();
+		if (name.equals("Matrix_6_7_0")) {
+			return "Matrix 6.7.0";
+		}
+		if (name.equals("AAC_Hop_4_3_8")) {
+			return "Matrix 4.3.8";
+		}
 		return super.toString().replace('_', ' ');
 	}
 }

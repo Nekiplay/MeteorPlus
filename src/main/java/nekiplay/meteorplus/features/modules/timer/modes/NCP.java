@@ -12,11 +12,9 @@ import static nekiplay.meteorplus.features.modules.timer.TimerPlus.*;
 
 public class NCP extends TimerMode {
 	private Timer timer;
-	private TimerPlus timerPlus;
 	public NCP() {
 		super(TimerModes.NCP);
 		timer = Modules.get().get(Timer.class);
-		timerPlus = Modules.get().get(TimerPlus.class);
 	}
 
 	@Override
@@ -34,12 +32,12 @@ public class NCP extends TimerMode {
 				timer.setOverride(Timer.OFF);
 			}
 			else {
-				if (timerPlus.isActive()) {
-					if (timerPlus.onlyInMove.get() && PlayerUtils.isMoving()) {
+				if (settings.isActive()) {
+					if (settings.onlyInMove.get() && PlayerUtils.isMoving()) {
 						workingTimer++;
 						timer.setOverride(timerMultiplier);
 					}
-					else if (!timerPlus.onlyInMove.get()) {
+					else if (!settings.onlyInMove.get()) {
 						workingTimer++;
 						timer.setOverride(timerMultiplier);
 					}
@@ -51,7 +49,7 @@ public class NCP extends TimerMode {
 		}
 		else {
 			rechargeTimer--;
-			if (timerPlus.isActive()) {
+			if (settings.isActive()) {
 				timer.setOverride(timerMultiplierOnRecharge);
 			}
 			else {

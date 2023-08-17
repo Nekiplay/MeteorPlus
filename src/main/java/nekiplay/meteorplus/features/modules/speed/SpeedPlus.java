@@ -8,6 +8,10 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.features.modules.speed.modes.*;
+import nekiplay.meteorplus.features.modules.speed.modes.matrix.Matrix;
+import nekiplay.meteorplus.features.modules.speed.modes.matrix.Matrix6_7_0;
+import nekiplay.meteorplus.features.modules.speed.modes.matrix.MatrixExploit;
+import nekiplay.meteorplus.features.modules.speed.modes.matrix.MatrixExploit2;
 
 public class SpeedPlus extends Module {
 	public SpeedPlus() {

@@ -3,7 +3,7 @@ package nekiplay.meteorplus.features.modules.jesus;
 public enum JesusModes {
 	Matrix_Zoom,
 	Matrix_Zoom_2,
-	Vulcan;
+	Vulcan_Exploit;
 
 	@Override
 	public String toString() {
