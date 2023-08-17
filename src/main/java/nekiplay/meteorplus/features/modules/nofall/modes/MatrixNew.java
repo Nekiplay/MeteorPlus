@@ -6,16 +6,14 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import nekiplay.meteorplus.features.modules.nofall.NoFallModes;
 import nekiplay.meteorplus.features.modules.nofall.NofallMode;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.util.shape.VoxelShape;
 
 import java.util.Iterator;
 
 public class MatrixNew extends NofallMode {
 	public MatrixNew() {
-		super(NoFallModes.Elytra_Clip);
+		super(NoFallModes.Matrix_New);
 	}
 	private Timer timer;
 	@Override
