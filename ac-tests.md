@@ -250,8 +250,8 @@
         </tr>
          <tr>
             <td><b>Speed Plus<b></td>
-             <td><b>Matrix 3<b></td>
-             <td><b>New mode<b></td>
+             <td><b>Vulcan<b></td>
+             <td><b><b></td>
              <td><b>Only forward, not more jumps<b></td>
         </tr>
         <tr>
@@ -262,7 +262,7 @@
         </tr>
         <tr>
             <td><b>No Fall Plus<b></td>
-             <td><b>Elytra Clip<b></td>
+             <td><b>Elytra Clip or Vulcan<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
