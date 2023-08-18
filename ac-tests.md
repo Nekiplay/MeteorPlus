@@ -398,7 +398,7 @@
         <tr>
             <td><b>Fly Plus<b></td>
              <td><b>Matrix Exploit 2<b></td>
-             <td><b>New mode<b></td>
+             <td><b><b></td>
              <td><b>Don't longer<b></td>
         </tr>
     </tbody>
