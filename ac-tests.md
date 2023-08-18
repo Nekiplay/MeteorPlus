@@ -553,5 +553,25 @@
              <td><b><b></td>
         </tr>
     </tbody>
-</table>				 				 
+</table>
+<h2> <a href="https://matrix.rip/">Matrix</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>NoFall Plus<b></td>
+             <td><b>Matrix New<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>				 				 	
 </div>
