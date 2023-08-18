@@ -554,7 +554,7 @@
         </tr>
     </tbody>
 </table>
-<h2> <a href="https://matrix.rip/">Intave</a></h2>
+<h2> <a href="https://matrix.rip/">Matrix</a></h2>
 <b>Modules</b>
 <table align="center">
     <thead>
