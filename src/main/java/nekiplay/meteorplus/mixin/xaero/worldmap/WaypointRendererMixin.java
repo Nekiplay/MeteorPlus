@@ -76,9 +76,8 @@ public class WaypointRendererMixin {
 						GoalBlock goal = new GoalBlock(new BlockPos(element.getX(), element.getY(), element.getZ()));
 						BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(goal);
 						for (IBaritone baritone : BaritoneAPI.getProvider().getAllBaritones()) {
-							ICommand command = baritone.getCommandManager().getCommand("elytra");
-							if (command != null) {
-								baritone.getCommandManager().execute("#elytra");
+							if (!baritone.getCommandManager().getRegistry().stream().filter((a) -> a.getNames().get(0).equalsIgnoreCase("elytra")).findAny().isEmpty()) {
+								baritone.getCommandManager().execute("elytra");
 								break;
 							}
 						}
