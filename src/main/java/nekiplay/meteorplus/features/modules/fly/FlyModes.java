@@ -4,11 +4,12 @@ public enum FlyModes {
 	Vulcan_Clip,
 	Matrix_Exploit_2,
 	Matrix_Exploit,
-	Damage,
+	Damage
 	;
 
 	@Override
 	public String toString() {
-		return super.toString().replace('_', ' ');
+		String name = name();
+		return name.replace('_', ' ');
 	}
 }

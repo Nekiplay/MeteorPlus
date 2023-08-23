@@ -1,6 +1,8 @@
 package nekiplay.meteorplus.mixin.xaero.worldmap;
 
 import baritone.api.BaritoneAPI;
+import baritone.api.IBaritone;
+import baritone.api.command.ICommand;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
@@ -46,7 +48,18 @@ public class WaypointRendererMixin {
 		}).setNameFormatArgs(new Object[]{"E"}));
 
 		if (mapIntegration != null && mapIntegration.baritoneGoto.get()) {
-			rightClickOptions.add((new RightClickOption("journey.map.goto", rightClickOptions.size(), target) {
+			rightClickOptions.add((new RightClickOption("gui.world_map.baritone_goal_here", rightClickOptions.size(), target) {
+				public void onAction(Screen screen) {
+					GoalBlock goal = new GoalBlock(new BlockPos(element.getX(), element.getY(), element.getZ()));
+					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(goal);
+				}
+
+				public boolean isActive() {
+					return true;
+				}
+			}).setNameFormatArgs(new Object[]{"G"}));
+
+			rightClickOptions.add((new RightClickOption("gui.world_map.baritone_path_here", rightClickOptions.size(), target) {
 				public void onAction(Screen screen) {
 					GoalBlock goal = new GoalBlock(new BlockPos(element.getX(), element.getY(), element.getZ()));
 					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
@@ -55,7 +68,27 @@ public class WaypointRendererMixin {
 				public boolean isActive() {
 					return true;
 				}
-			}).setNameFormatArgs(new Object[]{"G"}));
+			}).setNameFormatArgs(new Object[]{"P"}));
+
+			if (mapIntegration.baritoneElytra.get()) {
+				rightClickOptions.add((new RightClickOption("gui.world_map.baritone_elytra_here", rightClickOptions.size(), target) {
+					public void onAction(Screen screen) {
+						GoalBlock goal = new GoalBlock(new BlockPos(element.getX(), element.getY(), element.getZ()));
+						BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(goal);
+						for (IBaritone baritone : BaritoneAPI.getProvider().getAllBaritones()) {
+							ICommand command = baritone.getCommandManager().getCommand("elytra");
+							if (command != null) {
+								baritone.getCommandManager().execute("#elytra");
+								break;
+							}
+						}
+					}
+
+					public boolean isActive() {
+						return true;
+					}
+				}).setNameFormatArgs(new Object[]{"P"}));
+			}
 		}
 
 		rightClickOptions.add((new RightClickOption("gui.xaero_right_click_waypoint_teleport", rightClickOptions.size(), target) {

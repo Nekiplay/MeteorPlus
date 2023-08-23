@@ -244,13 +244,11 @@ public class FreecamMixin {
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
 			if (smartBaritoneControl.get()) {
 				if ((offhand == null || !(offhand.getItem() instanceof BlockItem)) && (mainhand == null || !(mainhand.getItem() instanceof BlockItem))) {
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
 					BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
 					event.cancel();
 				}
 			}
 			else {
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
 				BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
 				event.cancel();
 			}

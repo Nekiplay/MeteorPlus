@@ -29,13 +29,17 @@ public class WaypointManagerItemMixin {
 	boolean displayHover = true;
 	@Unique
 	Button gotoButton;
+	@Unique
+	Button pathButton;
 
 	@Inject(method = "<init>", at = @At("JUMP"))
 	private void onInit(CallbackInfo info) {
-		gotoButton = new Button(Text.translatable("journey.map.goto").getString());
+		gotoButton = new Button(Text.translatable("gui.world_map.baritone_goal_here").getString());
+		pathButton = new Button(Text.translatable("gui.world_map.baritone_path_here").getString());
 		MapIntegration mapIntegration = Modules.get().get(MapIntegration.class);
 		if (mapIntegration.baritoneGoto.get()) {
 			buttonListLeft.add(gotoButton);
+			buttonListLeft.add(pathButton);
 		}
 	}
 
@@ -45,11 +49,17 @@ public class WaypointManagerItemMixin {
 		MapIntegration mapIntegration = Modules.get().get(MapIntegration.class);
 		if (mapIntegration.baritoneGoto.get()) {
 			gotoButton.drawHovered(drawHovered);
+			pathButton.drawHovered(drawHovered);
 		}
 	}
 	@Inject(method = "clickScrollable", at = @At(value = "HEAD"), remap = false, cancellable = true)
 	private void onClickScrollable(double mouseX, double mouseY, CallbackInfoReturnable<Boolean> cir) {
 		if (gotoButton.mouseOver(mouseX, mouseY)) {
+			GoalBlock goal = new GoalBlock(waypoint.getBlockPos());
+			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(goal);
+			cir.setReturnValue(true);
+		}
+		if (pathButton.mouseOver(mouseX, mouseY)) {
 			GoalBlock goal = new GoalBlock(waypoint.getBlockPos());
 			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
 			cir.setReturnValue(true);

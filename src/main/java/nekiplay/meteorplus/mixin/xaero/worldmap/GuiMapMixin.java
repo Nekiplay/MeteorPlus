@@ -1,8 +1,14 @@
 package nekiplay.meteorplus.mixin.xaero.worldmap;
 
 import baritone.api.BaritoneAPI;
+import baritone.api.IBaritone;
+import baritone.api.command.ICommand;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
+import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import meteordevelopment.meteorclient.utils.world.Dimension;
+import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.MixinPlugin;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import net.minecraft.client.gui.screen.Screen;
@@ -23,6 +29,7 @@ import meteordevelopment.meteorclient.utils.misc.Names;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
@@ -88,7 +95,14 @@ public abstract class GuiMapMixin {
 		if (!MixinPlugin.isXaeroPlusMapresent) {
 			if (mapIntegration != null && mapIntegration.baritoneGoto.get()) {
 				options.addAll(3, List.of(
-					new RightClickOption(I18n.translate("journey.map.goto"), options.size(), guiMap) {
+					new RightClickOption(I18n.translate("gui.world_map.baritone_goal_here"), options.size(), guiMap) {
+						@Override
+						public void onAction(Screen screen) {
+							GoalBlock goal = new GoalBlock(new BlockPos(rightClickX, rightClickY, rightClickZ).up());
+							BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(goal);
+						}
+					},
+					new RightClickOption(I18n.translate("gui.world_map.baritone_path_here"), options.size(), guiMap) {
 						@Override
 						public void onAction(Screen screen) {
 							GoalBlock goal = new GoalBlock(new BlockPos(rightClickX, rightClickY, rightClickZ).up());
@@ -96,6 +110,46 @@ public abstract class GuiMapMixin {
 						}
 					}
 				));
+				if (mapIntegration.baritoneElytra.get() && mapIntegration.baritoneGoto.get() && PlayerUtils.getDimension() == Dimension.Nether) {
+					if (rightClickY > 0 && rightClickY < 128) {
+						options.addAll(3, List.of(
+							new RightClickOption(I18n.translate("gui.world_map.baritone_elytra_here"), options.size(), guiMap) {
+								@Override
+								public void onAction(Screen screen) {
+									GoalBlock goal = new GoalBlock(new BlockPos(rightClickX, rightClickY, rightClickZ).up());
+									BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(goal);
+									for (IBaritone baritone : BaritoneAPI.getProvider().getAllBaritones()) {
+										if (!baritone.getCommandManager().getRegistry().stream().filter((a) -> a.getNames().get(0).equalsIgnoreCase("elytra")).findAny().isEmpty()) {
+											baritone.getCommandManager().execute("elytra");
+											break;
+										}
+									}
+								}
+							}
+						));
+					}
+				}
+			}
+		}
+		else {
+			if (mapIntegration != null && mapIntegration.baritoneElytra.get() && mapIntegration.baritoneGoto.get() && PlayerUtils.getDimension() == Dimension.Nether) {
+				if (rightClickY > 0 && rightClickY < 128) {
+					options.addAll(3, List.of(
+						new RightClickOption(I18n.translate("gui.world_map.baritone_elytra_here"), options.size(), guiMap) {
+							@Override
+							public void onAction(Screen screen) {
+								GoalBlock goal = new GoalBlock(new BlockPos(rightClickX, rightClickY, rightClickZ).up());
+								BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(goal);
+								for (IBaritone baritone : BaritoneAPI.getProvider().getAllBaritones()) {
+									if (!baritone.getCommandManager().getRegistry().stream().filter((a) -> a.getNames().get(0).equalsIgnoreCase("elytra")).findAny().isEmpty()) {
+										baritone.getCommandManager().execute("elytra");
+										break;
+									}
+								}
+							}
+						}
+					));
+				}
 			}
 		}
 	}

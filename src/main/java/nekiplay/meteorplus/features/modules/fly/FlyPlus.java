@@ -11,10 +11,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlus;
-import nekiplay.meteorplus.features.modules.fly.modes.Damage;
-import nekiplay.meteorplus.features.modules.fly.modes.MatrixExploit;
-import nekiplay.meteorplus.features.modules.fly.modes.MatrixExploit2;
-import nekiplay.meteorplus.features.modules.fly.modes.VulcanClip;
+import nekiplay.meteorplus.features.modules.fly.modes.*;
 
 public class FlyPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -90,6 +87,7 @@ public class FlyPlus extends Module {
 		.build()
 	);
 
+
 	private FlyMode currentMode;
 
 	@Override
@@ -159,5 +157,10 @@ public class FlyPlus extends Module {
 			}
 			case Damage -> currentMode = new Damage();
 		}
+	}
+
+	@Override
+	public String getInfoString() {
+		return "";
 	}
 }

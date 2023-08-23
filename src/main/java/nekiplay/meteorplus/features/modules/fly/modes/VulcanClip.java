@@ -49,6 +49,7 @@ public class VulcanClip extends FlyMode {
 
 	@Override
 	public void onPlayerMoveSendPre(SendMovementPacketsEvent.Pre event) {
+
 		if (canGlide) {
 			timer.setOverride(1f);
 			Vec3d velocity = mc.player.getVelocity();
@@ -63,6 +64,7 @@ public class VulcanClip extends FlyMode {
 
 	@Override
 	public void onRecivePacket(PacketEvent.Receive event) {
+		super.onRecivePacket(event);
 		if (event.packet instanceof PlayerPositionLookS2CPacket && waitFlag) {
 			PlayerPositionLookS2CPacket packet = (PlayerPositionLookS2CPacket)event.packet;
 			Vec3d playerPos = mc.player.getPos();

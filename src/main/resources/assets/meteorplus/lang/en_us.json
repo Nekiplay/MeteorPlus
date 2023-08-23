@@ -1,3 +1,5 @@
 {
-	"journey.map.goto": "Goto"
+	"gui.world_map.baritone_goal_here": "Baritone Goal Here",
+	"gui.world_map.baritone_path_here": "Baritone Path Here",
+	"gui.world_map.baritone_elytra_here": "Baritone Elytra Here"
 }
