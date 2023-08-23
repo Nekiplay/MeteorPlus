@@ -108,7 +108,7 @@ public class TimerPlus extends Module {
 				timerMultiplierOnRecharge = Timer.OFF;
 			}
 			case Intave -> {
-				currentMode = new Intave();
+				currentMode = new NCP();
 				workingDelay = 30;
 				rechargeDelay = 105;
 				timerMultiplier = 1.25;
