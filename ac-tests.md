@@ -250,8 +250,8 @@
         </tr>
          <tr>
             <td><b>Speed Plus<b></td>
-             <td><b>Matrix 3<b></td>
-             <td><b>New mode<b></td>
+             <td><b>Vulcan<b></td>
+             <td><b><b></td>
              <td><b>Only forward, not more jumps<b></td>
         </tr>
         <tr>
@@ -262,7 +262,7 @@
         </tr>
         <tr>
             <td><b>No Fall Plus<b></td>
-             <td><b>Elytra Clip<b></td>
+             <td><b>Elytra Clip or Vulcan<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
@@ -398,7 +398,7 @@
         <tr>
             <td><b>Fly Plus<b></td>
              <td><b>Matrix Exploit 2<b></td>
-             <td><b>New mode<b></td>
+             <td><b><b></td>
              <td><b>Don't longer<b></td>
         </tr>
     </tbody>
@@ -553,5 +553,25 @@
              <td><b><b></td>
         </tr>
     </tbody>
-</table>				 				 
+</table>
+<h2> <a href="https://matrix.rip/">Matrix</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>NoFall Plus<b></td>
+             <td><b>Matrix New<b></td>
+             <td><b><b></td>
+             <td><b><b></td>
+        </tr>
+    </tbody>
+</table>				 				 	
 </div>
