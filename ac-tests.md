@@ -549,6 +549,8 @@
         <tr>
             <td><b>Speed Plus<b></td>
              <td><b>Matrix<b></td>
+	         <td><b>Timer Plus<b></td>
+             <td><b>Intave<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
