@@ -4,7 +4,7 @@ import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import nekiplay.meteorplus.commands.Eclip;
-import nekiplay.meteorplus.features.modules.velocity.VelocityPlus;
+import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarm;
 import nekiplay.meteorplus.gui.tabs.HiddenModulesTab;
 import nekiplay.meteorplus.hud.TimerPlusCharge;
 import nekiplay.meteorplus.features.modules.*;
@@ -72,7 +72,7 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new BoatAura());
 		modules.add(new BedrockStorageBruteforce());
 		modules.add(new AutoCraftPlus());
-		modules.add(new AutoObsidianMine());
+		modules.add(new AutoObsidianFarm());
 		modules.add(new XrayBruteforce());
 		modules.add(new AutoLeave());
 		modules.add(new AutoAccept());
