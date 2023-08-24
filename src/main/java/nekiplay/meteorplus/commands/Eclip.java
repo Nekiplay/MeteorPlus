@@ -23,7 +23,7 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class Eclip extends Command {
 	public Eclip() {
-		super("eclip", "Elyta clip");
+		super("eclip", "Elyta clip need elytra bypass most anticheats");
 	}
 
 	public void build(LiteralArgumentBuilder<CommandSource> builder) {
