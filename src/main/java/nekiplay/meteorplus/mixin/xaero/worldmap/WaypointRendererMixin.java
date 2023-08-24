@@ -76,11 +76,13 @@ public class WaypointRendererMixin {
 				rightClickOptions.add((new RightClickOption("gui.world_map.baritone_elytra_here", rightClickOptions.size(), target) {
 					public void onAction(Screen screen) {
 						GoalBlock goal = new GoalBlock(new BlockPos(element.getX(), element.getY(), element.getZ()));
-						BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(goal);
-						for (IBaritone baritone : BaritoneAPI.getProvider().getAllBaritones()) {
-							if (!baritone.getCommandManager().getRegistry().stream().filter((a) -> a.getNames().get(0).equalsIgnoreCase("elytra")).findAny().isEmpty()) {
-								baritone.getCommandManager().execute("elytra");
-								break;
+						if (goal.getGoalPos().getY() > 0 && goal.getGoalPos().getY() < 128) {
+							BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(goal);
+							for (IBaritone baritone : BaritoneAPI.getProvider().getAllBaritones()) {
+								if (!baritone.getCommandManager().getRegistry().stream().filter((a) -> a.getNames().get(0).equalsIgnoreCase("elytra")).findAny().isEmpty()) {
+									baritone.getCommandManager().execute("elytra");
+									break;
+								}
 							}
 						}
 					}

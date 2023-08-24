@@ -111,7 +111,7 @@ public abstract class GuiMapMixin {
 					}
 				));
 				if (mapIntegration.baritoneElytra.get() && mapIntegration.baritoneGoto.get() && PlayerUtils.getDimension() == Dimension.Nether) {
-					if (rightClickY > 0 && rightClickY < 128) {
+					if (rightClickY - 1 > 0 && rightClickY < 128) {
 						options.addAll(3, List.of(
 							new RightClickOption(I18n.translate("gui.world_map.baritone_elytra_here"), options.size(), guiMap) {
 								@Override
@@ -133,7 +133,7 @@ public abstract class GuiMapMixin {
 		}
 		else {
 			if (mapIntegration != null && mapIntegration.baritoneElytra.get() && mapIntegration.baritoneGoto.get() && PlayerUtils.getDimension() == Dimension.Nether) {
-				if (rightClickY > 0 && rightClickY < 128) {
+				if (rightClickY - 1 > 0 && rightClickY < 128) {
 					options.addAll(3, List.of(
 						new RightClickOption(I18n.translate("gui.world_map.baritone_elytra_here"), options.size(), guiMap) {
 							@Override
