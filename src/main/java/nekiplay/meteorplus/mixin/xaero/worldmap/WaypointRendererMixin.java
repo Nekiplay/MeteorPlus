@@ -5,6 +5,8 @@ import baritone.api.IBaritone;
 import baritone.api.command.ICommand;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import meteordevelopment.meteorclient.utils.world.Dimension;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.BlockPos;
@@ -70,7 +72,7 @@ public class WaypointRendererMixin {
 				}
 			}).setNameFormatArgs(new Object[]{"P"}));
 
-			if (mapIntegration.baritoneElytra.get()) {
+			if (mapIntegration.baritoneElytra.get() && PlayerUtils.getDimension() == Dimension.Nether) {
 				rightClickOptions.add((new RightClickOption("gui.world_map.baritone_elytra_here", rightClickOptions.size(), target) {
 					public void onAction(Screen screen) {
 						GoalBlock goal = new GoalBlock(new BlockPos(element.getX(), element.getY(), element.getZ()));
