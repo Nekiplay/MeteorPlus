@@ -82,6 +82,7 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new AntiBotPlus());
 		modules.add(new MultiTasks());
 		modules.add(new ElytraEsp());
+		modules.add(new KeepSprint());
 		//modules.add(new VelocityPlus());
 		if (MixinPlugin.isXaeroWorldMapresent || MixinPlugin.isJourneyMapPresent) {
 			modules.add(new MapIntegration());

@@ -6,6 +6,7 @@
 	"client": [
 		"minecraft.ClientPlayerInteractionManagerMixin",
 		"minecraft.MinecraftClientMixin",
+		"minecraft.PlayerEntityMixin",
 		"meteorclient.ESPMixin",
 		"meteorclient.FontsMixin",
 		"meteorclient.FreecamMixin",
