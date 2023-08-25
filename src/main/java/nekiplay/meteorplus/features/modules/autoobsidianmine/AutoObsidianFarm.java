@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class AutoObsidianFarm extends Module {
 	public AutoObsidianFarm() {
-		super(MeteorPlus.CATEGORY, "Auto-obsidian-mine", "Automatically mine obsidian.");
+		super(MeteorPlus.CATEGORY, "Auto-obsidian-farm", "Automatically farm obsidian in AFK.");
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
