@@ -120,6 +120,7 @@ public class Cauldrons extends AutoObsidianFarmMode {
 								break;
 							} else {
 								collectTimer++;
+								break;
 							}
 						}
 					}
