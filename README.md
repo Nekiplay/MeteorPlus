@@ -21,18 +21,18 @@
   ![Alt](https://repobeats.axiom.co/api/embed/869469d8757653eb3fc621df1708036d196fc1db.svg "Repobeats analytics image")
 
 ## Modules
-| Module               | Description                                   | Bypasses                     |
-|----------------------|-----------------------------------------------|------------------------------|
-| **Fly Plus**         | **Flight for Anti-Cheats**                    | **Matrix, Spartan, Vulcan**  |
-| **Speed Plus**       | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP** |
-| **Spider Plus**      | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**           |
-| **Jesus Plus**       | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**           |
-| **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats**               | **Spartan, Intave**          |
-| **Timer Plus**       | **Timer for Anti-Cheats**                     | **NCP**                      |
-| **Safe mine**        | **Prevents player from lava**                 | **Matrix**                   |
-| **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator**           |
-| **Anti Bot**         | **Ignores bots for KillAura, ESP, Tracers**   |                              |
-| **Trigger Bot**      | **AutoAttack on look at entity**              |                              |
+| Module               | Description                                   | Bypasses                    |
+|----------------------|-----------------------------------------------|-----------------------------|
+| **Fly Plus**         | **Flight for Anti-Cheats**                    | **Matrix, Spartan, Vulcan** |
+| **Speed Plus**       | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP**|
+| **Spider Plus**      | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**          |
+| **Jesus Plus**       | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**          |
+| **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats**               | **Spartan**                 |
+| **Timer Plus**       | **Timer for Anti-Cheats**                     | **NC, Intave**              |
+| **Safe mine**        | **Prevents player from lava**                 | **Matrix**                  |
+| **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator**          |
+| **Anti Bot**         | **Ignores bots for KillAura, ESP, Tracers**   |                             |
+| **Trigger Bot**      | **AutoAttack on look at entity**              |                             |
 
 ## Commands
 | Module    | Description       | Bypasses                    |
