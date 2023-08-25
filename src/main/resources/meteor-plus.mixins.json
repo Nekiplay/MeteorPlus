@@ -16,7 +16,8 @@
 		"meteorclient.TracersMixin",
 		"meteorclient.WaypointsModuleMixin",
 		"meteorclient.WMeteorModuleMixin",
-		"meteorclient.WPressableMixin"
+		"meteorclient.WPressableMixin",
+		"meteorclient.AutoToolMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
