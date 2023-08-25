@@ -27,7 +27,7 @@
 | **Speed Plus**       | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP** |
 | **Spider Plus**      | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**           |
 | **Jesus Plus**       | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**           |
-| **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats**               | **Spartan**                  |
+| **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats**               | **Spartan, Intave**          |
 | **Timer Plus**       | **Timer for Anti-Cheats**                     | **NCP**                      |
 | **Safe mine**        | **Prevents player from lava**                 | **Matrix**                   |
 | **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator**           |
