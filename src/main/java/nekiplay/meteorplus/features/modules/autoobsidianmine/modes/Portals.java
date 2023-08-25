@@ -51,8 +51,8 @@ public class Portals extends AutoObsidianFarmMode {
 	private final BlockPos.Mutable pos1 = new BlockPos.Mutable(); // Rendering for cubes
 	private final BlockPos.Mutable pos2 = new BlockPos.Mutable();
 	private Box box;
-	int maxh = 0;
-	int maxv = 0;
+	private int maxh = 0;
+	private int maxv = 0;
 	private boolean baritoneBreakSaved = false;
 	private boolean baritonePlaceSaved = false;
 	private int commandDelay = 0;
@@ -257,13 +257,6 @@ public class Portals extends AutoObsidianFarmMode {
 				|| (toofarUniformCube && shape == Shape.UniformCube)
 				|| (toofarCube && shape == Shape.Cube))
 				return;
-
-			// Flatten
-			if (mode == Mode.Flatten && blockPos.getY() < Math.floor(mc.player.getY())) return;
-
-			// Smash
-			if (mode == Mode.Smash && blockState.getHardness(mc.world, blockPos) != 0) return;
-
 			// Check for selected
 			if (blockState.getBlock() == Blocks.OBSIDIAN || blockState.getBlock() == Blocks.FIRE) {
 				blocks.add(blockPosPool.get().set(blockPos));

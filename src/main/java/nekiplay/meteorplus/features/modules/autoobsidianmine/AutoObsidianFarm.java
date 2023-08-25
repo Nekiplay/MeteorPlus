@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.features.modules.autoobsidianmine.modes.Cauldrons;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.modes.Portals;
 import net.minecraft.util.math.BlockPos;
 
@@ -38,6 +39,13 @@ public class AutoObsidianFarm extends Module {
 		.build()
 	);
 
+	public final Setting<BlockPos> lavaPlaceLocation = sgGeneral.add(new BlockPosSetting.Builder()
+		.name("lava-place-location")
+		.description("the position placing lava")
+		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
+		.build()
+	);
+
 	public final Setting<String> command = sgGeneral.add(new StringSetting.Builder()
 		.name("command")
 		.description("Send command.")
@@ -61,10 +69,18 @@ public class AutoObsidianFarm extends Module {
 		.build()
 	);
 
+	public final Setting<Integer> collectDelay = sgGeneral.add(new IntSetting.Builder()
+		.name("Collect-delay")
+		.description("Cauldron collecting lava delay.")
+		.defaultValue(4)
+		.build()
+	);
+
 	public final Setting<Boolean> noBaritoneBreaking = sgGeneral.add(new BoolSetting.Builder()
 		.name("disable-baritone-breaking-if-not-mine-portal")
 		.description("No break blocks if is not mining portal.")
 		.defaultValue(true)
+		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Portals_Vanila)
 		.build()
 	);
 
@@ -72,6 +88,7 @@ public class AutoObsidianFarm extends Module {
 		.name("disable-baritone-place")
 		.description("No place blocks.")
 		.defaultValue(true)
+		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Portals_Vanila)
 		.build()
 	);
 
@@ -79,6 +96,7 @@ public class AutoObsidianFarm extends Module {
 		.name("rotate")
 		.description("Rotate to breaking block.")
 		.defaultValue(false)
+		.visible(() -> workingMode.get() != AutoObsidianFarmModes.Cauldrons)
 		.build()
 	);
 
@@ -89,12 +107,23 @@ public class AutoObsidianFarm extends Module {
 		.build()
 	);
 
+	public final Setting<Integer> range = sgGeneral.add(new IntSetting.Builder()
+		.name("range")
+		.description("Cauldron range's.")
+		.defaultValue(4)
+		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
+		.build()
+	);
+
 	private AutoObsidianFarmMode currentMode;
 
 	private void onModeChanged(AutoObsidianFarmModes mode) {
 		switch (mode) {
 			case Portal_Homes, Portals_Vanila -> {
 				currentMode = new Portals();
+			}
+			case Cauldrons ->  {
+				currentMode = new Cauldrons();
 			}
 		}
 	}
