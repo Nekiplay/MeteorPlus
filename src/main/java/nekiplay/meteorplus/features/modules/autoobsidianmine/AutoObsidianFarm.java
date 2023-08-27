@@ -79,6 +79,13 @@ public class AutoObsidianFarm extends Module {
 		.build()
 	);
 
+	public final Setting<Integer> lavaPlaceDelay = sgGeneral.add(new IntSetting.Builder()
+		.name("lava-place-delay")
+		.description("Delay for placing lava.")
+		.defaultValue(4)
+		.build()
+	);
+
 	public final Setting<Integer> range = sgGeneral.add(new IntSetting.Builder()
 		.name("range")
 		.description("Cauldron range's.")

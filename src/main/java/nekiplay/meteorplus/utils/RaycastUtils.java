@@ -35,7 +35,7 @@ public class RaycastUtils {
 		return mc.world.raycast(new RaycastContext(vec3d, vec3d3, RaycastContext.ShapeType.OUTLINE, includeFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE, mc.player));
 	}
 
-	public static BlockHitResult buketRaycast(Vec3d camera, float pitch, float yaw, RaycastContext.FluidHandling fluidHandling) {
+	public static BlockHitResult bucketRaycast(Vec3d camera, float pitch, float yaw, RaycastContext.FluidHandling fluidHandling) {
 		float f = pitch;
 		float g = yaw;
 		Vec3d vec3d = camera;
