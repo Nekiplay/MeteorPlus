@@ -5,10 +5,17 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
+import meteordevelopment.meteorclient.utils.player.SlotUtils;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlus;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.Generic3x3ContainerScreenHandler;
+import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
 
 import java.util.List;
@@ -34,30 +41,88 @@ public class AutoDropPlus extends Module  {
 		.build()
 	);
 
+	private final Setting<Boolean> removeItems = defaultGroup.add(new BoolSetting.Builder()
+		.name("remover")
+		.description("Remove items?.")
+		.defaultValue(true)
+		.build()
+	);
+
 	private final Setting<Boolean> autoDropExcludeHotbar = defaultGroup.add(new BoolSetting.Builder()
 		.name("auto-Drop-ExcludeHotbar")
 		.description("Allow hotbar?.")
 		.defaultValue(true)
+		.visible(() -> !removeItems.get())
 		.build()
 	);
+
+	private final Setting<Boolean> removeContainersItems = defaultGroup.add(new BoolSetting.Builder()
+		.name("remover-in-containers")
+		.description("Remove items in chests?.")
+		.defaultValue(true)
+		.visible(() -> removeItems.get())
+		.build()
+	);
+
 	private int tick = 0;
 
 	@EventHandler
-	public void onTickPost(TickEvent.Post event) {
-		for (int i = autoDropExcludeHotbar.get() ? 9 : 0; i < mc.player.getInventory().size(); i++) {
-			ItemStack itemStack = mc.player.getInventory().getStack(i);
+	public void onTickPost(TickEvent.Pre event) {
+		int sync = mc.player.currentScreenHandler.syncId;
 
-			if (items.get().contains(itemStack.getItem())) {
-				if (tick == 0) {
-					InvUtils.drop().slot(i);
-					tick = delay.get();
-					break;
-				}
-				else {
-					tick--;
+
+		if (removeContainersItems.get()) {
+			for (int i = 0; i < SlotUtils.indexToId(SlotUtils.MAIN_START); i++) {
+				ScreenHandler handler = mc.player.currentScreenHandler;
+				if (!handler.getSlot(i).hasStack()) continue;
+
+				Item item = handler.getSlot(i).getStack().getItem();
+				if (items.get().contains(item)) {
+					if (tick == 0) {
+						if (removeItems.get()) {
+							mc.interactionManager.clickSlot(handler.syncId, getIndexToSlotId(handler, i), 300, SlotActionType.SWAP, mc.player);
+						}
+						tick = delay.get();
+					} else {
+						tick--;
+					}
 					break;
 				}
 			}
 		}
+		else {
+			for (int i = autoDropExcludeHotbar.get() ? 0 : 9; i < mc.player.getInventory().size(); i++) {
+				ItemStack itemStack = mc.player.getInventory().getStack(i);
+
+				if (items.get().contains(itemStack.getItem())) {
+					if (tick == 0) {
+						if (removeItems.get() && sync != -1) {
+							mc.interactionManager.clickSlot(sync, invIndexToSlotId(i), 300, SlotActionType.SWAP, mc.player);
+						}
+						else if (!removeItems.get()) { InvUtils.drop().slot(i); }
+						tick = delay.get();
+					}
+					else {
+						tick--;
+					}
+					break;
+				}
+			}
+		}
+	}
+	public static int invIndexToSlotId(int invIndex) {
+		return invIndex < 9 && invIndex != -1 ? 44 - (8 - invIndex) : invIndex;
+	}
+
+	public static int getIndexToSlotId(ScreenHandler handler, int invIndex) {
+		if (handler instanceof GenericContainerScreenHandler genericContainerScreenHandler) {
+			int count = genericContainerScreenHandler.slots.size();
+			return invIndex < 0 && invIndex != -1 ? count - (-1 - invIndex) : invIndex;
+		}
+		else if (handler instanceof ShulkerBoxScreenHandler genericContainerScreenHandler) {
+			int count = genericContainerScreenHandler.slots.size();
+			return invIndex < 0 && invIndex != -1 ? count - (-1 - invIndex) : invIndex;
+		}
+		return invIndex < 9 && invIndex != -1 ? 44 - (8 - invIndex) : invIndex;
 	}
 }

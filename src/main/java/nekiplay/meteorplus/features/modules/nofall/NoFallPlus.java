@@ -11,6 +11,7 @@ import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.features.modules.nofall.modes.Eclip;
 import nekiplay.meteorplus.features.modules.nofall.modes.MatrixNew;
 import nekiplay.meteorplus.features.modules.nofall.modes.Vulcan;
+import nekiplay.meteorplus.features.modules.nofall.modes.WaterBucket;
 
 public class NoFallPlus extends Module {
 	public NoFallPlus() {

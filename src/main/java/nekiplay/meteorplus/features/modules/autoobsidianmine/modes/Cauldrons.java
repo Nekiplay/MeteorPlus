@@ -167,11 +167,10 @@ public class Cauldrons extends AutoObsidianFarmMode {
 									BlockUtils.interact(bhr, Hand.MAIN_HAND, true);
 								});
 								collectTimer = 0;
-								break;
 							} else {
 								collectTimer++;
-								break;
 							}
+							break;
 						}
 					}
 					firstBlock = false;
