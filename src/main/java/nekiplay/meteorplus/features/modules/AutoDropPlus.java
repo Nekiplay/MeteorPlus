@@ -1,5 +1,6 @@
 package nekiplay.meteorplus.features.modules;
 
+import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -8,6 +9,7 @@ import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlus;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.SlotActionType;
 
 import java.util.List;
 
@@ -38,7 +40,6 @@ public class AutoDropPlus extends Module  {
 		.defaultValue(true)
 		.build()
 	);
-
 	private int tick = 0;
 
 	@EventHandler
@@ -50,9 +51,11 @@ public class AutoDropPlus extends Module  {
 				if (tick == 0) {
 					InvUtils.drop().slot(i);
 					tick = delay.get();
+					break;
 				}
 				else {
 					tick--;
+					break;
 				}
 			}
 		}

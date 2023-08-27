@@ -1,5 +1,7 @@
 package nekiplay.meteorplus.features.modules.autoobsidianmine;
 
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -7,6 +9,7 @@ import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.modes.Cauldrons;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.modes.Portals;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.BlockPos;
 
 public class AutoObsidianFarm extends Module {
@@ -39,18 +42,18 @@ public class AutoObsidianFarm extends Module {
 		.build()
 	);
 
-	public final Setting<BlockPos> lavaPlaceLocation = sgGeneral.add(new BlockPosSetting.Builder()
-		.name("lava-place-location")
-		.description("the position placing lava")
-		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
-		.build()
-	);
-
 	public final Setting<String> command = sgGeneral.add(new StringSetting.Builder()
 		.name("command")
 		.description("Send command.")
 		.defaultValue("/home")
 		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Portal_Homes)
+		.build()
+	);
+
+	public final Setting<BlockPos> lavaPlaceLocation = sgGeneral.add(new BlockPosSetting.Builder()
+		.name("lava-place-location")
+		.description("the position placing lava")
+		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
 		.build()
 	);
 
@@ -63,16 +66,32 @@ public class AutoObsidianFarm extends Module {
 	);
 
 	public final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
-		.name("Mining-delay")
+		.name("mining-delay")
 		.description("Mining delay.")
 		.defaultValue(4)
 		.build()
 	);
 
 	public final Setting<Integer> collectDelay = sgGeneral.add(new IntSetting.Builder()
-		.name("Collect-delay")
+		.name("collect-delay")
 		.description("Cauldron collecting lava delay.")
 		.defaultValue(4)
+		.build()
+	);
+
+	public final Setting<Integer> range = sgGeneral.add(new IntSetting.Builder()
+		.name("range")
+		.description("Cauldron range's.")
+		.defaultValue(5)
+		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
+		.build()
+	);
+
+	public final Setting<Boolean> solidCauldrons = sgGeneral.add(new BoolSetting.Builder()
+		.name("solid-cauldrons")
+		.description("Solid cauldrons.")
+		.defaultValue(false)
+		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
 		.build()
 	);
 
@@ -104,14 +123,7 @@ public class AutoObsidianFarm extends Module {
 		.name("swing-hand")
 		.description("Swing hand client side.")
 		.defaultValue(true)
-		.build()
-	);
-
-	public final Setting<Integer> range = sgGeneral.add(new IntSetting.Builder()
-		.name("range")
-		.description("Cauldron range's.")
-		.defaultValue(4)
-		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
+		.visible(() -> workingMode.get() != AutoObsidianFarmModes.Cauldrons)
 		.build()
 	);
 
@@ -128,6 +140,13 @@ public class AutoObsidianFarm extends Module {
 		}
 	}
 
+	@EventHandler
+	private void onMovePacket(PacketEvent.Send event) {
+		if (event.packet instanceof PlayerMoveC2SPacket playerMove) {
+			currentMode.onMovePacket(playerMove);
+		}
+	}
+
 	@Override
 	public void onActivate() {
 		currentMode.onActivate();
@@ -141,5 +160,10 @@ public class AutoObsidianFarm extends Module {
 	@EventHandler
 	private void onPreTick(TickEvent.Pre event) {
 		currentMode.onTickEventPre(event);
+	}
+
+	@EventHandler
+	private void onCollisionShape(CollisionShapeEvent event) {
+		currentMode.onCollisionShape(event);
 	}
 }

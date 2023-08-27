@@ -1,31 +1,36 @@
 package nekiplay.meteorplus.features.modules.autoobsidianmine.modes;
 
+import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.Pool;
-import meteordevelopment.meteorclient.utils.player.FindItemResult;
-import meteordevelopment.meteorclient.utils.player.InvUtils;
-import meteordevelopment.meteorclient.utils.player.PlayerUtils;
-import meteordevelopment.meteorclient.utils.player.Rotations;
+import meteordevelopment.meteorclient.utils.player.*;
 import meteordevelopment.meteorclient.utils.world.BlockIterator;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarmMode;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarmModes;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CauldronBlock;
+import nekiplay.meteorplus.utils.RaycastUtils;
+import net.minecraft.block.*;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.WaterFluid;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.RaycastContext;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static baritone.api.utils.Helper.mc;
 
 public class Cauldrons extends AutoObsidianFarmMode {
 	public Cauldrons() {
@@ -44,14 +49,39 @@ public class Cauldrons extends AutoObsidianFarmMode {
 		timer = 0;
 		noBlockTimer = 0;
 		collectTimer = 0;
+		x = mc.player.getX();
+		y = mc.player.getY();
+		z = mc.player.getZ();
 	}
 	private int collectTimer = 0;
 	private final Portals.SortMode sortMode = Portals.SortMode.Closest;
+
+	@Override
+	public void onCollisionShape(CollisionShapeEvent event) {
+		if (!settings.solidCauldrons.get()) {
+			return;
+		}
+		if (event.state.getBlock() == Blocks.CAULDRON || event.state.getBlock() == Blocks.LAVA_CAULDRON || event.state.getBlock() == Blocks.WATER_CAULDRON) {
+			event.shape = VoxelShapes.fullCube();
+		}
+	}
+	private double x;
+	private double y;
+	private double z;
+	@Override
+	public void onMovePacket(PlayerMoveC2SPacket playerMove) {
+		if (playerMove.changesPosition()) {
+			x = playerMove.getX(mc.player.getX());
+			y = playerMove.getY(mc.player.getY());
+			z = playerMove.getZ(mc.player.getZ());
+		}
+	}
+
 	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
 		BlockIterator.register(settings.range.get(), settings.range.get(), (blockPos, blockState) -> {
 			Block block = blockState.getBlock();
-			if (block == Blocks.LAVA_CAULDRON || block == Blocks.OBSIDIAN) {
+			if (block == Blocks.LAVA_CAULDRON || block == Blocks.OBSIDIAN || block == Blocks.CAULDRON) {
 				blocks.add(blockPosPool.get().set(blockPos));
 			}
 		});
@@ -86,7 +116,7 @@ public class Cauldrons extends AutoObsidianFarmMode {
 			if (state.getBlock() == Blocks.OBSIDIAN) {
 				if (BlockUtils.canBreak(placing)) {
 					rotate(placing, null);
-					BlockUtils.breakBlock(placing, settings.swingHand.get());
+					BlockUtils.breakBlock(placing, true);
 				}
 			} else {
 
@@ -113,7 +143,7 @@ public class Cauldrons extends AutoObsidianFarmMode {
 										hitPos = hitPos.add((double)side.getOffsetX() * 0.5, (double)side.getOffsetY() * 0.5, (double)side.getOffsetZ() * 0.5);
 									}
 									BlockHitResult bhr = new BlockHitResult(hitPos, Direction.UP, block, false);
-									BlockUtils.interact(bhr, Hand.MAIN_HAND, settings.swingHand.get());
+									BlockUtils.interact(bhr, Hand.MAIN_HAND, true);
 									//mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
 								});
 								collectTimer = 0;
@@ -131,12 +161,39 @@ public class Cauldrons extends AutoObsidianFarmMode {
 					for (BlockPos.Mutable blockPos : blocks) blockPosPool.free(blockPos);
 					blocks.clear();
 				} else if (lavaBucket.found()) {
-					if (state.getBlock() == Blocks.WATER) {
+					if (state.getBlock() != Blocks.LAVA) {
 						if (mc.player == null || mc.player.getInventory() == null) return;
 						Rotations.rotate(Rotations.getYaw(placing), Rotations.getPitch(placing), 10, true, () -> {
-							InvUtils.swap(lavaBucket.slot(), true);
-							mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
-							InvUtils.swapBack();
+							Vec3d pos = mc.player.getEyePos();
+							//if (mc.player.isOnGround()) {
+								HitResult result = RaycastUtils.buketRaycast(pos, Rotations.serverPitch, Rotations.serverYaw, RaycastContext.FluidHandling.NONE);
+								if (result.getType() == HitResult.Type.BLOCK) {
+									BlockHitResult blockHitResult = (BlockHitResult) result;
+									BlockState raycastState = mc.world.getBlockState(blockHitResult.getBlockPos());
+									Block raycastBlock = raycastState.getBlock();
+
+
+									BlockPos blockPos = blockHitResult.getBlockPos();
+									Direction direction = blockHitResult.getSide();
+									BlockPos blockPos2 = blockPos.offset(direction);
+									//ChatUtils.info("Pos: " + blockPos2.toShortString() + " Block: " + mc.world.getBlockState(blockPos2).getBlock().getName().getString());
+
+									if (blockPos2.equals(placing)) {
+										InvUtils.swap(lavaBucket.slot(), true);
+										mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
+										InvUtils.swapBack();
+
+										//FluidBlock fluid = (FluidBlock) raycastBlock;
+										//FluidState fluidState = fluid.getFluidState(raycastState);
+										//ChatUtils.info("Level: " + fluidState.getLevel());
+										//if (fluidState.getLevel() != 8) {
+										//	InvUtils.swap(lavaBucket.slot(), true);
+										//	mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
+										//	InvUtils.swapBack();
+										//}
+									}
+								}
+							//}
 						});
 					}
 				}

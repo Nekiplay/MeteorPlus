@@ -1,6 +1,7 @@
 package nekiplay.meteorplus.events;
 
 import meteordevelopment.meteorclient.events.Cancellable;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.screen.slot.SlotActionType;
 
 public class ClickWindowEvent extends Cancellable {

@@ -1,8 +1,10 @@
 package nekiplay.meteorplus.features.modules.autoobsidianmine;
 
+import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
 public class AutoObsidianFarmMode {
 	protected final MinecraftClient mc;
@@ -18,4 +20,9 @@ public class AutoObsidianFarmMode {
 	public void onActivate() {}
 	public void onDeactivate() {}
 	public void onTickEventPre(TickEvent.Pre event) {}
+	public void onCollisionShape(CollisionShapeEvent event) {}
+
+	public void onMovePacket(PlayerMoveC2SPacket playerMove) {
+
+	}
 }
