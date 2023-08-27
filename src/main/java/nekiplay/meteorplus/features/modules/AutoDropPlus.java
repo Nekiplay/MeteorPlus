@@ -48,19 +48,18 @@ public class AutoDropPlus extends Module  {
 		.build()
 	);
 
-	private final Setting<Boolean> autoDropExcludeHotbar = defaultGroup.add(new BoolSetting.Builder()
-		.name("auto-Drop-ExcludeHotbar")
-		.description("Allow hotbar?.")
-		.defaultValue(true)
-		.visible(() -> !removeItems.get())
-		.build()
-	);
-
 	private final Setting<Boolean> removeContainersItems = defaultGroup.add(new BoolSetting.Builder()
 		.name("remover-in-containers")
 		.description("Remove items in chests?.")
 		.defaultValue(true)
 		.visible(() -> removeItems.get())
+		.build()
+	);
+
+	private final Setting<Boolean> autoDropExcludeHotbar = defaultGroup.add(new BoolSetting.Builder()
+		.name("auto-Drop-ExcludeHotbar")
+		.description("Allow hotbar?.")
+		.defaultValue(true)
 		.build()
 	);
 

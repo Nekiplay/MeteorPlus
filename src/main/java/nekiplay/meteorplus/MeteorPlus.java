@@ -3,6 +3,7 @@ package nekiplay.meteorplus;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
+import nekiplay.meteorplus.commands.ClearInventory;
 import nekiplay.meteorplus.commands.Eclip;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarm;
 import nekiplay.meteorplus.features.modules.killaura.KillAuraPlus;
@@ -51,6 +52,7 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info(LOGPREFIX + " initializing commands...");
 
 		Commands.add(new Eclip());
+		Commands.add(new ClearInventory());
 
 		LOG.info(LOGPREFIX + " loaded commands");
 		//endregion
