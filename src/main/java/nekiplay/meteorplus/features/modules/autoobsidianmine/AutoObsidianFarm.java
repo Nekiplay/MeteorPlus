@@ -147,11 +147,9 @@ public class AutoObsidianFarm extends Module {
 		}
 	}
 
-	@EventHandler
-	private void onMovePacket(PacketEvent.Send event) {
-		if (event.packet instanceof PlayerMoveC2SPacket playerMove) {
-			currentMode.onMovePacket(playerMove);
-		}
+	@Override
+	public String getInfoString() {
+		return currentMode.getInfoString();
 	}
 
 	@Override
@@ -172,5 +170,12 @@ public class AutoObsidianFarm extends Module {
 	@EventHandler
 	private void onCollisionShape(CollisionShapeEvent event) {
 		currentMode.onCollisionShape(event);
+	}
+
+	@EventHandler
+	private void onMovePacket(PacketEvent.Send event) {
+		if (event.packet instanceof PlayerMoveC2SPacket playerMove) {
+			currentMode.onMovePacket(playerMove);
+		}
 	}
 }

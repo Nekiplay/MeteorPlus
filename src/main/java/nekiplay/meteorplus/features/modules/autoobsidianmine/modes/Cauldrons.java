@@ -50,6 +50,7 @@ public class Cauldrons extends AutoObsidianFarmMode {
 		noBlockTimer = 0;
 		collectTimer = 0;
 		lavaPlaceTimer = 0;
+		placed = 0;
 	}
 	private int collectTimer = 0;
 	private int lavaPlaceTimer = 0;
@@ -63,6 +64,12 @@ public class Cauldrons extends AutoObsidianFarmMode {
 		if (event.state.getBlock() == Blocks.CAULDRON || event.state.getBlock() == Blocks.LAVA_CAULDRON || event.state.getBlock() == Blocks.WATER_CAULDRON) {
 			event.shape = VoxelShapes.fullCube();
 		}
+	}
+	private int placed = 0;
+
+	@Override
+	public String getInfoString() {
+		return Integer.toString(placed);
 	}
 
 	@Override
@@ -126,6 +133,7 @@ public class Cauldrons extends AutoObsidianFarmMode {
 									if (blockPos2.equals(placing)) {
 										InvUtils.swap(lavaBucket.slot(), true);
 										mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
+										placed++;
 										InvUtils.swapBack();
 										lavaPlaceTimer = 0;
 									}

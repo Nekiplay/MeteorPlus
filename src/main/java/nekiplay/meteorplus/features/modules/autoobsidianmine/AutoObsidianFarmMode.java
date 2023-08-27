@@ -22,7 +22,7 @@ public class AutoObsidianFarmMode {
 	public void onTickEventPre(TickEvent.Pre event) {}
 	public void onCollisionShape(CollisionShapeEvent event) {}
 
-	public void onMovePacket(PlayerMoveC2SPacket playerMove) {
+	public void onMovePacket(PlayerMoveC2SPacket playerMove) {}
 
-	}
+	public String getInfoString() { return ""; }
 }
