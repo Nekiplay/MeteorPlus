@@ -41,6 +41,14 @@ public class AutoDropPlus extends Module  {
 		.build()
 	);
 
+	private final Setting<Boolean> workInstant = defaultGroup.add(new BoolSetting.Builder()
+		.name("instant-work")
+		.description("Drop or remove items instant.")
+		.defaultValue(true)
+		.visible(() -> delay.get() == 0)
+		.build()
+	);
+
 	private final Setting<Boolean> removeContainersItems = defaultGroup.add(new BoolSetting.Builder()
 		.name("work-in-containers")
 		.description("Remove items in chests?.")
@@ -78,12 +86,16 @@ public class AutoDropPlus extends Module  {
 						mc.interactionManager.clickSlot(sync, invIndexToSlotId(i), 300, SlotActionType.SWAP, mc.player);
 					}
 					else if (!removeItems.get()) { InvUtils.drop().slot(i); }
-					tick = delay.get();
+					if (!workInstant.get()) {
+						tick = delay.get();
+					}
 				}
 				else {
 					tick--;
 				}
-				break;
+				if (!workInstant.get()) {
+					break;
+				}
 			}
 		}
 		if (removeContainersItems.get()) {
@@ -98,11 +110,15 @@ public class AutoDropPlus extends Module  {
 							mc.interactionManager.clickSlot(handler.syncId, getIndexToSlotId(handler, i), 300, SlotActionType.SWAP, mc.player);
 						}
 						else { InvUtils.drop().slot(i); }
-						tick = delay.get();
+						if (!workInstant.get()) {
+							tick = delay.get();
+						}
 					} else {
 						tick--;
 					}
-					break;
+					if (!workInstant.get()) {
+						break;
+					}
 				}
 			}
 		}
