@@ -30,7 +30,7 @@ public class ItemDataSettingScreen extends WindowScreen {
 	private String filterText = "";
 
 	public ItemDataSettingScreen(GuiTheme theme, ItemDataSetting<?> setting) {
-		super(theme, "Configure Blocks");
+		super(theme, "Configure Items");
 
 		this.setting = setting;
 	}
