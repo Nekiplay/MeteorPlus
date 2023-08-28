@@ -96,7 +96,18 @@ public class ItemFrameEsp extends Module {
 						event.renderer.box(x + box.minX, y + box.minY, z + box.minZ, x + box.maxX, y + box.maxY, z + box.maxZ, espItemData.sideColor, espItemData.lineColor, espItemData.shapeMode, 0);
 					}
 				}
+				else {
+					if (defaultBlockConfig.get().tracer) {
+						event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, xl, yl, zl, defaultBlockConfig.get().tracerColor);
+					}
 
+					double x = MathHelper.lerp(event.tickDelta, entity.lastRenderX, entity.getX()) - entity.getX();
+					double y = MathHelper.lerp(event.tickDelta, entity.lastRenderY, entity.getY()) - entity.getY();
+					double z = MathHelper.lerp(event.tickDelta, entity.lastRenderZ, entity.getZ()) - entity.getZ();
+
+					Box box = entity.getBoundingBox();
+					event.renderer.box(x + box.minX, y + box.minY, z + box.minZ, x + box.maxX, y + box.maxY, z + box.maxZ, defaultBlockConfig.get().sideColor, defaultBlockConfig.get().lineColor, defaultBlockConfig.get().shapeMode, 0);
+				}
 			}
 		}
 	}
