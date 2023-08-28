@@ -41,24 +41,23 @@ public class AutoDropPlus extends Module  {
 		.build()
 	);
 
-	private final Setting<Boolean> removeItems = defaultGroup.add(new BoolSetting.Builder()
-		.name("remover")
-		.description("Remove items?.")
-		.defaultValue(true)
-		.build()
-	);
-
 	private final Setting<Boolean> removeContainersItems = defaultGroup.add(new BoolSetting.Builder()
-		.name("remover-in-containers")
+		.name("work-in-containers")
 		.description("Remove items in chests?.")
 		.defaultValue(true)
-		.visible(() -> removeItems.get())
 		.build()
 	);
 
 	private final Setting<Boolean> autoDropExcludeHotbar = defaultGroup.add(new BoolSetting.Builder()
-		.name("auto-Drop-ExcludeHotbar")
+		.name("work-in-hotbar")
 		.description("Allow hotbar?.")
+		.defaultValue(true)
+		.build()
+	);
+
+	private final Setting<Boolean> removeItems = defaultGroup.add(new BoolSetting.Builder()
+		.name("remover")
+		.description("Remove items?.")
 		.defaultValue(true)
 		.build()
 	);
@@ -70,38 +69,37 @@ public class AutoDropPlus extends Module  {
 		int sync = mc.player.currentScreenHandler.syncId;
 
 
+		for (int i = autoDropExcludeHotbar.get() ? 0 : 9; i < mc.player.getInventory().size(); i++) {
+			ItemStack itemStack = mc.player.getInventory().getStack(i);
+
+			if (items.get().contains(itemStack.getItem().asItem())) {
+				if (tick == 0) {
+					if (removeItems.get() && sync != -1) {
+						mc.interactionManager.clickSlot(sync, invIndexToSlotId(i), 300, SlotActionType.SWAP, mc.player);
+					}
+					else if (!removeItems.get()) { InvUtils.drop().slot(i); }
+					tick = delay.get();
+				}
+				else {
+					tick--;
+				}
+				break;
+			}
+		}
 		if (removeContainersItems.get()) {
 			for (int i = 0; i < SlotUtils.indexToId(SlotUtils.MAIN_START); i++) {
 				ScreenHandler handler = mc.player.currentScreenHandler;
 				if (!handler.getSlot(i).hasStack()) continue;
 
 				Item item = handler.getSlot(i).getStack().getItem();
-				if (items.get().contains(item)) {
+				if (items.get().contains(item.asItem())) {
 					if (tick == 0) {
 						if (removeItems.get()) {
 							mc.interactionManager.clickSlot(handler.syncId, getIndexToSlotId(handler, i), 300, SlotActionType.SWAP, mc.player);
 						}
+						else { InvUtils.drop().slot(i); }
 						tick = delay.get();
 					} else {
-						tick--;
-					}
-					break;
-				}
-			}
-		}
-		else {
-			for (int i = autoDropExcludeHotbar.get() ? 0 : 9; i < mc.player.getInventory().size(); i++) {
-				ItemStack itemStack = mc.player.getInventory().getStack(i);
-
-				if (items.get().contains(itemStack.getItem())) {
-					if (tick == 0) {
-						if (removeItems.get() && sync != -1) {
-							mc.interactionManager.clickSlot(sync, invIndexToSlotId(i), 300, SlotActionType.SWAP, mc.player);
-						}
-						else if (!removeItems.get()) { InvUtils.drop().slot(i); }
-						tick = delay.get();
-					}
-					else {
 						tick--;
 					}
 					break;
