@@ -83,16 +83,18 @@ public class ItemFrameEsp extends Module {
 				ItemStack held = itemFrame.getHeldItemStack();
 				if (whitelist.get().contains(held.getItem())) {
 					ESPItemData espItemData = blockConfigs.get().get(held.getItem());
-					if (espItemData.tracer) {
-						event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, xl, yl, zl, espItemData.tracerColor);
+					if (espItemData != null) {
+						if (espItemData.tracer) {
+							event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, xl, yl, zl, espItemData.tracerColor);
+						}
+
+						double x = MathHelper.lerp(event.tickDelta, entity.lastRenderX, entity.getX()) - entity.getX();
+						double y = MathHelper.lerp(event.tickDelta, entity.lastRenderY, entity.getY()) - entity.getY();
+						double z = MathHelper.lerp(event.tickDelta, entity.lastRenderZ, entity.getZ()) - entity.getZ();
+
+						Box box = entity.getBoundingBox();
+						event.renderer.box(x + box.minX, y + box.minY, z + box.minZ, x + box.maxX, y + box.maxY, z + box.maxZ, espItemData.sideColor, espItemData.lineColor, espItemData.shapeMode, 0);
 					}
-
-					double x = MathHelper.lerp(event.tickDelta, entity.lastRenderX, entity.getX()) - entity.getX();
-					double y = MathHelper.lerp(event.tickDelta, entity.lastRenderY, entity.getY()) - entity.getY();
-					double z = MathHelper.lerp(event.tickDelta, entity.lastRenderZ, entity.getZ()) - entity.getZ();
-
-					Box box = entity.getBoundingBox();
-					event.renderer.box(x + box.minX, y + box.minY, z + box.minZ, x + box.maxX, y + box.maxY, z + box.maxZ, espItemData.sideColor, espItemData.lineColor, espItemData.shapeMode, 0);
 				}
 
 			}
