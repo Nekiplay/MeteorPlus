@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.settings;
+package nekiplay.meteorplus.settings.items;
 
 import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.WindowScreen;
@@ -10,8 +10,6 @@ import meteordevelopment.meteorclient.utils.misc.IChangeable;
 import meteordevelopment.meteorclient.utils.misc.ICopyable;
 import meteordevelopment.meteorclient.utils.misc.ISerializable;
 import meteordevelopment.meteorclient.utils.misc.Names;
-import nekiplay.meteorplus.settings.IItemData;
-import nekiplay.meteorplus.settings.ItemDataSetting;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import org.apache.commons.lang3.StringUtils;

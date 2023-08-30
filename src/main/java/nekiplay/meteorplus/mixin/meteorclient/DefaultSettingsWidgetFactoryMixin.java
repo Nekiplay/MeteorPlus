@@ -3,7 +3,7 @@ package nekiplay.meteorplus.mixin.meteorclient;
 import meteordevelopment.meteorclient.gui.DefaultSettingsWidgetFactory;
 import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.utils.SettingsWidgetFactory;
-import nekiplay.meteorplus.settings.MeteorPlusSettings;
+import nekiplay.meteorplus.settings.items.MeteorPlusSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

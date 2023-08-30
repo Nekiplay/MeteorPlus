@@ -2,14 +2,15 @@ package nekiplay.meteorplus.features.modules;
 
 
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.RenderUtils;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.settings.ESPItemData;
-import nekiplay.meteorplus.settings.ItemDataSetting;
+import nekiplay.meteorplus.settings.items.ESPItemData;
+import nekiplay.meteorplus.settings.items.ItemDataSetting;
 import nekiplay.meteorplus.MeteorPlus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
@@ -59,18 +60,8 @@ public class ItemFrameEsp extends Module {
 		.name("whitelist-items-configs")
 		.description("Config for each item.")
 		.defaultData(defaultBlockConfig)
-			.defaultValue(
-				Stream.of(new Object[][] {
-					{ Items.ELYTRA, new ESPItemData(ShapeMode.Both, new SettingColor(255, 0, 0), new SettingColor(255, 0, 0), true, new SettingColor(255, 0, 0)) },
-				}).collect(Collectors.toMap(data -> (Item) data[0], data -> (ESPItemData) data[1]))
-
-			)
-		.onChanged(v -> {
-
-		})
 		.build()
 	);
-
 	@EventHandler
 	private void onRender2D(Render3DEvent event) {
 		if (mc.world == null) return;
@@ -95,18 +86,18 @@ public class ItemFrameEsp extends Module {
 						Box box = entity.getBoundingBox();
 						event.renderer.box(x + box.minX, y + box.minY, z + box.minZ, x + box.maxX, y + box.maxY, z + box.maxZ, espItemData.sideColor, espItemData.lineColor, espItemData.shapeMode, 0);
 					}
-				}
-				else {
-					if (defaultBlockConfig.get().tracer) {
-						event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, xl, yl, zl, defaultBlockConfig.get().tracerColor);
+					else {
+						if (defaultBlockConfig.get().tracer) {
+							event.renderer.line(RenderUtils.center.x, RenderUtils.center.y, RenderUtils.center.z, xl, yl, zl, defaultBlockConfig.get().tracerColor);
+						}
+
+						double x = MathHelper.lerp(event.tickDelta, entity.lastRenderX, entity.getX()) - entity.getX();
+						double y = MathHelper.lerp(event.tickDelta, entity.lastRenderY, entity.getY()) - entity.getY();
+						double z = MathHelper.lerp(event.tickDelta, entity.lastRenderZ, entity.getZ()) - entity.getZ();
+
+						Box box = entity.getBoundingBox();
+						event.renderer.box(x + box.minX, y + box.minY, z + box.minZ, x + box.maxX, y + box.maxY, z + box.maxZ, defaultBlockConfig.get().sideColor, defaultBlockConfig.get().lineColor, defaultBlockConfig.get().shapeMode, 0);
 					}
-
-					double x = MathHelper.lerp(event.tickDelta, entity.lastRenderX, entity.getX()) - entity.getX();
-					double y = MathHelper.lerp(event.tickDelta, entity.lastRenderY, entity.getY()) - entity.getY();
-					double z = MathHelper.lerp(event.tickDelta, entity.lastRenderZ, entity.getZ()) - entity.getZ();
-
-					Box box = entity.getBoundingBox();
-					event.renderer.box(x + box.minX, y + box.minY, z + box.minZ, x + box.maxX, y + box.maxY, z + box.maxZ, defaultBlockConfig.get().sideColor, defaultBlockConfig.get().lineColor, defaultBlockConfig.get().shapeMode, 0);
 				}
 			}
 		}

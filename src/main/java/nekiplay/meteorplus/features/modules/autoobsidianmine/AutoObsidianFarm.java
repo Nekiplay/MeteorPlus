@@ -102,6 +102,14 @@ public class AutoObsidianFarm extends Module {
 		.build()
 	);
 
+	public final Setting<Boolean> bypassSneak = sgGeneral.add(new BoolSetting.Builder()
+		.name("bypass-sneak")
+		.description("bypass-sneak-interact.")
+		.defaultValue(false)
+		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
+		.build()
+	);
+
 	public final Setting<Boolean> noBaritoneBreaking = sgGeneral.add(new BoolSetting.Builder()
 		.name("disable-baritone-breaking-if-not-mine-portal")
 		.description("No break blocks if is not mining portal.")

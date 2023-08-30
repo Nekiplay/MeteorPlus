@@ -1,12 +1,10 @@
-package nekiplay.meteorplus.settings;
+package nekiplay.meteorplus.settings.items;
 
 import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.renderer.GuiRenderer;
 import meteordevelopment.meteorclient.gui.utils.SettingsWidgetFactory;
 import meteordevelopment.meteorclient.gui.widgets.containers.WTable;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
-import nekiplay.meteorplus.settings.ItemDataSetting;
-import nekiplay.meteorplus.settings.ItemDataSettingScreen;
 
 import java.util.Map;
 

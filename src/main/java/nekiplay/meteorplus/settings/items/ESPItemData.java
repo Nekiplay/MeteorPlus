@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.settings;
+package nekiplay.meteorplus.settings.items;
 
 import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.WidgetScreen;

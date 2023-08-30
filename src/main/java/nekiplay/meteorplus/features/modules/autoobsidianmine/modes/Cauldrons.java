@@ -15,6 +15,8 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.WaterFluid;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
@@ -118,27 +120,29 @@ public class Cauldrons extends AutoObsidianFarmMode {
 
 				FindItemResult bucket = InvUtils.findInHotbar(Items.BUCKET);
 				FindItemResult lavaBucket = InvUtils.findInHotbar(Items.LAVA_BUCKET);
-				if (lavaBucket.found()) {
+				if (lavaBucket.found() && mc.player.getPos().distanceTo(placing.toCenterPos()) <= settings.range.get() + 1) {
 					if (state.getBlock() != Blocks.LAVA) {
 						if (lavaPlaceTimer >= settings.lavaPlaceDelay.get()) {
-							Rotations.rotate(Rotations.getYaw(placing), Rotations.getPitch(placing), 10, true, () -> {
-								Vec3d pos = mc.player.getEyePos();
-								HitResult result = RaycastUtils.bucketRaycast(pos, Rotations.serverPitch, Rotations.serverYaw, RaycastContext.FluidHandling.NONE);
-								if (result.getType() == HitResult.Type.BLOCK) {
-									BlockHitResult blockHitResult = (BlockHitResult) result;
-									BlockPos blockPos = blockHitResult.getBlockPos();
-									Direction direction = blockHitResult.getSide();
-									BlockPos blockPos2 = blockPos.offset(direction);
+							double yaw = Rotations.getYaw(placing);
+							double pitch = Rotations.getPitch(placing);
+							Vec3d pos = mc.player.getEyePos();
+							HitResult result = RaycastUtils.bucketRaycast(pos, (float) pitch, (float) yaw, RaycastContext.FluidHandling.NONE);
+							if (result.getType() == HitResult.Type.BLOCK) {
+								BlockHitResult blockHitResult = (BlockHitResult) result;
+								BlockPos blockPos = blockHitResult.getBlockPos();
+								Direction direction = blockHitResult.getSide();
+								BlockPos blockPos2 = blockPos.offset(direction);
 
-									if (blockPos2.equals(placing)) {
+								if (blockPos2.equals(placing)) {
+									Rotations.rotate(yaw, pitch, 10, true, () -> {
 										InvUtils.swap(lavaBucket.slot(), true);
 										mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
 										placed++;
 										InvUtils.swapBack();
 										lavaPlaceTimer = 0;
-									}
+									});
 								}
-							});
+							}
 						}
 						else {
 							lavaPlaceTimer++;
@@ -164,7 +168,15 @@ public class Cauldrons extends AutoObsidianFarmMode {
 										hitPos = hitPos.add((double) side.getOffsetX() * 0.5, (double) side.getOffsetY() * 0.5, (double) side.getOffsetZ() * 0.5);
 									}
 									BlockHitResult bhr = new BlockHitResult(hitPos, Direction.UP, block, false);
+									boolean isSneaking = false;
+									if (settings.bypassSneak.get()) {
+										mc.player.setSneaking(false);
+										isSneaking = true;
+									}
 									BlockUtils.interact(bhr, Hand.MAIN_HAND, true);
+									if (settings.bypassSneak.get() && isSneaking) {
+										mc.player.setSneaking(true);
+									}
 								});
 								collectTimer = 0;
 							} else {

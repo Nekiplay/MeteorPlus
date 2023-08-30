@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.settings;
+package nekiplay.meteorplus.settings.items;
 
 import meteordevelopment.meteorclient.settings.IVisible;
 import meteordevelopment.meteorclient.settings.Setting;
