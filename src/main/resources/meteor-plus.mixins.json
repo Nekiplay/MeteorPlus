@@ -16,6 +16,7 @@
 		"meteorclient.WaypointsModuleMixin",
 		"meteorclient.WMeteorModuleMixin",
 		"meteorclient.WPressableMixin",
+		"meteorclient.ItemHighlightMixin",
 		"minecraft.ClientPlayerInteractionManagerMixin",
 		"minecraft.MinecraftClientMixin"
 	],

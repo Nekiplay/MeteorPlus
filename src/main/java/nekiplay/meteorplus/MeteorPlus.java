@@ -60,6 +60,7 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info(LOGPREFIX + " initializing modules...");
 		Modules modules = Modules.get();
 
+		modules.add(new ItemHighlightPlus());
 		modules.add(new FastLadderPlus());
 		modules.add(new TriggerBot());
 		modules.add(new EyeFinder());
