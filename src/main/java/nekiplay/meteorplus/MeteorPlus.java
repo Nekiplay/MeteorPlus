@@ -6,6 +6,7 @@ import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import nekiplay.meteorplus.commands.ClearInventory;
 import nekiplay.meteorplus.commands.Eclip;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarm;
+import nekiplay.meteorplus.features.modules.killaura.KillAuraPlus;
 import nekiplay.meteorplus.gui.tabs.HiddenModulesTab;
 import nekiplay.meteorplus.hud.TimerPlusCharge;
 import nekiplay.meteorplus.features.modules.*;
@@ -86,7 +87,7 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new AntiBotPlus());
 		modules.add(new MultiTasks());
 		modules.add(new ItemFrameEsp());
-		//modules.add(new KillAuraPlus());
+		modules.add(new KillAuraPlus());
 		//modules.add(new VelocityPlus());
 		if (MixinPlugin.isXaeroWorldMapresent || MixinPlugin.isJourneyMapPresent) {
 			modules.add(new MapIntegration());

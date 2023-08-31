@@ -18,6 +18,27 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 
 public class RaycastUtils {
+	public static EntityHitResult raycastEntity(final double range, final float yaw, final float pitch, double boxexpand) {
+		Entity camera = mc.getCameraEntity();
+		Vec3d cameraVec = camera.getCameraPosVec(1f);
+
+		final float yawCos = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
+		final float yawSin = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
+		final float pitchCos = -MathHelper.cos(-pitch * 0.017453292F);
+		final float pitchSin = MathHelper.sin(-pitch * 0.017453292F);
+
+		final Vec3d rotation = new Vec3d(yawSin * pitchCos, pitchSin, yawCos * pitchCos);
+
+		Vec3d vec3d3 = cameraVec.add(rotation.x * range, rotation.y * range, rotation.z * range);
+		Box box = camera.getBoundingBox().stretch(rotation.multiply(range)).expand(boxexpand, boxexpand, boxexpand);
+
+		return ProjectileUtil.raycast(camera, cameraVec, vec3d3, box, new Predicate<Entity>() {
+			@Override
+			public boolean test(Entity entity) {
+				return !entity.isSpectator() && entity.isCollidable();
+			}
+		}, 0);
+	}
 	public static Vec3d getRotationVector(float pitch, float yaw) {
 		float f = pitch * ((float)Math.PI / 180);
 		float g = -yaw * ((float)Math.PI / 180);

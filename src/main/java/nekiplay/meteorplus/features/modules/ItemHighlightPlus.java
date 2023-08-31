@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class ItemHighlightPlus extends Module {
 	public ItemHighlightPlus() {
-		super(MeteorPlus.CATEGORY, "ItemHighlight+", "Freezes your position for server.");
+		super(MeteorPlus.CATEGORY, "ItemHighlight+", "Highlights selected items when in guis.");
 	}
 
 	public final SettingGroup sgGeneral = settings.getDefaultGroup();
