@@ -124,6 +124,15 @@ public class FreecamMixin {
 		Blocks.POTATOES,
 		Blocks.MELON_STEM,
 		Blocks.PUMPKIN_STEM,
+		// Saplings
+		Blocks.SPRUCE_SAPLING,
+		Blocks.ACACIA_SAPLING,
+		Blocks.BIRCH_SAPLING,
+		Blocks.BAMBOO_SAPLING,
+		Blocks.CHERRY_SAPLING,
+		Blocks.DARK_OAK_SAPLING,
+		Blocks.JUNGLE_SAPLING,
+		Blocks.OAK_SAPLING,
 		// Rails
 		Blocks.RAIL,
 		Blocks.ACTIVATOR_RAIL,
@@ -169,10 +178,12 @@ public class FreecamMixin {
 		if (mc.currentScreen != null) return;
 		if (mc.player == null) return;
 
-		float pitch = (float) freecam.getPitch(mc.getTickDelta());
-		float yaw = (float) freecam.getYaw(mc.getTickDelta());
+
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
+			float pitch = (float) freecam.getPitch(mc.getTickDelta());
+			float yaw = (float) freecam.getYaw(mc.getTickDelta());
+
 			if (blinkBaritoneControl.get()) {
 				BlockPos blockPos = null;
 				Vec3d rotationVector = RaycastUtils.getRotationVector(pitch, yaw);
@@ -198,8 +209,11 @@ public class FreecamMixin {
 		}
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+			float pitch = (float) freecam.getPitch(mc.getTickDelta());
+			float yaw = (float) freecam.getYaw(mc.getTickDelta());
+
 			BlockPos blockPos = null;
-			Vec3d rotationVector = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
+			Vec3d rotationVector = RaycastUtils.getRotationVector(pitch, yaw);
 			Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
 			HitResult result = RaycastUtils.raycast(pos, rotationVector, 64 * 4, mc.getTickDelta(), true);
 			if (result.getType() == HitResult.Type.BLOCK) {
