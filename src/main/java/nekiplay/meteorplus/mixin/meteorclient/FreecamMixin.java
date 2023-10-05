@@ -14,7 +14,6 @@ import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.utils.RaycastUtils;
 import net.minecraft.block.*;
-import net.minecraft.item.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -23,24 +22,21 @@ import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static baritone.api.utils.Helper.mc;
 
 @Mixin(Freecam.class)
 public class FreecamMixin {
+	@Unique
 	private final Freecam freecam = (Freecam)(Object) this;
-
+	@Unique
 	private final SettingGroup freecamMeteorPlusSetting = freecam.settings.createGroup("Meteor Plus");
-
+	@Unique
 	private final Setting<Boolean> baritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
 		.name("baritone-control")
 		.description("Left mouse click to set the destination on the selected block. Right mouse click to cancel.")
 		.build()
 	);
-
+	@Unique
 	private final Setting<Boolean> blinkBaritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
 		.name("baritone-blink-control")
 		.description("Midle mouse click to move to point in Blink.")
@@ -54,98 +50,90 @@ public class FreecamMixin {
 	private boolean isBlinkMoving = false;
 
 	@Unique
-	private List<Block> notSolidBlocks = Arrays.asList(
-		Blocks.FERN,
-		Blocks.GRASS,
-		Blocks.TALL_GRASS,
-		Blocks.GLOW_LICHEN,
-		Blocks.DEAD_BUSH,
-		Blocks.SNOW,
-		Blocks.MOSS_CARPET,
-		// Decorations
-		Blocks.TORCH,
-		Blocks.WALL_TORCH,
-		// Redstone
-		Blocks.REDSTONE_TORCH,
-		Blocks.REDSTONE_WALL_TORCH,
-		Blocks.REDSTONE_WIRE,
-		// Signs
-		Blocks.SPRUCE_SIGN,
-		Blocks.ACACIA_SIGN,
-		Blocks.BIRCH_SIGN,
-		Blocks.CHERRY_SIGN,
-		Blocks.BAMBOO_SIGN,
-		Blocks.OAK_SIGN,
-		Blocks.CRIMSON_SIGN,
-		Blocks.DARK_OAK_SIGN,
-		Blocks.JUNGLE_SIGN,
-		Blocks.MANGROVE_SIGN,
-		Blocks.WARPED_SIGN,
-		// Wall signs
-		Blocks.SPRUCE_WALL_SIGN,
-		Blocks.ACACIA_WALL_SIGN,
-		Blocks.BIRCH_WALL_SIGN,
-		Blocks.CHERRY_WALL_SIGN,
-		Blocks.BAMBOO_WALL_SIGN,
-		Blocks.OAK_WALL_SIGN,
-		Blocks.CRIMSON_WALL_SIGN,
-		Blocks.DARK_OAK_WALL_SIGN,
-		Blocks.JUNGLE_WALL_SIGN,
-		Blocks.MANGROVE_WALL_SIGN,
-		Blocks.WARPED_WALL_SIGN,
-		// Mushroms
-		Blocks.BROWN_MUSHROOM,
-		Blocks.RED_MUSHROOM,
-		Blocks.CRIMSON_FUNGUS,
-		Blocks.WARPED_FUNGUS,
-		// Small flowers
-		Blocks.DANDELION,
-		Blocks.POPPY,
-		Blocks.BLUE_ORCHID,
-		Blocks.ALLIUM,
-		Blocks.AZURE_BLUET,
-		Blocks.RED_TULIP,
-		Blocks.ORANGE_TULIP,
-		Blocks.WHITE_TULIP,
-		Blocks.PINK_TULIP,
-		Blocks.OXEYE_DAISY,
-		Blocks.CORNFLOWER,
-		Blocks.LILY_OF_THE_VALLEY,
-		Blocks.TORCHFLOWER,
-		Blocks.PINK_PETALS,
-		Blocks.SUGAR_CANE,
-		// Crops
-		Blocks.NETHER_WART,
-		Blocks.PITCHER_CROP,
-		Blocks.TORCHFLOWER_CROP,
-		Blocks.BEETROOTS,
-		Blocks.WHEAT,
-		Blocks.CARROTS,
-		Blocks.POTATOES,
-		Blocks.MELON_STEM,
-		Blocks.PUMPKIN_STEM,
-		// Saplings
-		Blocks.SPRUCE_SAPLING,
-		Blocks.ACACIA_SAPLING,
-		Blocks.BIRCH_SAPLING,
-		Blocks.BAMBOO_SAPLING,
-		Blocks.CHERRY_SAPLING,
-		Blocks.DARK_OAK_SAPLING,
-		Blocks.JUNGLE_SAPLING,
-		Blocks.OAK_SAPLING,
-		// Rails
-		Blocks.RAIL,
-		Blocks.ACTIVATOR_RAIL,
-		Blocks.POWERED_RAIL,
-		Blocks.DETECTOR_RAIL
-
-	);
-
-	@Unique
 	private BlockPos tryGetValidPos(BlockPos pos) {
 		BlockState state = mc.world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (notSolidBlocks.contains(block)) {
+		if (block == Blocks.FERN ||
+			block == Blocks.GRASS ||
+			block == Blocks.TALL_GRASS ||
+			block == Blocks.GLOW_LICHEN ||
+			block == Blocks.DEAD_BUSH ||
+			block == Blocks.SNOW ||
+			block == Blocks.MOSS_CARPET ||
+			// Decorations
+			block == Blocks.TORCH ||
+			block == Blocks.WALL_TORCH ||
+			// Signs
+			block == Blocks.SPRUCE_SIGN ||
+			block == Blocks.ACACIA_SIGN ||
+			block == Blocks.BIRCH_SIGN ||
+			block == Blocks.CHERRY_SIGN ||
+			block == Blocks.BAMBOO_SIGN ||
+			block == Blocks.OAK_SIGN ||
+			block == Blocks.CRIMSON_SIGN ||
+			block == Blocks.DARK_OAK_SIGN ||
+			block == Blocks.JUNGLE_SIGN ||
+			block == Blocks.MANGROVE_SIGN ||
+			block == Blocks.WARPED_SIGN ||
+			// Wall signs
+			block == Blocks.SPRUCE_WALL_SIGN ||
+			block == Blocks.ACACIA_WALL_SIGN ||
+			block == Blocks.BIRCH_WALL_SIGN ||
+			block == Blocks.CHERRY_WALL_SIGN ||
+			block == Blocks.BAMBOO_WALL_SIGN ||
+			block == Blocks.OAK_WALL_SIGN ||
+			block == Blocks.CRIMSON_WALL_SIGN ||
+			block == Blocks.DARK_OAK_WALL_SIGN ||
+			block == Blocks.JUNGLE_WALL_SIGN ||
+			block == Blocks.MANGROVE_WALL_SIGN ||
+			block == Blocks.WARPED_WALL_SIGN ||
+			// Mushroms
+			block == Blocks.BROWN_MUSHROOM ||
+			block == Blocks.RED_MUSHROOM ||
+			block == Blocks.CRIMSON_FUNGUS ||
+			block == Blocks.WARPED_FUNGUS ||
+			// Small flowers
+			block == Blocks.DANDELION ||
+			block == Blocks.POPPY ||
+			block == Blocks.BLUE_ORCHID ||
+			block == Blocks.ALLIUM ||
+			block == Blocks.AZURE_BLUET ||
+			block == Blocks.RED_TULIP ||
+			block == Blocks.ORANGE_TULIP ||
+			block == Blocks.WHITE_TULIP ||
+			block == Blocks.PINK_TULIP ||
+			block == Blocks.OXEYE_DAISY ||
+			block == Blocks.CORNFLOWER ||
+			block == Blocks.LILY_OF_THE_VALLEY ||
+			block == Blocks.TORCHFLOWER ||
+			block == Blocks.PINK_PETALS ||
+			block == Blocks.SUGAR_CANE ||
+			// Crops
+			block == Blocks.NETHER_WART ||
+			block == Blocks.PITCHER_CROP ||
+			block == Blocks.TORCHFLOWER_CROP ||
+			block == Blocks.BEETROOTS ||
+			block == Blocks.WHEAT ||
+			block == Blocks.CARROTS ||
+			block == Blocks.POTATOES ||
+			block == Blocks.MELON_STEM ||
+			block == Blocks.PUMPKIN_STEM ||
+			// Saplings
+			block == Blocks.SPRUCE_SAPLING ||
+			block == Blocks.ACACIA_SAPLING ||
+			block == Blocks.BIRCH_SAPLING ||
+			block == Blocks.BAMBOO_SAPLING ||
+			block == Blocks.CHERRY_SAPLING ||
+			block == Blocks.DARK_OAK_SAPLING ||
+			block == Blocks.JUNGLE_SAPLING ||
+			block == Blocks.OAK_SAPLING ||
+			// Rails
+			block == Blocks.RAIL ||
+			block == Blocks.ACTIVATOR_RAIL ||
+			block == Blocks.POWERED_RAIL ||
+			block == Blocks.DETECTOR_RAIL
+
+		) {
 			return pos;
 		}
 		else {
@@ -155,7 +143,7 @@ public class FreecamMixin {
 	@Unique
 	@EventHandler
 	private void onTickEvent(TickEvent.Pre event) {
-		if (blinkBaritoneControl.get()) {
+		if (baritoneControl.get() && blinkBaritoneControl.get()) {
 			if (isBlinkMoving && (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() ) ) {
 				if (!blink.isActive()) {
 					blink.toggle();
@@ -178,12 +166,10 @@ public class FreecamMixin {
 		if (mc.currentScreen != null) return;
 		if (mc.player == null) return;
 
-
+		float pitch = (float) freecam.getPitch(mc.getTickDelta());
+		float yaw = (float) freecam.getYaw(mc.getTickDelta());
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
-			float pitch = (float) freecam.getPitch(mc.getTickDelta());
-			float yaw = (float) freecam.getYaw(mc.getTickDelta());
-
 			if (blinkBaritoneControl.get()) {
 				BlockPos blockPos = null;
 				Vec3d rotationVector = RaycastUtils.getRotationVector(pitch, yaw);
@@ -209,11 +195,8 @@ public class FreecamMixin {
 		}
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-			float pitch = (float) freecam.getPitch(mc.getTickDelta());
-			float yaw = (float) freecam.getYaw(mc.getTickDelta());
-
 			BlockPos blockPos = null;
-			Vec3d rotationVector = RaycastUtils.getRotationVector(pitch, yaw);
+			Vec3d rotationVector = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
 			Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
 			HitResult result = RaycastUtils.raycast(pos, rotationVector, 64 * 4, mc.getTickDelta(), true);
 			if (result.getType() == HitResult.Type.BLOCK) {
@@ -228,8 +211,6 @@ public class FreecamMixin {
 			BlockState state = mc.world.getBlockState(blockPos);
 
 			if (state.isAir()) return;
-
-			Block mineBlock = mc.world.getBlockState(blockPos).getBlock();
 
 			GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
 			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
