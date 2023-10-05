@@ -23,6 +23,10 @@ import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static baritone.api.utils.Helper.mc;
 
 @Mixin(Freecam.class)
@@ -34,18 +38,6 @@ public class FreecamMixin {
 	private final Setting<Boolean> baritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
 		.name("baritone-control")
 		.description("Left mouse click to set the destination on the selected block. Right mouse click to cancel.")
-		.build()
-	);
-	//private final EnumSetting<XaeroWorldMapTab.ShowBlockMode> raycastMode = freecamMeteorPlusSetting.add(new EnumSetting.Builder<XaeroWorldMapTab.ShowBlockMode>().Builder()
-	//	.name("raycast-mode")
-	//	.description("For raycast to unloaded chunks.")
-	//	.build()
-	//);
-
-	private final Setting<Boolean> smartBaritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
-		.name("smart-baritone-control")
-		.description("For the baritone task, consider the notes in your hand.")
-		.visible(baritoneControl::get)
 		.build()
 	);
 
@@ -62,76 +54,89 @@ public class FreecamMixin {
 	private boolean isBlinkMoving = false;
 
 	@Unique
+	private List<Block> notSolidBlocks = Arrays.asList(
+		Blocks.FERN,
+		Blocks.GRASS,
+		Blocks.TALL_GRASS,
+		Blocks.GLOW_LICHEN,
+		Blocks.DEAD_BUSH,
+		Blocks.SNOW,
+		Blocks.MOSS_CARPET,
+		// Decorations
+		Blocks.TORCH,
+		Blocks.WALL_TORCH,
+		// Redstone
+		Blocks.REDSTONE_TORCH,
+		Blocks.REDSTONE_WALL_TORCH,
+		Blocks.REDSTONE_WIRE,
+		// Signs
+		Blocks.SPRUCE_SIGN,
+		Blocks.ACACIA_SIGN,
+		Blocks.BIRCH_SIGN,
+		Blocks.CHERRY_SIGN,
+		Blocks.BAMBOO_SIGN,
+		Blocks.OAK_SIGN,
+		Blocks.CRIMSON_SIGN,
+		Blocks.DARK_OAK_SIGN,
+		Blocks.JUNGLE_SIGN,
+		Blocks.MANGROVE_SIGN,
+		Blocks.WARPED_SIGN,
+		// Wall signs
+		Blocks.SPRUCE_WALL_SIGN,
+		Blocks.ACACIA_WALL_SIGN,
+		Blocks.BIRCH_WALL_SIGN,
+		Blocks.CHERRY_WALL_SIGN,
+		Blocks.BAMBOO_WALL_SIGN,
+		Blocks.OAK_WALL_SIGN,
+		Blocks.CRIMSON_WALL_SIGN,
+		Blocks.DARK_OAK_WALL_SIGN,
+		Blocks.JUNGLE_WALL_SIGN,
+		Blocks.MANGROVE_WALL_SIGN,
+		Blocks.WARPED_WALL_SIGN,
+		// Mushroms
+		Blocks.BROWN_MUSHROOM,
+		Blocks.RED_MUSHROOM,
+		Blocks.CRIMSON_FUNGUS,
+		Blocks.WARPED_FUNGUS,
+		// Small flowers
+		Blocks.DANDELION,
+		Blocks.POPPY,
+		Blocks.BLUE_ORCHID,
+		Blocks.ALLIUM,
+		Blocks.AZURE_BLUET,
+		Blocks.RED_TULIP,
+		Blocks.ORANGE_TULIP,
+		Blocks.WHITE_TULIP,
+		Blocks.PINK_TULIP,
+		Blocks.OXEYE_DAISY,
+		Blocks.CORNFLOWER,
+		Blocks.LILY_OF_THE_VALLEY,
+		Blocks.TORCHFLOWER,
+		Blocks.PINK_PETALS,
+		Blocks.SUGAR_CANE,
+		// Crops
+		Blocks.NETHER_WART,
+		Blocks.PITCHER_CROP,
+		Blocks.TORCHFLOWER_CROP,
+		Blocks.BEETROOTS,
+		Blocks.WHEAT,
+		Blocks.CARROTS,
+		Blocks.POTATOES,
+		Blocks.MELON_STEM,
+		Blocks.PUMPKIN_STEM,
+		// Rails
+		Blocks.RAIL,
+		Blocks.ACTIVATOR_RAIL,
+		Blocks.POWERED_RAIL,
+		Blocks.DETECTOR_RAIL
+
+	);
+
+	@Unique
 	private BlockPos tryGetValidPos(BlockPos pos) {
 		BlockState state = mc.world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (block == Blocks.FERN ||
-			block == Blocks.GRASS ||
-			block == Blocks.TALL_GRASS ||
-			block == Blocks.GLOW_LICHEN ||
-			block == Blocks.DEAD_BUSH ||
-			block == Blocks.SNOW ||
-			block == Blocks.MOSS_CARPET ||
-			// Decorations
-			block == Blocks.TORCH ||
-			block == Blocks.WALL_TORCH ||
-			// Signs
-			block == Blocks.SPRUCE_SIGN ||
-			block == Blocks.ACACIA_SIGN ||
-			block == Blocks.BIRCH_SIGN ||
-			block == Blocks.CHERRY_SIGN ||
-			block == Blocks.BAMBOO_SIGN ||
-			block == Blocks.OAK_SIGN ||
-			block == Blocks.CRIMSON_SIGN ||
-			block == Blocks.DARK_OAK_SIGN ||
-			block == Blocks.JUNGLE_SIGN ||
-			block == Blocks.MANGROVE_SIGN ||
-			block == Blocks.WARPED_SIGN ||
-			// Wall signs
-			block == Blocks.SPRUCE_WALL_SIGN ||
-			block == Blocks.ACACIA_WALL_SIGN ||
-			block == Blocks.BIRCH_WALL_SIGN ||
-			block == Blocks.CHERRY_WALL_SIGN ||
-			block == Blocks.BAMBOO_WALL_SIGN ||
-			block == Blocks.OAK_WALL_SIGN ||
-			block == Blocks.CRIMSON_WALL_SIGN ||
-			block == Blocks.DARK_OAK_WALL_SIGN ||
-			block == Blocks.JUNGLE_WALL_SIGN ||
-			block == Blocks.MANGROVE_WALL_SIGN ||
-			block == Blocks.WARPED_WALL_SIGN ||
-			// Mushroms
-			block == Blocks.BROWN_MUSHROOM ||
-			block == Blocks.RED_MUSHROOM ||
-			block == Blocks.CRIMSON_FUNGUS ||
-			block == Blocks.WARPED_FUNGUS ||
-			// Small flowers
-			block == Blocks.DANDELION ||
-			block == Blocks.POPPY ||
-			block == Blocks.BLUE_ORCHID ||
-			block == Blocks.ALLIUM ||
-			block == Blocks.AZURE_BLUET ||
-			block == Blocks.RED_TULIP ||
-			block == Blocks.ORANGE_TULIP ||
-			block == Blocks.WHITE_TULIP ||
-			block == Blocks.PINK_TULIP ||
-			block == Blocks.OXEYE_DAISY ||
-			block == Blocks.CORNFLOWER ||
-			block == Blocks.LILY_OF_THE_VALLEY ||
-			block == Blocks.TORCHFLOWER ||
-			block == Blocks.PINK_PETALS ||
-			block == Blocks.SUGAR_CANE ||
-			// Crops
-			block == Blocks.NETHER_WART ||
-			block == Blocks.PITCHER_CROP ||
-			block == Blocks.TORCHFLOWER_CROP ||
-			block == Blocks.BEETROOTS ||
-			block == Blocks.WHEAT ||
-			block == Blocks.CARROTS ||
-			block == Blocks.POTATOES ||
-			block == Blocks.MELON_STEM ||
-			block == Blocks.PUMPKIN_STEM
-
-		) {
+		if (notSolidBlocks.contains(block)) {
 			return pos;
 		}
 		else {
@@ -164,15 +169,15 @@ public class FreecamMixin {
 		if (mc.currentScreen != null) return;
 		if (mc.player == null) return;
 
-		ItemStack mainhand = mc.player.getMainHandStack();
-		ItemStack offhand = mc.player.getOffHandStack();
+		float pitch = (float) freecam.getPitch(mc.getTickDelta());
+		float yaw = (float) freecam.getYaw(mc.getTickDelta());
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
 			if (blinkBaritoneControl.get()) {
 				BlockPos blockPos = null;
-				Vec3d yaw = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
+				Vec3d rotationVector = RaycastUtils.getRotationVector(pitch, yaw);
 				Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
-				HitResult result = RaycastUtils.raycast(pos, yaw, 64 * 4, mc.getTickDelta(), true);
+				HitResult result = RaycastUtils.raycast(pos, rotationVector, 64 * 4, mc.getTickDelta(), true);
 				if (result.getType() == HitResult.Type.BLOCK) {
 					BlockHitResult blockHitResult = (BlockHitResult) result;
 					blockPos = blockHitResult.getBlockPos();
@@ -194,9 +199,9 @@ public class FreecamMixin {
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
 			BlockPos blockPos = null;
-			Vec3d yaw = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
+			Vec3d rotationVector = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
 			Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
-			HitResult result = RaycastUtils.raycast(pos, yaw, 64 * 4, mc.getTickDelta(), true);
+			HitResult result = RaycastUtils.raycast(pos, rotationVector, 64 * 4, mc.getTickDelta(), true);
 			if (result.getType() == HitResult.Type.BLOCK) {
 				BlockHitResult blockHitResult = (BlockHitResult) result;
 				blockPos = blockHitResult.getBlockPos();
@@ -212,46 +217,15 @@ public class FreecamMixin {
 
 			Block mineBlock = mc.world.getBlockState(blockPos).getBlock();
 
-			if (smartBaritoneControl.get() ) {
-				if (mainhand == null || mainhand.getItem() == Items.AIR) {
-					GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-					event.cancel();
-				}
-				if (mainhand != null && mainhand.getItem() instanceof HoeItem) {
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-					BaritoneAPI.getProvider().getPrimaryBaritone().getFarmProcess().farm((int) mc.player.getPos().distanceTo(blockPos.toCenterPos()) + 1);
-					event.cancel();
-				} else if (mainhand != null && (mainhand.getItem() instanceof PickaxeItem || mainhand.getItem() instanceof AxeItem || mainhand.getItem() instanceof ShovelItem)) {
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-					BaritoneAPI.getProvider().getPrimaryBaritone().getMineProcess().mine(mineBlock);
-					event.cancel();
-				} else {
-					GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-					event.cancel();
-				}
-			} else {
-				GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-				event.cancel();
-			}
+			GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
+			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
+			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+			event.cancel();
 		}
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-			if (smartBaritoneControl.get()) {
-				if ((offhand == null || !(offhand.getItem() instanceof BlockItem)) && (mainhand == null || !(mainhand.getItem() instanceof BlockItem))) {
-					BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
-					event.cancel();
-				}
-			}
-			else {
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
-				event.cancel();
-			}
+			BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
+			event.cancel();
 		}
 	}
 }

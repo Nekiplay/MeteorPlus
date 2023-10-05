@@ -111,7 +111,7 @@ public class Cauldrons extends AutoObsidianFarmMode {
 			BlockPos placing = settings.lavaPlaceLocation.get();
 			BlockState state = mc.world.getBlockState(placing);
 
-			if (state.getBlock() == Blocks.OBSIDIAN) {
+			if (state.getBlock() == Blocks.OBSIDIAN && mc.player.squaredDistanceTo(placing.toCenterPos()) <= settings.range.get() * settings.range.get() ) {
 				if (BlockUtils.canBreak(placing)) {
 					rotate(placing, null);
 					BlockUtils.breakBlock(placing, true);
