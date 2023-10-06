@@ -18,7 +18,9 @@
 		"meteorclient.WPressableMixin",
 		"meteorclient.ItemHighlightMixin",
 		"minecraft.ClientPlayerInteractionManagerMixin",
-		"minecraft.MinecraftClientMixin"
+		"minecraft.MinecraftClientMixin",
+		"minecraft.MobSpawnerBlockEntityAccessor",
+		"minecraft.MobSpawnerLogicAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
