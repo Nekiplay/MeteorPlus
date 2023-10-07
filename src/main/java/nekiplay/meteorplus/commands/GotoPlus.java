@@ -21,7 +21,7 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class GotoPlus extends Command {
 	public GotoPlus() {
-		super("gotoplus", "Baritone goto to no light block");
+		super("gotoplus", "Baritone goto to selected type");
 	}
 
 	private final Pool<Cross> crossPool = new Pool<>(Cross::new);
