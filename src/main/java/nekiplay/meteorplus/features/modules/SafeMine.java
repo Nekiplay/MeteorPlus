@@ -74,14 +74,6 @@ public class SafeMine extends Module {
 		.build()
 	);
 
-	private double distanceToBlock(BlockPos pos)
-	{
-		if (mc.player != null) {
-			return mc.player.squaredDistanceTo(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
-		} else {
-			return 0;
-		}
-	}
 
 	ArrayList<BlockPos> lava = new ArrayList<>();
 
