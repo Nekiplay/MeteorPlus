@@ -68,7 +68,6 @@ public class XrayBruteforce extends Module {
 	private final SettingGroup sgSaver = settings.createGroup("Scanned Saver");
 	private final SettingGroup sgDelayer = settings.createGroup("Scanned Delayer");
 
-
 	public final Setting<Boolean> autoSave = sgSaver.add(new BoolSetting.Builder()
 		.name("Auto save")
 		.description("Save rendered ores.")
@@ -642,6 +641,7 @@ public class XrayBruteforce extends Module {
             }
         }).start();
     }
+
 
     private void addBlock(BlockPos pos, Boolean ignore) {
         if (!scanned.contains(pos) && !ignore) {

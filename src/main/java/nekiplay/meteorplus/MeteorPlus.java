@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import nekiplay.meteorplus.commands.ClearInventory;
 import nekiplay.meteorplus.commands.Eclip;
+import nekiplay.meteorplus.commands.GPT;
 import nekiplay.meteorplus.commands.GotoPlus;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarm;
 import nekiplay.meteorplus.features.modules.killaura.KillAuraPlus;
@@ -56,13 +57,14 @@ public class MeteorPlus extends MeteorAddon {
 		Commands.add(new Eclip());
 		Commands.add(new ClearInventory());
 		Commands.add(new GotoPlus());
+		Commands.add(new GPT());
 
 		LOG.info(LOGPREFIX + " loaded commands");
 		//endregion
 		//region Modules
 		LOG.info(LOGPREFIX + " initializing modules...");
 		Modules modules = Modules.get();
-
+		modules.add(new ChatGPT());
 		modules.add(new ItemHighlightPlus());
 		modules.add(new FastLadderPlus());
 		modules.add(new TriggerBot());

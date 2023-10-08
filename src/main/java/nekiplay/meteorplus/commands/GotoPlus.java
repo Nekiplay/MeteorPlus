@@ -59,7 +59,8 @@ public class GotoPlus extends Command {
 							near = new BlockPos(cross.x, cross.y, cross.z);
 						}
 					}
-
+					for (Cross cross : crosses) crossPool.free(cross);
+					crosses.clear();
 					if (near != null) {
 						BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto " + near.getX() + " " + near.getY() + " " + near.getZ());
 					}
