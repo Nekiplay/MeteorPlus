@@ -29,7 +29,7 @@ import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 public class GPT extends Command {
 	public GPT() {
-		super("gpt", "GPT 3.5");
+		super("gpt", "Settings for .gpt");
 	}
 
 	public class RequestData {
