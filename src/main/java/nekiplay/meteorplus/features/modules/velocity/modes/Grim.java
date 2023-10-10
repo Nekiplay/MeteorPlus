@@ -5,8 +5,8 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import nekiplay.meteorplus.features.modules.velocity.VelocityMode;
 import nekiplay.meteorplus.features.modules.velocity.VelocityModes;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.common.KeepAliveS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
-import net.minecraft.network.packet.s2c.play.KeepAliveS2CPacket;
 
 public class Grim extends VelocityMode {
 	public Grim() {

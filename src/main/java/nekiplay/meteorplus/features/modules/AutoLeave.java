@@ -9,7 +9,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import nekiplay.meteorplus.MeteorPlus;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.DisconnectS2CPacket;
+import net.minecraft.network.packet.s2c.common.DisconnectS2CPacket;
 import net.minecraft.text.Text;
 import meteordevelopment.meteorclient.events.entity.EntityAddedEvent;
 import meteordevelopment.orbit.EventHandler;
@@ -58,6 +58,7 @@ public class AutoLeave extends Module {
 					ChatUtils.sendPlayerMsg(command_str.get());
 					info((String.format("player §c%s§r was detected", event.entity.getEntityName())));
 				} else {
+					mc.world.disconnect();
 					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
 				}
 			if (AutoDisable.get()) this.toggle();

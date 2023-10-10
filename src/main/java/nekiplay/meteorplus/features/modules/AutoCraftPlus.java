@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.Hand;
@@ -125,10 +126,10 @@ public class AutoCraftPlus extends Module {
 		}
 	}
 
-	private boolean isContainsIngredients(Recipe<?> recipe)
+	private boolean isContainsIngredients(RecipeEntry<?> recipe)
 	{
 		boolean find = false;
-		DefaultedList<Ingredient> ingredients = recipe.getIngredients();
+		DefaultedList<Ingredient> ingredients = recipe.value().getIngredients();
 		for (Ingredient ing : ingredients) {
 			for (ItemStack itemStack : ing.getMatchingStacks()) {
 				FindItemResult plank = InvUtils.find(item -> itemStack.getItem() == item.getItem());
@@ -152,8 +153,8 @@ public class AutoCraftPlus extends Module {
 			List<Item> itemList = items.get();
 			List<RecipeResultCollection> recipeResultCollectionList = mc.player.getRecipeBook().getOrderedResults();
 			for (RecipeResultCollection recipeResultCollection : recipeResultCollectionList) {
-				for (Recipe<?> recipe : recipeResultCollection.getRecipes(true)) {
-					if (!itemList.contains(recipe.getOutput(mc.getNetworkHandler().getRegistryManager()).getItem())) continue;
+				for (RecipeEntry<?> recipe : recipeResultCollection.getRecipes(true)) {
+					if (!itemList.contains(recipe.value().getResult(mc.getNetworkHandler().getRegistryManager()).getItem())) continue;
 					if (isContainsIngredients(recipe)) {
 						mc.interactionManager.clickRecipe(currentScreenHandler.syncId, recipe, craftAll.get());
 						mc.interactionManager.clickSlot(currentScreenHandler.syncId, 0, 1,

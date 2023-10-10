@@ -38,7 +38,7 @@ dependencies {
 
     // Meteor client
 	modImplementation files("libs\\baritone-unoptimized-fabric-1.2.19-588-ge1e620a0.jar")
-    modImplementation files("libs\\meteor-client-0.5.4-1907.jar")
+    modImplementation files("libs\\meteor-client-0.5.5-1944.jar")
 
 	// Journey Map
 	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true
@@ -50,7 +50,8 @@ dependencies {
 
 	// Litematica
 	modImplementation "curse.maven:litematica-${project.litematica_projectid}:${project.litematica_fileid}"
-	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
+	modImplementation "curse.maven:litematica-${project.malilib_projectid}:${project.malilib_fileid}"
+	// modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
 }
 
 loom {
