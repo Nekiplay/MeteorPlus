@@ -32,7 +32,7 @@ public class ChatGPT extends Module {
 	);
 
 	public final Setting<String> token_novaai = sgGeneral.add(new StringSetting.Builder()
-		.name("Token")
+		.name("NovaAI Token")
 		.description("Token from NovaAI.")
 		.defaultValue("")
 		.visible(() -> service.get() == Service.NovaAI)
@@ -40,7 +40,7 @@ public class ChatGPT extends Module {
 	);
 
 	public final Setting<String> token_nagaai = sgGeneral.add(new StringSetting.Builder()
-		.name("Token")
+		.name("NagaAI Token")
 		.description("Token from NagaAI.")
 		.defaultValue("")
 		.visible(() -> service.get() == Service.NagaAI)
