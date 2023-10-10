@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.commands;
+package nekiplay.meteorplus.features.commands;
 
 import baritone.api.BaritoneAPI;
 import com.google.gson.Gson;
@@ -124,11 +124,26 @@ public class GPT extends Command {
 				Gson gson = new Gson();
 				ChatGPT chatGPT = Modules.get().get(ChatGPT.class);
 				if (chatGPT != null) {
+
+					String url = "";
+					String token = "";
+					switch (chatGPT.service.get()) {
+						case NovaAI -> {
+							url = "https://api.nova-oss.com/v1/chat/completions";
+							token = chatGPT.token_novaai.get();
+						}
+						case NagaAI -> {
+							url = "https://api.naga.ac/v1/chat/completions";
+							token = chatGPT.token_nagaai.get();
+						}
+					}
+
+
 					HttpRequest request = HttpRequest.newBuilder()
-						.uri(URI.create("https://api.nova-oss.com/v1/chat/completions"))
+						.uri(URI.create(url))
 						.POST(HttpRequest.BodyPublishers.ofString(gson.toJson(requestData)))
 						.setHeader("Content-Type", "application/json")
-						.setHeader("Authorization", "Bearer " + chatGPT.token.get())
+						.setHeader("Authorization", "Bearer " + token)
 						.build();
 
 					HttpResponse<String> response = null;
@@ -145,8 +160,13 @@ public class GPT extends Command {
 						info(responseData.choices.get(0).message.content);
 					}
 					catch (Exception e) {
-						ErrorData errorData = gson.fromJson(response.body(), ErrorData.class);
-						error(errorData.error.message);
+						try {
+							ErrorData errorData = gson.fromJson(response.body(), ErrorData.class);
+							error(errorData.error.message);
+						}
+						catch (Exception e2) {
+							error("Error: " + e2.getMessage());
+						}
 					}
 				}
 			});

@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.commands;
+package nekiplay.meteorplus.features.commands;
 
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;

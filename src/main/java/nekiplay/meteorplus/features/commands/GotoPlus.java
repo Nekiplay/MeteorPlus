@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.commands;
+package nekiplay.meteorplus.features.commands;
 
 import baritone.api.BaritoneAPI;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
