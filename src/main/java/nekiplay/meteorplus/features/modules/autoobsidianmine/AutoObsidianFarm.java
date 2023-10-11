@@ -68,21 +68,21 @@ public class AutoObsidianFarm extends Module {
 	public final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
 		.name("mining-delay")
 		.description("Mining delay.")
-		.defaultValue(4)
+		.defaultValue(3)
 		.build()
 	);
 
 	public final Setting<Integer> collectDelay = sgGeneral.add(new IntSetting.Builder()
 		.name("collect-delay")
 		.description("Cauldron collecting lava delay.")
-		.defaultValue(4)
+		.defaultValue(8)
 		.build()
 	);
 
 	public final Setting<Integer> lavaPlaceDelay = sgGeneral.add(new IntSetting.Builder()
 		.name("lava-place-delay")
 		.description("Delay for placing lava.")
-		.defaultValue(4)
+			.defaultValue(8)
 		.build()
 	);
 

@@ -114,6 +114,7 @@ public class Cauldrons extends AutoObsidianFarmMode {
 			if (state.getBlock() == Blocks.OBSIDIAN && mc.player.squaredDistanceTo(placing.toCenterPos()) <= settings.range.get() * settings.range.get() ) {
 				if (BlockUtils.canBreak(placing)) {
 					rotate(placing, null);
+					lavaPlaceTimer = 0;
 					BlockUtils.breakBlock(placing, true);
 				}
 			} else {
@@ -177,8 +178,8 @@ public class Cauldrons extends AutoObsidianFarmMode {
 									if (settings.bypassSneak.get() && isSneaking) {
 										mc.player.setSneaking(true);
 									}
+									collectTimer = 0;
 								});
-								collectTimer = 0;
 							} else {
 								collectTimer++;
 							}
