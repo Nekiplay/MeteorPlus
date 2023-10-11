@@ -17,6 +17,7 @@
 		"meteorclient.WMeteorModuleMixin",
 		"meteorclient.WPressableMixin",
 		"meteorclient.ItemHighlightMixin",
+		"meteorclient.InventoryTweaksMixin",
 		"minecraft.ClientPlayerInteractionManagerMixin",
 		"minecraft.MinecraftClientMixin",
 		"minecraft.MobSpawnerBlockEntityAccessor",
