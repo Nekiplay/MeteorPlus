@@ -93,6 +93,7 @@ public class FontV2 extends Font {
 		for (int i = 0; i < length; i++) {
 			int cp = string.charAt(i);
 			CharData c = charData[0][0];
+
 			if (cp >= 32 && cp <= 127) c = charData[0][cp - 32];
 			else if (cp >= 1024 && cp <= 1279) c = charData[1][cp - 1024]; // cp - 1024 (rus lang)
 
