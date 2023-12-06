@@ -109,7 +109,7 @@ public class AutoDropPlus extends Module  {
 						if (removeItems.get()) {
 							mc.interactionManager.clickSlot(handler.syncId, getIndexToSlotId(handler, i), 300, SlotActionType.SWAP, mc.player);
 						}
-						else { InvUtils.drop().slot(i); }
+						else { InvUtils.drop().slotId(i); }
 						if (!workInstant.get()) {
 							tick = delay.get();
 						}
