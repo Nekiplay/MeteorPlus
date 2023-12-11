@@ -15,6 +15,8 @@ import nekiplay.meteorplus.features.modules.*;
 import nekiplay.meteorplus.features.modules.integrations.LitematicaPrinter;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import nekiplay.meteorplus.features.modules.timer.TimerPlus;
+import nekiplay.meteorplus.utils.manager.CommandManager;
+import nekiplay.meteorplus.utils.manager.ModuleManager;
 import net.fabricmc.loader.api.FabricLoader;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
@@ -39,6 +41,9 @@ public class MeteorPlus extends MeteorAddon {
 	public static final String LOGPREFIX = "[Meteor+]";
 
 	private static MeteorPlus instance;
+
+	private static String COMMAND_PACKAGE = "nekiplay.meteorplus.features.commands";
+	private static String MODULE_PACKAGE = "nekiplay.meteorplus.features.modules";
 
 	public static MeteorPlus getInstance() {
 		return instance;
@@ -120,6 +125,20 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info(LOGPREFIX + " loaded tabs");
 		//endregion
 		LOG.info(LOGPREFIX + " loaded");
+
+		/**
+		 * CommandManager and ModuleManager will automatically scan all Command subclasses
+		 * under this package and register them with Commands; Assuming they all use @AutoRegistry.
+		 */
+		CommandManager cmdManager = new CommandManager(COMMAND_PACKAGE);
+		cmdManager.registry(Commands::add);
+
+		ModuleManager moduleManager = new ModuleManager(MODULE_PACKAGE);
+		moduleManager.addToIgnoreClass(
+			"nekiplay.meteorplus.features.modules.integrations.journeymap.JourneyMapMeteorPlus"
+		);
+		moduleManager.registry(Modules.get()::add);
+
 	}
 
 	@Override

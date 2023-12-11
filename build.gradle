@@ -8,7 +8,7 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-configurations.all {
+configurations.configureEach {
 	// Check for snapshots more frequently than Gradle's default of 1 day. 0 = every build.
 	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
@@ -28,6 +28,14 @@ repositories {
 	}
 	maven { url = "https://www.cursemaven.com" }
 	maven { url = "https://masa.dy.fi/maven" }
+
+	// Meteor client repositories
+	maven {
+		url "https://maven.meteordev.org/snapshots"
+	}
+	maven {
+		url "https://maven.meteordev.org/releases"
+	}
 }
 
 dependencies {
@@ -35,10 +43,15 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // Meteor client
-	modImplementation files("libs\\baritone-unoptimized-fabric-1.20.2-SNAPSHOT.jar")
-    modImplementation files("libs\\meteor-client-0.5.5.jar")
+//	modImplementation files("libs\\baritone-unoptimized-fabric-1.20.2-SNAPSHOT.jar")
+//  modImplementation files("libs\\meteor-client-0.5.5.jar")
+	// Meteor Client for repositories
+	modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
+	modImplementation  "baritone:fabric:${project.baritone_version}"
 
 	// Journey Map
 	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true
@@ -52,6 +65,14 @@ dependencies {
 	modImplementation "curse.maven:litematica-${project.litematica_projectid}:${project.litematica_fileid}"
 	modImplementation "curse.maven:litematica-${project.malilib_projectid}:${project.malilib_fileid}"
 	// modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
+
+	/**
+	 * For detailed information regarding the Lombok license,
+	 * please refer to the (https://projectlombok.org/LICENSE) in the Lombok project.
+	 */
+	implementation 'org.projectlombok:lombok:1.18.28'
+	annotationProcessor 'org.projectlombok:lombok:1.18.28'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 }
 
 loom {
