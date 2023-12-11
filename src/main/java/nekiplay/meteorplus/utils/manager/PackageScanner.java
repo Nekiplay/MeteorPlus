@@ -82,12 +82,20 @@ public class PackageScanner {
 			JarEntry jarEntry = entries.nextElement();
 			String name = jarEntry.getName();
 
-			if (name.startsWith(path) && name.endsWith(".class")) {
-				String className = name.substring(0, name.length() - 6).replace('/', '.');
+			if (isClassFileInPath(name, path)) {
+				String className = extractClassName(name);
 				if (!isIgnored(className)) classes.add(Class.forName(className));
 			}
 		}
 		return classes;
+	}
+
+	private boolean isClassFileInPath(String name, String path) {
+		return name.startsWith(path) && name.endsWith(".class");
+	}
+
+	private String extractClassName(String name) {
+		return name.substring(0, name.length() - 6).replace('/', '.');
 	}
 
 	@SneakyThrows
@@ -101,13 +109,22 @@ public class PackageScanner {
 				if (iFile.isDirectory()) {
 					assert !iFile.getName().contains(".");
 					classes.addAll(findClasses(iFile, pkg + "." + iFile.getName()));
-				} else if (iFile.getName().endsWith(".class")) {
-					String className = pkg + "." + iFile.getName().substring(0, iFile.getName().length() - 6);
-					if (!isIgnored(className)) classes.add(Class.forName(className));
+				} else {
+					addClassFrom(pkg, iFile, classes);
 				}
 			}
 		}
 		return classes;
+	}
+
+	@SneakyThrows
+	private void addClassFrom(String pkg, File iFile, List<Class<?>> classes) {
+		if (iFile.getName().endsWith(".class")) {
+			String className = String
+				.format("%s.%s", pkg, extractClassName(iFile.getName()));
+			if (!isIgnored(className))
+				classes.add(Class.forName(className));
+		}
 	}
 
 }
