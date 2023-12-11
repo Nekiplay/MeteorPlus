@@ -7,10 +7,7 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -76,16 +73,11 @@ public class PackageScanner {
 	@SneakyThrows
 	private Collection<Class<?>> findClassesInJar(JarFile jarFile, String path) {
 		List<Class<?>> classes = new ArrayList<>();
-		Enumeration<JarEntry> entries = jarFile.entries();
-
-		while (entries.hasMoreElements()) {
-			JarEntry jarEntry = entries.nextElement();
-			String name = jarEntry.getName();
-
-			if (isClassFileInPath(name, path)) {
-				String className = extractClassName(name);
-				if (!isIgnored(className)) classes.add(Class.forName(className));
-			}
+		while (jarFile.entries().hasMoreElements()) {
+			String name = jarFile.entries().nextElement().getName();
+			if (!isClassFileInPath(name, path) || !isIgnored(extractClassName(name)))
+				continue;
+			classes.add(Class.forName(extractClassName(name)));
 		}
 		return classes;
 	}
@@ -103,15 +95,12 @@ public class PackageScanner {
 		List<Class<?>> classes = new ArrayList<>();
 		if (!file.exists()) return classes;
 
-		File[] files = file.listFiles();
-		if (null != files) {
-			for (File iFile : files) {
-				if (iFile.isDirectory()) {
-					assert !iFile.getName().contains(".");
-					classes.addAll(findClasses(iFile, pkg + "." + iFile.getName()));
-				} else {
-					addClassFrom(pkg, iFile, classes);
-				}
+		for (File iFile : Objects.requireNonNull(file.listFiles())) {
+			if (iFile.isDirectory()) {
+				assert !iFile.getName().contains(".");
+				classes.addAll(findClasses(iFile, String.format("%s.%s", pkg, iFile.getName())));
+			} else {
+				addClassFrom(pkg, iFile, classes);
 			}
 		}
 		return classes;
