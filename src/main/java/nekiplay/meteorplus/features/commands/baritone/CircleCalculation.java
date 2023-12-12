@@ -8,12 +8,18 @@ public class CircleCalculation {
 	public static List<Coordinate> makeCylinder(Coordinate center, int radius) {
 		final List<Coordinate> object = new ArrayList<>();
 		for (int x = 0; x <= (int) Math.ceil(radius + 0.5); ++x) {
-			for (int z = 0; z <= (int) Math.ceil(radius + 0.5); ++z) {
-				double xn = x * (1 / (radius + 0.5));
-				double zn = z * (1 / (radius + 0.5));
-				if (isInsiderCylinder(xn, zn)) {
-					addCylinderCoordinates(object, center, x, z);
-				}
+			object.addAll(calcCylinder(center, x, radius));
+		}
+		return object;
+	}
+
+	private static List<Coordinate> calcCylinder(Coordinate center, int x, int radius) {
+		ArrayList<Coordinate> object = new ArrayList<>();
+		for (int z = 0; z < (int) Math.ceil(radius + 0.5); ++z) {
+			double xn = x * (1 / (radius + 0.5));
+			double zn = z * (1 / (radius + 0.5));
+			if (isInsiderCylinder(xn, zn)) {
+				addCylinderCoordinates(object, center, x, z);
 			}
 		}
 		return object;
