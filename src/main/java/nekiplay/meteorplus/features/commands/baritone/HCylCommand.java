@@ -9,6 +9,7 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
@@ -32,13 +33,15 @@ public class HCylCommand extends Command {
 	}
 
 	private int execute(CommandContext<CommandSource> context) {
-		BlockPos blockPos = mc.player.getBlockPos();
+		BlockPos blockPos = Objects.requireNonNull(mc.player).getBlockPos();
 		Coordinate centerPos = new Coordinate(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 		int radius = context.getArgument(CylCommand.RADIUS, Integer.class);
 		int height = context.getArgument(CylCommand.HEIGHT, Integer.class);
-
-		List<Coordinate> coordinates = CylCommand.makeCylinder(centerPos, radius, radius);
-		CylCommand.execSel(coordinates, centerPos, radius, height, true);
+		List<PositionBean> positionBeans = CircleCalculation.calcWithHollowPosition(
+			CircleCalculation.makeCylinder(centerPos, radius),
+			new CylinderRecord(centerPos, radius, height)
+		);
+		CylCommand.execAll(positionBeans);
 		return SINGLE_SUCCESS;
 	}
 }
