@@ -116,20 +116,24 @@ public class CircleCalculation {
 	}
 
 	private static List<Coordinate> calcPosition(List<Coordinate> pos, CylinderRecord info) {
-		List<PositionBean> objects = new ArrayList<>();
 		int radius = info.getRadius();
-		int height = info.getHeight();
-		Coordinate center = info.getCenterPos();
-
 		List<Coordinate> temp = new ArrayList<>();
 		for (int i = radius; i > 0; i--) {
-			for (int j = radius; j > 0; j--) {
-				Coordinate p = new Coordinate(center.getX() + i, center.getY(), center.getZ() + j);
-				if (!pos.contains(p)) continue;
-				temp.add(p);
-				break;
-			}
+			temp.addAll(makePosition(pos, info, i));
 		}
 		return temp;
+	}
+
+	private static List<Coordinate> makePosition(List<Coordinate> pos, CylinderRecord info, int i) {
+		Coordinate center = info.getCenterPos();
+		int radius = info.getRadius();
+		List<Coordinate> object = new ArrayList<>();
+		for (int j = radius; j > 0; j--) {
+			Coordinate p = new Coordinate(center.getX() + i, center.getY(), center.getZ() + j);
+			if (!pos.contains(p)) continue;
+			object.add(p);
+			break;
+		}
+		return object;
 	}
 }
