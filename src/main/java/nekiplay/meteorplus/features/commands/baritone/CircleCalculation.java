@@ -7,10 +7,8 @@ public class CircleCalculation {
 
 	public static List<Coordinate> makeCylinder(Coordinate center, int radius) {
 		final List<Coordinate> object = new ArrayList<>();
-		final int crx = (int) Math.ceil(radius + 0.5);
-		final int crz = (int) Math.ceil(radius + 0.5);
-		for (int x = 0; x <= crx; ++x) {
-			for (int z = 0; z <= crz; ++z) {
+		for (int x = 0; x <= (int) Math.ceil(radius + 0.5); ++x) {
+			for (int z = 0; z <= (int) Math.ceil(radius + 0.5); ++z) {
 				double xn = x * (1 / (radius + 0.5));
 				double zn = z * (1 / (radius + 0.5));
 				if ((xn * xn + zn * zn) > 1) continue;
