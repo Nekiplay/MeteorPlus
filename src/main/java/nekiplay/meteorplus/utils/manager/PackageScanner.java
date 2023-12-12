@@ -8,6 +8,7 @@ import java.io.File;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.*;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 
@@ -72,13 +73,26 @@ public class PackageScanner {
 	@SneakyThrows
 	private Collection<Class<?>> findClassesInJar(JarFile jarFile, String path) {
 		List<Class<?>> classes = new ArrayList<>();
-		while (jarFile.entries().hasMoreElements()) {
-			String name = jarFile.entries().nextElement().getName();
-			if (!isClassFileInPath(name, path) || !isIgnored(extractClassName(name)))
-				continue;
-			classes.add(Class.forName(extractClassName(name)));
+		Enumeration<JarEntry> entries = jarFile.entries();
+		while (entries.hasMoreElements()) {
+			JarEntry entry = entries.nextElement();
+			String name = entry.getName();
+			if (isClassFileInPath(name, path) && !isIgnored(extractClassName(name))) {
+				classes.add(loadClass(entry));
+			}
 		}
 		return classes;
+	}
+
+	@SneakyThrows
+	private Class<?> loadClass(JarEntry entry) {
+		String className = extractClassName(entry.getName());
+		return loadClass(className);
+	}
+
+	@SneakyThrows
+	private Class<?> loadClass(String className) {
+		return Thread.currentThread().getContextClassLoader().loadClass(className);
 	}
 
 	private boolean isClassFileInPath(String name, String path) {
@@ -111,7 +125,7 @@ public class PackageScanner {
 			String className = String
 				.format("%s.%s", pkg, extractClassName(iFile.getName()));
 			if (!isIgnored(className))
-				classes.add(Class.forName(className));
+				classes.add(loadClass(className));
 		}
 	}
 
