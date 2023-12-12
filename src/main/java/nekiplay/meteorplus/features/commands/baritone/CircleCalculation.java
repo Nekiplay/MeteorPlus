@@ -48,16 +48,13 @@ public class CircleCalculation {
 		for (Coordinate coordinate : calcPosition(pos, info)) {
 			addToNotHollowList(mirror(coordinate, info), objects);
 		}
-
 		objects.forEach(o -> {
 			o.getSecond().addY(info.getHeight() - 1);
 		});
-
-		objects.add(new PositionBean(
+		addPosition(objects,
 			new Coordinate(info.getCenterPos().x, info.getCenterPos().y, info.getCenterPos().z - info.getRadius()),
 			new Coordinate(info.getCenterPos().x, info.getCenterPos().y + info.getHeight() - 1, info.getCenterPos().z + info.getRadius())
-		));
-
+		);
 		return objects;
 	}
 
@@ -87,15 +84,20 @@ public class CircleCalculation {
 			addToHollowList(mirror(coordinate, info), objects, info);
 		}
 
-		objects.add(new PositionBean(
+		addPosition(objects,
 			new Coordinate(info.getCenterPos().x, info.getCenterPos().y, info.getCenterPos().z - info.getRadius()),
-			new Coordinate(info.getCenterPos().x, info.getCenterPos().y + info.getHeight() - 1, info.getCenterPos().z - info.getRadius())
-		));
-		objects.add(new PositionBean(
+			new Coordinate(info.getCenterPos().x, info.getCenterPos().y + info.getHeight() - 1, info.getCenterPos().z - info.getRadius()),
 			new Coordinate(info.getCenterPos().x, info.getCenterPos().y, info.getCenterPos().z + info.getRadius()),
 			new Coordinate(info.getCenterPos().x, info.getCenterPos().y + info.getHeight() - 1, info.getCenterPos().z + info.getRadius())
-		));
+		);
 		return objects;
+	}
+
+	private static void addPosition(List<PositionBean> o, Coordinate... pos) {
+		if (pos.length % 2 != 0) return;
+		for (int i = 0; i < pos.length; i += 2) {
+			o.add(new PositionBean(pos[i], pos[i + 1]));
+		}
 	}
 
 	private static void addToHollowList(Coordinate[] pos, List<PositionBean> container, CylinderRecord info) {
