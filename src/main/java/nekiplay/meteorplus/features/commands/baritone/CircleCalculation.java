@@ -11,18 +11,25 @@ public class CircleCalculation {
 			for (int z = 0; z <= (int) Math.ceil(radius + 0.5); ++z) {
 				double xn = x * (1 / (radius + 0.5));
 				double zn = z * (1 / (radius + 0.5));
-				if ((xn * xn + zn * zn) > 1) continue;
-				addToList(
-					object,
-					center.add(x, center.getY(), z),
-					center.add(-x, center.getY(), z),
-					center.add(x, center.getY(), -z),
-					center.add(-x, center.getY(), -z)
-				);
+				if (isInsiderCylinder(xn, zn)) {
+					addCylinderCoordinates(object, center, x, z);
+				}
 			}
 		}
 		return object;
 	}
+
+	private static boolean isInsiderCylinder(double xn, double zn) {
+		return Math.pow(xn, 2) + Math.pow(zn, 2) <= 1;
+	}
+
+	private static void addCylinderCoordinates(List<Coordinate> object, Coordinate center, int x, int z) {
+		addToList(object, center.add(x, center.getY(), z),
+			center.add(-x, center.getY(), z),
+			center.add(x, center.getY(), -z),
+			center.add(-x, center.getY(), -z));
+	}
+
 
 	private static void addToList(List<Coordinate> posList, Coordinate... pos) {
 		for (Coordinate p : pos) {
@@ -76,7 +83,7 @@ public class CircleCalculation {
 
 		objects.add(new PositionBean(
 			new Coordinate(info.getCenterPos().x, info.getCenterPos().y, info.getCenterPos().z - info.getRadius()),
-			new Coordinate(info.getCenterPos().x, info.getCenterPos().y + info.getHeight()-1, info.getCenterPos().z - info.getRadius())
+			new Coordinate(info.getCenterPos().x, info.getCenterPos().y + info.getHeight() - 1, info.getCenterPos().z - info.getRadius())
 		));
 		objects.add(new PositionBean(
 			new Coordinate(info.getCenterPos().x, info.getCenterPos().y, info.getCenterPos().z + info.getRadius()),
