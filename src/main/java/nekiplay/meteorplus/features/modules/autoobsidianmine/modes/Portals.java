@@ -242,7 +242,7 @@ public class Portals extends AutoObsidianFarmMode {
 		if (mode == Mode.Flatten) {
 			pos1.setY((int) Math.floor(pY));
 		}
-		box = new Box(pos1, pos2);
+		box = new Box(pos1.toCenterPos(), pos2.toCenterPos());
 
 
 		// Find blocks to break

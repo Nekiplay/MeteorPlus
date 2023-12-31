@@ -55,7 +55,7 @@ public class FreecamMixin {
 		BlockState state = mc.world.getBlockState(pos);
 		Block block = state.getBlock();
 		if (block == Blocks.FERN ||
-			block == Blocks.GRASS ||
+			block == Blocks.SHORT_GRASS ||
 			block == Blocks.TALL_GRASS ||
 			block == Blocks.GLOW_LICHEN ||
 			block == Blocks.DEAD_BUSH ||

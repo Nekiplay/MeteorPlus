@@ -53,19 +53,19 @@ public class AutoLeave extends Module {
 	public void onEntityAdded(EntityAddedEvent event) {
 		if (mc.player == null) return;
 		if (visualRangeIgnoreFriends.get()) {
-			if (event.entity.isPlayer() && !Friends.get().isFriend((PlayerEntity) event.entity) && !Objects.equals(event.entity.getEntityName(), mc.player.getEntityName()) && !Objects.equals(event.entity.getEntityName(), "FreeCamera")) {
+			if (event.entity.isPlayer() && !Friends.get().isFriend((PlayerEntity) event.entity) && !Objects.equals(event.entity.getName(), mc.player.getName()) && !Objects.equals(event.entity.getName(), "FreeCamera")) {
 				if (Command.get()) {
 					ChatUtils.sendPlayerMsg(command_str.get());
-					info((String.format("player §c%s§r was detected", event.entity.getEntityName())));
+					info((String.format("player §c%s§r was detected", event.entity.getName())));
 				} else {
 					mc.world.disconnect();
-					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
+					mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getName()))));
 				}
 			if (AutoDisable.get()) this.toggle();
 			}
 		}
 		else if (event.entity.isPlayer()){
-				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getEntityName()))));
+				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal(String.format("[§dAuto Leaeve§r] player %s was detected", event.entity.getName()))));
 				if (AutoDisable.get()) this.toggle();
 		}
 	}
