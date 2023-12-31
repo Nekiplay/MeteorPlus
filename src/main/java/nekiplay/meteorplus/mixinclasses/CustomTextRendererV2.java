@@ -32,7 +32,7 @@ public class CustomTextRendererV2 extends CustomTextRenderer implements TextRend
 		this.fontFace = fontFace;
 
 		byte[] bytes = Utils.readBytes(fontFace.toStream());
-		ByteBuffer buffer = BufferUtils.createByteBuffer(bytes.length).put(bytes);
+		ByteBuffer buffer = BufferUtils.createByteBuffer(bytes.length).put(bytes).flip();
 
 		fonts = new FontV2[5];
 		for (int i = 0; i < fonts.length; i++) {

@@ -1,18 +1,19 @@
 package nekiplay.meteorplus.mixinclasses;
 
-import meteordevelopment.meteorclient.renderer.Mesh;
-import meteordevelopment.meteorclient.renderer.text.CharData;
 import meteordevelopment.meteorclient.renderer.text.Font;
+import meteordevelopment.meteorclient.renderer.Mesh;
 import meteordevelopment.meteorclient.utils.render.ByteTexture;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import net.minecraft.client.texture.AbstractTexture;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.stb.*;
+import org.lwjgl.stb.STBTTFontinfo;
+import org.lwjgl.stb.STBTTPackContext;
+import org.lwjgl.stb.STBTTPackedchar;
+import org.lwjgl.stb.STBTruetype;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-
 public class FontV2 extends Font {
 	public AbstractTexture texture;
 
@@ -34,16 +35,11 @@ public class FontV2 extends Font {
 		STBTTPackedchar.Buffer[] cdata = {STBTTPackedchar.create(128), STBTTPackedchar.create(256) };
 		ByteBuffer bitmap = BufferUtils.createByteBuffer(2048 * 2048);
 
-		// Create font texture
 		STBTTPackContext packContext = STBTTPackContext.create();
 		STBTruetype.stbtt_PackBegin(packContext, bitmap, 2048, 2048, 0, 1);
-		STBTTPackRange.Buffer packRanges = STBTTPackRange.malloc(2);
-
-		packRanges.put(STBTTPackRange.malloc().set(height, 32, null, 95, cdata[0], (byte)2, (byte)2));
-		packRanges.put(STBTTPackRange.malloc().set(height, 1024, null, 255, cdata[1], (byte)2, (byte)2));
-		packRanges.flip();
-
-		STBTruetype.stbtt_PackFontRanges(packContext, buffer, 0, packRanges);
+		STBTruetype.stbtt_PackSetOversampling(packContext, 2, 2);
+		STBTruetype.stbtt_PackFontRange(packContext, buffer, 0, height, 32, cdata[0]);
+		STBTruetype.stbtt_PackFontRange(packContext, buffer, 0, height, 1024, cdata[1]);
 		STBTruetype.stbtt_PackEnd(packContext);
 
 		// Create texture object and get font scale
@@ -123,4 +119,5 @@ public class FontV2 extends Font {
 
 		return x;
 	}
+	private record CharData(float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float xAdvance) {}
 }
