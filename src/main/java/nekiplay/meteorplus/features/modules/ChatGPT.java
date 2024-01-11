@@ -16,7 +16,8 @@ public class ChatGPT extends Module {
 
 	public enum Service {
 		NovaAI,
-		NagaAI;
+		NagaAI,
+		Custom;
 
 		@Override
 		public String toString() {
@@ -44,6 +45,22 @@ public class ChatGPT extends Module {
 		.description("Token-from-NagaAI.")
 		.defaultValue("")
 		.visible(() -> service.get() == Service.NagaAI)
+		.build()
+	);
+	
+	public final Setting<String> custom_endpoint = sgGeneral.add(new StringSetting.Builder()
+		.name("Custom-Endpoint")
+		.description("Custom-Endpoint.")
+		.defaultValue("")
+		.visible(() -> service.get() == Service.Custom)
+		.build()
+	);
+	
+	public final Setting<String> token_custom = sgGeneral.add(new StringSetting.Builder()
+		.name("Custom-token")
+		.description("Token-from-Custom-Endpoint.")
+		.defaultValue("")
+		.visible(() -> service.get() == Service.Custom)
 		.build()
 	);
 }

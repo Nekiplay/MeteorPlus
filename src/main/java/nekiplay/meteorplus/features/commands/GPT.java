@@ -136,6 +136,10 @@ public class GPT extends Command {
 							url = "https://api.naga.ac/v1/chat/completions";
 							token = chatGPT.token_nagaai.get();
 						}
+						case Custom -> {
+							url =chatGPT.custom_endpoint.get();
+							token = chatGPT.token_custom.get();
+						}
 					}
 
 
