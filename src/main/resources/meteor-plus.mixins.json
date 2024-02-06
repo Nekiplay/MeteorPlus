@@ -1,0 +1,30 @@
+{
+	"required": true,
+	"package": "nekiplay.meteorplus.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"plugin": "nekiplay.meteorplus.MixinPlugin",
+	"client": [
+		"meteorclient.AutoToolMixin",
+		"meteorclient.ESPMixin",
+		"meteorclient.FontsMixin",
+		"meteorclient.FreecamMixin",
+		"meteorclient.KillAuraMixin",
+		"meteorclient.LeftRightSettingsScreenMixin",
+		"meteorclient.ModuleMixin",
+		"meteorclient.ModulesScreenMixin",
+		"meteorclient.TracersMixin",
+		"meteorclient.WaypointsModuleMixin",
+		"meteorclient.WMeteorModuleMixin",
+		"meteorclient.WPressableMixin",
+		"meteorclient.ItemHighlightMixin",
+		"meteorclient.InventoryTweaksMixin",
+		"minecraft.ClientPlayerInteractionManagerMixin",
+		"minecraft.MinecraftClientMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"mixins": [
+		"meteorclient.DefaultSettingsWidgetFactoryMixin"
+	]
+}

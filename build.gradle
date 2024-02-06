@@ -55,7 +55,7 @@ dependencies {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/meteor-trainer.accesswidener")
+	accessWidenerPath = file("src/main/resources/meteor-plus.accesswidener")
 }
 
 processResources {

@@ -1,28 +1,36 @@
 {
   "schemaVersion": 1,
-  "id": "meteortrainer",
+  "id": "meteorplus",
   "version": "${version}",
-  "name": "Meteor Trainer",
-  "description": "Addon for training your own skills.",
+  "name": "Meteor Plus",
+  "description": "An addon for Meteor client that adds many blatant features.",
   "authors": [
 		"Neki_play"
   ],
   "contact": {
-		"homepage": "https://github.com/Nekiplay/MeteorTrainer",
-		"issues": "https://github.com/Nekiplay/MeteorTrainer/issues",
-		"sources": "https://github.com/Nekiplay/MeteorTrainer",
+		"homepage": "https://github.com/Nekiplay/MeteorPlus",
+		"issues": "https://github.com/Nekiplay/MeteorPlus/issues",
+		"sources": "https://github.com/Nekiplay/MeteorPlus",
 		"discord": "https://www.guilded.gg/i/27dAlJKk"
   },
 
 	"license": "GPL-3.0",
-  "icon": "assets/meteortrainer/icon.png",
+  "icon": "assets/meteorplus/icon.png",
   "environment": "*",
   "entrypoints": {
+    "meteor": [
+      "nekiplay.meteorplus.MeteorPlus"
+    ],
+		"journeymap": [
+			"nekiplay.meteorplus.modules.integrations.journeymap.JourneyMapMeteorPlus"
+		]
   },
   "mixins": [
-		"meteor-trainer.mixins.json"
+    "meteor-plus.mixins.json",
+		"meteor-plus-journeymap.mixins.json",
+		"meteor-plus-xaeroworldmap.mixins.json"
   ],
-	"accessWidener": "meteor-trainer.accesswidener",
+	"accessWidener": "meteor-plus.accesswidener",
   "custom": {
     "meteor-client:color": "0,181,73",
 		"github:sha": "${gh_hash}"
