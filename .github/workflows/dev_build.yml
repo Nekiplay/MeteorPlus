@@ -22,3 +22,4 @@ jobs:
           files: |
             ./build/libs/*.jar
             ./libs/baritone-api-fabric*.jar
+            ./libs/meteor-client*.jar
