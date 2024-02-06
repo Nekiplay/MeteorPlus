@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "nekiplay.meteortrainer.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"plugin": "nekiplay.meteortrainer.MixinPlugin",
+	"client": [
+
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"mixins": [
+
+	]
+}
