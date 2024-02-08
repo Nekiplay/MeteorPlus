@@ -16,7 +16,7 @@
 	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://img.shields.io/badge/support/help/issues-guilded-brightgreen" alt="Guilded"/></a>
 	<br>
 <a href="https://github.com/Nekiplay/MeteorPlus/blob/main/donations.md"><img src="https://img.shields.io/badge/donations-btc, ethereum, nano-brightgreen" alt="Donations" /></a>
-	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBouce</a> 🤫</p>
+	<p>Thanks some russian paid clients and <a href="https://github.com/CCBlueX/LiquidBounce">LiquidBounce</a> 🤫</p>
 	<br>
 </div>
 
