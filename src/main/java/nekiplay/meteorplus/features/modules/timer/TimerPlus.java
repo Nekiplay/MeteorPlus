@@ -114,6 +114,20 @@ public class TimerPlus extends Module {
 				timerMultiplier = 1.25;
 				timerMultiplierOnRecharge = Timer.OFF;
 			}
+			case Old_Fag -> {
+				currentMode = new NCP();
+				workingDelay = 18;
+				rechargeDelay = 150;
+				timerMultiplier = 2;
+				timerMultiplierOnRecharge = Timer.OFF;
+			}
+			case rem6g6s -> {
+				currentMode = new NCP();
+				workingDelay = 75;
+				rechargeDelay = 155;
+				timerMultiplier = 2.5;
+				timerMultiplierOnRecharge = 2;
+			}
 			case Custom -> {
 				currentMode = new NCP();
 				workingDelay = boostDelaySetting.get();
