@@ -7,6 +7,7 @@ import meteordevelopment.meteorclient.utils.misc.Pool;
 import meteordevelopment.meteorclient.utils.player.*;
 import meteordevelopment.meteorclient.utils.world.BlockIterator;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
+import meteordevelopment.meteorclient.utils.world.TickRate;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarmMode;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarmModes;
 import nekiplay.meteorplus.utils.RaycastUtils;
@@ -76,6 +77,9 @@ public class Cauldrons extends AutoObsidianFarmMode {
 
 	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
+		if (TickRate.INSTANCE.getTimeSinceLastTick() > 1.15) {
+			return;
+		}
 		BlockIterator.register(settings.range.get(), settings.range.get(), (blockPos, blockState) -> {
 			Block block = blockState.getBlock();
 			if (block == Blocks.LAVA_CAULDRON || block == Blocks.OBSIDIAN || block == Blocks.CAULDRON) {

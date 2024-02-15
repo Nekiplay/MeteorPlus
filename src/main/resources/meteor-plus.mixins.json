@@ -26,6 +26,7 @@
   },
   "mixins": [
     "meteorclient.DefaultSettingsWidgetFactoryMixin",
+    "minecraft.ClientPlayerEntityMixin",
     "minecraft.LivingEntityMixin"
-    ]
+  ]
 }

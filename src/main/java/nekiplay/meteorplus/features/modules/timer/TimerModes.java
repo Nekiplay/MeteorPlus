@@ -3,9 +3,10 @@ package nekiplay.meteorplus.features.modules.timer;
 public enum TimerModes {
 	NCP,
 	Intave,
-	Custom,
+	Vulcan,
 	Old_Fag,
-	rem6g6s
+	rem6g6s,
+	Custom
 	;
 
 	@Override

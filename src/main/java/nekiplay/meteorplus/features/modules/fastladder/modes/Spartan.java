@@ -98,6 +98,7 @@ public class Spartan extends FastLadderMode {
 			} else {
 				lastY = y;
 			}
+
 		}
 	}
 
@@ -111,7 +112,7 @@ public class Spartan extends FastLadderMode {
 		BlockState state = mc.world.getBlockState(player.getBlockPos());
 		BlockState state2 = mc.world.getBlockState(player.getBlockPos().add(0, 1, 0));
 		if ((state.getBlock() == Blocks.LADDER || state.getBlock() == Blocks.VINE) || state2.getBlock() == Blocks.LADDER || state2.getBlock() == Blocks.VINE) {
-			modify = player.horizontalCollision;
+			modify = player.horizontalCollision && player.isHoldingOntoLadder();
 			if (mc.player.isOnGround()) {
 				block = false;
 				startY = mc.player.getPos().y;

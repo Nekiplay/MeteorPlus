@@ -93,6 +93,7 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new ItemFrameEsp());
 		modules.add(new KillAuraPlus());
 		modules.add(new NoJumpDelay());
+		modules.add(new NoSlowPlus());
 		//modules.add(new VelocityPlus());
 		if (MixinPlugin.isXaeroWorldMapresent || MixinPlugin.isJourneyMapPresent) {
 			modules.add(new MapIntegration());

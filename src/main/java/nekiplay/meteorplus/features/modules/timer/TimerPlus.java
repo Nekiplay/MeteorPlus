@@ -9,6 +9,7 @@ import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.features.modules.timer.modes.NCP;
 import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.features.modules.timer.modes.Vulcan;
 
 public class TimerPlus extends Module {
 	public TimerPlus() {
@@ -113,6 +114,9 @@ public class TimerPlus extends Module {
 				rechargeDelay = 105;
 				timerMultiplier = 1.25;
 				timerMultiplierOnRecharge = Timer.OFF;
+			}
+			case Vulcan -> {
+				currentMode = new Vulcan();
 			}
 			case Old_Fag -> {
 				currentMode = new NCP();
