@@ -20,6 +20,6 @@ jobs:
           prerelease: true
           title: "1.20.4"
           files: |
-            ./build/libs/*.jar
             ./libs/baritone-api-fabric*.jar
             ./libs/meteor-client*.jar
+            ./build/libs/*.jar
