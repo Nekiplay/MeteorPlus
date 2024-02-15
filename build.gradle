@@ -28,6 +28,14 @@ repositories {
 	}
 	maven { url = "https://www.cursemaven.com" }
 	maven { url = "https://masa.dy.fi/maven" }
+	// YACL
+	maven {
+		url = uri("https://maven.isxander.dev/releases")
+	}
+	// Where Is It, JackFredLib
+	maven {
+		url = uri("https://maven.jackf.red/releases/")
+	}
 }
 
 dependencies {
@@ -52,6 +60,7 @@ dependencies {
 	modImplementation "curse.maven:litematica-${project.litematica_projectid}:${project.litematica_fileid}"
 	modImplementation "curse.maven:litematica-${project.malilib_projectid}:${project.malilib_fileid}"
 	// modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
+	modImplementation("red.jackf:whereisit:${project.where_is_it_version}")
 }
 
 loom {

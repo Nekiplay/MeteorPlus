@@ -15,6 +15,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	public static boolean isXaeroMiniMapresent;
 	public static boolean isXaeroPlusMapresent;
 	public static boolean isLitematicaMapresent;
+	public static boolean isWhereIsIt;
 
 	@Override
 	public void onLoad(String mixinPackage) {
@@ -23,6 +24,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		isXaeroMiniMapresent = FabricLoader.getInstance().isModLoaded("xaerominimap");
 		isXaeroPlusMapresent = FabricLoader.getInstance().isModLoaded("xaeroplus");
 		isLitematicaMapresent = FabricLoader.getInstance().isModLoaded("litematica");
+		isWhereIsIt = FabricLoader.getInstance().isModLoaded("whereisit");
 	}
 
 	@Override
@@ -43,6 +45,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".xaerominimap")) {
 			return isXaeroMiniMapresent;
+		}
+		else if (mixinClassName.startsWith(mixinPackage + ".whereisit")) {
+			return isWhereIsIt;
 		}
 		return true;
 	}

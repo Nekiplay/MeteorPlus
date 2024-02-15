@@ -8,6 +8,7 @@ import nekiplay.meteorplus.features.commands.Eclip;
 import nekiplay.meteorplus.features.commands.GPT;
 import nekiplay.meteorplus.features.commands.GotoPlus;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarm;
+import nekiplay.meteorplus.features.modules.integrations.WhereIsIt;
 import nekiplay.meteorplus.features.modules.killaura.KillAuraPlus;
 import nekiplay.meteorplus.gui.tabs.HiddenModulesTab;
 import nekiplay.meteorplus.hud.TimerPlusCharge;
@@ -102,6 +103,10 @@ public class MeteorPlus extends MeteorAddon {
 		if (MixinPlugin.isLitematicaMapresent) {
 			modules.add(new LitematicaPrinter());
 			LOG.info(LOGPREFIX + " loaded litematica integration");
+		}
+		if (MixinPlugin.isWhereIsIt) {
+			modules.add(new WhereIsIt());
+			LOG.info(LOGPREFIX + " loaded where is it integration");
 		}
 		LOG.info(LOGPREFIX + " loaded modules");
 		//endregion
