@@ -22,10 +22,6 @@ public class LongJumpMixin {
 
 	@Shadow
 	@Final
-	private final SettingGroup sgGeneral = longJump.settings.getDefaultGroup();;
-
-	@Shadow
-	@Final
 	public final Setting<LongJump.JumpMode> jumpMode = (Setting<LongJump.JumpMode>) longJump.settings.get("mode");
 
 	@Shadow
@@ -62,12 +58,6 @@ public class LongJumpMixin {
 	private double moveSpeed;
 	@Shadow
 	private boolean jumping = false;
-	@Shadow
-	private int airTicks;
-	@Shadow
-	private int groundTicks;
-	@Shadow
-	private boolean jumped = false;
 
 	/**
 	 * @author Neki_play

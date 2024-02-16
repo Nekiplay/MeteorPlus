@@ -13,6 +13,7 @@
 		"meteorclient.modules.TracersMixin",
 		"meteorclient.modules.WaypointsModuleMixin",
 		"meteorclient.modules.LongJumpMixin",
+		"meteorclient.modules.SpeedMixin",
     "meteorclient.LeftRightSettingsScreenMixin",
     "meteorclient.ModuleMixin",
     "meteorclient.ModulesScreenMixin",

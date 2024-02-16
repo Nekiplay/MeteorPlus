@@ -24,12 +24,12 @@
 ## Modules
 | Module               | Description                                   | Bypasses                     |
 |----------------------|-----------------------------------------------|------------------------------|
-| **Fly Plus**         | **Flight for Anti-Cheats**                    | **Matrix, Spartan, Vulcan**  |
-| **Speed Plus**       | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP** |
-| **Spider Plus**      | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**           |
-| **Jesus Plus**       | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**           |
-| **Fast Ladder Plus** | **Fast Ladder for Anti-Cheats**               | **Spartan**                  |
-| **Timer Plus**       | **Timer for Anti-Cheats**                     | **NCP, Intave**              |
+| **Fly+**         	   | **Flight for Anti-Cheats**                    | **Matrix, Spartan, Vulcan**  |
+| **Speed+**       	   | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP** |
+| **Spider+**      	   | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**           |
+| **Jesus+**       	   | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**           |
+| **Fast Ladder+** 	   | **Fast Ladder for Anti-Cheats**               | **Spartan**                  |
+| **Timer+**       	   | **Timer for Anti-Cheats**                     | **NCP, Intave, Vulcan**      |
 | **Safe mine**        | **Prevents player from lava**                 | **Matrix**                   |
 | **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator**           |
 | **Anti Bot**         | **Ignores bots for KillAura, ESP, Tracers**   |                              |
@@ -42,12 +42,20 @@
 
 
 ## Meteor Client improvements
-| Module            | Enhancements                                                        |
+| Module            	 | Enhancements                                                        |
+|------------------------|---------------------------------------------------------------------|
+| **Freecam**       	 | **Added good baritone control via Freecam**                         |       
+| **Waypoints**     	 | **Added display of distances in label names, sorting, name search** |
+| **Hidden module** 	 | **Hiding original modules and third-party modules from the GUI**    |
+| **UI, Hud, ESP, GUI**  | **Added support for the Russian language in Minecraft**        |
+
+## Meteor Client fixes
+| Module            | Fix                                                        		  |
 |-------------------|---------------------------------------------------------------------|
-| **Freecam**       | **Added good baritone control via Freecam**                         |       
-| **Waypoints**     | **Added display of distances in label names, sorting, name search** |
-| **Hidden module** | **Hiding original modules and third-party modules from the GUI**    |
-| **UI, Hud, ESP**  | **Added support for the Russian language in Minecraft**             |
+| **Auto Tool**     | **No work in creative mode**                         				  |       
+| **Long Jump**     | **Does not stop the work of other modules that modify Timer** 	  |
+| **Speed**     	| **Does not stop the work of other modules that modify Timer** 	  |
+
 
 ## Integrations with mods
 | Mod             		| Integrated                                              |
@@ -56,7 +64,7 @@
 | **Xaero's World Map** | **Goto, Elytra fly from Baritone for map context menu** |     
 
 # Installation Guide
-1. Install [minecraft](https://www.minecraft.net) 1.19.4 or 1.20 or 1.20.1
+1. Install [minecraft](https://www.minecraft.net)
 2. Install [fabric](https://fabricmc.net) and [fabric api](https://www.curseforge.com/minecraft/mc-mods/fabric-api) for your version of minecraft
 3. For 1.20.4 Download [baritone api fabric](https://github.com/cabaletta/baritone/actions/workflows/gradle_build.yml?query=branch%3A1.20.4)
 4. Download [meteor client](https://meteorclient.com) for your version of minecraft
