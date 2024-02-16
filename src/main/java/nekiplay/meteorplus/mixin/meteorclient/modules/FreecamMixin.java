@@ -1,8 +1,7 @@
-package nekiplay.meteorplus.mixin.meteorclient;
+package nekiplay.meteorplus.mixin.meteorclient.modules;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
@@ -40,7 +39,7 @@ public class FreecamMixin {
 	@Unique
 	private final Setting<Boolean> blinkBaritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
 		.name("baritone-blink-control")
-		.description("Midle mouse click to move to point in Blink.")
+		.description("Middle mouse click to move to point in Blink.")
 		.visible(baritoneControl::get)
 		.build()
 	);
@@ -52,7 +51,8 @@ public class FreecamMixin {
 
 	@Unique
 	private BlockPos tryGetValidPos(BlockPos pos) {
-		BlockState state = mc.world.getBlockState(pos);
+        assert mc.world != null;
+        BlockState state = mc.world.getBlockState(pos);
 		Block block = state.getBlock();
 		if (block == Blocks.FERN ||
 			block == Blocks.SHORT_GRASS ||

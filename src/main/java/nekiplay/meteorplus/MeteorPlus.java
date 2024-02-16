@@ -134,7 +134,8 @@ public class MeteorPlus extends MeteorAddon {
 		LOG.info(LOGPREFIX + " registering categories...");
 		if (MixinPlugin.isXaeroWorldMapresent ||
 			MixinPlugin.isJourneyMapPresent ||
-			MixinPlugin.isLitematicaMapresent
+			MixinPlugin.isLitematicaMapresent ||
+			MixinPlugin.isWhereIsIt
 		) {
 			Modules.registerCategory(CATEGORYMODS);
 		}

@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.mixin.meteorclient;
+package nekiplay.meteorplus.mixin.meteorclient.modules;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.IBaritone;

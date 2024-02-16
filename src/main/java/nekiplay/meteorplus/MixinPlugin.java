@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class MixinPlugin implements IMixinConfigPlugin {
 	private static final String mixinPackage = "nekiplay.meteorplus.mixin";
-
+	public static boolean isBaritonePresent;
 	public static boolean isJourneyMapPresent;
 	public static boolean isXaeroWorldMapresent;
 	public static boolean isXaeroMiniMapresent;
@@ -19,6 +19,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public void onLoad(String mixinPackage) {
+		isBaritonePresent = FabricLoader.getInstance().isModLoaded("baritone");
 		isJourneyMapPresent = FabricLoader.getInstance().isModLoaded("journeymap");
 		isXaeroWorldMapresent = FabricLoader.getInstance().isModLoaded("xaeroworldmap");
 		isXaeroMiniMapresent = FabricLoader.getInstance().isModLoaded("xaerominimap");
@@ -48,6 +49,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".whereisit")) {
 			return isWhereIsIt;
+		}
+		else if (mixinClassName.startsWith(mixinPackage + ".baritone")) {
+			return isBaritonePresent;
 		}
 		return true;
 	}
