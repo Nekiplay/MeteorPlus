@@ -18,16 +18,25 @@ public class WhereIsIt extends Module {
 
 	public final Setting<Boolean> background = defaultGroup.add(new BoolSetting.Builder()
 		.name("draw-background")
+		.defaultValue(true)
+		.build()
+	);
+
+	public final Setting<Boolean> suport_color_symbols = defaultGroup.add(new BoolSetting.Builder()
+		.name("use-color-symbols")
+		.defaultValue(true)
 		.build()
 	);
 
 	public final Setting<SettingColor> visible_text_color = defaultGroup.add(new ColorSetting.Builder()
 		.name("Visible-text-color")
+		.visible(() -> !suport_color_symbols.get())
 		.build()
 	);
 
 	public final Setting<SettingColor> notvisible_text_color = defaultGroup.add(new ColorSetting.Builder()
 		.name("not-visible-text-color")
+		.visible(() -> !suport_color_symbols.get())
 		.build()
 	);
 }
