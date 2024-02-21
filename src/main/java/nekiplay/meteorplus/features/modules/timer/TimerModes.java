@@ -4,6 +4,7 @@ public enum TimerModes {
 	NCP,
 	Intave,
 	Vulcan,
+	Grim,
 	OldFag,
 	rem6g6s,
 	Custom
