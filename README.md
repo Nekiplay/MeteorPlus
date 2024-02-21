@@ -12,6 +12,7 @@
 	<a href="https://github.com/Nekiplay/MeteorPlus/releases"><img src="https://img.shields.io/github/downloads/Nekiplay/MeteorPlus/total" alt="Downloads"/></a>
 	<a href="https://github.com/Nekiplay/MeteorPlus/stargazers"><img src="https://badgen.net/github/stars/Nekiplay/MeteorPlus" alt="GitHub stars"/></a>
 	<br>
+	<a href="https://discord.gg/N3gqYc7GRS><img src="https://img.shields.io/badge/support/help/issues-discord-brightgreen" alt="Discord"/></a>
 	<a href="https://www.guilded.gg/i/27dAlJKk"><img src="https://img.shields.io/badge/support/help/issues-guilded-brightgreen" alt="Guilded"/></a>
 	<br>
 <a href="https://github.com/Nekiplay/MeteorPlus/blob/main/donations.md"><img src="https://img.shields.io/badge/donations-btc, ethereum, nano-brightgreen" alt="Donations" /></a>
