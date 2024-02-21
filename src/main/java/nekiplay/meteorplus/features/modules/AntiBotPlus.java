@@ -7,7 +7,7 @@ import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -20,7 +20,7 @@ import java.util.*;
 
 public class AntiBotPlus extends Module {
 	public AntiBotPlus() {
-		super(MeteorPlus.CATEGORY, "Anti Bot", "Remove bots.");
+		super(MeteorPlusAddon.CATEGORY, "Anti Bot", "Remove bots.");
 	}
 
 	/* Thanks LiquidBounce

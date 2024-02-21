@@ -8,12 +8,14 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.features.modules.timer.modes.NCP;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.timer.modes.Vulcan;
+
+import static nekiplay.meteorplus.hud.TimerPlusCharge.find_percent;
 
 public class TimerPlus extends Module {
 	public TimerPlus() {
-		super(MeteorPlus.CATEGORY, "timer+", "Bypass timer.");
+		super(MeteorPlusAddon.CATEGORY, "timer+", "Bypass timer.");
 		autoSubscribe = false;
 		MeteorClient.EVENT_BUS.subscribe(this);
 	}
@@ -118,7 +120,7 @@ public class TimerPlus extends Module {
 			case Vulcan -> {
 				currentMode = new Vulcan();
 			}
-			case Old_Fag -> {
+			case OldFag -> {
 				currentMode = new NCP();
 				workingDelay = 18;
 				rechargeDelay = 150;
@@ -172,6 +174,13 @@ public class TimerPlus extends Module {
 	@EventHandler
 	public void onSentPacket(PacketEvent.Sent event) {
 		currentMode.onSentPacket(event);
+	}
+
+	@Override
+	public String getInfoString() {
+		double percentage = find_percent(0, TimerPlus.rechargeDelay, TimerPlus.rechargeTimer);
+
+		return String.format("%.1f", percentage);
 	}
 }
 

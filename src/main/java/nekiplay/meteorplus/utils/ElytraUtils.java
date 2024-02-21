@@ -10,7 +10,6 @@ public class ElytraUtils {
 	public static void startFly() {
 		if (mc.player != null && mc.player.networkHandler != null) {
 			mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.START_FALL_FLYING));
-
 		}
 	}
 

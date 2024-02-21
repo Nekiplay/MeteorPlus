@@ -18,21 +18,24 @@
   "icon": "assets/meteorplus/icon.png",
   "environment": "*",
   "entrypoints": {
+		"main": [
+			"nekiplay.meteorplus.MeteorPlusMain"
+		],
     "meteor": [
-      "nekiplay.meteorplus.MeteorPlus"
+			"nekiplay.meteorplus.MeteorPlusAddon"
     ],
 		"journeymap": [
 			"nekiplay.meteorplus.modules.integrations.journeymap.JourneyMapMeteorPlus"
 		]
   },
   "mixins": [
-    "meteor-plus.mixins.json",
-		"meteor-plus-journeymap.mixins.json",
-		"meteor-plus-xaeroworldmap.mixins.json",
-		"meteor-plus-whereisit.mixins.json"
+		"meteorplus.mixins.json",
+		"meteorplus-journeymap.mixins.json",
+		"meteorplus-xaeroworldmap.mixins.json",
+		"meteorplus-whereisit.mixins.json"
 
   ],
-	"accessWidener": "meteor-plus.accesswidener",
+	"accessWidener": "meteorplus.accesswidener",
   "custom": {
     "meteor-client:color": "0,181,73",
 		"github:sha": "${gh_hash}"

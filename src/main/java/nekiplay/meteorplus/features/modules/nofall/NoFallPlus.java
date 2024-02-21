@@ -7,7 +7,7 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.nofall.modes.Eclip;
 import nekiplay.meteorplus.features.modules.nofall.modes.MatrixNew;
 import nekiplay.meteorplus.features.modules.nofall.modes.Vulcan;
@@ -15,7 +15,7 @@ import nekiplay.meteorplus.features.modules.nofall.modes.Vulcan277;
 
 public class NoFallPlus extends Module {
 	public NoFallPlus() {
-		super(MeteorPlus.CATEGORY, "no-fall+", "Bypass fall damage or reduce fall damage");
+		super(MeteorPlusAddon.CATEGORY, "no-fall+", "Bypass fall damage or reduce fall damage");
 		onModeChanged(mode.get());
 	}
 

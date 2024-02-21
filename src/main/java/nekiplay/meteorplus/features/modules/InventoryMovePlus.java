@@ -13,7 +13,7 @@ import meteordevelopment.meteorclient.utils.misc.input.Input;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.option.KeyBinding;
@@ -28,7 +28,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class InventoryMovePlus extends Module {
 	public InventoryMovePlus() {
-		super(MeteorPlus.CATEGORY, "Inventory Move", "Move in inventories.");
+		super(MeteorPlusAddon.CATEGORY, "Inventory Move", "Move in inventories.");
 	}
 	public enum Screens {
 		GUI,

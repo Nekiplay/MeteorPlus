@@ -6,12 +6,12 @@ import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.MixinPlugin;
 
 public class MapIntegration extends Module {
 	public MapIntegration() {
-		super(MeteorPlus.CATEGORYMODS, "Mini-map", "Improvements for mods on mini-maps.");
+		super(MeteorPlusAddon.CATEGORYMODS, "Mini-map", "Improvements for mods on mini-maps.");
 	}
 
 	private final SettingGroup baritoneIntegration = settings.createGroup("Baritone");

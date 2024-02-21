@@ -8,14 +8,14 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.spider.modes.Eclip;
 import nekiplay.meteorplus.features.modules.spider.modes.Matrix;
 import nekiplay.meteorplus.features.modules.spider.modes.Vulcan;
 
 public class SpiderPlus extends Module {
 	public SpiderPlus() {
-		super(MeteorPlus.CATEGORY, "spider+", "Bypass spider");
+		super(MeteorPlusAddon.CATEGORY, "spider+", "Bypass spider");
 		onSpiderModeChanged(spiderMode.get());
 	}
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();

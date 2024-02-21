@@ -8,7 +8,7 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -22,7 +22,7 @@ import java.util.ArrayDeque;
 
 public class GhostBlockFixer extends Module {
 	public GhostBlockFixer() {
-		super(MeteorPlus.CATEGORY, "auto-ghost-block-fixer", "Automatically fix ghost blocks.");
+		super(MeteorPlusAddon.CATEGORY, "auto-ghost-block-fixer", "Automatically fix ghost blocks.");
 	}
 	private final SettingGroup GBSettings = settings.createGroup("Ghost Block Fixer Settings");
 

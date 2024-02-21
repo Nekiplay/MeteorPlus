@@ -1,14 +1,12 @@
 package nekiplay.meteorplus.features.modules;
 
-import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.GenericSetting;
 import meteordevelopment.meteorclient.settings.ItemListSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
-import nekiplay.meteorplus.MeteorPlus;
-import nekiplay.meteorplus.settings.items.ESPItemData;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.settings.items.HiglightItemData;
 import nekiplay.meteorplus.settings.items.ItemDataSetting;
 import net.minecraft.item.Item;
@@ -19,7 +17,7 @@ import java.util.Map;
 
 public class ItemHighlightPlus extends Module {
 	public ItemHighlightPlus() {
-		super(MeteorPlus.CATEGORY, "Item-Highlight+", "Highlights selected items when in inventorys and guis.");
+		super(MeteorPlusAddon.CATEGORY, "Item-Highlight+", "Highlights selected items when in inventorys and guis.");
 	}
 
 	public final SettingGroup sgGeneral = settings.getDefaultGroup();

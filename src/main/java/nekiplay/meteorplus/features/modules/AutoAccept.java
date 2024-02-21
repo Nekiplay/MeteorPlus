@@ -6,7 +6,7 @@ import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.utils.ColorRemover;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class AutoAccept extends Module {
 	public AutoAccept() {
-		super(MeteorPlus.CATEGORY, "Auto Accept", "Automatically accepts incoming teleport requests.");
+		super(MeteorPlusAddon.CATEGORY, "Auto Accept", "Automatically accepts incoming teleport requests.");
 	}
 
 	private final SettingGroup AASettings = settings.createGroup("Auto Accept Settings");
@@ -128,7 +128,7 @@ public class AutoAccept extends Module {
 			String message = ColorRemover.GetVerbatim(event.getMessage().getString());
 			if (Debug.get())
 			{
-				MeteorPlus.LOG.info(message);
+				MeteorPlusAddon.LOG.info(message);
 			}
 			Thread th = new Thread(() -> {
 				TPPattern custom = new TPPattern(custom_pattern.get(), custom_group.get(), accept_command.get());

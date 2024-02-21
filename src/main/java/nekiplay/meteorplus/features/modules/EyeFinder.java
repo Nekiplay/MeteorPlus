@@ -10,7 +10,7 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 public class EyeFinder extends Module {
 	public EyeFinder() {
-		super(MeteorPlus.CATEGORY, "Eye Finder", "Find block player look.");
+		super(MeteorPlusAddon.CATEGORY, "Eye Finder", "Find block player look.");
 	}
 	private final HashMap<Entity, HitResult> resultMap = new HashMap<Entity, HitResult>();
 

@@ -7,13 +7,12 @@ import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.screen.recipebook.RecipeResultCollection;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
@@ -29,7 +28,7 @@ import java.util.List;
 
 public class AutoCraftPlus extends Module {
 	public AutoCraftPlus() {
-		super(MeteorPlus.CATEGORY, "Auto Craft", "Automatically craft items.");
+		super(MeteorPlusAddon.CATEGORY, "Auto Craft", "Automatically craft items.");
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();

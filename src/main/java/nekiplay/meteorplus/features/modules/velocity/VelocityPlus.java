@@ -1,24 +1,16 @@
 package nekiplay.meteorplus.features.modules.velocity;
 
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
-import nekiplay.meteorplus.features.modules.timer.TimerMode;
-import nekiplay.meteorplus.features.modules.timer.TimerModes;
-import nekiplay.meteorplus.features.modules.timer.TimerPlus;
-import nekiplay.meteorplus.features.modules.timer.modes.NCP;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.velocity.modes.Grim;
-import net.minecraft.client.MinecraftClient;
 
 public class VelocityPlus extends Module {
 	public VelocityPlus() {
-		super(MeteorPlus.CATEGORY, "velocity+", "Bypass velocity.");
+		super(MeteorPlusAddon.CATEGORY, "velocity+", "Bypass velocity.");
 	}
 	private final SettingGroup settingsGroup = settings.getDefaultGroup();
 

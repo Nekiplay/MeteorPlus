@@ -17,9 +17,8 @@ import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.render.color.RainbowColors;
 import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.meteorclient.utils.world.TickRate;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.utils.GenerationBlock;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
 
@@ -58,7 +57,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
 
 public class XrayBruteforce extends Module {
     public XrayBruteforce() {
-        super(MeteorPlus.CATEGORY, "xray-bruteForce", "Bypasses anti-xray.");
+        super(MeteorPlusAddon.CATEGORY, "xray-bruteForce", "Bypasses anti-xray.");
 		RainbowColors.register(this::onTickRainbow);
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();

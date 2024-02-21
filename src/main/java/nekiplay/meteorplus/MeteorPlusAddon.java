@@ -16,12 +16,15 @@ import nekiplay.meteorplus.features.modules.*;
 import nekiplay.meteorplus.features.modules.integrations.LitematicaPrinter;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import nekiplay.meteorplus.features.modules.timer.TimerPlus;
+import nekiplay.meteorplus.items.ModItems;
 import net.fabricmc.loader.api.FabricLoader;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import nekiplay.meteorplus.features.modules.fastladder.FastLadderPlus;
 import nekiplay.meteorplus.features.modules.fly.FlyPlus;
@@ -32,19 +35,23 @@ import nekiplay.meteorplus.features.modules.spider.SpiderPlus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MeteorPlus extends MeteorAddon {
-	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlus.class);
-	public static final Category CATEGORY = new Category("Meteor+", Items.EMERALD_BLOCK.getDefaultStack());
-	public static final Category CATEGORYMODS = new Category("Meteor+ Mods", Items.REDSTONE_BLOCK.getDefaultStack());
+import java.rmi.registry.Registry;
+
+public class MeteorPlusAddon extends MeteorAddon {
+	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlusAddon.class);
+	public static final Category CATEGORY = new Category("Meteor+", ModItems.LOGO_ITEM.getDefaultStack());
+
+	public static final ItemStack logo_mods_item = ModItems.LOGO_MODS_ITEM.getDefaultStack();
+
+	public static final Category CATEGORYMODS = new Category("Meteor+ Mods", logo_mods_item);
 	public static final HudGroup HUD_GROUP = new HudGroup("Meteor+ Hud");
 	public static final String LOGPREFIX = "[Meteor+]";
 
-	private static MeteorPlus instance;
+	private static MeteorPlusAddon instance;
 
-	public static MeteorPlus getInstance() {
+	public static MeteorPlusAddon getInstance() {
 		return instance;
 	}
-
 
 	@Override
 	public void onInitialize() {
@@ -79,7 +86,6 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new FlyPlus());
 		modules.add(new SpiderPlus());
 		modules.add(new JesusPlus());
-		modules.add(new BoatAura());
 		modules.add(new BedrockStorageBruteforce());
 		modules.add(new AutoCraftPlus());
 		modules.add(new AutoObsidianFarm());
@@ -93,7 +99,12 @@ public class MeteorPlus extends MeteorAddon {
 		modules.add(new MultiTasks());
 		modules.add(new ItemFrameEsp());
 		modules.add(new KillAuraPlus());
-		modules.add(new NoJumpDelay());
+		if (!MixinPlugin.isMeteorRejects) {
+			modules.add(new NoJumpDelay());
+		}
+		else {
+			LOG.info(LOGPREFIX + " meteor-rejects detected, removing meteor plus (No Jump Delay)");
+		}
 		modules.add(new NoSlowPlus());
 		//modules.add(new VelocityPlus());
 		if (MixinPlugin.isXaeroWorldMapresent || MixinPlugin.isJourneyMapPresent) {
@@ -137,6 +148,7 @@ public class MeteorPlus extends MeteorAddon {
 			MixinPlugin.isLitematicaMapresent ||
 			MixinPlugin.isWhereIsIt
 		) {
+			logo_mods_item.addEnchantment(Enchantments.FLAME, 1);
 			Modules.registerCategory(CATEGORYMODS);
 		}
 		Modules.registerCategory(CATEGORY);

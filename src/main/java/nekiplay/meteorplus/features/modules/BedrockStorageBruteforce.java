@@ -15,7 +15,7 @@ import meteordevelopment.meteorclient.utils.render.RenderUtils;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class BedrockStorageBruteforce extends Module {
 	public BedrockStorageBruteforce() {
-		super(MeteorPlus.CATEGORY, "bedrock-storage-BF", "scan-storage's-in-bedrock-from-1-to-4 height for 1.12.2.");
+		super(MeteorPlusAddon.CATEGORY, "bedrock-storage-BF", "scan-storage's-in-bedrock-from-1-to-4 height for 1.12.2.");
 	}
 
 	public ArrayList<BlockPos> scanned = new ArrayList<>();

@@ -14,7 +14,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 public class SafeMine extends Module {
 	public SafeMine() {
-		super(MeteorPlus.CATEGORY, "Safe Mine", "Save you from lava.");
+		super(MeteorPlusAddon.CATEGORY, "Safe Mine", "Save you from lava.");
 	}
 
 	private final SettingGroup ALSettings = settings.createGroup("Anti Lava Settings");

@@ -41,7 +41,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 
 public class LitematicaPrinter extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -197,7 +197,7 @@ public class LitematicaPrinter extends Module {
 	// https://github.com/CCBlueX/LiquidBounce/blob/nextgen/src/main/kotlin/net/ccbluex/liquidbounce/utils/aiming/RotationsUtil.kt#L257
 
 	public LitematicaPrinter() {
-		super(MeteorPlus.CATEGORYMODS, "litematica-printer", "Automatically prints open schematics");
+		super(MeteorPlusAddon.CATEGORYMODS, "litematica-printer", "Automatically prints open schematics");
 	}
 
 	@Override

@@ -7,12 +7,12 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.fastladder.modes.Spartan;
 
 public class FastLadderPlus extends Module {
 	public FastLadderPlus() {
-		super(MeteorPlus.CATEGORY, "fast-ladder+", "Bypass fast-ladder");
+		super(MeteorPlusAddon.CATEGORY, "fast-ladder+", "Bypass fast-ladder");
 		onSpiderModeChanged(spiderMode.get());
 	}
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();

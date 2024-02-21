@@ -12,11 +12,11 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 
 public class Freeze extends Module {
 	public Freeze() {
-		super(MeteorPlus.CATEGORY, "Freeze", "Freezes your position for server.");
+		super(MeteorPlusAddon.CATEGORY, "Freeze", "Freezes your position for server.");
 	}
 	private final SettingGroup FSettings = settings.createGroup("Freeze Settings");
 

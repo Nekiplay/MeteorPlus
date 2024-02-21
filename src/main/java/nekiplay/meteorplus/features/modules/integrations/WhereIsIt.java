@@ -5,13 +5,12 @@ import meteordevelopment.meteorclient.settings.ColorSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 
 public class WhereIsIt extends Module {
 	public WhereIsIt() {
-		super(MeteorPlus.CATEGORYMODS, "where-is-it", "ChestTracker modification.");
+		super(MeteorPlusAddon.CATEGORYMODS, "where-is-it", "ChestTracker modification.");
 	}
 
 	public SettingGroup defaultGroup = settings.getDefaultGroup();

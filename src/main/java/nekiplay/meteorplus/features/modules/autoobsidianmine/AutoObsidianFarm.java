@@ -6,7 +6,7 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.modes.Cauldrons;
 import nekiplay.meteorplus.features.modules.autoobsidianmine.modes.Portals;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class AutoObsidianFarm extends Module {
 	public AutoObsidianFarm() {
-		super(MeteorPlus.CATEGORY, "Auto-obsidian-farm", "Automatically farm obsidian in AFK.");
+		super(MeteorPlusAddon.CATEGORY, "Auto-obsidian-farm", "Automatically farm obsidian in AFK.");
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();

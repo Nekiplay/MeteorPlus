@@ -6,7 +6,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.killaura.modes.LiquidBounceAura;
 import nekiplay.meteorplus.utils.algoritms.Smooth;
 import net.minecraft.entity.EntityType;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class KillAuraPlus extends Module {
 	public KillAuraPlus() {
-		super(MeteorPlus.CATEGORY, "killaura-plus", "Bypass killaura.");
+		super(MeteorPlusAddon.CATEGORY, "killaura-plus", "Bypass killaura.");
 	}
 
 	public final SettingGroup sgGeneral = settings.getDefaultGroup();

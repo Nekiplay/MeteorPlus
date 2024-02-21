@@ -42,7 +42,7 @@ public class SpeedMixin {
 		if (vanillaOnGround.get() && !mc.player.isOnGround() && speedMode.get() == SpeedModes.Vanilla) return;
 		if (!inLiquids.get() && (mc.player.isTouchingWater() || mc.player.isInLava())) return;
 
-		if (timer.get() != 1.0) {
+		if (timer.get() != Timer.OFF) {
 			Modules.get().get(Timer.class).setOverride(PlayerUtils.isMoving() ? timer.get() : Timer.OFF);
 		}
 

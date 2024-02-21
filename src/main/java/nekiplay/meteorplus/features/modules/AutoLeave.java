@@ -7,7 +7,7 @@ import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.common.DisconnectS2CPacket;
 import net.minecraft.text.Text;
@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class AutoLeave extends Module {
 	public AutoLeave() {
-		super(MeteorPlus.CATEGORY, "auto-leave", "Automatically logs out from the server when someone enters your render distance.");
+		super(MeteorPlusAddon.CATEGORY, "auto-leave", "Automatically logs out from the server when someone enters your render distance.");
 	}
 	private final SettingGroup ALSettings = settings.createGroup("Auto Leave Settings");
 	private final Setting<Boolean> visualRangeIgnoreFriends = ALSettings.add(new BoolSetting.Builder()

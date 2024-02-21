@@ -7,7 +7,6 @@
 		"meteorclient.modules.ESPMixin",
 		"meteorclient.modules.AutoToolMixin",
     "meteorclient.modules.FreecamMixin",
-		"meteorclient.modules.InventoryTweaksMixin",
 		"meteorclient.modules.ItemHighlightMixin",
 		"meteorclient.modules.KillAuraMixin",
 		"meteorclient.modules.TracersMixin",

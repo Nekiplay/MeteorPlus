@@ -7,10 +7,10 @@ import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import nekiplay.meteorplus.features.modules.timer.TimerPlus;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 
 public class TimerPlusCharge extends HudElement {
-	public static final HudElementInfo<TimerPlusCharge> INFO = new HudElementInfo<>(MeteorPlus.HUD_GROUP, "timer-plus-charge", "Displays timer plus charge.", TimerPlusCharge::new);
+	public static final HudElementInfo<TimerPlusCharge> INFO = new HudElementInfo<>(MeteorPlusAddon.HUD_GROUP, "timer-plus-charge", "Displays timer plus charge.", TimerPlusCharge::new);
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final SettingGroup sgScale = settings.createGroup("Scale");
@@ -76,7 +76,14 @@ public class TimerPlusCharge extends HudElement {
 
 	private final Setting<SettingColor> textColor = sgGeneral.add(new ColorSetting.Builder()
 		.name("text-color")
-		.description("A.")
+		.description("Main text color.")
+		.defaultValue(new SettingColor())
+		.build()
+	);
+
+	private final Setting<SettingColor> rechargeTextColor = sgGeneral.add(new ColorSetting.Builder()
+		.name("recharge-text-color")
+		.description("Recharge text color.")
 		.defaultValue(new SettingColor())
 		.build()
 	);
@@ -103,7 +110,7 @@ public class TimerPlusCharge extends HudElement {
 		}
 		double percentage = find_percent(0, TimerPlus.rechargeDelay, TimerPlus.rechargeTimer);
 
-		render(renderer, String.format("%.1f", percentage), textColor.get());
+		render(renderer, String.format("%.1f", percentage), rechargeTextColor.get());
 	}
 
 	private void render(HudRenderer renderer, String right, Color rightColor) {

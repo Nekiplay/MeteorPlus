@@ -13,7 +13,7 @@ import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -23,7 +23,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_MIDDLE;
 
 public class MiddleClickExtraPlus extends Module {
 	public MiddleClickExtraPlus() {
-		super(MeteorPlus.CATEGORY, "Middle-click-extra+", "Lets you use items when you middle click.");
+		super(MeteorPlusAddon.CATEGORY, "Middle-click-extra+", "Lets you use items when you middle click.");
 	}
 	private enum Type {
 		Immediate,

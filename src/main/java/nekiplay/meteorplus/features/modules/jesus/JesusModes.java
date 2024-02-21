@@ -1,6 +1,7 @@
 package nekiplay.meteorplus.features.modules.jesus;
 
 public enum JesusModes {
+	NCP,
 	Matrix_Zoom,
 	Matrix_Zoom_2,
 	Vulcan_Exploit;

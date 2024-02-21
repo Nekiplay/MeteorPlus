@@ -5,12 +5,12 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.events.PlayerUseMultiplier;
 
 public class NoSlowPlus extends Module {
 	public NoSlowPlus() {
-		super(MeteorPlus.CATEGORY, "no-slow+", "Remove or increase slowness.");
+		super(MeteorPlusAddon.CATEGORY, "no-slow+", "Remove or increase slowness.");
 	}
 
 	public SettingGroup defaultGroup = settings.getDefaultGroup();

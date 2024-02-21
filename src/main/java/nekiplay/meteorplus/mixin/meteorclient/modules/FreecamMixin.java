@@ -4,6 +4,7 @@ import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.pathing.PathManagers;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -213,14 +214,19 @@ public class FreecamMixin {
 
 			if (state.isAir()) return;
 
-			GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
-			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+			if (PathManagers.get().isPathing())
+				PathManagers.get().stop();
+
+			PathManagers.get().moveTo(tryGetValidPos(blockPos));
 			event.cancel();
 		}
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-			BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("stop");
+			PathManagers.get().stop();
+			if (blink.isActive()) {
+				blink.toggle();
+				isBlinkMoving = false;
+			}
 			event.cancel();
 		}
 	}

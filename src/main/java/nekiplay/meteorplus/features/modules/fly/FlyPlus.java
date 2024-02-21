@@ -10,14 +10,15 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.fly.modes.*;
 
 public class FlyPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
+
 	public FlyPlus() {
-		super(MeteorPlus.CATEGORY, "fly+", "Bypass fly");
+		super(MeteorPlusAddon.CATEGORY, "fly+", "Bypass fly");
 		onFlyModeChanged(flyMode.get());
 	}
 
@@ -30,8 +31,8 @@ public class FlyPlus extends Module {
 		.build()
 	);
 
-	public final Setting<Double> speed = sgGeneral.add(new DoubleSetting.Builder()
-		.name("Speed")
+	public final Setting<Double> speed_1 = sgGeneral.add(new DoubleSetting.Builder()
+		.name("speed-№1")
 		.description("Fly speed.")
 		.defaultValue(1.25)
 		.max(2500)
@@ -41,7 +42,7 @@ public class FlyPlus extends Module {
 	);
 
 	public final Setting<Double> speed2 = sgGeneral.add(new DoubleSetting.Builder()
-		.name("Speed")
+		.name("speed-№2")
 		.description("Fly speed.")
 		.defaultValue(0.3)
 		.max(5)
@@ -51,41 +52,71 @@ public class FlyPlus extends Module {
 	);
 
 	public final Setting<Double> speedDamage = sgGeneral.add(new DoubleSetting.Builder()
-		.name("Speed")
+		.name("damage-fly-speed")
 		.description("Fly speed.")
 		.defaultValue(1.25)
 		.max(2500)
 		.sliderRange(0, 2500)
+		.onChanged((e) -> {
+			Damage.speed = e;
+		})
 		.visible(() -> flyMode.get() == FlyModes.Damage)
 		.build()
 	);
 
 	public final Setting<Double> speedDamageY = sgGeneral.add(new DoubleSetting.Builder()
-		.name("Speed Y")
+		.name("speed-y")
 		.description("Fly speed Y.")
 		.defaultValue(1.25)
 		.max(2500)
 		.sliderRange(0, 2500)
+		.onChanged((e) -> {
+			Damage.speedUp = e;
+		})
 		.visible(() -> flyMode.get() == FlyModes.Damage)
 		.build()
 	);
 
 	public final Setting<Integer> speedDamageTicks = sgGeneral.add(new IntSetting.Builder()
-		.name("Max ticks")
+		.name("max-ticks")
 		.description("Max fly ticks.")
-		.defaultValue(240)
+		.defaultValue(15)
 		.max(2500)
 		.sliderRange(0, 2500)
+		.onChanged((e) -> {
+			Damage.workingTicks = e;
+		})
+		.visible(() -> flyMode.get() == FlyModes.Damage)
+		.build()
+	);
+	public final Setting<Integer> speedUpDamageTicks = sgGeneral.add(new IntSetting.Builder()
+		.name("max-up-ticks")
+		.description("Max fly ticks.")
+		.defaultValue(5)
+		.max(2500)
+		.sliderRange(0, 2500)
+		.onChanged((e) -> {
+			Damage.workingUpTicks = e;
+		})
 		.visible(() -> flyMode.get() == FlyModes.Damage)
 		.build()
 	);
 
+
 	public final Setting<Boolean> canClip = sgGeneral.add(new BoolSetting.Builder()
-		.name("Can Clip")
+		.name("can-clip")
 		.description("Max fly ticks.")
 		.visible(() -> flyMode.get() == FlyModes.Vulcan_Clip)
 		.build()
 	);
+
+	public final Setting<Boolean> showInfo = sgGeneral.add(new BoolSetting.Builder()
+		.name("show-info")
+		.description("Displays information about whether this mode is running on the server.")
+		.visible(() -> flyMode.get() == FlyModes.Vulcan_Clip)
+		.build()
+	);
+
 
 
 	private FlyMode currentMode;
@@ -152,15 +183,20 @@ public class FlyPlus extends Module {
 			case Matrix_Exploit_2 -> currentMode = new MatrixExploit2();
 			case Matrix_Exploit -> currentMode = new MatrixExploit();
 			case Vulcan_Clip -> {
-				info("Vulcan fly work on 1.8.9 servers");
+				if (showInfo.get()) {
+					info("Vulcan fly work on 1.8.9 servers");
+				}
 				currentMode = new VulcanClip();
 			}
 			case Damage -> currentMode = new Damage();
+			case Damage_OldFag -> {
+				currentMode = new Damage();
+				Damage.workingUpTicks = 0;
+				Damage.workingTicks = 15;
+				Damage.speed = 0.396;
+				Damage.speedUp = 0;
+			}
 		}
 	}
 
-	@Override
-	public String getInfoString() {
-		return "";
-	}
 }

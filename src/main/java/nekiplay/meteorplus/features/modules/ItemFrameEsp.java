@@ -10,7 +10,7 @@ import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.settings.items.ESPItemData;
 import nekiplay.meteorplus.settings.items.ItemDataSetting;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.Item;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class ItemFrameEsp extends Module {
 
 	public ItemFrameEsp() {
-		super(MeteorPlus.CATEGORY, "ItemFrame-esp", "backlighting of the frames in which the selected items");
+		super(MeteorPlusAddon.CATEGORY, "ItemFrame-esp", "backlighting of the frames in which the selected items");
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();

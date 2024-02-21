@@ -1,18 +1,14 @@
 package nekiplay.meteorplus.features.modules;
 
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.player.SlotUtils;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.Generic3x3ContainerScreenHandler;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
@@ -22,7 +18,7 @@ import java.util.List;
 
 public class AutoDropPlus extends Module  {
 	public AutoDropPlus() {
-		super(MeteorPlus.CATEGORY, "auto-drop", "Auto drop items in inventory.");
+		super(MeteorPlusAddon.CATEGORY, "auto-drop", "Auto drop items in inventory.");
 	}
 
 	private final SettingGroup defaultGroup = settings.getDefaultGroup();

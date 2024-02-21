@@ -8,9 +8,10 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.jesus.modes.MatrixZoom;
 import nekiplay.meteorplus.features.modules.jesus.modes.MatrixZoom2;
+import nekiplay.meteorplus.features.modules.jesus.modes.NCP;
 import nekiplay.meteorplus.features.modules.jesus.modes.VulcanExploit;
 
 
@@ -18,7 +19,7 @@ public class JesusPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
 	public JesusPlus() {
-		super(MeteorPlus.CATEGORY, "jesus+", "Bypass jesus");
+		super(MeteorPlusAddon.CATEGORY, "jesus+", "Bypass-jesus");
 		onJesusModeChanged(jesusMode.get());
 	}
 
@@ -32,11 +33,18 @@ public class JesusPlus extends Module {
 	);
 
 	public final Setting<Double> speed = sgGeneral.add(new DoubleSetting.Builder()
-		.name("Speed")
+		.name("speed")
 		.description("Jesus speed.")
 		.defaultValue(1.25)
 		.max(2500)
 		.sliderRange(0, 2500)
+		.build()
+	);
+
+	public final Setting<Double> limit_speed = sgGeneral.add(new DoubleSetting.Builder()
+		.name("limit-speed")
+		.description("Jesus speed.")
+		.visible(() -> jesusMode.get() == JesusModes.NCP)
 		.build()
 	);
 
@@ -98,6 +106,7 @@ public class JesusPlus extends Module {
 			case Matrix_Zoom -> currentMode = new MatrixZoom();
 			case Matrix_Zoom_2 -> currentMode = new MatrixZoom2();
 			case Vulcan_Exploit -> currentMode = new VulcanExploit();
+			case NCP -> currentMode = new NCP();
 		}
 	}
 }

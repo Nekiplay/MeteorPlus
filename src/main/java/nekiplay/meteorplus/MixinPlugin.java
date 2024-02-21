@@ -17,6 +17,8 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	public static boolean isLitematicaMapresent;
 	public static boolean isWhereIsIt;
 
+	public static boolean isMeteorRejects;
+
 	@Override
 	public void onLoad(String mixinPackage) {
 		isBaritonePresent = FabricLoader.getInstance().isModLoaded("baritone");
@@ -26,6 +28,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		isXaeroPlusMapresent = FabricLoader.getInstance().isModLoaded("xaeroplus");
 		isLitematicaMapresent = FabricLoader.getInstance().isModLoaded("litematica");
 		isWhereIsIt = FabricLoader.getInstance().isModLoaded("whereisit");
+		isMeteorRejects = FabricLoader.getInstance().isModLoaded("meteor-rejects");
 	}
 
 	@Override

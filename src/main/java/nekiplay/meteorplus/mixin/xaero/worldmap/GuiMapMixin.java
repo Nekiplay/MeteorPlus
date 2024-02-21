@@ -2,13 +2,10 @@ package nekiplay.meteorplus.mixin.xaero.worldmap;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.IBaritone;
-import baritone.api.command.ICommand;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
-import nekiplay.meteorplus.MeteorPlus;
 import nekiplay.meteorplus.MixinPlugin;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import net.minecraft.client.gui.screen.Screen;
@@ -29,7 +26,6 @@ import meteordevelopment.meteorclient.utils.misc.Names;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 

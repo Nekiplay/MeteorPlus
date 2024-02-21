@@ -7,34 +7,35 @@ import net.minecraft.util.math.Vec3d;
 import nekiplay.meteorplus.features.modules.fly.FlyMode;
 import nekiplay.meteorplus.features.modules.fly.FlyModes;
 
+import static nekiplay.meteorplus.features.modules.fly.FlyPlus.*;
+
 public class Damage extends FlyMode {
 	public Damage() {
 		super(FlyModes.Damage);
 	}
 
+	public static int workingTicks = 15;
+	public static int workingUpTicks = 0;
+	public static double speed = 0;
+	public static double speedUp = 0;
+
 	@Override
 	public void onActivate() {
 		damaged = false;
 		ticks = 0;
+		ticks_up = 0;
 	}
-
-	@Override
-	public void onDeactivate() {
-
-	}
-
 	private int ticks = 0;
+	private int ticks_up = 0;
 	private boolean damaged = false;
 
 	public void onTickEventPre(TickEvent.Pre event) {
-		if (damaged && ticks != settings.speedDamageTicks.get()) {
+		if (damaged && ticks != workingTicks) {
 			float yaw = mc.player.getYaw();
 			Vec3d forward = Vec3d.fromPolar(0, yaw);
-			Vec3d right = Vec3d.fromPolar(0, yaw + 90);
-
 			double velX = 0;
 			double velZ = 0;
-			double s = settings.speedDamage.get();
+			double s = speed;
 			double speedValue = 0.01;
 			if (mc.options.forwardKey.isPressed()) {
 				velX += forward.x * s;
@@ -45,32 +46,28 @@ public class Damage extends FlyMode {
 				velZ -= forward.z * s;
 			}
 
-			if (mc.options.rightKey.isPressed()) {
-				velX += right.x * s;
-				velZ += right.z * s;
+			if (ticks_up < workingUpTicks) {
+				((IVec3d) mc.player.getVelocity()).set(velX, speedUp, velZ);
 			}
-			if (mc.options.leftKey.isPressed()) {
-				velX -= right.x * s;
-				velZ -= right.z * s;
+			else {
+				((IVec3d) mc.player.getVelocity()).set(velX, 0, velZ);
 			}
-
-			((IVec3d) mc.player.getVelocity()).set(velX, settings.speedDamageY.get(), velZ);
 			ticks++;
+			ticks_up++;
 		}
 		else if (damaged) {
 			damaged = false;
 			ticks = 0;
+			ticks_up = 0;
 		}
 	}
 
 	@Override
 	public void onDamage(DamageEvent event) {
 		if (event.entity == mc.player) {
-			if (event.source.getType() != mc.world.getDamageSources().fall().getType()) {
-				damaged = true;
-				ticks = 0;
-
-			}
+			damaged = true;
+			ticks = 0;
+			ticks_up = 0;
 		}
 	}
 }

@@ -66,7 +66,7 @@ public class LongJumpMixin {
 	@EventHandler
 	@Overwrite
 	private void onPlayerMove(PlayerMoveEvent event) {
-		if (timer.get() != 1.0) {
+		if (timer.get() != Timer.OFF) {
 			Modules.get().get(Timer.class).setOverride(PlayerUtils.isMoving() ? timer.get() : Timer.OFF);
 		}
 		switch (jumpMode.get()) {

@@ -7,7 +7,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class TriggerBot extends Module {
 	public TriggerBot() {
-		super(MeteorPlus.CATEGORY, "Trigger-bot", "Attacks specified entities around you.");
+		super(MeteorPlusAddon.CATEGORY, "Trigger-bot", "Attacks specified entities around you.");
 	}
 
 	@Override

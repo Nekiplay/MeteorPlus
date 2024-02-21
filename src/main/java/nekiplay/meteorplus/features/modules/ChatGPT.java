@@ -5,11 +5,11 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import nekiplay.meteorplus.MeteorPlus;
+import nekiplay.meteorplus.MeteorPlusAddon;
 
 public class ChatGPT extends Module {
 	public ChatGPT() {
-		super(MeteorPlus.CATEGORY, "Chat GPT", "Use chat gpt in minecraft");
+		super(MeteorPlusAddon.CATEGORY, "Chat GPT", "Use chat gpt in minecraft");
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -47,7 +47,7 @@ public class ChatGPT extends Module {
 		.visible(() -> service.get() == Service.NagaAI)
 		.build()
 	);
-	
+
 	public final Setting<String> custom_endpoint = sgGeneral.add(new StringSetting.Builder()
 		.name("Custom-Endpoint")
 		.description("Custom-Endpoint.")
@@ -55,7 +55,7 @@ public class ChatGPT extends Module {
 		.visible(() -> service.get() == Service.Custom)
 		.build()
 	);
-	
+
 	public final Setting<String> token_custom = sgGeneral.add(new StringSetting.Builder()
 		.name("Custom-token")
 		.description("Token-from-Custom-Endpoint.")
