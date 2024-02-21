@@ -43,6 +43,7 @@ public class RenderingMixin {
 
 		String text2 = name.getString();
 		if (whereIsIt.suport_color_symbols.get()) {
+			text2 = text2.replaceAll("&c", "");
 			text2 = text2.replaceAll("&4", "");
 			text2 = text2.replaceAll("&6", "");
 			text2 = text2.replaceAll("&e", "");
@@ -136,6 +137,7 @@ public class RenderingMixin {
 				color = 0;
 			}
 
+			text = text.replaceAll("&c", "");
 			text = text.replaceAll("&4", "");
 			text = text.replaceAll("&6", "");
 			text = text.replaceAll("&e", "");
