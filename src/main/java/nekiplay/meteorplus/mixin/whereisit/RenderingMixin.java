@@ -25,13 +25,16 @@ import red.jackf.whereisit.config.WhereIsItConfig;
 public class RenderingMixin {
 	@Inject(method = "renderLabel", at = @At("HEAD"), cancellable = true)
 	private static void renderLabel(Vec3d pos, Text name, MatrixStack pose, Camera camera, VertexConsumerProvider consumers, CallbackInfo ci) {
+		WhereIsIt whereIsIt = Modules.get().get(WhereIsIt.class);
+		if (whereIsIt == null) {
+			return;
+		}
 		pose.push();
 
 		pos = pos.subtract(camera.getPos());
 
-		WhereIsIt whereIsIt = Modules.get().get(WhereIsIt.class);
 
-		pose.translate(pos.x, pos.y, pos.z);
+		pose.translate(pos.x, pos.y + whereIsIt.y_offset.get(), pos.z);
 		pose.multiply(camera.getRotation());
 		var factor = 0.025f * WhereIsItConfig.INSTANCE.instance().getClient().containerNameLabelScale;
 		pose.scale(-factor, -factor, factor);

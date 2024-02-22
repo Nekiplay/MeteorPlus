@@ -1,9 +1,6 @@
 package nekiplay.meteorplus.features.modules.integrations;
 
-import meteordevelopment.meteorclient.settings.BoolSetting;
-import meteordevelopment.meteorclient.settings.ColorSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import nekiplay.meteorplus.MeteorPlusAddon;
@@ -36,6 +33,16 @@ public class WhereIsIt extends Module {
 	public final Setting<SettingColor> notvisible_text_color = defaultGroup.add(new ColorSetting.Builder()
 		.name("not-visible-text-color")
 		.visible(() -> !suport_color_symbols.get())
+		.build()
+	);
+
+	public final Setting<Double> y_offset = defaultGroup.add(new DoubleSetting.Builder()
+		.name("y-offset")
+		.description("change-y-offset.")
+		.defaultValue(-1)
+		.max(15)
+		.min(-15)
+		.sliderRange(-15, 15)
 		.build()
 	);
 }
