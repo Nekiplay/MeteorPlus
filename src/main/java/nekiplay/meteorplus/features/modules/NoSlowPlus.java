@@ -13,18 +13,53 @@ public class NoSlowPlus extends Module {
 		super(MeteorPlusAddon.CATEGORY, "no-slow+", "Remove or increase slowness.");
 	}
 
+
+	public SettingGroup usingItemGroup = settings.createGroup("Using item");
+	public SettingGroup sneakGroup = settings.createGroup("Sneak");
 	public SettingGroup defaultGroup = settings.getDefaultGroup();
 
-	private final Setting<Double> forward = defaultGroup.add(new DoubleSetting.Builder()
-		.name("Forward multiplier")
+	private final Setting<Double> usingForward = usingItemGroup.add(new DoubleSetting.Builder()
+		.name("forward-multiplier")
 		.defaultValue(1)
 		.min(0.2)
 		.sliderRange(0.2, 1)
 		.build()
 	);
 
-	private final Setting<Double> sideways = defaultGroup.add(new DoubleSetting.Builder()
-		.name("Sideways multiplier")
+	private final Setting<Double> usingSideways = usingItemGroup.add(new DoubleSetting.Builder()
+		.name("sideways-multiplier")
+		.defaultValue(1)
+		.min(0.2)
+		.sliderRange(0.2, 1)
+		.build()
+	);
+
+	private final Setting<Double> sneakForward = sneakGroup.add(new DoubleSetting.Builder()
+		.name("forward-multiplier")
+		.defaultValue(1)
+		.min(0.2)
+		.sliderRange(0.2, 1)
+		.build()
+	);
+
+	private final Setting<Double> sneakSideways = sneakGroup.add(new DoubleSetting.Builder()
+		.name("sideways-multiplier")
+		.defaultValue(1)
+		.min(0.2)
+		.sliderRange(0.2, 1)
+		.build()
+	);
+
+	private final Setting<Double> otherForward = defaultGroup.add(new DoubleSetting.Builder()
+		.name("forward-multiplier")
+		.defaultValue(1)
+		.min(0.2)
+		.sliderRange(0.2, 1)
+		.build()
+	);
+
+	private final Setting<Double> otherSideways = defaultGroup.add(new DoubleSetting.Builder()
+		.name("sideways-multiplier")
 		.defaultValue(1)
 		.min(0.2)
 		.sliderRange(0.2, 1)
@@ -33,7 +68,17 @@ public class NoSlowPlus extends Module {
 
 	@EventHandler
 	private void onUse(PlayerUseMultiplier event) {
-		event.setForward(forward.get().floatValue());
-		event.setSideways(sideways.get().floatValue());
+		if (mc.player.isUsingItem()) {
+			event.setForward(usingForward.get().floatValue());
+			event.setSideways(usingSideways.get().floatValue());
+		}
+		if (mc.player.isSneaking()) {
+			event.setForward(sneakForward.get().floatValue());
+			event.setSideways(sneakSideways.get().floatValue());
+		}
+		else {
+			event.setForward(otherForward.get().floatValue());
+			event.setSideways(otherSideways.get().floatValue());
+		}
 	}
 }

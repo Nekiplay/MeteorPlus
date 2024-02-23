@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ClientPlayerEntity.class, priority = 1001)
 public class ClientPlayerEntityMixin {
@@ -19,14 +19,18 @@ public class ClientPlayerEntityMixin {
 	public Input input;
 	@Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z", ordinal = 0))
 	private void hookCustomMultiplier(CallbackInfo ci) {
+		final PlayerUseMultiplier playerUseMultiplier = new PlayerUseMultiplier(0.2f, 0.2f);
+		MeteorClient.EVENT_BUS.post(playerUseMultiplier);
+		if (playerUseMultiplier.getForward() == 0.2f && playerUseMultiplier.getSideways() == 0.2f) {
+			return;
+		}
+
 		final Input input = this.input;
 		// reverse
 		input.movementForward /= 0.2f;
 		input.movementSideways /= 0.2f;
 
 		// then
-		final PlayerUseMultiplier playerUseMultiplier = new PlayerUseMultiplier(0.2f, 0.2f);
-		MeteorClient.EVENT_BUS.post(playerUseMultiplier);
 		input.movementForward *= playerUseMultiplier.getForward();
 		input.movementSideways *= playerUseMultiplier.getSideways();
 	}
@@ -34,12 +38,10 @@ public class ClientPlayerEntityMixin {
 	/**
 	 * Hook sprint effect from NoSlow module
 	 */
-	@Redirect(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
-	private boolean hookSprintAffectStart(ClientPlayerEntity playerEntity) {
+	@Inject(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"), cancellable = true)
+	private void hookSprintAffectStart(CallbackInfoReturnable<Boolean> cir) {
 		if (Modules.get().get(NoSlowPlus.class).isActive()) {
-			return false;
+			cir.setReturnValue(true);
 		}
-
-		return playerEntity.isUsingItem();
 	}
 }
