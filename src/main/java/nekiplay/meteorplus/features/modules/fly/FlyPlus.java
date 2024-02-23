@@ -12,6 +12,8 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.fly.modes.*;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 
 public class FlyPlus extends Module {
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();

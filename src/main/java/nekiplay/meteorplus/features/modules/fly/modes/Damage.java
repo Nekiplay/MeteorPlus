@@ -36,7 +36,6 @@ public class Damage extends FlyMode {
 			double velX = 0;
 			double velZ = 0;
 			double s = speed;
-			double speedValue = 0.01;
 			if (mc.options.forwardKey.isPressed()) {
 				velX += forward.x * s;
 				velZ += forward.z * s;

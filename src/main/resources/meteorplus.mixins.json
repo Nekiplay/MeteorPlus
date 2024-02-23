@@ -16,7 +16,6 @@
     "meteorclient.ModulesScreenMixin",
     "meteorclient.WMeteorModuleMixin",
     "meteorclient.WPressableMixin",
-		"meteorclient.FontsMixin",
     "minecraft.ClientPlayerInteractionManagerMixin",
     "minecraft.MinecraftClientMixin"
   ],

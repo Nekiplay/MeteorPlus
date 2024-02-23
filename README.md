@@ -48,14 +48,11 @@
 | **Freecam**       	 | **Added good baritone control via Freecam**                         |       
 | **Waypoints**     	 | **Added display of distances in label names, sorting, name search** |
 | **Hidden module** 	 | **Hiding original modules and third-party modules from the GUI**    |
-| **UI, Hud, ESP, GUI**  | **Added support for the Russian language in Minecraft**        |
 
 ## Meteor Client fixes
 | Module            | Fix                                                        		  |
 |-------------------|---------------------------------------------------------------------|
-| **Auto Tool**     | **No work in creative mode**                         				  |       
-| **Long Jump**     | **Does not stop the work of other modules that modify Timer** 	  |
-| **Speed**     	| **Does not stop the work of other modules that modify Timer** 	  |
+| **Auto Tool**     | **No work in creative mode**                         				  |
 
 
 ## Integrations with mods

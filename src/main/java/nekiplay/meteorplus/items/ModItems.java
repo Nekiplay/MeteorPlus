@@ -14,11 +14,5 @@ public class ModItems {
 	public static void Initialize() {
 		Registry.register(Registries.ITEM, new Identifier("meteorplus", "logo"), LOGO_ITEM);
 		Registry.register(Registries.ITEM, new Identifier("meteorplus", "logo_mods"), LOGO_MODS_ITEM);
-
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.OPERATOR).register(entries -> {
-			entries.add(LOGO_ITEM);
-			entries.add(LOGO_MODS_ITEM);
-		});
-
 	}
 }

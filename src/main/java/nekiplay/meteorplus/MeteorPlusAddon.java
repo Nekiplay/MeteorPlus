@@ -3,6 +3,7 @@ package nekiplay.meteorplus;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
+import meteordevelopment.meteorclient.systems.modules.misc.BetterChat;
 import nekiplay.meteorplus.features.commands.ClearInventory;
 import nekiplay.meteorplus.features.commands.Eclip;
 import nekiplay.meteorplus.features.commands.GPT;
@@ -25,17 +26,15 @@ import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import nekiplay.meteorplus.features.modules.fastladder.FastLadderPlus;
 import nekiplay.meteorplus.features.modules.fly.FlyPlus;
 import nekiplay.meteorplus.features.modules.jesus.JesusPlus;
 import nekiplay.meteorplus.features.modules.nofall.NoFallPlus;
 import nekiplay.meteorplus.features.modules.speed.SpeedPlus;
 import nekiplay.meteorplus.features.modules.spider.SpiderPlus;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.rmi.registry.Registry;
 
 public class MeteorPlusAddon extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlusAddon.class);
@@ -72,6 +71,10 @@ public class MeteorPlusAddon extends MeteorAddon {
 		//region Modules
 		LOG.info(LOGPREFIX + " initializing modules...");
 		Modules modules = Modules.get();
+
+		BetterChat.registerCustomHead("[Meteor+]", new Identifier("meteorplus", "chat/icon.png"));
+
+		modules.add(new ChatPrefix());
 		modules.add(new ChatGPT());
 		modules.add(new ItemHighlightPlus());
 		modules.add(new FastLadderPlus());

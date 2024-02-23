@@ -10,7 +10,7 @@ import nekiplay.meteorplus.features.modules.timer.TimerPlus;
 import nekiplay.meteorplus.MeteorPlusAddon;
 
 public class TimerPlusCharge extends HudElement {
-	public static final HudElementInfo<TimerPlusCharge> INFO = new HudElementInfo<>(MeteorPlusAddon.HUD_GROUP, "timer-plus-charge", "Displays timer plus charge.", TimerPlusCharge::new);
+	public static final HudElementInfo<TimerPlusCharge> INFO = new HudElementInfo<>(MeteorPlusAddon.HUD_GROUP, "timer+-charge", "Displays timer plus charge.", TimerPlusCharge::new);
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final SettingGroup sgScale = settings.createGroup("Scale");
@@ -105,7 +105,7 @@ public class TimerPlusCharge extends HudElement {
 		}
 
 		if (isInEditor()) {
-			render(renderer, "4.3", textColor.get());
+			render(renderer, "4.3", rechargeTextColor.get());
 			return;
 		}
 		double percentage = find_percent(0, TimerPlus.rechargeDelay, TimerPlus.rechargeTimer);
@@ -117,7 +117,7 @@ public class TimerPlusCharge extends HudElement {
 		double x = this.x + border.get();
 		double y = this.y + border.get();
 
-		double x2 = renderer.text("Timer Plus: ", x, y, textColor.get(), shadow.get(), getScale());
+		double x2 = renderer.text("Timer+: ", x, y, textColor.get(), shadow.get(), getScale());
 		x2 = renderer.text(right, x2, y, rightColor, shadow.get(), getScale());
 		x2 = renderer.text("%", x2, y, rightColor, shadow.get(), getScale());
 
