@@ -33,8 +33,8 @@ public class HologramModule extends Module {
 	}
 	public Gson gson = new Gson();
 
-	public List<HologramData> allHolograms = new ArrayList<HologramData>();
-	public List<HologramData> inWorldHolograms = new ArrayList<HologramData>();
+	public List<HologramDataListed> allHolograms = new ArrayList<HologramData>();
+	public List<HologramDataListed> inWorldHolograms = new ArrayList<HologramData>();
 
 	@Override
 	public void onActivate() {
@@ -48,7 +48,7 @@ public class HologramModule extends Module {
 	private void onTick(TickEvent.Post event) {
 		inWorldHolograms.clear();
 		Dimension dim = PlayerUtils.getDimension();
-		for (HologramData hologramData : allHolograms) {
+		for (HologramDataListed hologramData : allHolograms) {
 			if (hologramData.world.equals(Utils.getWorldName()) && hologramData.dimension.equals(dim.name())) {
 				inWorldHolograms.add(hologramData);
 			}
@@ -58,7 +58,7 @@ public class HologramModule extends Module {
 	@EventHandler
 	private void on2DRender(Render2DEvent event) {
 		Vec3d camera_pos = mc.gameRenderer.getCamera().getPos();
-		for (HologramData hologramData : inWorldHolograms) {
+		for (HologramDataListed hologramData : inWorldHolograms) {
 			Vector3d pos = new Vector3d(hologramData.x, hologramData.y, hologramData.z);
 			if (pos.distance(camera_pos.x, camera_pos.y, camera_pos.z) <= hologramData.max_render_distance) {
 				if (NametagUtils.to2D(pos, hologramData.scale, hologramData.distanceScaling)) {
@@ -113,7 +113,7 @@ public class HologramModule extends Module {
 							BufferedReader reader = new BufferedReader(fr);
 							try {
 								String json = reader.readLine();
-								HologramData hologramData = gson.fromJson(json, HologramData.class);
+								HologramDataListed hologramData = gson.fromJson(json, HologramDataListed.class);
 								if (hologramData != null) {
 									allHolograms.add(hologramData);
 									MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " Success loaded hologram: " + file.getName());
@@ -144,7 +144,7 @@ public class HologramModule extends Module {
 		if (!dir2.exists()) {
 			dir2.mkdir();
 
-			HologramData hologramData = new HologramData(new BlockPos(0, 64, 0), "Spawn", world_name, PlayerUtils.getDimension(), Color.RED, 16);
+			HologramDataListed hologramData = new HologramDataListed(new BlockPos(0, 64, 0), "Spawn", world_name, PlayerUtils.getDimension(), Color.RED, 16);
 			HologramData hologramData2 = new HologramData(new BlockPos(0, 15, 0), PlayerUtils.getDimension().name(), world_name, PlayerUtils.getDimension(), Color.RED, 16);
 			hologramData.other_holograms.add(hologramData2);
 			String json = gson.toJson(hologramData);

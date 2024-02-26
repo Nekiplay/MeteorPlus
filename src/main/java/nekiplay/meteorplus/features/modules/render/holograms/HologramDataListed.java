@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 
-public class HologramData {
+public class HologramDataListed {
 	public double x;
 	public double y;
 	public double z;
@@ -20,10 +20,12 @@ public class HologramData {
 	public int item_scale = 2;
 	public boolean distanceScaling = false;
 
-	public HologramData() {
+	public ArrayList<HologramData> other_holograms = new ArrayList<HologramData>();
+
+	public HologramDataListed() {
 
 	}
-	public HologramData(double x, double y, double z, String text, String world, String dimension, Color color, double max_render_distance) {
+	public HologramDataListed(double x, double y, double z, String text, String world, String dimension, Color color, double max_render_distance) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -35,7 +37,7 @@ public class HologramData {
 		this.max_render_distance = max_render_distance;
 	}
 
-	public HologramData(BlockPos pos, String text, String world, Dimension dimension, Color color, double max_render_distance) {
+	public HologramDataListed(BlockPos pos, String text, String world, Dimension dimension, Color color, double max_render_distance) {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
