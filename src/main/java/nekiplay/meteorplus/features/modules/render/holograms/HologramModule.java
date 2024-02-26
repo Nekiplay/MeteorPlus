@@ -2,6 +2,7 @@ package nekiplay.meteorplus.features.modules.render.holograms;
 
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.render.Render2DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -118,12 +119,12 @@ public class HologramModule extends Module {
 									MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " Success loaded hologram: " + file.getName());
 								}
 
-							} catch (IOException e) {
+							} catch (IOException | JsonSyntaxException e) {
 								MeteorPlusAddon.LOG.error(MeteorPlusAddon.LOGPREFIX + " Error in hologram: " + e);
 								e.printStackTrace();
 
 							}
-						} catch (FileNotFoundException e) {
+                        } catch (FileNotFoundException e) {
 							MeteorPlusAddon.LOG.error(MeteorPlusAddon.LOGPREFIX + " Error in hologram: " + e);
 							e.printStackTrace();
 						}
