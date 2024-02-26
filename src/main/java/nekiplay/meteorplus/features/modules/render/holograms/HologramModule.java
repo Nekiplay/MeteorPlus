@@ -105,7 +105,7 @@ public class HologramModule extends Module {
 				File[] files = dir2.listFiles();
 				for (File file : files) {
 					if (file.exists()) {
-						MeteorPlusAddon.LOG.info("Loading hologram: " + file.getName());
+						MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + "Loading hologram: " + file.getName());
 						FileReader fr = null;
 						try {
 							fr = new FileReader(file);
@@ -115,13 +115,16 @@ public class HologramModule extends Module {
 								HologramData hologramData = gson.fromJson(json, HologramData.class);
 								if (hologramData != null) {
 									allHolograms.add(hologramData);
-									MeteorPlusAddon.LOG.info("Loaded hologram: " + file.getName());
+									MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " Success loaded hologram: " + file.getName());
 								}
 
 							} catch (IOException e) {
+								MeteorPlusAddon.LOG.error(MeteorPlusAddon.LOGPREFIX + " Error in hologram: " + e);
 								e.printStackTrace();
+
 							}
 						} catch (FileNotFoundException e) {
+							MeteorPlusAddon.LOG.error(MeteorPlusAddon.LOGPREFIX + " Error in hologram: " + e);
 							e.printStackTrace();
 						}
 					}
