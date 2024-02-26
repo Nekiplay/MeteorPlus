@@ -33,8 +33,8 @@ public class HologramModule extends Module {
 	}
 	public Gson gson = new Gson();
 
-	public List<HologramDataListed> allHolograms = new ArrayList<HologramData>();
-	public List<HologramDataListed> inWorldHolograms = new ArrayList<HologramData>();
+	public List<HologramDataListed> allHolograms = new ArrayList<HologramDataListed>();
+	public List<HologramDataListed> inWorldHolograms = new ArrayList<HologramDataListed>();
 
 	@Override
 	public void onActivate() {
