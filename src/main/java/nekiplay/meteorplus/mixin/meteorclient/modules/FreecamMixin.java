@@ -146,12 +146,12 @@ public class FreecamMixin {
 	@EventHandler
 	private void onTickEvent(TickEvent.Pre event) {
 		if (baritoneControl.get() && blinkBaritoneControl.get()) {
-			if (isBlinkMoving && (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() ) ) {
+			if (isBlinkMoving && (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || PathManagers.get().isPathing() ) ) {
 				if (!blink.isActive()) {
 					blink.toggle();
 				}
 			}
-			if (isBlinkMoving && (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() ) ) {
+			if (isBlinkMoving && (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || !PathManagers.get().isPathing() ) ) {
 				if (blink.isActive()) {
 					blink.toggle();
 					isBlinkMoving = false;
@@ -190,9 +190,7 @@ public class FreecamMixin {
 
 				if (state.isAir()) return;
 				isBlinkMoving = true;
-				GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+				PathManagers.get().moveTo(tryGetValidPos(blockPos));
 			}
 		}
 

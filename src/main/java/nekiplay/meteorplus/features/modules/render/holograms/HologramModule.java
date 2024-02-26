@@ -1,0 +1,166 @@
+package nekiplay.meteorplus.features.modules.render.holograms;
+
+
+import com.google.gson.Gson;
+import meteordevelopment.meteorclient.MeteorClient;
+import meteordevelopment.meteorclient.events.render.Render2DEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.renderer.text.TextRenderer;
+import meteordevelopment.meteorclient.systems.modules.Categories;
+import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.Utils;
+import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import meteordevelopment.meteorclient.utils.render.NametagUtils;
+import meteordevelopment.meteorclient.utils.render.RenderUtils;
+import meteordevelopment.meteorclient.utils.render.color.Color;
+import meteordevelopment.meteorclient.utils.world.Dimension;
+import meteordevelopment.orbit.EventHandler;
+import nekiplay.meteorplus.MeteorPlusAddon;
+import net.minecraft.item.Item;
+import net.minecraft.registry.SimpleDefaultedRegistry;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3d;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class HologramModule extends Module {
+	public HologramModule() {
+		super(Categories.Render, "holograms", "Create own holograms");
+	}
+	public Gson gson = new Gson();
+
+	public List<HologramData> allHolograms = new ArrayList<HologramData>();
+	public List<HologramData> inWorldHolograms = new ArrayList<HologramData>();
+
+	@Override
+	public void onActivate() {
+		super.onActivate();
+
+		createDefault();
+		load();
+	}
+
+	@EventHandler
+	private void onTick(TickEvent.Post event) {
+		inWorldHolograms.clear();
+		Dimension dim = PlayerUtils.getDimension();
+		for (HologramData hologramData : allHolograms) {
+			if (hologramData.world.equals(Utils.getWorldName()) && hologramData.dimension.equals(dim.name())) {
+				inWorldHolograms.add(hologramData);
+			}
+		}
+	}
+
+	@EventHandler
+	private void on2DRender(Render2DEvent event) {
+		Vec3d camera_pos = mc.gameRenderer.getCamera().getPos();
+		for (HologramData hologramData : inWorldHolograms) {
+			Vector3d pos = new Vector3d(hologramData.x, hologramData.y, hologramData.z);
+			if (pos.distance(camera_pos.x, camera_pos.y, camera_pos.z) <= hologramData.max_render_distance) {
+				if (NametagUtils.to2D(pos, hologramData.scale, hologramData.distanceScaling)) {
+					TextRenderer text = TextRenderer.get();
+					NametagUtils.begin(pos, event.drawContext);
+					text.beginBig();
+
+					String hologram_text = hologramData.text;
+					double hologramWidth = text.getWidth(hologram_text, true);
+					double heightDown = text.getHeight(true);
+
+					double widthHalf = hologramWidth / 2;
+
+
+					double hX = -widthHalf;
+					double hY = -heightDown;
+
+					text.render(hologram_text, hX, hY, hologramData.color, true);
+					for (HologramData hologramData1 : hologramData.other_holograms) {
+						text.render(hologramData1.text, hX - hologramData1.x, hY - hologramData1.y, hologramData1.color, true);
+						if (hologramData1.item_id != 0) {
+							Item item = Item.byRawId(hologramData1.item_id);
+							RenderUtils.drawItem(event.drawContext, item.getDefaultStack(), (int) ((int) hX - hologramData1.x), (int) ((int) 0 - hologramData1.y), hologramData1.item_scale, true);
+						}
+					}
+
+					text.end();
+					if (hologramData.item_id != 0) {
+						Item item = Item.byRawId(hologramData.item_id);
+						RenderUtils.drawItem(event.drawContext, item.getDefaultStack(), (int) hX, (int) 0, hologramData.item_scale, true);
+					}
+					NametagUtils.end(event.drawContext);
+				}
+			}
+		}
+	}
+
+	private void load() {
+		File dir = new File(MeteorClient.FOLDER, "holograms");
+		if (dir.exists()) {
+			String world_name = Utils.getWorldName();
+			File dir2 = new File(dir, world_name);
+			if (dir2.exists()) {
+				allHolograms.clear();
+				File[] files = dir2.listFiles();
+				for (File file : files) {
+					if (file.exists()) {
+						MeteorPlusAddon.LOG.info("Loading hologram: " + file.getName());
+						FileReader fr = null;
+						try {
+							fr = new FileReader(file);
+							BufferedReader reader = new BufferedReader(fr);
+							try {
+								String json = reader.readLine();
+								HologramData hologramData = gson.fromJson(json, HologramData.class);
+								if (hologramData != null) {
+									allHolograms.add(hologramData);
+									MeteorPlusAddon.LOG.info("Loaded hologram: " + file.getName());
+								}
+
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void createDefault() {
+		File dir = new File(MeteorClient.FOLDER, "holograms");
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+		String world_name = Utils.getWorldName();
+		File dir2 = new File(dir, world_name);
+		if (!dir2.exists()) {
+			dir2.mkdir();
+
+			HologramData hologramData = new HologramData(new BlockPos(0, 64, 0), "Spawn", world_name, PlayerUtils.getDimension(), Color.RED, 16);
+			HologramData hologramData2 = new HologramData(new BlockPos(0, 15, 0), PlayerUtils.getDimension().name(), world_name, PlayerUtils.getDimension(), Color.RED, 16);
+			hologramData.other_holograms.add(hologramData2);
+			String json = gson.toJson(hologramData);
+
+			File file = new File(dir2.getPath(), "0.json");
+			if (!file.exists()) {
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				FileWriter fileWriter = new FileWriter(file);
+				PrintWriter printWriter = new PrintWriter(fileWriter);
+				printWriter.print(json);
+				printWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}

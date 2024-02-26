@@ -28,6 +28,7 @@ import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.meteorclient.utils.world.BlockIterator;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
+import nekiplay.meteorplus.utils.RaycastUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
@@ -117,6 +118,13 @@ public class LitematicaPrinter extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> raycastCheck = sgGeneral.add(new BoolSetting.Builder()
+		.name("raycast")
+		.description("Rotate to the blocks being placed.")
+		.defaultValue(false)
+		.build()
+	);
+
 	private final Setting<Boolean> clientSide = sgGeneral.add(new BoolSetting.Builder()
 		.name("Client side Rotation")
 		.description("Rotate to the blocks being placed on client side.")
@@ -197,7 +205,7 @@ public class LitematicaPrinter extends Module {
 	// https://github.com/CCBlueX/LiquidBounce/blob/nextgen/src/main/kotlin/net/ccbluex/liquidbounce/utils/aiming/RotationsUtil.kt#L257
 
 	public LitematicaPrinter() {
-		super(MeteorPlusAddon.CATEGORYMODS, "litematica-printer", "Automatically prints open schematics");
+		super(MeteorPlusAddon.CATEGORYMODS, "printer", "Automatically prints open schematics");
 	}
 
 	@Override
@@ -326,7 +334,6 @@ public class LitematicaPrinter extends Module {
 			printing_range.get(),
 			wantedSide
 		);
-
 		return MyUtils.place(pos, placeSide, airPlace.get(), swing.get(), rotate.get(), clientSide.get(), printing_range.get());
 	}
 

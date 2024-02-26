@@ -60,6 +60,8 @@ dependencies {
 	modImplementation "curse.maven:litematica-${project.litematica_projectid}:${project.litematica_fileid}"
 	modImplementation "curse.maven:litematica-${project.malilib_projectid}:${project.malilib_fileid}"
 	modImplementation("red.jackf:whereisit:${project.where_is_it_version}")
+
+	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.2")))
 }
 
 loom {

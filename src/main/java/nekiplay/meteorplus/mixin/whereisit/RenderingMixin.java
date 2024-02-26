@@ -31,6 +31,7 @@ public class RenderingMixin {
 		}
 		pose.push();
 
+
 		pos = pos.subtract(camera.getPos());
 
 

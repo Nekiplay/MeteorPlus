@@ -4,20 +4,21 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "nekiplay.meteorplus.MixinPlugin",
   "client": [
-		"meteorclient.modules.ESPMixin",
-		"meteorclient.modules.AutoToolMixin",
-    "meteorclient.modules.FreecamMixin",
-		"meteorclient.modules.ItemHighlightMixin",
-		"meteorclient.modules.KillAuraMixin",
-		"meteorclient.modules.TracersMixin",
-		"meteorclient.modules.WaypointsModuleMixin",
     "meteorclient.LeftRightSettingsScreenMixin",
     "meteorclient.ModuleMixin",
     "meteorclient.ModulesScreenMixin",
     "meteorclient.WMeteorModuleMixin",
     "meteorclient.WPressableMixin",
+    "meteorclient.modules.AutoToolMixin",
+    "meteorclient.modules.ESPMixin",
+    "meteorclient.modules.FreecamMixin",
+    "meteorclient.modules.ItemHighlightMixin",
+    "meteorclient.modules.KillAuraMixin",
+    "meteorclient.modules.TracersMixin",
+    "meteorclient.modules.WaypointsModuleMixin",
     "minecraft.ClientPlayerInteractionManagerMixin",
-    "minecraft.MinecraftClientMixin"
+    "minecraft.MinecraftClientMixin",
+    "minecraft.SignBlockEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

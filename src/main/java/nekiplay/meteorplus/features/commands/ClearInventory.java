@@ -8,7 +8,7 @@ import net.minecraft.screen.slot.SlotActionType;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
-import static nekiplay.meteorplus.features.modules.AutoDropPlus.invIndexToSlotId;
+import static nekiplay.meteorplus.features.modules.player.AutoDropPlus.invIndexToSlotId;
 
 public class ClearInventory extends Command {
 	public ClearInventory() {

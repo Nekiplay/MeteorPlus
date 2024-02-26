@@ -3,6 +3,7 @@ package nekiplay.meteorplus.features.modules.velocity;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
+import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.MeteorPlusAddon;
@@ -10,7 +11,7 @@ import nekiplay.meteorplus.features.modules.velocity.modes.Grim;
 
 public class VelocityPlus extends Module {
 	public VelocityPlus() {
-		super(MeteorPlusAddon.CATEGORY, "velocity+", "Bypass velocity.");
+		super(Categories.Movement, "velocity+", "Bypass velocity.");
 	}
 	private final SettingGroup settingsGroup = settings.getDefaultGroup();
 

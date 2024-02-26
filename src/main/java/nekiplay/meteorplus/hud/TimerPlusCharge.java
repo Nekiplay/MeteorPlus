@@ -6,7 +6,7 @@ import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
-import nekiplay.meteorplus.features.modules.timer.TimerPlus;
+import nekiplay.meteorplus.features.modules.world.timer.TimerPlus;
 import nekiplay.meteorplus.MeteorPlusAddon;
 
 public class TimerPlusCharge extends HudElement {

@@ -4,7 +4,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.render.Tracers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import nekiplay.meteorplus.features.modules.AntiBotPlus;
+import nekiplay.meteorplus.features.modules.combat.AntiBotPlus;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

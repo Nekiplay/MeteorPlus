@@ -4,19 +4,35 @@ import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import meteordevelopment.meteorclient.systems.modules.misc.BetterChat;
-import nekiplay.meteorplus.features.commands.ClearInventory;
-import nekiplay.meteorplus.features.commands.Eclip;
-import nekiplay.meteorplus.features.commands.GPT;
-import nekiplay.meteorplus.features.commands.GotoPlus;
-import nekiplay.meteorplus.features.modules.autoobsidianmine.AutoObsidianFarm;
+import nekiplay.meteorplus.features.commands.*;
+import nekiplay.meteorplus.features.modules.combat.AutoLeave;
+import nekiplay.meteorplus.features.modules.combat.TriggerBot;
+import nekiplay.meteorplus.features.modules.misc.AutoAccept;
+import nekiplay.meteorplus.features.modules.misc.ChatGPT;
+import nekiplay.meteorplus.features.modules.misc.ChatPrefix;
+import nekiplay.meteorplus.features.modules.misc.MultiTasks;
+import nekiplay.meteorplus.features.modules.movement.Freeze;
+import nekiplay.meteorplus.features.modules.movement.InventoryMovePlus;
+import nekiplay.meteorplus.features.modules.movement.NoJumpDelay;
+import nekiplay.meteorplus.features.modules.movement.NoSlowPlus;
+import nekiplay.meteorplus.features.modules.player.AutoCraftPlus;
+import nekiplay.meteorplus.features.modules.player.AutoDropPlus;
+import nekiplay.meteorplus.features.modules.player.MiddleClickExtraPlus;
+import nekiplay.meteorplus.features.modules.render.*;
+import nekiplay.meteorplus.features.modules.render.holograms.HologramModule;
+import nekiplay.meteorplus.features.modules.world.BedrockStorageBruteforce;
+import nekiplay.meteorplus.features.modules.world.GhostBlockFixer;
+import nekiplay.meteorplus.features.modules.world.SafeMine;
+import nekiplay.meteorplus.features.modules.world.autoobsidianmine.AutoObsidianFarm;
+import nekiplay.meteorplus.features.modules.combat.AntiBotPlus;
+import nekiplay.meteorplus.features.modules.movement.elytrafly.ElytraFlyPlus;
 import nekiplay.meteorplus.features.modules.integrations.WhereIsIt;
-import nekiplay.meteorplus.features.modules.killaura.KillAuraPlus;
+import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlus;
 import nekiplay.meteorplus.gui.tabs.HiddenModulesTab;
 import nekiplay.meteorplus.hud.TimerPlusCharge;
-import nekiplay.meteorplus.features.modules.*;
 import nekiplay.meteorplus.features.modules.integrations.LitematicaPrinter;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
-import nekiplay.meteorplus.features.modules.timer.TimerPlus;
+import nekiplay.meteorplus.features.modules.world.timer.TimerPlus;
 import nekiplay.meteorplus.items.ModItems;
 import net.fabricmc.loader.api.FabricLoader;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
@@ -24,25 +40,24 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
-import nekiplay.meteorplus.features.modules.fastladder.FastLadderPlus;
-import nekiplay.meteorplus.features.modules.fly.FlyPlus;
-import nekiplay.meteorplus.features.modules.jesus.JesusPlus;
-import nekiplay.meteorplus.features.modules.nofall.NoFallPlus;
-import nekiplay.meteorplus.features.modules.speed.SpeedPlus;
-import nekiplay.meteorplus.features.modules.spider.SpiderPlus;
+import nekiplay.meteorplus.features.modules.movement.fastladder.FastLadderPlus;
+import nekiplay.meteorplus.features.modules.movement.fly.FlyPlus;
+import nekiplay.meteorplus.features.modules.movement.jesus.JesusPlus;
+import nekiplay.meteorplus.features.modules.movement.nofall.NoFallPlus;
+import nekiplay.meteorplus.features.modules.movement.speed.SpeedPlus;
+import nekiplay.meteorplus.features.modules.movement.spider.SpiderPlus;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MeteorPlusAddon extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlusAddon.class);
-	public static final Category CATEGORY = new Category("Meteor+", ModItems.LOGO_ITEM.getDefaultStack());
+	//public static final Category CATEGORY = new Category("Meteor+", ModItems.LOGO_ITEM.getDefaultStack());
 
 	public static final ItemStack logo_mods_item = ModItems.LOGO_MODS_ITEM.getDefaultStack();
 
-	public static final Category CATEGORYMODS = new Category("Meteor+ Mods", logo_mods_item);
+	public static final Category CATEGORYMODS = new Category("Integrations", logo_mods_item);
 	public static final HudGroup HUD_GROUP = new HudGroup("Meteor+ Hud");
 	public static final String LOGPREFIX = "[Meteor+]";
 
@@ -58,9 +73,11 @@ public class MeteorPlusAddon extends MeteorAddon {
 
 		LOG.info(LOGPREFIX + " initializing...");
 
+
 		//region Commands
 		LOG.info(LOGPREFIX + " initializing commands...");
 
+		Commands.add(new ItemRawIdCommand());
 		Commands.add(new Eclip());
 		Commands.add(new ClearInventory());
 		Commands.add(new GotoPlus());
@@ -68,12 +85,17 @@ public class MeteorPlusAddon extends MeteorAddon {
 
 		LOG.info(LOGPREFIX + " loaded commands");
 		//endregion
+
+		LOG.info(LOGPREFIX + " initializing better chat custom head...");
+		BetterChat.registerCustomHead("[Meteor+]", new Identifier("meteorplus", "chat/icon.png"));
+		LOG.info(LOGPREFIX + " loaded better chat");
+
+
 		//region Modules
 		LOG.info(LOGPREFIX + " initializing modules...");
 		Modules modules = Modules.get();
 
-		BetterChat.registerCustomHead("[Meteor+]", new Identifier("meteorplus", "chat/icon.png"));
-
+		modules.add(new HologramModule());
 		modules.add(new ChatPrefix());
 		modules.add(new ChatGPT());
 		modules.add(new ItemHighlightPlus());
@@ -102,6 +124,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 		modules.add(new MultiTasks());
 		modules.add(new ItemFrameEsp());
 		modules.add(new KillAuraPlus());
+		modules.add(new ElytraFlyPlus());
 		if (!MixinPlugin.isMeteorRejects) {
 			modules.add(new NoJumpDelay());
 		}
@@ -151,10 +174,9 @@ public class MeteorPlusAddon extends MeteorAddon {
 			MixinPlugin.isLitematicaMapresent ||
 			MixinPlugin.isWhereIsIt
 		) {
-			logo_mods_item.addEnchantment(Enchantments.FLAME, 1);
 			Modules.registerCategory(CATEGORYMODS);
 		}
-		Modules.registerCategory(CATEGORY);
+		//Modules.registerCategory(CATEGORY);
 		LOG.info(LOGPREFIX + " register categories");
 	}
 
