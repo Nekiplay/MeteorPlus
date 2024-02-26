@@ -4,7 +4,6 @@ import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.pathing.PathManagers;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -146,12 +145,12 @@ public class FreecamMixin {
 	@EventHandler
 	private void onTickEvent(TickEvent.Pre event) {
 		if (baritoneControl.get() && blinkBaritoneControl.get()) {
-			if (isBlinkMoving && (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || PathManagers.get().isPathing() ) ) {
+			if (isBlinkMoving && (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() ) ) {
 				if (!blink.isActive()) {
 					blink.toggle();
 				}
 			}
-			if (isBlinkMoving && (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || !PathManagers.get().isPathing() ) ) {
+			if (isBlinkMoving && (!BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() ) ) {
 				if (blink.isActive()) {
 					blink.toggle();
 					isBlinkMoving = false;
@@ -190,7 +189,9 @@ public class FreecamMixin {
 
 				if (state.isAir()) return;
 				isBlinkMoving = true;
-				PathManagers.get().moveTo(tryGetValidPos(blockPos));
+				GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
+				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
+				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
 			}
 		}
 
@@ -212,15 +213,19 @@ public class FreecamMixin {
 
 			if (state.isAir()) return;
 
-			if (PathManagers.get().isPathing())
-				PathManagers.get().stop();
+			if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing())
+				BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().forceCancel();
 
-			PathManagers.get().moveTo(tryGetValidPos(blockPos));
+
+			GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
+			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
+			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+
 			event.cancel();
 		}
 
 		if (event.button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-			PathManagers.get().stop();
+			BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().forceCancel();
 			if (blink.isActive()) {
 				blink.toggle();
 				isBlinkMoving = false;
