@@ -20,6 +20,7 @@ public class AutoObsidianFarmMode {
 	public void onActivate() {}
 	public void onDeactivate() {}
 	public void onTickEventPre(TickEvent.Pre event) {}
+	public void onTickEventPost(TickEvent.Post event) {}
 	public void onCollisionShape(CollisionShapeEvent event) {}
 
 	public void onMovePacket(PlayerMoveC2SPacket playerMove) {}

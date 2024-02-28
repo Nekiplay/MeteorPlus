@@ -17,8 +17,7 @@
     "meteorclient.modules.TracersMixin",
     "meteorclient.modules.WaypointsModuleMixin",
     "minecraft.ClientPlayerInteractionManagerMixin",
-    "minecraft.MinecraftClientMixin",
-    "minecraft.SignBlockEntityRendererMixin"
+    "minecraft.MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -169,7 +169,10 @@ public class AutoObsidianFarm extends Module {
 	public void onDeactivate() {
 		currentMode.onDeactivate();
 	}
-
+	@EventHandler
+	private void onPreTickPost(TickEvent.Post event) {
+		currentMode.onTickEventPost(event);
+	}
 	@EventHandler
 	private void onPreTick(TickEvent.Pre event) {
 		currentMode.onTickEventPre(event);

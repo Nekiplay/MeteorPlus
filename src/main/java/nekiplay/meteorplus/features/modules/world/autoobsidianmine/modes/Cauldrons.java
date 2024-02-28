@@ -68,8 +68,8 @@ public class Cauldrons extends AutoObsidianFarmMode {
 	}
 
 	@Override
-	public void onTickEventPre(TickEvent.Pre event) {
-		if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1.5) {
+	public void onTickEventPost(TickEvent.Post event) {
+		if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1.7) {
 			return;
 		}
 		BlockPos placing = settings.lavaPlaceLocation.get();
@@ -117,7 +117,6 @@ public class Cauldrons extends AutoObsidianFarmMode {
 					BlockUtils.breakBlock(placing, true);
 				}
 			} else {
-
 				FindItemResult bucket = InvUtils.findInHotbar(Items.BUCKET);
 				FindItemResult lavaBucket = InvUtils.findInHotbar(Items.LAVA_BUCKET);
 				if (lavaBucket.found() && mc.player.getPos().distanceTo(placing.toCenterPos()) <= settings.range.get() + 1) {
@@ -159,14 +158,14 @@ public class Cauldrons extends AutoObsidianFarmMode {
 								rotate(block, () -> {
 									Vec3d hitPos = Vec3d.ofCenter(block);
 									Direction side = Direction.DOWN;
-									BlockPos neighbour;
-									if (side == null) {
-										side = Direction.UP;
-										neighbour = block;
-									} else {
-										neighbour = block.offset(side);
-										hitPos = hitPos.add((double) side.getOffsetX() * 0.5, (double) side.getOffsetY() * 0.5, (double) side.getOffsetZ() * 0.5);
-									}
+									//BlockPos neighbour;
+									//if (side == null) {
+									//	side = Direction.UP;
+									//	neighbour = block;
+									//} else {
+									//	neighbour = block.offset(side);
+									//	hitPos = hitPos.add((double) side.getOffsetX() * 0.5, (double) side.getOffsetY() * 0.5, (double) side.getOffsetZ() * 0.5);
+									//}
 									BlockHitResult bhr = new BlockHitResult(hitPos, Direction.UP, block, false);
 									boolean isSneaking = false;
 									if (settings.bypassSneak.get()) {
