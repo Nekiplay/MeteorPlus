@@ -69,7 +69,11 @@ public class Cauldrons extends AutoObsidianFarmMode {
 
 	@Override
 	public void onTickEventPre(TickEvent.Pre event) {
-		if (TickRate.INSTANCE.getTimeSinceLastTick() > 1.15) {
+		if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1.5) {
+			return;
+		}
+		BlockPos placing = settings.lavaPlaceLocation.get();
+		if (mc.player.squaredDistanceTo(placing.toCenterPos()) >= settings.range.get() + 1 * settings.range.get() + 1) {
 			return;
 		}
 		BlockIterator.register(settings.range.get(), settings.range.get(), (blockPos, blockState) -> {
@@ -104,10 +108,9 @@ public class Cauldrons extends AutoObsidianFarmMode {
 				if (timer > 0) return;
 			}
 
-			BlockPos placing = settings.lavaPlaceLocation.get();
 			BlockState state = mc.world.getBlockState(placing);
 
-			if (state.getBlock() == Blocks.OBSIDIAN && mc.player.squaredDistanceTo(placing.toCenterPos()) <= settings.range.get() * settings.range.get() ) {
+			if (state.getBlock() == Blocks.OBSIDIAN) {
 				if (BlockUtils.canBreak(placing)) {
 					rotate(placing, null);
 					lavaPlaceTimer = 0;
@@ -149,7 +152,7 @@ public class Cauldrons extends AutoObsidianFarmMode {
 				else if (bucket.found()) {
 					for (BlockPos block : blocks) {
 						BlockState state2 = mc.world.getBlockState(block);
-						if (state2.getBlock() == Blocks.LAVA_CAULDRON) {
+						if (state2.getBlock() == Blocks.LAVA_CAULDRON && mc.player.getPos().distanceTo(block.toCenterPos()) <= settings.range.get() + 1) {
 							if (collectTimer >= settings.collectDelay.get()) {
 								mc.player.getInventory().selectedSlot = bucket.slot();
 								mc.player.networkHandler.sendPacket(new UpdateSelectedSlotC2SPacket(bucket.slot()));
