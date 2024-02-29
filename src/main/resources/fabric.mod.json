@@ -32,7 +32,8 @@
 		"meteorplus.mixins.json",
 		"meteorplus-journeymap.mixins.json",
 		"meteorplus-xaeroworldmap.mixins.json",
-		"meteorplus-whereisit.mixins.json"
+		"meteorplus-whereisit.mixins.json",
+		"meteorplus-baritone.mixins.json"
 
   ],
 	"accessWidener": "meteorplus.accesswidener",

@@ -71,28 +71,30 @@ public class MeteorPlusAddon extends MeteorAddon {
 	public void onInitialize() {
 		instance = this;
 
-		LOG.info(LOGPREFIX + " initializing...");
+		LOG.info(LOGPREFIX + " Initializing...");
 
 
 		//region Commands
-		LOG.info(LOGPREFIX + " initializing commands...");
+		LOG.info(LOGPREFIX + " Initializing commands...");
 
 		Commands.add(new ItemRawIdCommand());
 		Commands.add(new Eclip());
 		Commands.add(new ClearInventory());
-		Commands.add(new GotoPlus());
+		if (MixinPlugin.isBaritonePresent) {
+			Commands.add(new GotoPlus());
+		}
 		Commands.add(new GPT());
 
-		LOG.info(LOGPREFIX + " loaded commands");
+		LOG.info(LOGPREFIX + " Loaded commands");
 		//endregion
 
-		LOG.info(LOGPREFIX + " initializing better chat custom head...");
+		LOG.info(LOGPREFIX + " Initializing better chat custom head...");
 		BetterChat.registerCustomHead("[Meteor+]", new Identifier("meteorplus", "chat/icon.png"));
-		LOG.info(LOGPREFIX + " loaded better chat");
+		LOG.info(LOGPREFIX + " Loaded better chat");
 
 
 		//region Modules
-		LOG.info(LOGPREFIX + " initializing modules...");
+		LOG.info(LOGPREFIX + " Initializing modules...");
 		Modules modules = Modules.get();
 
 		modules.add(new HologramModule());
@@ -129,41 +131,41 @@ public class MeteorPlusAddon extends MeteorAddon {
 			modules.add(new NoJumpDelay());
 		}
 		else {
-			LOG.info(LOGPREFIX + " meteor-rejects detected, removing meteor plus (No Jump Delay)");
+			LOG.warn(LOGPREFIX + " Meteor Rejects detected, removing No Jump Delay");
 		}
 		modules.add(new NoSlowPlus());
 		//modules.add(new VelocityPlus());
 		if (MixinPlugin.isXaeroWorldMapresent || MixinPlugin.isJourneyMapPresent) {
 			modules.add(new MapIntegration());
-			LOG.info(LOGPREFIX + " loaded mini-map integration");
+			LOG.info(LOGPREFIX + " Loaded mini-map integration");
 		}
 		if (MixinPlugin.isLitematicaMapresent) {
 			modules.add(new LitematicaPrinter());
-			LOG.info(LOGPREFIX + " loaded litematica integration");
+			LOG.info(LOGPREFIX + " Loaded litematica integration");
 		}
 		if (MixinPlugin.isWhereIsIt) {
 			modules.add(new WhereIsIt());
-			LOG.info(LOGPREFIX + " loaded where is it integration");
+			LOG.info(LOGPREFIX + " Loaded where is it integration");
 		}
-		LOG.info(LOGPREFIX + " loaded modules");
+		LOG.info(LOGPREFIX + " Loaded modules");
 		//endregion
 
 		//region Hud
-		LOG.info(LOGPREFIX + " initializing hud...");
+		LOG.info(LOGPREFIX + " Initializing hud...");
 
 		Hud.get().register(TimerPlusCharge.INFO);
 
-		LOG.info(LOGPREFIX + " loaded hud");
+		LOG.info(LOGPREFIX + " Loaded hud");
 		//endregion
 
 		//region Tabs
-		LOG.info(LOGPREFIX + " initializing tabs...");
+		LOG.info(LOGPREFIX + " Initializing tabs...");
 
 		Tabs.add(new HiddenModulesTab());
 
-		LOG.info(LOGPREFIX + " loaded tabs");
+		LOG.info(LOGPREFIX + " Loaded tabs");
 		//endregion
-		LOG.info(LOGPREFIX + " loaded");
+		LOG.info(LOGPREFIX + " Full loaded");
 	}
 
 	@Override

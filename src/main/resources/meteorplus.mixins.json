@@ -11,11 +11,9 @@
     "meteorclient.WPressableMixin",
     "meteorclient.modules.AutoToolMixin",
     "meteorclient.modules.ESPMixin",
-    "meteorclient.modules.FreecamMixin",
     "meteorclient.modules.ItemHighlightMixin",
     "meteorclient.modules.KillAuraMixin",
     "meteorclient.modules.TracersMixin",
-    "meteorclient.modules.WaypointsModuleMixin",
     "minecraft.ClientPlayerInteractionManagerMixin",
     "minecraft.MinecraftClientMixin"
   ],

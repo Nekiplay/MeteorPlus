@@ -42,13 +42,10 @@ public class MixinPlugin implements IMixinConfigPlugin {
 			throw new RuntimeException("Mixin " + mixinClassName + " is not in the mixin package");
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".journeymap")) {
-			return isJourneyMapPresent;
+			return isBaritonePresent && isJourneyMapPresent;
 		}
-		else if (mixinClassName.startsWith(mixinPackage + ".xaeroworldmap")) {
-			return isXaeroWorldMapresent;
-		}
-		else if (mixinClassName.startsWith(mixinPackage + ".xaerominimap")) {
-			return isXaeroMiniMapresent;
+		else if (mixinClassName.startsWith(mixinPackage + ".xaero")) {
+			return isBaritonePresent && isXaeroWorldMapresent;
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".whereisit")) {
 			return isWhereIsIt;
@@ -56,7 +53,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		else if (mixinClassName.startsWith(mixinPackage + ".baritone")) {
 			return isBaritonePresent;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
+import nekiplay.meteorplus.MixinPlugin;
 import nekiplay.meteorplus.features.modules.world.autoobsidianmine.modes.Cauldrons;
 import nekiplay.meteorplus.features.modules.world.autoobsidianmine.modes.Portals;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -104,7 +105,15 @@ public class AutoObsidianFarm extends Module {
 
 	public final Setting<Boolean> bypassSneak = sgGeneral.add(new BoolSetting.Builder()
 		.name("bypass-sneak")
-		.description("bypass-sneak-interact.")
+		.description("Bypass sneak interact.")
+		.defaultValue(false)
+		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
+		.build()
+	);
+
+	public final Setting<Boolean> tpsCheck = sgGeneral.add(new BoolSetting.Builder()
+		.name("no-work-if-server-lag")
+		.description("Stop working if server lagging.")
 		.defaultValue(false)
 		.visible(() -> workingMode.get() == AutoObsidianFarmModes.Cauldrons)
 		.build()
@@ -147,7 +156,12 @@ public class AutoObsidianFarm extends Module {
 	private void onModeChanged(AutoObsidianFarmModes mode) {
 		switch (mode) {
 			case Portal_Homes, Portals_Vanila -> {
-				currentMode = new Portals();
+				if (MixinPlugin.isBaritonePresent) {
+					currentMode = new Portals();
+				}
+				else {
+					error("This mode need Baritone API (Fabric)");
+				}
 			}
 			case Cauldrons ->  {
 				currentMode = new Cauldrons();
@@ -157,36 +171,51 @@ public class AutoObsidianFarm extends Module {
 
 	@Override
 	public String getInfoString() {
+		if (currentMode == null) {
+			return "";
+		}
 		return currentMode.getInfoString();
 	}
 
 	@Override
 	public void onActivate() {
-		currentMode.onActivate();
+		if (currentMode != null) {
+			currentMode.onActivate();
+		}
 	}
 
 	@Override
 	public void onDeactivate() {
-		currentMode.onDeactivate();
+		if (currentMode != null) {
+			currentMode.onDeactivate();
+		}
 	}
 	@EventHandler
 	private void onPreTickPost(TickEvent.Post event) {
-		currentMode.onTickEventPost(event);
+		if (currentMode != null) {
+			currentMode.onTickEventPost(event);
+		}
 	}
 	@EventHandler
 	private void onPreTick(TickEvent.Pre event) {
-		currentMode.onTickEventPre(event);
+		if (currentMode != null) {
+			currentMode.onTickEventPre(event);
+		}
 	}
 
 	@EventHandler
 	private void onCollisionShape(CollisionShapeEvent event) {
-		currentMode.onCollisionShape(event);
+		if (currentMode != null) {
+			currentMode.onCollisionShape(event);
+		}
 	}
 
 	@EventHandler
 	private void onMovePacket(PacketEvent.Send event) {
 		if (event.packet instanceof PlayerMoveC2SPacket playerMove) {
-			currentMode.onMovePacket(playerMove);
+			if (currentMode != null) {
+				currentMode.onMovePacket(playerMove);
+			}
 		}
 	}
 }

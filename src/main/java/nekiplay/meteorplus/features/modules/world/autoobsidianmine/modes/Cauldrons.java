@@ -69,7 +69,7 @@ public class Cauldrons extends AutoObsidianFarmMode {
 
 	@Override
 	public void onTickEventPost(TickEvent.Post event) {
-		if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1.7) {
+		if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1.7 && settings.tpsCheck.get()) {
 			return;
 		}
 		BlockPos placing = settings.lavaPlaceLocation.get();

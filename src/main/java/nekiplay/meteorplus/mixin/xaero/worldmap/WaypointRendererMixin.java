@@ -2,7 +2,6 @@ package nekiplay.meteorplus.mixin.xaero.worldmap;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.IBaritone;
-import baritone.api.command.ICommand;
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
