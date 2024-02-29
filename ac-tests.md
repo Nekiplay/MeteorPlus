@@ -14,13 +14,13 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Speed Plus<b></td>
+            <td><b>Speed+<b></td>
              <td><b>Matrix Exploit 2<b></td>
              <td><b>75<b></td>
              <td><b>Not more jumps<b></td>
         </tr>
         <tr>
-            <td><b>Jesus Plus<b></td>
+            <td><b>Jesus+<b></td>
              <td><b>Vulcan<b></td>
              <td><b>4<b></td>
              <td><b>Not more jumps<b></td>
@@ -40,7 +40,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Fly Plus<b></td>
+            <td><b>Flight+<b></td>
              <td><b>Matrix Exploit 2<b></td>
              <td><b>1<b></td>
              <td><b>None<b></td>
@@ -60,25 +60,25 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Fly Plus<b></td>
+            <td><b>Flight+<b></td>
              <td><b>Matrix Exploit 2<b></td>
              <td><b> 0.070<b></td>
              <td><b>Dont enable in water<b></td>
         </tr>
          <tr>
-            <td><b>Jesus Plus<b></td>
+            <td><b>Jesus+<b></td>
              <td><b>Matrix Zoom 2<b></td>
              <td><b> 0.070<b></td>
              <td><b>Dont jumps<b></td>
         </tr>
          <tr>
-            <td><b>Spider Plus<b></td>
+            <td><b>Spider+<b></td>
              <td><b>Matrix<b></td>
              <td><b>None<b></td>
              <td><b>None<b></td>
         </tr>
          <tr>
-             <td><b>NoFall Plus<b></td>
+             <td><b>NoFall+<b></td>
               <td><b>Matrix<b></td>
               <td><b>New Mode<b></td>
               <td><b>None<b></td>
@@ -146,13 +146,13 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Fly Plus<b></td>
+            <td><b>Flight+<b></td>
              <td><b>Matrix Exploit 2<b></td>
              <td><b> 0.190<b></td>
              <td><b>Don't long<b></td>
         </tr>
          <tr>
-            <td><b>Fast Ladder Plus<b></td>
+            <td><b>Fast Ladder<b></td>
              <td><b>Spartan<b></td>
              <td><b><b></td>
              <td><b><b></td>
@@ -191,13 +191,13 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Spider Plus<b></td>
+            <td><b>Spider+<b></td>
              <td><b>Matrix<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
          <tr>
-            <td><b>NoFall Plus<b></td>
+            <td><b>NoFall+<b></td>
              <td><b>Matrix 3<b></td>
              <td><b>New mode<b></td>
              <td><b><b></td>
@@ -217,13 +217,13 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Spider Plus<b></td>
+            <td><b>Spider+<b></td>
              <td><b>Matrix<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
          <tr>
-            <td><b>NoFall Plus<b></td>
+            <td><b>NoFall+<b></td>
              <td><b>Matrix 3<b></td>
              <td><b>New mode<b></td>
              <td><b><b></td>
@@ -243,31 +243,31 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Spider Plus<b></td>
+            <td><b>Spider+<b></td>
              <td><b>Vulcan<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
          <tr>
-            <td><b>Speed Plus<b></td>
+            <td><b>Speed+<b></td>
              <td><b>Vulcan<b></td>
              <td><b><b></td>
              <td><b>Only forward, not more jumps<b></td>
         </tr>
         <tr>
-            <td><b>Jesus Plus<b></td>
+            <td><b>Jesus+<b></td>
              <td><b>Vulcan<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
         <tr>
-            <td><b>No Fall Plus<b></td>
+            <td><b>No Fall+<b></td>
              <td><b>Elytra Clip or Vulcan<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
 		<tr>
-            <td><b>Fly Plus<b></td>
+            <td><b>Flight+<b></td>
              <td><b>Vulcan Clip<b></td>
              <td><b><b></td>
              <td><b><b></td>
@@ -306,7 +306,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>NoFall Plus<b></td>
+            <td><b>NoFall+<b></td>
              <td><b>Matrix 3<b></td>
              <td><b>New mode<b></td>
              <td><b><b></td>
@@ -345,7 +345,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>NoFall Plus<b></td>
+            <td><b>NoFall+<b></td>
              <td><b>Matrix 3<b></td>
              <td><b>New mode<b></td>
              <td><b><b></td>
@@ -384,19 +384,19 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Spider Plus<b></td>
+            <td><b>Spider+<b></td>
              <td><b>Matrix<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
         <tr>
-            <td><b>NoFall Plus<b></td>
+            <td><b>NoFall+<b></td>
              <td><b>Matrix 3<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
         <tr>
-            <td><b>Fly Plus<b></td>
+            <td><b>Flight+<b></td>
              <td><b>Matrix Exploit 2<b></td>
              <td><b><b></td>
              <td><b>Don't longer<b></td>
@@ -441,7 +441,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>NoFall Plus<b></td>
+            <td><b>NoFall+<b></td>
              <td><b>Matrix 3<b></td>
              <td><b><b></td>
              <td><b><b></td>
@@ -461,7 +461,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Spider Plus<b></td>
+            <td><b>Spider+<b></td>
              <td><b>Matrix<b></td>
              <td><b><b></td>
              <td><b><b></td>
@@ -481,13 +481,13 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Spider Plus<b></td>
+            <td><b>Spider+<b></td>
              <td><b>Matrix<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
          <tr>
-            <td><b>Fast Ladder Plus<b></td>
+            <td><b>Fast Ladder<b></td>
              <td><b>Spartan<b></td>
              <td><b><b></td>
              <td><b><b></td>
@@ -507,7 +507,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Fast Ladder Plus<b></td>
+            <td><b>Fast Ladder<b></td>
              <td><b>Spartan<b></td>
              <td><b><b></td>
              <td><b><b></td>
@@ -527,7 +527,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Timer Plus<b></td>
+            <td><b>Timer+<b></td>
              <td><b>NCP<b></td>
              <td><b><b></td>
              <td><b><b></td>
@@ -547,20 +547,20 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>Speed Plus<b></td>
+            <td><b>Speed+<b></td>
              <td><b>Matrix<b></td>
 			 <td><b><b></td>
              <td><b><b></td>
 		</tr>
          <tr>
-	         <td><b>Timer Plus<b></td>
+	         <td><b>Timer+<b></td>
              <td><b>Intave<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
     </tbody>
 </table>
-<h2> <a href="https://matrix.rip/">Matrix 2.7.0-</a></h2>
+<h2> <a href="https://matrix.rip/">Matrix 2.7.0</a></h2>
 <b>Modules</b>
 <table align="center">
     <thead>
@@ -573,11 +573,31 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>NoFall Plus<b></td>
+            <td><b>NoFall+<b></td>
              <td><b>Matrix New<b></td>
              <td><b><b></td>
              <td><b><b></td>
         </tr>
     </tbody>
-</table>				 				 	
+</table>			
+<h2> <a href="https://matrix.rip/">Matrix 7.4.18</a></h2>
+<b>Modules</b>
+<table align="center">
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Setting</th>
+            <th>Preset</th>
+            <th>Recommendation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Spider+<b></td>
+             <td><b>Matrix<b></td>
+             <td><b><b></td>
+             <td><b>Max 2 blocks<b></td>
+        </tr>
+    </tbody>
+</table>	
 </div>

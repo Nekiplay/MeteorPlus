@@ -1,12 +1,12 @@
 package nekiplay.meteorplus.features.modules.movement.spider;
 
 public enum SpiderModes {
-	Matrix,
+	Matrix_Lower_7,
 	Vulcan,
 	Elytra_clip;
 
 	@Override
 	public String toString() {
-		return super.toString().replace('_', ' ');
+		return super.toString().replace('_', ' ').replaceAll("_Lower_", "<");
 	}
 }

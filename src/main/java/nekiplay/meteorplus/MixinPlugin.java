@@ -14,12 +14,12 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	public static final String LOGPREFIX = "[Meteor+ Mixins]";
 
 	private static final String mixinPackage = "nekiplay.meteorplus.mixin";
-	public static boolean isBaritonePresent;
-	public static boolean isJourneyMapPresent;
-	public static boolean isXaeroWorldMapresent;
-	public static boolean isXaeroMiniMapresent;
-	public static boolean isXaeroPlusMapresent;
-	public static boolean isLitematicaMapresent;
+	public static boolean isBaritonePresent= false;
+	public static boolean isJourneyMapPresent= false;
+	public static boolean isXaeroWorldMapresent= false;
+	public static boolean isXaeroMiniMapresent= false;
+	public static boolean isXaeroPlusMapresent= false;
+	public static boolean isLitematicaMapresent = false;
 	public static boolean isWhereIsIt;
 
 	public static boolean isMeteorRejects;
@@ -58,7 +58,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		else if (mixinClassName.startsWith(mixinPackage + ".whereisit")) {
             return isWhereIsIt;
 		}
-		return false;
+		return true;
 	}
 
 	@Override

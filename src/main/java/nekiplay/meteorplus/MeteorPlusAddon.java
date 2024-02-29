@@ -99,6 +99,9 @@ public class MeteorPlusAddon extends MeteorAddon {
 		if (isBaritonePresent) {
 			Commands.add(new GotoPlus());
 		}
+		else {
+			LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Goto+");
+		}
 		Commands.add(new GPT());
 
 		LOG.info(LOGPREFIX + " Loaded commands");

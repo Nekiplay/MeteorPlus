@@ -30,18 +30,11 @@ public class SpiderPlus extends Module {
 		.build()
 	);
 
-	public final Setting<Integer> Interval = sgGeneral.add(new IntSetting.Builder()
-		.name("interval")
-		.defaultValue(3)
-		.description("Don't touch if you don't know what it does.")
-		.range(0, 10)
-		.build()
-	);
-
 	public final Setting<Integer> Blocks = sgGeneral.add(new IntSetting.Builder()
 		.name("blocks")
 		.defaultValue(3)
 		.description("Don't touch if you don't know what it does.")
+		.visible(() -> spiderMode.get() == SpiderModes.Elytra_clip)
 		.range(0, 10)
 		.build()
 	);
