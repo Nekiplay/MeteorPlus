@@ -2,12 +2,17 @@ package nekiplay.meteorplus;
 
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
 public class MixinPlugin implements IMixinConfigPlugin {
+	public static final Logger LOG = LoggerFactory.getLogger(MixinPlugin.class);
+	public static final String LOGPREFIX = "[Meteor+ Mixins]";
+
 	private static final String mixinPackage = "nekiplay.meteorplus.mixin";
 	public static boolean isBaritonePresent;
 	public static boolean isJourneyMapPresent;
@@ -39,16 +44,47 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
 		if (!mixinClassName.startsWith(mixinPackage)) {
-			throw new RuntimeException("Mixin " + mixinClassName + " is not in the mixin package");
+			throw new RuntimeException(LOGPREFIX + " " + mixinClassName + " is not in the mixin package");
+		}
+		else if (mixinClassName.startsWith(mixinPackage + ".meteorclient")) {
+			if (isBaritonePresent && (mixinClassName.contains("FreecamMixin") || mixinClassName.contains("WaypointsMixin"))) {
+				return true;
+			}
+			else {
+				LOG.info(LOGPREFIX + " [Baritone] not found, disabling Freecam and Waypoints improvement");
+				return false;
+			}
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".journeymap")) {
-			return isBaritonePresent && isJourneyMapPresent;
+			if (isJourneyMapPresent) {
+				if (isBaritonePresent) {
+					return true;
+				}
+				else {
+					LOG.info(LOGPREFIX + " [Baritone] not found, disabling Journey Map improvement");
+					return false;
+				}
+			}
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".xaero")) {
-			return isBaritonePresent && isXaeroWorldMapresent;
+			if (isXaeroWorldMapresent) {
+				if (isBaritonePresent) {
+					return true;
+				}
+				else {
+					LOG.info(LOGPREFIX + " [Baritone] not found, disabling Xaero's World Map improvement");
+					return false;
+				}
+			}
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".whereisit")) {
-			return isWhereIsIt;
+			if (isWhereIsIt) {
+				return true;
+			}
+			else {
+				LOG.info(LOGPREFIX + " [Where is it] not found, disabling ChestTracker improvement");
+				return false;
+			}
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".baritone")) {
 			return isBaritonePresent;

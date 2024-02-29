@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.mixin.baritone;
+package nekiplay.meteorplus.mixin.meteorclient.modules;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
