@@ -51,10 +51,10 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static nekiplay.meteorplus.MixinPlugin.*;
+
 public class MeteorPlusAddon extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlusAddon.class);
-	//public static final Category CATEGORY = new Category("Meteor+", ModItems.LOGO_ITEM.getDefaultStack());
-
 	public static final ItemStack logo_mods_item = ModItems.LOGO_MODS_ITEM.getDefaultStack();
 
 	public static final Category CATEGORYMODS = new Category("Integrations", logo_mods_item);
@@ -73,6 +73,22 @@ public class MeteorPlusAddon extends MeteorAddon {
 
 		LOG.info(LOGPREFIX + " Initializing...");
 
+		if (isXaeroWorldMapresent) {
+			if (!isBaritonePresent) {
+				LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Xaero's World Map improvement");
+			}
+		}
+		if (isJourneyMapPresent) {
+			if (!isBaritonePresent) {
+				LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Journey Map improvement");
+			}
+		}
+		if (!isBaritonePresent) {
+			LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Freecam and Waypoints improvement");
+		}
+		if (!isWhereIsIt) {
+			LOG.warn(LOGPREFIX + " [Where is it] not found, disabling ChestTracker improvement");
+		}
 
 		//region Commands
 		LOG.info(LOGPREFIX + " Initializing commands...");
@@ -80,7 +96,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 		Commands.add(new ItemRawIdCommand());
 		Commands.add(new Eclip());
 		Commands.add(new ClearInventory());
-		if (MixinPlugin.isBaritonePresent) {
+		if (isBaritonePresent) {
 			Commands.add(new GotoPlus());
 		}
 		Commands.add(new GPT());
@@ -135,7 +151,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 		}
 		modules.add(new NoSlowPlus());
 		//modules.add(new VelocityPlus());
-		if (MixinPlugin.isXaeroWorldMapresent || MixinPlugin.isJourneyMapPresent) {
+		if (isXaeroWorldMapresent || isJourneyMapPresent) {
 			modules.add(new MapIntegration());
 			LOG.info(LOGPREFIX + " Loaded mini-map integration");
 		}
@@ -171,8 +187,8 @@ public class MeteorPlusAddon extends MeteorAddon {
 	@Override
 	public void onRegisterCategories() {
 		LOG.info(LOGPREFIX + " registering categories...");
-		if (MixinPlugin.isXaeroWorldMapresent ||
-			MixinPlugin.isJourneyMapPresent ||
+		if (isXaeroWorldMapresent ||
+			isJourneyMapPresent ||
 			MixinPlugin.isLitematicaMapresent ||
 			MixinPlugin.isWhereIsIt
 		) {

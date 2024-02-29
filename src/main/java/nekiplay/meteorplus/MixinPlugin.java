@@ -47,47 +47,16 @@ public class MixinPlugin implements IMixinConfigPlugin {
 			throw new RuntimeException(LOGPREFIX + " " + mixinClassName + " is not in the mixin package");
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".meteorclient")) {
-			if (isBaritonePresent && (mixinClassName.contains("FreecamMixin") || mixinClassName.contains("WaypointsMixin"))) {
-				return true;
-			}
-			else {
-				LOG.info(LOGPREFIX + " [Baritone] not found, disabling Freecam and Waypoints improvement");
-				return false;
-			}
+            return isBaritonePresent && (mixinClassName.contains("FreecamMixin") || mixinClassName.contains("WaypointsModuleMixin"));
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".journeymap")) {
-			if (isJourneyMapPresent) {
-				if (isBaritonePresent) {
-					return true;
-				}
-				else {
-					LOG.info(LOGPREFIX + " [Baritone] not found, disabling Journey Map improvement");
-					return false;
-				}
-			}
+			return isBaritonePresent && isJourneyMapPresent;
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".xaero")) {
-			if (isXaeroWorldMapresent) {
-				if (isBaritonePresent) {
-					return true;
-				}
-				else {
-					LOG.info(LOGPREFIX + " [Baritone] not found, disabling Xaero's World Map improvement");
-					return false;
-				}
-			}
+			return isBaritonePresent && isXaeroWorldMapresent;
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".whereisit")) {
-			if (isWhereIsIt) {
-				return true;
-			}
-			else {
-				LOG.info(LOGPREFIX + " [Where is it] not found, disabling ChestTracker improvement");
-				return false;
-			}
-		}
-		else if (mixinClassName.startsWith(mixinPackage + ".baritone")) {
-			return isBaritonePresent;
+            return isWhereIsIt;
 		}
 		return false;
 	}
