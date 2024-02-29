@@ -24,7 +24,7 @@ public class SpiderPlus extends Module {
 	public final Setting<SpiderModes> spiderMode = sgGeneral.add(new EnumSetting.Builder<SpiderModes>()
 		.name("mode")
 		.description("The method of applying spider.")
-		.defaultValue(SpiderModes.Matrix)
+		.defaultValue(SpiderModes.Matrix_Lower_7)
 		.onModuleActivated(spiderModesSetting -> onSpiderModeChanged(spiderModesSetting.get()))
 		.onChanged(this::onSpiderModeChanged)
 		.build()
@@ -72,7 +72,7 @@ public class SpiderPlus extends Module {
 
 	private void onSpiderModeChanged(SpiderModes mode) {
 		switch (mode) {
-			case Matrix:   currentMode = new Matrix(); break;
+			case Matrix_Lower_7:   currentMode = new Matrix(); break;
 			case Vulcan:   currentMode = new Vulcan(); break;
 			case Elytra_clip:   currentMode = new Eclip(); break;
 		}
