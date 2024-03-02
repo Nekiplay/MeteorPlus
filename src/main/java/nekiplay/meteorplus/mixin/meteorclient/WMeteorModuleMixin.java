@@ -28,7 +28,6 @@ public class WMeteorModuleMixin {
 	private void onPressed(int button, CallbackInfo ci) {
 		if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
 			if (module.isActive()) module.toggle();
-
 			((IModule) module).setHidden(true);
 			Tabs.get().get(0).openScreen(GuiThemes.get()); // Hacky way to refresh the screen
 		}

@@ -65,11 +65,13 @@ public class HiddenModulesTab extends Tab {
 				GuiCategory guiCategory = new GuiCategory();
 				guiCategory.category = category;
 				for (Module module : Modules.get().getGroup(category)) {
-					boolean isVisible = !((IModule) module).isHidden();
-					if (isVisible) continue;
-					guiCategory.hasHidenModules = true;
-					if (categoryList.stream().noneMatch((a) -> a.category.name.equals(guiCategory.category.name))) {
-						categoryList.add(guiCategory);
+					if (module instanceof IModule) {
+						boolean isVisible = !((IModule) module).isHidden();
+						if (isVisible) continue;
+						guiCategory.hasHidenModules = true;
+						if (categoryList.stream().noneMatch((a) -> a.category.name.equals(guiCategory.category.name))) {
+							categoryList.add(guiCategory);
+						}
 					}
 					break;
 				}
@@ -82,16 +84,18 @@ public class HiddenModulesTab extends Tab {
 				WTable table = guiCategory.section.add(theme.table()).expandX().widget();
 
 				for (Module module : Modules.get().getGroup(guiCategory.category)) {
-					boolean isVisible = !((IModule) module).isHidden();
-					if (isVisible) continue;
+					if (module instanceof IModule) {
+						boolean isVisible = !((IModule) module).isHidden();
+						if (isVisible) continue;
 
-					WButton moduleButton = theme.button(module.title);
-					moduleButton.action = () -> {
-						((IModule) module).setHidden(false);
-						reload();
-					};
-					table.add(moduleButton).expandCellX().center().widget();
-					table.row();
+						WButton moduleButton = theme.button(module.title);
+						moduleButton.action = () -> {
+							((IModule) module).setHidden(false);
+							reload();
+						};
+						table.add(moduleButton).expandCellX().center().widget();
+						table.row();
+					}
 				}
 			}
 		}

@@ -47,7 +47,10 @@ public class MixinPlugin implements IMixinConfigPlugin {
 			throw new RuntimeException(LOGPREFIX + " " + mixinClassName + " is not in the mixin package");
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".meteorclient")) {
-            return isBaritonePresent && (mixinClassName.contains("FreecamMixin") || mixinClassName.contains("WaypointsModuleMixin"));
+			if (mixinClassName.contains("FreecamMixin") || mixinClassName.contains("WaypointsModuleMixin")) {
+				return isBaritonePresent;
+			}
+            return true;
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".journeymap")) {
 			return isBaritonePresent && isJourneyMapPresent;

@@ -78,10 +78,16 @@ public class MeteorPlusAddon extends MeteorAddon {
 				LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Xaero's World Map improvement");
 			}
 		}
+		else {
+			LOG.warn(LOGPREFIX + " [Xaero's World Map] not found, disabling Xaero's World Map improvement");
+		}
 		if (isJourneyMapPresent) {
 			if (!isBaritonePresent) {
 				LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Journey Map improvement");
 			}
+		}
+		else {
+			LOG.warn(LOGPREFIX + " [Journey Map] not found, disabling Journey Map improvement");
 		}
 		if (!isBaritonePresent) {
 			LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Freecam and Waypoints improvement");
