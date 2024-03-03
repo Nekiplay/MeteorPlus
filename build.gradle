@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'fabric-loom' version '0.12-SNAPSHOT'
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
@@ -36,17 +36,32 @@ repositories {
 	maven {
 		url = uri("https://maven.jackf.red/releases/")
 	}
+	maven {
+		name = "Meteor Dev Releases"
+		url = "https://maven.meteordev.org/releases"
+	}
+	maven {
+		name = "Meteor Dev Snapshots"
+		url = "https://maven.meteordev.org/snapshots"
+	}
+	maven {
+		name = 'babbaj-repo'
+		url = 'https://babbaj.github.io/maven/'
+	}
 }
 
 dependencies {
-    // Fabric
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	// Fabric
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // Meteor client
-	modImplementation files("libs\\baritone-unoptimized-fabric-1.10.1-11-g3ed49fd4.jar")
-    modImplementation files("libs\\meteor-client-0.5.6-2027.jar")
+	// Meteor
+	modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
+
+	// Baritone (https://github.com/MeteorDevelopment/baritone)
+	modImplementation "meteordevelopment:baritone:${project.baritone_version}-SNAPSHOT"
+	implementation "dev.babbaj:nether-pathfinder:${project.nether_pathfinder_version}"
 
 	// Journey Map
 	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true
@@ -71,11 +86,11 @@ loom {
 }
 
 processResources {
-    filesMatching("fabric.mod.json") {
-        expand "version": project.mod_version, "mc_version": project.minecraft_version, "gh_hash": (System.getenv("GITHUB_SHA") ?: "")
-    }
+	filesMatching("fabric.mod.json") {
+		expand "version": project.mod_version, "mc_version": project.minecraft_version, "gh_hash": (System.getenv("GITHUB_SHA") ?: "")
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding("UTF-8")
+	it.options.encoding("UTF-8")
 }
