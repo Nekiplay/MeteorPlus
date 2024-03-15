@@ -335,6 +335,10 @@ public class AutoCraftPlus extends Module {
 			if (item == Items.GUNPOWDER && gunpowderSlots > 0){
 				gunpowderSlots--;
 				clicksQueue.add(() -> {
+					var sh = (CraftingScreenHandlerAccessor)mc.player.currentScreenHandler;
+					if (sh.getInput().count(Items.GUNPOWDER) >= 3*64)
+						return false;
+
 					InvUtils.shiftClick().slot(finalI);
 					return true;
 				});
@@ -342,6 +346,10 @@ public class AutoCraftPlus extends Module {
 			else if (item == Items.PAPER && paperSlots > 0){
 				paperSlots--;
 				clicksQueue.add(() -> {
+					var sh = (CraftingScreenHandlerAccessor)mc.player.currentScreenHandler;
+					if (sh.getInput().count(Items.PAPER) >= 64)
+						return false;
+
 					InvUtils.shiftClick().slot(finalI);
 					return true;
 				});

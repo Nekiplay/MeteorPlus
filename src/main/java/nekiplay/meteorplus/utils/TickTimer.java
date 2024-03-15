@@ -2,7 +2,7 @@ package nekiplay.meteorplus.utils;
 
 import nekiplay.meteorplus.mixin.minecraft.ClientConnectionAccessor;
 
-import static baritone.api.utils.Helper.mc;
+import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class TickTimer {
 	private int ticksBegin = ticks();
