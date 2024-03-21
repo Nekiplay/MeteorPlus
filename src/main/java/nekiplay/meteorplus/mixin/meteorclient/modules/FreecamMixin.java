@@ -28,6 +28,8 @@ import org.spongepowered.asm.mixin.Unique;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static meteordevelopment.meteorclient.utils.misc.input.Input.isPressed;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 @Mixin(Freecam.class)
 public class FreecamMixin {
@@ -47,6 +49,7 @@ public class FreecamMixin {
 		.name("baritone-move-keybind")
 		.description("The bind for move.")
 		.visible(moveBaritoneControl::get)
+		.defaultValue(Keybind.fromKey(GLFW_MOUSE_BUTTON_LEFT))
 		.build()
 	);
 
@@ -70,6 +73,7 @@ public class FreecamMixin {
 		.name("baritone-stop-keybind")
 		.description("The bind for stop baritone actions.")
 		.visible(() -> blinkBaritoneControl.get() || moveBaritoneControl.get())
+		.defaultValue(Keybind.fromKey(GLFW_MOUSE_BUTTON_RIGHT))
 		.build()
 	);
 
