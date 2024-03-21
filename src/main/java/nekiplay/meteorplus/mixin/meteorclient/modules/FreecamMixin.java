@@ -2,15 +2,19 @@ package nekiplay.meteorplus.mixin.meteorclient.modules;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
+import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.KeybindSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.movement.Blink;
 import meteordevelopment.meteorclient.systems.modules.render.Freecam;
+import meteordevelopment.meteorclient.utils.misc.Keybind;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.utils.RaycastUtils;
 import net.minecraft.block.*;
@@ -23,6 +27,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
+import static meteordevelopment.meteorclient.utils.misc.input.Input.isPressed;
 
 @Mixin(Freecam.class)
 public class FreecamMixin {
@@ -31,16 +36,40 @@ public class FreecamMixin {
 	@Unique
 	private final SettingGroup freecamMeteorPlusSetting = freecam.settings.createGroup("Meteor Plus");
 	@Unique
-	private final Setting<Boolean> baritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
-		.name("baritone-control")
-		.description("Left mouse click to set the destination on the selected block. Right mouse click to cancel.")
+	private final Setting<Boolean> moveBaritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
+		.name("baritone-move-control")
+		.description("click bind to set the destination on the selected block. Right mouse click to cancel.")
 		.build()
 	);
+
+	@Unique
+	private final Setting<Keybind> baritoneMoveKey = freecamMeteorPlusSetting.add(new KeybindSetting.Builder()
+		.name("baritone-move-keybind")
+		.description("The bind for move.")
+		.visible(moveBaritoneControl::get)
+		.build()
+	);
+
 	@Unique
 	private final Setting<Boolean> blinkBaritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
-		.name("baritone-blink-control")
-		.description("Middle mouse click to move to point in Blink.")
-		.visible(baritoneControl::get)
+		.name("baritone-blink-move-control")
+		.description("Click bind to move to point in blink.")
+		.build()
+	);
+
+	@Unique
+	private final Setting<Keybind> baritoneMoveBlinkKey = freecamMeteorPlusSetting.add(new KeybindSetting.Builder()
+		.name("baritone-blink-move-keybind")
+		.description("The bind for move in blink.")
+		.visible(blinkBaritoneControl::get)
+		.build()
+	);
+
+	@Unique
+	private final Setting<Keybind> baritoneStopKey = freecamMeteorPlusSetting.add(new KeybindSetting.Builder()
+		.name("baritone-stop-keybind")
+		.description("The bind for stop baritone actions.")
+		.visible(() -> blinkBaritoneControl.get() || moveBaritoneControl.get())
 		.build()
 	);
 
@@ -141,10 +170,87 @@ public class FreecamMixin {
 			return pos.up();
 		}
 	}
+
+	@Unique
+	private BlockPos rayCastClicked() {
+		BlockPos blockPos = null;
+		Vec3d rotationVector = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
+		Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
+		HitResult result = RaycastUtils.raycast(pos, rotationVector, 64 * 4, mc.getTickDelta(), true);
+		if (result.getType() == HitResult.Type.BLOCK) {
+			BlockHitResult blockHitResult = (BlockHitResult) result;
+			blockPos = blockHitResult.getBlockPos();
+		}
+		return blockPos;
+	}
+
+	private void Work() {
+		if (baritoneMoveBlinkKey.get().isPressed()) {
+			BlockPos clicked = rayCastClicked();
+
+			if (blinkBaritoneControl.get()) {
+
+				if (clicked == null) return;
+
+				if (mc.world == null) return;
+
+				BlockState state = mc.world.getBlockState(clicked);
+
+				if (state.isAir()) return;
+				isBlinkMoving = true;
+				GoalBlock goal = new GoalBlock(tryGetValidPos(clicked));
+				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
+				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+			}
+		}
+		if (baritoneMoveKey.get().isPressed()) {
+			BlockPos clicked = rayCastClicked();
+			if (clicked == null) return;
+
+			if (mc.world == null) return;
+
+			BlockState state = mc.world.getBlockState(clicked);
+
+			if (state.isAir()) return;
+
+			if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing())
+				BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().forceCancel();
+
+
+			GoalBlock goal = new GoalBlock(tryGetValidPos(clicked));
+			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
+			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+		}
+
+		if (baritoneStopKey.get().isPressed()) {
+			BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().forceCancel();
+			if (blink.isActive()) {
+				blink.toggle();
+				isBlinkMoving = false;
+			}
+		}
+	}
+
+	@Unique
+	@EventHandler
+	private void onKeyEvent(KeyEvent event)
+	{
+		if (event.action == KeyAction.Press) {
+			Work();
+		}
+	}
+	@Unique
+	@EventHandler
+	private void onMouseButtonEvent(MouseButtonEvent event) {
+		if (event.action == KeyAction.Press) {
+			Work();
+		}
+	}
+
 	@Unique
 	@EventHandler
 	private void onTickEvent(TickEvent.Pre event) {
-		if (baritoneControl.get() && blinkBaritoneControl.get()) {
+		if (blinkBaritoneControl.get()) {
 			if (isBlinkMoving && (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() ) ) {
 				if (!blink.isActive()) {
 					blink.toggle();
@@ -156,81 +262,6 @@ public class FreecamMixin {
 					isBlinkMoving = false;
 				}
 			}
-		}
-	}
-
-	@Unique
-	@EventHandler
-	private void onMouseButtonEvent(MouseButtonEvent event) {
-		if (!baritoneControl.get()) return;
-		if (event.action != KeyAction.Press) return;
-		if (mc.currentScreen != null) return;
-		if (mc.player == null) return;
-
-		float pitch = (float) freecam.getPitch(mc.getTickDelta());
-		float yaw = (float) freecam.getYaw(mc.getTickDelta());
-
-		if (event.button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
-			if (blinkBaritoneControl.get()) {
-				BlockPos blockPos = null;
-				Vec3d rotationVector = RaycastUtils.getRotationVector(pitch, yaw);
-				Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
-				HitResult result = RaycastUtils.raycast(pos, rotationVector, 64 * 4, mc.getTickDelta(), true);
-				if (result.getType() == HitResult.Type.BLOCK) {
-					BlockHitResult blockHitResult = (BlockHitResult) result;
-					blockPos = blockHitResult.getBlockPos();
-				}
-
-				if (blockPos == null) return;
-
-				if (mc.world == null) return;
-
-				BlockState state = mc.world.getBlockState(blockPos);
-
-				if (state.isAir()) return;
-				isBlinkMoving = true;
-				GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-			}
-		}
-
-		if (event.button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-			BlockPos blockPos = null;
-			Vec3d rotationVector = RaycastUtils.getRotationVector((float) freecam.getPitch(mc.getTickDelta()), (float) freecam.getYaw(mc.getTickDelta()));
-			Vec3d pos = new Vec3d(freecam.pos.x, freecam.pos.y, freecam.pos.z);
-			HitResult result = RaycastUtils.raycast(pos, rotationVector, 64 * 4, mc.getTickDelta(), true);
-			if (result.getType() == HitResult.Type.BLOCK) {
-				BlockHitResult blockHitResult = (BlockHitResult) result;
-				blockPos = blockHitResult.getBlockPos();
-			}
-
-			if (blockPos == null) return;
-
-			if (mc.world == null) return;
-
-			BlockState state = mc.world.getBlockState(blockPos);
-
-			if (state.isAir()) return;
-
-			if (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing())
-				BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().forceCancel();
-
-
-			GoalBlock goal = new GoalBlock(tryGetValidPos(blockPos));
-			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
-			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
-
-			event.cancel();
-		}
-
-		if (event.button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-			BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().forceCancel();
-			if (blink.isActive()) {
-				blink.toggle();
-				isBlinkMoving = false;
-			}
-			event.cancel();
 		}
 	}
 }

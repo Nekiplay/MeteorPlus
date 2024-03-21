@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
+import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.render.blockesp.ESPBlock;
 import meteordevelopment.meteorclient.systems.modules.render.blockesp.ESPBlockData;
@@ -58,7 +59,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
 
 public class XrayBruteforce extends Module {
     public XrayBruteforce() {
-        super(Categories.Render, "xray-bruteForce", "Bypasses anti-xray.");
+        super(Categories.World, "xray-bruteForce", "Bypasses anti-xray.");
 		RainbowColors.register(this::onTickRainbow);
     }
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -472,6 +473,20 @@ public class XrayBruteforce extends Module {
 	@EventHandler
 	private void onKeyEvent(KeyEvent event)
 	{
+		if (event.action == KeyAction.Press && isPressed()) {
+			pause_toggle = !pause_toggle;
+			if (pause_toggle) {
+				currentScanBlock = null;
+				info("§c" + "Paused");
+			}
+			else {
+				info("§a" + "Un paused");
+			}
+		}
+	}
+
+	@EventHandler
+	private void onMouseButtonEvent(MouseButtonEvent event) {
 		if (event.action == KeyAction.Press && isPressed()) {
 			pause_toggle = !pause_toggle;
 			if (pause_toggle) {

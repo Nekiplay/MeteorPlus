@@ -1,33 +1,34 @@
 {
-	"required": true,
-	"package": "nekiplay.meteorplus.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"plugin": "nekiplay.meteorplus.MixinPlugin",
-	"client": [
-		"meteorclient.LeftRightSettingsScreenMixin",
-		"meteorclient.ModuleMixin",
-		"meteorclient.ModulesScreenMixin",
-		"meteorclient.WMeteorModuleMixin",
-		"meteorclient.WPressableMixin",
-		"meteorclient.modules.AutoToolMixin",
-		"meteorclient.modules.ESPMixin",
-		"meteorclient.modules.ItemHighlightMixin",
-		"meteorclient.modules.KillAuraMixin",
-		"meteorclient.modules.TracersMixin",
-		"meteorclient.modules.FreecamMixin",
-		"meteorclient.modules.WaypointsModuleMixin",
-		"minecraft.ClientPlayerInteractionManagerMixin",
-		"minecraft.MinecraftClientMixin",
-		"minecraft.ShapelessRecipeAccessor",
-		"minecraft.ClientConnectionAccessor",
-		"minecraft.CraftingScreenHandlerAccessor"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"mixins": [
-		"meteorclient.DefaultSettingsWidgetFactoryMixin",
-		"minecraft.ClientPlayerEntityMixin",
-		"minecraft.LivingEntityMixin"
-	]
+  "required": true,
+  "package": "nekiplay.meteorplus.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "nekiplay.meteorplus.MixinPlugin",
+  "client": [
+    "meteorclient.LeftRightSettingsScreenMixin",
+    "meteorclient.ModuleMixin",
+    "meteorclient.ModulesScreenMixin",
+    "meteorclient.WMeteorModuleMixin",
+    "meteorclient.WPressableMixin",
+    "meteorclient.modules.AutoToolMixin",
+    "meteorclient.modules.ESPMixin",
+    "meteorclient.modules.FreecamMixin",
+    "meteorclient.modules.ItemHighlightMixin",
+    "meteorclient.modules.KillAuraMixin",
+    "meteorclient.modules.TracersMixin",
+    "meteorclient.modules.WaypointsModuleMixin",
+    "minecraft.ClientConnectionAccessor",
+    "minecraft.ClientPlayerInteractionManagerMixin",
+    "minecraft.CraftingScreenHandlerAccessor",
+    "minecraft.MinecraftClientMixin",
+    "minecraft.ShapelessRecipeAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "meteorclient.DefaultSettingsWidgetFactoryMixin",
+    "meteorclient.KeybindMixin",
+    "minecraft.ClientPlayerEntityMixin",
+    "minecraft.LivingEntityMixin"
+  ]
 }
