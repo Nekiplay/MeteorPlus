@@ -19,6 +19,7 @@ import nekiplay.meteorplus.features.modules.player.AutoCraftPlus;
 import nekiplay.meteorplus.features.modules.player.AutoDropPlus;
 import nekiplay.meteorplus.features.modules.player.MiddleClickExtraPlus;
 import nekiplay.meteorplus.features.modules.render.*;
+import nekiplay.meteorplus.features.modules.render.XrayBruteforce;
 import nekiplay.meteorplus.features.modules.render.holograms.HologramModule;
 import nekiplay.meteorplus.features.modules.world.BedrockStorageBruteforce;
 import nekiplay.meteorplus.features.modules.world.GhostBlockFixer;
@@ -160,15 +161,17 @@ public class MeteorPlusAddon extends MeteorAddon {
 		}
 		modules.add(new NoSlowPlus());
 		//modules.add(new VelocityPlus());
-		if (isXaeroWorldMapresent || isJourneyMapPresent) {
-			modules.add(new MapIntegration());
-			LOG.info(LOGPREFIX + " Loaded mini-map integration");
+		if (isBaritonePresent) {
+			if (isXaeroWorldMapresent || isJourneyMapPresent) {
+				modules.add(new MapIntegration());
+				LOG.info(LOGPREFIX + " Loaded mini-map integration");
+			}
 		}
-		if (MixinPlugin.isLitematicaMapresent) {
+		if (isLitematicaMapresent) {
 			modules.add(new LitematicaPrinter());
 			LOG.info(LOGPREFIX + " Loaded litematica integration");
 		}
-		if (MixinPlugin.isWhereIsIt) {
+		if (isWhereIsIt) {
 			modules.add(new WhereIsIt());
 			LOG.info(LOGPREFIX + " Loaded where is it integration");
 		}
