@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.features.modules.render;
+package nekiplay.meteorplus.features.modules.world;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
