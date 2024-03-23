@@ -3,7 +3,7 @@ package nekiplay.meteorplus.utils.xraybruteforce;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
-import nekiplay.meteorplus.features.modules.render.XrayBruteforce;
+import nekiplay.meteorplus.features.modules.world.XrayBruteforce;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;

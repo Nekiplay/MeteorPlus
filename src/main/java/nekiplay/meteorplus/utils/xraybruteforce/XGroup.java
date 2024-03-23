@@ -6,7 +6,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.render.blockesp.ESPBlockData;
 import meteordevelopment.meteorclient.utils.misc.UnorderedArrayList;
 import meteordevelopment.meteorclient.utils.render.RenderUtils;
-import nekiplay.meteorplus.features.modules.render.XrayBruteforce;
+import nekiplay.meteorplus.features.modules.world.XrayBruteforce;
 import net.minecraft.block.Block;
 
 import java.util.ArrayDeque;
