@@ -38,11 +38,7 @@ public class Grim extends VelocityMode {
 		if ((packet instanceof EntityVelocityUpdateS2CPacket && ((EntityVelocityUpdateS2CPacket) packet).getId() == mc.player.getId() || packet instanceof ExplosionS2CPacket) && canCancel) {
 			event.cancel();
 			MeteorExecutor.execute(() -> {
-                try {
-                    MeteorExecutor.executor.wait(20);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+               try { Thread.sleep(20); } catch (Exception ignore) { }
 
 				mc.getNetworkHandler().sendPacket(new PlayerMoveC2SPacket.Full(mc.player.getX(), mc.player.getY(), mc.player.getZ(), mc.player.getYaw(), mc.player.getPitch(), mc.player.isOnGround()));
 				mc.getNetworkHandler().sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, mc.player.getBlockPos(), mc.player.getHorizontalFacing().getOpposite()));
