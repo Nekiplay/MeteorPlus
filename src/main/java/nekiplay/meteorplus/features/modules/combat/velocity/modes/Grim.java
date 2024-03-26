@@ -28,6 +28,11 @@ public class Grim extends VelocityMode {
 	}
 
 	@Override
+	public void onDeactivate() {
+		canCancel = false;
+	}
+
+	@Override
 	public void onReceivePacket(PacketEvent.Receive event) {
 		Packet packet = event.packet;
 
