@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.features.modules.velocity;
+package nekiplay.meteorplus.features.modules.combat.velocity;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;

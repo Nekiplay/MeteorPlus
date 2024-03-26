@@ -7,6 +7,7 @@ import meteordevelopment.meteorclient.systems.modules.misc.BetterChat;
 import nekiplay.meteorplus.features.commands.*;
 import nekiplay.meteorplus.features.modules.combat.*;
 import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlus;
+import nekiplay.meteorplus.features.modules.combat.velocity.VelocityPlus;
 import nekiplay.meteorplus.features.modules.misc.*;
 import nekiplay.meteorplus.features.modules.movement.*;
 import nekiplay.meteorplus.features.modules.movement.elytrafly.ElytraFlyPlus;
@@ -141,6 +142,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 		modules.add(new ItemFrameEsp());
 		modules.add(new KillAuraPlus());
 		modules.add(new ElytraFlyPlus());
+		modules.add(new VelocityPlus());
 		if (!MixinPlugin.isMeteorRejects) {
 			modules.add(new NoJumpDelay());
 		}

@@ -11,13 +11,13 @@ public class Vanila extends NoSlowMode {
 
 	@Override
 	public void onUse(PlayerUseMultiplierEvent event) {
-		if (mc.player.isUsingItem()) {
-			event.setForward(settings.usingForward.get().floatValue());
-			event.setSideways(settings.usingSideways.get().floatValue());
-		}
 		if (mc.player.isSneaking()) {
 			event.setForward(settings.sneakForward.get().floatValue());
 			event.setSideways(settings.sneakSideways.get().floatValue());
+		}
+		else if (mc.player.isUsingItem()) {
+			event.setForward(settings.usingForward.get().floatValue());
+			event.setSideways(settings.usingSideways.get().floatValue());
 		}
 		else {
 			event.setForward(settings.otherForward.get().floatValue());

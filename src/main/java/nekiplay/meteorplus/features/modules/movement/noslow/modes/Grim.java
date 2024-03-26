@@ -3,7 +3,7 @@ package nekiplay.meteorplus.features.modules.movement.noslow.modes;
 import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
 import nekiplay.meteorplus.features.modules.movement.noslow.NoSlowMode;
 import nekiplay.meteorplus.features.modules.movement.noslow.NoSlowModes;
-import net.minecraft.network.packet.c2s.play.SlotChangedStateC2SPacket;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 
 public class Grim extends NoSlowMode {
@@ -12,13 +12,13 @@ public class Grim extends NoSlowMode {
 	}
 	@Override
 	public void onUse(PlayerUseMultiplierEvent event) {
-		if (mc.player.isUsingItem()) {
-			event.setForward(settings.usingForward.get().floatValue());
-			event.setSideways(settings.usingSideways.get().floatValue());
-		}
 		if (mc.player.isSneaking()) {
 			event.setForward(settings.sneakForward.get().floatValue());
 			event.setSideways(settings.sneakSideways.get().floatValue());
+		}
+		else if (mc.player.isUsingItem()) {
+			event.setForward(settings.usingForward.get().floatValue());
+			event.setSideways(settings.usingSideways.get().floatValue());
 		}
 		else {
 			event.setForward(settings.otherForward.get().floatValue());
@@ -26,8 +26,9 @@ public class Grim extends NoSlowMode {
 		}
 
 		if (mc.player.isUsingItem()) {
-			mc.getNetworkHandler().sendPacket(new UpdateSelectedSlotC2SPacket(mc.player.getInventory().selectedSlot % 8 + 1));
-			mc.getNetworkHandler().sendPacket(new UpdateSelectedSlotC2SPacket(mc.player.getInventory().selectedSlot));
+			ClientPlayNetworkHandler network = mc.getNetworkHandler();
+			network.sendPacket(new UpdateSelectedSlotC2SPacket(mc.player.getInventory().selectedSlot % 8 + 1));
+			network.sendPacket(new UpdateSelectedSlotC2SPacket(mc.player.getInventory().selectedSlot));
 		}
 	}
 }
