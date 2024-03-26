@@ -16,6 +16,7 @@
     "meteorclient.modules.KillAuraMixin",
     "meteorclient.modules.TracersMixin",
     "meteorclient.modules.WaypointsModuleMixin",
+		"meteorclient.modules.BlockESPMixin",
     "minecraft.ClientConnectionAccessor",
     "minecraft.ClientPlayerInteractionManagerMixin",
     "minecraft.CraftingScreenHandlerAccessor",

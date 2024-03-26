@@ -2,6 +2,7 @@ package nekiplay.meteorplus.mixin.meteorclient.modules;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
+import meteordevelopment.meteorclient.events.Cancellable;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -188,7 +189,7 @@ public class FreecamMixin {
 		return blockPos;
 	}
 
-	private void Work() {
+	private void Work(Cancellable event) {
 		if (baritoneMoveBlinkKey.get().isPressed()) {
 			BlockPos clicked = rayCastClicked();
 
@@ -205,6 +206,8 @@ public class FreecamMixin {
 				GoalBlock goal = new GoalBlock(tryGetValidPos(clicked));
 				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
 				BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+
+				event.cancel();
 			}
 		}
 		if (baritoneMoveKey.get().isPressed()) {
@@ -224,6 +227,8 @@ public class FreecamMixin {
 			GoalBlock goal = new GoalBlock(tryGetValidPos(clicked));
 			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(null);
 			BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(goal);
+
+			event.cancel();
 		}
 
 		if (baritoneStopKey.get().isPressed()) {
@@ -232,6 +237,7 @@ public class FreecamMixin {
 				blink.toggle();
 				isBlinkMoving = false;
 			}
+			event.cancel();
 		}
 	}
 
@@ -240,14 +246,14 @@ public class FreecamMixin {
 	private void onKeyEvent(KeyEvent event)
 	{
 		if (event.action == KeyAction.Press) {
-			Work();
+			Work(event);
 		}
 	}
 	@Unique
 	@EventHandler
 	private void onMouseButtonEvent(MouseButtonEvent event) {
 		if (event.action == KeyAction.Press) {
-			Work();
+			Work(event);
 		}
 	}
 
