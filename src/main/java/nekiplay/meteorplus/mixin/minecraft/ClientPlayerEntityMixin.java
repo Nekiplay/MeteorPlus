@@ -3,7 +3,7 @@ package nekiplay.meteorplus.mixin.minecraft;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
-import nekiplay.meteorplus.features.modules.movement.NoSlowPlus;
+import nekiplay.meteorplus.features.modules.movement.noslow.NoSlowPlus;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
