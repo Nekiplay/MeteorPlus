@@ -30,7 +30,8 @@
 | **Speed+**       	   | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP** |
 | **Spider+**      	   | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**           |
 | **Jesus+**       	   | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**           |
-| **Fast Ladder+** 	   | **Fast Ladder for Anti-Cheats**               | **Spartan**                  |
+| **No Slow+**         | **No Slow for Anti-Cheats**                   | **Matrix, Vulcan, Grim**     |
+| **Fast Ladder** 	   | **Fast Ladder for Anti-Cheats**               | **Spartan**                  |
 | **Timer+**       	   | **Timer for Anti-Cheats**                     | **NCP, Intave, Vulcan**      |
 | **Safe mine**        | **Prevents player from lava**                 | **Matrix**                   |
 | **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator**           |
@@ -60,7 +61,8 @@
 | Mod             		| Integrated                                              |
 |-----------------------|---------------------------------------------------------|
 | **Journey Map** 		| **Goto from Baritone for map context menu**             |
-| **Xaero's World Map** | **Goto, Elytra fly from Baritone for map context menu** |     
+| **Xaero's World Map** | **Goto, Elytra fly from Baritone for map context menu** |
+| **Chest Tracker** 	| **Color support** 									  |         
 
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net)

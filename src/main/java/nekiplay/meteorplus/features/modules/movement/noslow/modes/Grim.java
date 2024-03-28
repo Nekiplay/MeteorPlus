@@ -8,7 +8,7 @@ import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 
 public class Grim extends NoSlowMode {
 	public Grim() {
-		super(NoSlowModes.Grim);
+		super(NoSlowModes.Grim_1dot8);
 	}
 	@Override
 	public void onUse(PlayerUseMultiplierEvent event) {
