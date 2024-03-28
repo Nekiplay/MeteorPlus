@@ -113,6 +113,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 		Modules modules = Modules.get();
 
 		modules.add(new HologramModule());
+		modules.add(new SprintPlus());
 		modules.add(new ChatPrefix());
 		modules.add(new ChatGPT());
 		modules.add(new ItemHighlightPlus());
