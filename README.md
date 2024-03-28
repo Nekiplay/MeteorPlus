@@ -62,7 +62,8 @@
 |-----------------------|---------------------------------------------------------|
 | **Journey Map** 		| **Goto from Baritone for map context menu**             |
 | **Xaero's World Map** | **Goto, Elytra fly from Baritone for map context menu** |
-| **Chest Tracker** 	| **Color support** 									  |         
+| **Chest Tracker** 	| **Color support** 									  |
+| **Litematica** 		| **Printer (Auto block placer)** 						  |
 
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net)
