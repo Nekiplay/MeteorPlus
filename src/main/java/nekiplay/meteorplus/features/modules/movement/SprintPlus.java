@@ -23,16 +23,9 @@ public class SprintPlus extends Module {
 		.build()
 	);
 
-	private final Setting<Boolean> ignoreHunger = sgGeneral.add(new BoolSetting.Builder()
-		.name("Ignore-hunger")
-		.defaultValue(false)
-		.build()
-	);
-
 	public boolean shouldSprintOmnidirectionally() { return isActive() && allDirections.get(); }
 
 	public boolean shouldIgnoreBlindness() { return isActive() && ignoreBlindness.get(); }
 
-	public boolean shouldIgnoreHunger() { return isActive() && ignoreHunger.get(); }
 
 }
