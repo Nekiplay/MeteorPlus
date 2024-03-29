@@ -23,47 +23,55 @@
 
   ![Alt](https://repobeats.axiom.co/api/embed/869469d8757653eb3fc621df1708036d196fc1db.svg "Repobeats analytics image")
 
-## Modules
-| Module               | Description                                   | Bypasses                     |
-|----------------------|-----------------------------------------------|------------------------------|
-| **Fly+**         	   | **Flight for Anti-Cheats**                    | **Matrix, Spartan, Vulcan**  |
-| **Speed+**       	   | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP** |
-| **Spider+**      	   | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**           |
-| **Jesus+**       	   | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**           |
-| **No Slow+**         | **No Slow for Anti-Cheats**                   | **Matrix, Vulcan, Grim**     |
-| **Fast Ladder** 	   | **Fast Ladder for Anti-Cheats**               | **Spartan**                  |
-| **Timer+**       	   | **Timer for Anti-Cheats**                     | **NCP, Intave, Vulcan**      |
-| **Safe mine**        | **Prevents player from lava**                 | **Matrix**                   |
-| **X-Ray bruteforce** | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator**           |
-| **Anti Bot**         | **Ignores bots for KillAura, ESP, Tracers**   |                              |
-| **Trigger Bot**      | **AutoAttack on look at entity**              |                              |
+## PvE Modules
+| Module                 | Description                                   | Bypasses                      |
+|------------------------|-----------------------------------------------|-------------------------------|
+| **Fly+**               | **Flight for Anti-Cheats**                    | **Matrix, Spartan, Vulcan**   |
+| **Speed+**             | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP**  |
+| **Spider+**            | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**            |
+| **Jesus+**             | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**            |
+| **No Slow+**           | **No Slow for Anti-Cheats**                   | **Matrix, Vulcan, Grim, NCP** |
+| **Fast Ladder** 	      | **Fast Ladder for Anti-Cheats**               | **Spartan**                   |
+| **Gui Move Plus**      | **Gui Move for Anti-Cheats**                  | **Matrix, NCP**               |
+| **Timer+**             | **Timer for Anti-Cheats**                     | **NCP, Intave, Vulcan**       |
+| **Safe mine**          | **Prevents player from lava**                 | **Matrix**                    |
+| **X-Ray bruteforce**   | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator**            |
+| **Anti Bot**           | **Ignores bots for KillAura, ESP, Tracers**   |                               |
+| **Trigger Bot**        | **AutoAttack on look at entity**              |                               |
+| **Auto Obsidian Farm** | **Automatically farm obsidian in AFK**        |                               |
+
+## PvP Modules
+| Module        | Description                  | Bypasses |
+|---------------|------------------------------|----------|
+| **Velocity+** | **Velocity for Anti-Cheats** | **Grim** |
 
 ## Commands
-| Module    | Description       | Bypasses                    |
-|-----------|-------------------|-----------------------------|
+| Command   | Description       | Bypasses                                |
+|-----------|-------------------|-----------------------------------------|
 | **eclip** | **Vertical clip** | **Matrix, Wraith, Spartan, Negativity** |
 
 
 ## Meteor Client improvements
-| Module            	 | Enhancements                                                        |
-|------------------------|---------------------------------------------------------------------|
-| **Freecam**       	 | **Added good baritone control via Freecam**                         |       
-| **Waypoints**     	 | **Added display of distances in label names, sorting, name search** |
-| **Hidden module** 	 | **Hiding original modules and third-party modules from the GUI**    |
+| Module                    | Enhancements                                                        |
+|---------------------------|---------------------------------------------------------------------|
+| **Freecam**               | **Added good baritone control via Freecam**                         |       
+| **Waypoints**             | **Added display of distances in label names, sorting, name search** |
+| **Hidden module**         | **Hiding original modules and third-party modules from the GUI**    |
 
 ## Meteor Client fixes
-| Module            | Fix                                                        		  |
-|-------------------|---------------------------------------------------------------------|
-| **Auto Tool**     | **No work in creative mode**                         				  |
+| Module        | Fix                                         |
+|---------------|---------------------------------------------|
+| **Auto Tool** | **No work in creative mode**                |
+| **KeyBinds**  | **Allow binding function to LMB, RMB, ESC** |
 
 
 ## Integrations with mods
-| Mod             		| Integrated                                              |
-|-----------------------|---------------------------------------------------------|
-| **Journey Map** 		| **Goto from Baritone for map context menu**             |
-| **Xaero's World Map** | **Goto, Elytra fly from Baritone for map context menu** |
-| **Chest Tracker** 	| **Color support** 									  |
-| **Litematica** 		| **Printer (Auto block placer)** 						  |
+| Mod                                                                       | Integrated                                              |
+|---------------------------------------------------------------------------|---------------------------------------------------------|
+| **[Journey Map](https://modrinth.com/mod/journeymap)**                    | **Goto from Baritone for map context menu**             |
+| **[Xaero's World Map](https://modrinth.com/mod/xaeros-world-map)**        | **Goto, Elytra fly from Baritone for map context menu** |
+| **[Chest Tracker](https://modrinth.com/mod/chest-tracker)**               | **Color support**                                       |
+| **[Litematica](https://www.curseforge.com/minecraft/mc-mods/litematica)** | **Printer (Auto block placer)**                         |
 
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net)
