@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
+import nekiplay.meteorplus.features.modules.movement.noslow.modes.NCPStrict;
 import nekiplay.meteorplus.features.modules.movement.noslow.modes.Vanila;
 import nekiplay.meteorplus.features.modules.movement.noslow.modes.Grim;
 import nekiplay.meteorplus.features.modules.movement.noslow.modes.GrimNew;
@@ -85,6 +86,7 @@ public class NoSlowPlus extends Module {
 	private void onModeChanged(NoSlowModes mode) {
 		switch (mode) {
 			case Vanila -> currentMode = new Vanila();
+			case NCP_Strict -> currentMode = new NCPStrict();
 			case Grim_1dot8 -> currentMode = new Grim();
 			case Grim_New -> currentMode = new GrimNew();
 		}

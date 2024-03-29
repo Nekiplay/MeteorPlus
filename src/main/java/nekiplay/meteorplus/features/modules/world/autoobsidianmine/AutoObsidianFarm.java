@@ -83,7 +83,7 @@ public class AutoObsidianFarm extends Module {
 	public final Setting<Integer> lavaPlaceDelay = sgGeneral.add(new IntSetting.Builder()
 		.name("lava-place-delay")
 		.description("Delay for placing lava.")
-			.defaultValue(8)
+		.defaultValue(8)
 		.build()
 	);
 

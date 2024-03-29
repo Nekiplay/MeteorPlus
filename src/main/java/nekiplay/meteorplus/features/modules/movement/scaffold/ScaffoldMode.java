@@ -1,16 +1,16 @@
-package nekiplay.meteorplus.features.modules.movement.noslow;
+package nekiplay.meteorplus.features.modules.movement.scaffold;
 
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
 import net.minecraft.client.MinecraftClient;
 
-public class NoSlowMode {
+public class ScaffoldMode {
 	protected final MinecraftClient mc;
-	protected final NoSlowPlus settings;
-	private final NoSlowModes type;
+	protected final ScaffoldPlus settings;
+	private final ScaffoldModes type;
 
-	public NoSlowMode(NoSlowModes type) {
-		this.settings = Modules.get().get(NoSlowPlus.class);
+	public ScaffoldMode(ScaffoldModes type) {
+		this.settings = Modules.get().get(ScaffoldPlus.class);
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}
