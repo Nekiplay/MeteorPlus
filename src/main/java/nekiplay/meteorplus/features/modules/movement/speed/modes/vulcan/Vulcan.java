@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.features.modules.movement.speed.modes;
+package nekiplay.meteorplus.features.modules.movement.speed.modes.vulcan;
 
 import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;

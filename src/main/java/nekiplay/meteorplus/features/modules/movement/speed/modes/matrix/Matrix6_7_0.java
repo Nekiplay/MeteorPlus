@@ -11,7 +11,7 @@ import nekiplay.meteorplus.utils.MovementUtils;
 
 public class Matrix6_7_0 extends SpeedMode {
 	public Matrix6_7_0() {
-		super(SpeedModes.Matrix_6_7_0);
+		super(SpeedModes.Matrix_6dot7dot0);
 	}
 
 	private int noVelocityY = 0;

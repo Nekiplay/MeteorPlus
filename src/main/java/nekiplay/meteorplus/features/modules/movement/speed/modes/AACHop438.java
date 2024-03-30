@@ -9,7 +9,7 @@ import nekiplay.meteorplus.features.modules.movement.speed.SpeedModes;
 
 public class AACHop438 extends SpeedMode {
 	public AACHop438() {
-		super(SpeedModes.AAC_Hop_4_3_8);
+		super(SpeedModes.AAC_Hop_4dot3dot8);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package nekiplay.meteorplus.features.modules.movement.speed;
 
+import meteordevelopment.meteorclient.events.entity.player.JumpVelocityMultiplierEvent;
 import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -25,6 +26,8 @@ public class SpeedMode {
 
 	public void onTickEventPre(TickEvent.Pre event) {}
 	public void onTickEventPost(TickEvent.Post event) {}
+
+	public void onJump(JumpVelocityMultiplierEvent event) {}
 
 	public void onActivate() {}
 	public void onDeactivate() {}

@@ -1,5 +1,6 @@
 package nekiplay.meteorplus.features.modules.movement.speed;
 
+import meteordevelopment.meteorclient.events.entity.player.JumpVelocityMultiplierEvent;
 import meteordevelopment.meteorclient.events.entity.player.PlayerMoveEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -12,6 +13,8 @@ import nekiplay.meteorplus.features.modules.movement.speed.modes.matrix.Matrix;
 import nekiplay.meteorplus.features.modules.movement.speed.modes.matrix.Matrix6_7_0;
 import nekiplay.meteorplus.features.modules.movement.speed.modes.matrix.MatrixExploit;
 import nekiplay.meteorplus.features.modules.movement.speed.modes.matrix.MatrixExploit2;
+import nekiplay.meteorplus.features.modules.movement.speed.modes.vulcan.Vulcan;
+import nekiplay.meteorplus.features.modules.movement.speed.modes.vulcan.Vulcan_2_8_6;
 
 public class SpeedPlus extends Module {
 	public SpeedPlus() {
@@ -112,15 +115,19 @@ public class SpeedPlus extends Module {
 		currentMode.onPlayerMoveEvent(event);
 	}
 
+	@EventHandler
+	public void onJump(JumpVelocityMultiplierEvent event) { currentMode.onJump(event); }
+
 
 	private void onSpeedModeChanged(SpeedModes mode) {
 		switch (mode) {
 			case Matrix_Exploit_2 -> currentMode = new MatrixExploit2();
 			case Matrix_Exploit -> currentMode = new MatrixExploit();
-			case Matrix_6_7_0 -> currentMode = new Matrix6_7_0();
+			case Matrix_6dot7dot0 -> currentMode = new Matrix6_7_0();
 			case Matrix -> currentMode = new Matrix();
-			case AAC_Hop_4_3_8 -> currentMode = new AACHop438();
+			case AAC_Hop_4dot3dot8 -> currentMode = new AACHop438();
 			case Vulcan -> currentMode = new Vulcan();
+			case Vulcan_2dot8dot6 -> currentMode = new Vulcan_2_8_6();
 			case NCP_Hop -> currentMode = new NCPHop();
 		}
 	}

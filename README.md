@@ -32,7 +32,7 @@
 | **Jesus+**             | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**            |
 | **No Slow+**           | **No Slow for Anti-Cheats**                   | **Matrix, Vulcan, Grim, NCP** |
 | **Fast Ladder** 	      | **Fast Ladder for Anti-Cheats**               | **Spartan**                   |
-| **Gui Move Plus**      | **Gui Move for Anti-Cheats**                  | **Matrix, NCP**               |
+| **Gui Move+**          | **Gui Move for Anti-Cheats**                  | **Matrix, NCP**               |
 | **Timer+**             | **Timer for Anti-Cheats**                     | **NCP, Intave, Vulcan**       |
 | **Safe mine**          | **Prevents player from lava**                 | **Matrix**                    |
 | **X-Ray bruteforce**   | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator**            |
@@ -76,10 +76,9 @@
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net)
 2. Install [fabric](https://fabricmc.net) and [fabric api](https://www.curseforge.com/minecraft/mc-mods/fabric-api) for your version of minecraft
-3. For 1.20.4 Download [baritone api fabric](https://github.com/cabaletta/baritone/actions/workflows/gradle_build.yml?query=branch%3A1.20.4)
-4. Download [meteor client](https://meteorclient.com) for your version of minecraft
-5. Download [meteor plus](https://github.com/Nekiplay/MeteorPlus/releases) for your version of minecraft
-6. Place the meteor client and meteor plus and baritone in your mods folder
+3. Download [meteor client](https://meteorclient.com) for your version of minecraft
+4. Download [meteor plus](https://github.com/Nekiplay/MeteorPlus/releases) for your version of minecraft
+5. Place the meteor client and meteor plus and baritone in your mods folder
 
     A: Make Commit we welcome anyone who makes a useful contribution to our free open source product
 
