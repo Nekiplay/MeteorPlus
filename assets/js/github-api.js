@@ -35,7 +35,7 @@ window.onload = function(e){
     } 
 }
 
-document.getElementById("clickMe").onclick = function () {
+document.getElementById("clickMe").onclick = function() {
 	
 	let headers = new Headers();
 	
