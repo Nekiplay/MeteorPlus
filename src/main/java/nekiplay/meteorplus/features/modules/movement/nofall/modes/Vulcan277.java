@@ -3,10 +3,10 @@ package nekiplay.meteorplus.features.modules.movement.nofall.modes;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.mixin.PlayerMoveC2SPacketAccessor;
 import nekiplay.meteorplus.features.modules.movement.nofall.NoFallModes;
-import nekiplay.meteorplus.features.modules.movement.nofall.NofallMode;
+import nekiplay.meteorplus.features.modules.movement.nofall.NoFallMode;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
-public class Vulcan277 extends NofallMode  {
+public class Vulcan277 extends NoFallMode {
 
 	public Vulcan277() {
 		super(NoFallModes.Vulcan_2dot7dot7);

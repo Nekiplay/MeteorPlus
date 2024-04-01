@@ -8,10 +8,7 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.features.modules.movement.nofall.modes.Eclip;
-import nekiplay.meteorplus.features.modules.movement.nofall.modes.MatrixNew;
-import nekiplay.meteorplus.features.modules.movement.nofall.modes.Vulcan;
-import nekiplay.meteorplus.features.modules.movement.nofall.modes.Vulcan277;
+import nekiplay.meteorplus.features.modules.movement.nofall.modes.*;
 
 public class NoFallPlus extends Module {
 	public NoFallPlus() {
@@ -20,7 +17,7 @@ public class NoFallPlus extends Module {
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
-	private NofallMode currentMode;
+	private NoFallMode currentMode;
 
 	public final Setting<NoFallModes> mode = sgGeneral.add(new EnumSetting.Builder<NoFallModes>()
 		.name("mode")
@@ -62,6 +59,7 @@ public class NoFallPlus extends Module {
 
 	private void onModeChanged(NoFallModes mode) {
 		switch (mode) {
+			case Elytra_Fly -> currentMode = new ElytraFly();
 			case Elytra_Clip -> currentMode = new Eclip();
 			case Matrix_New -> currentMode = new MatrixNew();
 			case Vulcan -> currentMode = new Vulcan();

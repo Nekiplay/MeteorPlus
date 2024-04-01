@@ -5,12 +5,12 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.MinecraftClient;
 
-public class NofallMode {
+public class NoFallMode {
 	protected final MinecraftClient mc;
 	protected final NoFallPlus settings;
 	private final NoFallModes type;
 
-	public NofallMode(NoFallModes type) {
+	public NoFallMode(NoFallModes type) {
 		this.settings = Modules.get().get(NoFallPlus.class);
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;

@@ -4,7 +4,8 @@ public enum NoFallModes {
 	Matrix_New,
 	Vulcan,
 	Vulcan_2dot7dot7,
-	Elytra_Clip;
+	Elytra_Clip,
+	Elytra_Fly;
 	@Override
 	public String toString() {
 		return super.toString().replace('_', ' ').replaceAll("dot", ".");

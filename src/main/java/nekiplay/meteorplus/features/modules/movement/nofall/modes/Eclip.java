@@ -7,7 +7,7 @@ import meteordevelopment.meteorclient.mixininterface.IPlayerMoveC2SPacket;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
-import nekiplay.meteorplus.features.modules.movement.nofall.NofallMode;
+import nekiplay.meteorplus.features.modules.movement.nofall.NoFallMode;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -19,7 +19,7 @@ import nekiplay.meteorplus.utils.ElytraUtils;
 
 import static meteordevelopment.meteorclient.utils.player.ChatUtils.error;
 
-public class Eclip extends NofallMode {
+public class Eclip extends NoFallMode {
 	public Eclip() {
 		super(NoFallModes.Elytra_Clip);
 	}

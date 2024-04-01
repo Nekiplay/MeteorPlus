@@ -5,13 +5,13 @@ import meteordevelopment.meteorclient.mixin.PlayerMoveC2SPacketAccessor;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import nekiplay.meteorplus.features.modules.movement.nofall.NoFallModes;
-import nekiplay.meteorplus.features.modules.movement.nofall.NofallMode;
+import nekiplay.meteorplus.features.modules.movement.nofall.NoFallMode;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.shape.VoxelShape;
 
 import java.util.Iterator;
 
-public class MatrixNew extends NofallMode {
+public class MatrixNew extends NoFallMode {
 	public MatrixNew() {
 		super(NoFallModes.Matrix_New);
 	}
