@@ -9,19 +9,21 @@
     "meteorclient.ModulesScreenMixin",
     "meteorclient.WMeteorModuleMixin",
     "meteorclient.WPressableMixin",
+		"meteorclient.modules.NoRenderMixin",
     "meteorclient.modules.AutoToolMixin",
+    "meteorclient.modules.BlockESPMixin",
     "meteorclient.modules.ESPMixin",
     "meteorclient.modules.FreecamMixin",
     "meteorclient.modules.ItemHighlightMixin",
     "meteorclient.modules.KillAuraMixin",
     "meteorclient.modules.TracersMixin",
     "meteorclient.modules.WaypointsModuleMixin",
-		"meteorclient.modules.BlockESPMixin",
     "minecraft.ClientConnectionAccessor",
     "minecraft.ClientPlayerInteractionManagerMixin",
     "minecraft.CraftingScreenHandlerAccessor",
     "minecraft.MinecraftClientMixin",
-    "minecraft.ShapelessRecipeAccessor"
+    "minecraft.ShapelessRecipeAccessor",
+    "minecraft.hud.DebugHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1
