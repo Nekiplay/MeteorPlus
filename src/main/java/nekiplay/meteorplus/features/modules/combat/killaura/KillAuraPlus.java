@@ -220,13 +220,6 @@ public class KillAuraPlus extends Module {
 		.build()
 	);
 
-	public final Setting<Boolean> shieldBreaker = sgGeneral.add(new BoolSetting.Builder()
-		.name("shield-breaker")
-		.description("Break enemy shield by axe")
-		.defaultValue(true)
-		.build()
-	);
-
 	public final Setting<Double> hitChance = sgGeneral.add(new DoubleSetting.Builder()
 		.name("hit-chance")
 		.description("The probability of your hits landing.")
@@ -340,15 +333,6 @@ public class KillAuraPlus extends Module {
 		.visible(() -> randomDelayEnabled.get() && !smartDelay.get())
 		.build()
 	);
-
-	public final Setting<Integer> switchDelay = sgDelay.add(new IntSetting.Builder()
-		.name("switch-delay")
-		.description("How many ticks to wait before hitting an entity after switching hotbar slots.")
-		.defaultValue(0)
-		.min(0)
-		.build()
-	);
-
 
 	private KillAuraPlusMode currentMode;
 
