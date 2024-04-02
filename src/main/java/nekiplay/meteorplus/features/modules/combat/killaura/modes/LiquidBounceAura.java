@@ -1,8 +1,8 @@
 package nekiplay.meteorplus.features.modules.combat.killaura.modes;
 
-import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.friends.Friends;
+import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import meteordevelopment.meteorclient.utils.entity.Target;
 import meteordevelopment.meteorclient.utils.entity.TargetUtils;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
@@ -24,6 +24,7 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 
 public class LiquidBounceAura extends KillAuraPlusMode {
 	public LiquidBounceAura() {
@@ -73,30 +75,26 @@ public class LiquidBounceAura extends KillAuraPlusMode {
 			}
 
 			if (primary instanceof PlayerEntity primaryPlayer) {
-				if (primaryPlayer.isBlocking() && settings.shieldBreaker.get()) {
-					FindItemResult axeResult = InvUtils.findInHotbar(itemStack -> {
-						Item item = itemStack.getItem();
-						return item instanceof AxeItem;
-					});
-					if (axeResult.found()) {
-						InvUtils.swap(axeResult.slot(), false);
-						if (itemInHand(mc.player.getInventory().getStack(axeResult.slot()).getItem())) return;
-					}
-					targets2.forEach(this::attack);
-				} else {
-					FindItemResult swordResult = InvUtils.findInHotbar(itemStack -> {
-						Item item = itemStack.getItem();
-						return item instanceof SwordItem;
-					});
-					if (swordResult.found()) {
-						InvUtils.swap(swordResult.slot(), false);
-						if (itemInHand(mc.player.getInventory().getStack(swordResult.slot()).getItem())) return;
-					}
-					if (delayCheck()) targets2.forEach(this::attack);
 
-					if (settings.randomTeleport.get()) {
-						mc.player.setPosition(primary.getX() + randomOffset(), primary.getY(), primary.getZ() + randomOffset());
+				if (settings.autoSwitch.get()) {
+					Predicate<ItemStack> predicate = switch (settings.weapon.get()) {
+						case Axe -> stack -> stack.getItem() instanceof AxeItem;
+						case Sword -> stack -> stack.getItem() instanceof SwordItem;
+						case Both -> stack -> stack.getItem() instanceof AxeItem || stack.getItem() instanceof SwordItem;
+						default -> o -> true;
+					};
+					FindItemResult weaponResult = InvUtils.findInHotbar(predicate);
+
+					if (shouldShieldBreak()) {
+						FindItemResult axeResult = InvUtils.findInHotbar(itemStack -> itemStack.getItem() instanceof AxeItem);
+						if (axeResult.found()) weaponResult = axeResult;
 					}
+
+					InvUtils.swap(weaponResult.slot(), false);
+				}
+
+				if (settings.randomTeleport.get()) {
+					mc.player.setPosition(primary.getX() + randomOffset(), primary.getY(), primary.getZ() + randomOffset());
 				}
 			}
 			else {
@@ -104,10 +102,16 @@ public class LiquidBounceAura extends KillAuraPlusMode {
 			}
 		}
 	}
+	private boolean shouldShieldBreak() {
+		for (Entity target : targets) {
+			if (target instanceof PlayerEntity player) {
+				if (player.blockedByShield(mc.world.getDamageSources().playerAttack(mc.player)) && settings.shieldMode.get() == KillAura.ShieldMode.Break) {
+					return true;
+				}
+			}
+		}
 
-	@Override
-	public void onSendPacket(PacketEvent.Send event) {
-
+		return false;
 	}
 
 	@Override

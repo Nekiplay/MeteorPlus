@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.features.modules.combat.killaura.modes.LiquidBounceAura;
@@ -22,12 +23,32 @@ public class KillAuraPlus extends Module {
 	public final SettingGroup sgTargeting = settings.createGroup("Targeting");
 	public final SettingGroup sgDelay = settings.createGroup("Delay");
 
-	private final Setting<KillAuraPlusModes> mode = sgGeneral.add(new EnumSetting.Builder<KillAuraPlusModes>()
+	public final Setting<KillAuraPlusModes> mode = sgGeneral.add(new EnumSetting.Builder<KillAuraPlusModes>()
 		.name("mode")
 		.description("KillAura mode.")
 		.defaultValue(KillAuraPlusModes.LiquidBounce)
 		.onModuleActivated(modesSetting -> onModeChanged(modesSetting.get()))
 		.onChanged(this::onModeChanged)
+		.build()
+	);
+	public final Setting<KillAura.Weapon> weapon = sgGeneral.add(new EnumSetting.Builder<KillAura.Weapon>()
+		.name("weapon")
+		.description("Only attacks an entity when a specified weapon is in your hand.")
+		.defaultValue(KillAura.Weapon.Both)
+		.build()
+	);
+	public final Setting<Boolean> autoSwitch = sgGeneral.add(new BoolSetting.Builder()
+		.name("auto-switch")
+		.description("Switches to your selected weapon when attacking the target.")
+		.defaultValue(false)
+		.build()
+	);
+
+	public final Setting<KillAura.ShieldMode> shieldMode = sgGeneral.add(new EnumSetting.Builder<KillAura.ShieldMode>()
+		.name("shield-mode")
+		.description("Will try and use an axe to break target shields.")
+		.defaultValue(KillAura.ShieldMode.Break)
+		.visible(() -> autoSwitch.get() && weapon.get() != KillAura.Weapon.Axe)
 		.build()
 	);
 
