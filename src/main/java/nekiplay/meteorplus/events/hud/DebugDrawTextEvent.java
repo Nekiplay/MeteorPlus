@@ -1,6 +1,7 @@
 package nekiplay.meteorplus.events.hud;
 
 import meteordevelopment.meteorclient.events.Cancellable;
+import net.minecraft.util.hit.HitResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,16 @@ public class DebugDrawTextEvent extends Cancellable {
 	public boolean isLeft() { return isLeft; }
 
 
-	public static DebugDrawTextEvent get(List<String> lines, boolean isLeft) {
+	private HitResult blockHit;
+	private HitResult fluidHit;
+	public HitResult blockHit() { return blockHit; }
+	public HitResult fluidHit() { return fluidHit; }
+
+	public static DebugDrawTextEvent get(List<String> lines, boolean isLeft, HitResult blockHit, HitResult fluidHit) {
 		INSTANCE.lines = lines;
 		INSTANCE.isLeft = isLeft;
+		INSTANCE.blockHit = blockHit;
+		INSTANCE.fluidHit = fluidHit;
 		return INSTANCE;
 	}
 }
