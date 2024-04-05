@@ -1,5 +1,6 @@
 package nekiplay.meteorplus;
 
+import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
@@ -24,6 +25,7 @@ import nekiplay.meteorplus.features.modules.integrations.LitematicaPrinter;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import nekiplay.meteorplus.features.modules.world.timer.TimerPlus;
 import nekiplay.meteorplus.items.ModItems;
+import nekiplay.meteorplus.settings.ConfigModifier;
 import net.fabricmc.loader.api.FabricLoader;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.modules.Category;
@@ -67,6 +69,9 @@ public class MeteorPlusAddon extends MeteorAddon {
 			if (!isBaritonePresent) {
 				LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Xaero's World Map improvement");
 			}
+			else {
+				LOG.info(LOGPREFIX + " [Baritone] found, enabling Xaero's World Map improvement");
+			}
 		}
 		else {
 			LOG.warn(LOGPREFIX + " [Xaero's World Map] not found, disabling Xaero's World Map improvement");
@@ -75,6 +80,9 @@ public class MeteorPlusAddon extends MeteorAddon {
 			if (!isBaritonePresent) {
 				LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Journey Map improvement");
 			}
+			else {
+				LOG.info(LOGPREFIX + " [Baritone] found, enabling Journey Map improvement");
+			}
 		}
 		else {
 			LOG.warn(LOGPREFIX + " [Journey Map] not found, disabling Journey Map improvement");
@@ -82,9 +90,19 @@ public class MeteorPlusAddon extends MeteorAddon {
 		if (!isBaritonePresent) {
 			LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Freecam and Waypoints improvement");
 		}
+		else {
+			LOG.info(LOGPREFIX + " [Baritone] found, enabling Freecam and Waypoints improvement");
+		}
+
 		if (!isWhereIsIt) {
 			LOG.warn(LOGPREFIX + " [Where is it] not found, disabling ChestTracker improvement");
 		}
+		else {
+			LOG.info(LOGPREFIX + " [Where is it] found, enabling ChestTracker improvement");
+		}
+
+		MeteorClient.EVENT_BUS.subscribe(new CordinateProtector());
+		ConfigModifier.get();
 
 		//region Commands
 		LOG.info(LOGPREFIX + " Initializing commands...");

@@ -1,0 +1,12 @@
+{
+	"required": false,
+	"package": "nekiplay.meteorplus.mixin.xaero.minimap",
+	"compatibilityLevel": "JAVA_17",
+	"plugin": "nekiplay.meteorplus.MixinPlugin",
+	"client": [
+		"GuiAddWaypointMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

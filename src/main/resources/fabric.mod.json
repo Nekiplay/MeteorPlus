@@ -32,6 +32,7 @@
 		"meteorplus.mixins.json",
 		"meteorplus-journeymap.mixins.json",
 		"meteorplus-xaeroworldmap.mixins.json",
+		"meteorplus-xaerominimap.mixins.json",
 		"meteorplus-whereisit.mixins.json"
 
   ],

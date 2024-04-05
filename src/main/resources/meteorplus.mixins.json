@@ -9,6 +9,7 @@
     "meteorclient.ModulesScreenMixin",
     "meteorclient.WMeteorModuleMixin",
     "meteorclient.WPressableMixin",
+		"meteorclient.WBlockPosEditMixin",
 		"meteorclient.modules.NoRenderMixin",
     "meteorclient.modules.AutoToolMixin",
     "meteorclient.modules.BlockESPMixin",

@@ -55,7 +55,10 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		else if (mixinClassName.startsWith(mixinPackage + ".journeymap")) {
 			return isBaritonePresent && isJourneyMapPresent;
 		}
-		else if (mixinClassName.startsWith(mixinPackage + ".xaero")) {
+		else if (mixinClassName.startsWith(mixinPackage + ".xaero.minimap")) {
+			return isXaeroWorldMapresent;
+		}
+		else if (mixinClassName.startsWith(mixinPackage + ".xaero.worldmap")) {
 			return isBaritonePresent && isXaeroWorldMapresent;
 		}
 		else if (mixinClassName.startsWith(mixinPackage + ".whereisit")) {
