@@ -19,7 +19,7 @@ window.onload = function(e){
                     total += asset.download_count;
                 }
             }
-            document.getElementsByClassName("mb-0")[0].innerText = total
+            document.getElementById("downloads").innerText = total
         })
     
         // Stars
@@ -30,7 +30,7 @@ window.onload = function(e){
         .then(data => 
         {
             var json = data;
-            document.getElementsByClassName("mb-0")[2].innerText = json["stargazers_count"]
+            document.getElementById("stars").innerText = json["stargazers_count"]
         })
     } 
 }
