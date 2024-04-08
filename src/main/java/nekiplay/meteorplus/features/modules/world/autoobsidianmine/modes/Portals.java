@@ -2,6 +2,8 @@ package nekiplay.meteorplus.features.modules.world.autoobsidianmine.modes;
 
 import baritone.api.BaritoneAPI;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.player.AutoEat;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.Pool;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
@@ -111,6 +113,11 @@ public class Portals extends AutoObsidianFarmMode {
 		if (commandDelay <= settings.delayCommand.get()) {
 			commandDelay++;
 		}
+		if (mc.player == null || mc.world == null) { return; }
+		if ((mc.player.isUsingItem() || (Modules.get().get(AutoEat.class).isActive() && Modules.get().get(AutoEat.class).shouldEat())) && settings.pauseOnEat.get()) {
+			return;
+		}
+
 		if (settings.workingMode.get() == AutoObsidianFarmModes.Portal_Homes) {
 			if (PlayerUtils.getDimension() == Dimension.Overworld) {
 				commandDelay = 0;
@@ -121,7 +128,7 @@ public class Portals extends AutoObsidianFarmMode {
 			} else if (PlayerUtils.getDimension() == Dimension.Nether) {
 				List<BlockPos> obsidians = getPortalBlocks();
 				isMine = true;
-				if ((obsidians.size() == 0 || blocks.size() == 0)) {
+				if ((obsidians.isEmpty() || blocks.isEmpty())) {
 					if (mc.player != null && commandDelay >= settings.delayCommand.get()) {
 						ChatUtils.sendPlayerMsg(settings.command.get());
 						commandDelay = 0;
@@ -138,7 +145,7 @@ public class Portals extends AutoObsidianFarmMode {
 				if (distance <= 20) {
 					List<BlockPos> obsidians = getPortalBlocks();
 					Block down = mc.world.getBlockState(mc.player.getBlockPos().add(0, -1, 0)).getBlock();
-					if (obsidians.size() == 0) {
+					if (obsidians.isEmpty()) {
 						isMine = false;
 					}
 					else if (down == Blocks.OBSIDIAN) {

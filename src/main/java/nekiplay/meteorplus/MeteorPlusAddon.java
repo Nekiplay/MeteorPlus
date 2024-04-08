@@ -130,6 +130,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 		LOG.info(LOGPREFIX + " Initializing modules...");
 		Modules modules = Modules.get();
 
+		modules.add(new Teams());
 		modules.add(new HologramModule());
 		modules.add(new SprintPlus());
 		modules.add(new ChatPrefix());

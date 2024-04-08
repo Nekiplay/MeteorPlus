@@ -10,6 +10,7 @@
 		"meteorclient.WBlockPosEditMixin",
 		"meteorclient.WMeteorModuleMixin",
 		"meteorclient.WPressableMixin",
+		"meteorclient.modules.NameTagsMixin",
 		"meteorclient.modules.AutoToolMixin",
 		"meteorclient.modules.BlockESPMixin",
 		"meteorclient.modules.ESPMixin",
@@ -32,6 +33,7 @@
 	"mixins": [
 		"meteorclient.DefaultSettingsWidgetFactoryMixin",
 		"meteorclient.KeybindMixin",
+		"meteorclient.utils.misc.MeteorStarscriptMixin",
 		"minecraft.ClientPlayerEntityMixin",
 		"minecraft.LivingEntityMixin",
 		"minecraft.StringReaderMixin"

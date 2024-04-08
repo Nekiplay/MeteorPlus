@@ -56,7 +56,7 @@ public class CordinateProtector {
 							lines.set(index, chunk);
 						}
 						else if (ConfigModifier.get().spoofMode.get() == SpoofMode.Sensor) {
-							lines.set(index, "Chunk: *** *** *** [*** *** in *****.mca]");
+							lines.set(index, "Chunk: *** *** *** [*** *** in ***.***.mca]");
 						}
 					}
 					index++;

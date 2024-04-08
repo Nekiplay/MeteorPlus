@@ -2,6 +2,8 @@ package nekiplay.meteorplus.features.modules.world.autoobsidianmine.modes;
 
 import meteordevelopment.meteorclient.events.world.CollisionShapeEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.player.AutoEat;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.Pool;
 import meteordevelopment.meteorclient.utils.player.*;
@@ -69,11 +71,15 @@ public class Cauldrons extends AutoObsidianFarmMode {
 
 	@Override
 	public void onTickEventPost(TickEvent.Post event) {
+		if (mc.player == null || mc.world == null || mc.interactionManager == null) { return; }
+		if ((mc.player.isUsingItem() || (Modules.get().get(AutoEat.class).isActive() && Modules.get().get(AutoEat.class).shouldEat())) && settings.pauseOnEat.get()) {
+			return;
+		}
 		if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1.7 && settings.tpsCheck.get()) {
 			return;
 		}
 		BlockPos placing = settings.lavaPlaceLocation.get();
-		if (mc.player.squaredDistanceTo(placing.toCenterPos()) >= settings.range.get() + 1 * settings.range.get() + 1) {
+		if (mc.player.squaredDistanceTo(placing.toCenterPos()) >= settings.range.get() + settings.range.get() + 1) {
 			return;
 		}
 		BlockIterator.register(settings.range.get(), settings.range.get(), (blockPos, blockState) -> {

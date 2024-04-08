@@ -151,6 +151,13 @@ public class AutoObsidianFarm extends Module {
 		.build()
 	);
 
+	public final Setting<Boolean> pauseOnEat = sgGeneral.add(new BoolSetting.Builder()
+		.name("pause-on-eat")
+		.description("Pause farming on eat or auto eat.")
+		.defaultValue(true)
+		.build()
+	);
+
 	private AutoObsidianFarmMode currentMode;
 
 	private void onModeChanged(AutoObsidianFarmModes mode) {
