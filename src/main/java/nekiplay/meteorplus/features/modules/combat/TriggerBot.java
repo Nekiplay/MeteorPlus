@@ -9,6 +9,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.features.modules.misc.MultiTasks;
+import nekiplay.meteorplus.features.modules.misc.Teams;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -98,7 +99,16 @@ public class TriggerBot extends Module {
 		if (entity instanceof PlayerEntity) {
 			if (((PlayerEntity) entity).isCreative()) return false;
 			if (!Friends.get().shouldAttack((PlayerEntity) entity)) return false;
+			AntiBotPlus antiBotPlus = Modules.get().get(AntiBotPlus.class);
+			Teams teams = Modules.get().get(Teams.class);
+			if (antiBotPlus != null && antiBotPlus.isBot(entity)) {
+				return false;
+			}
+			if (teams != null && teams.isInYourTeam(entity)) {
+				return false;
+			}
 		}
+
 		return !(entity instanceof AnimalEntity) || babies.get() || !((AnimalEntity) entity).isBaby();
 	}
 
@@ -123,7 +133,7 @@ public class TriggerBot extends Module {
 		MultiTasks multiTasks = Modules.get().get(MultiTasks.class);
 		if (!multiTasks.isActive() && (mc.player.isUsingItem() || mc.interactionManager.isBreakingBlock())) return;
 
-		if (delayCheck()) hitEntity(mc.targetedEntity);
+		if (delayCheck() && entityCheck(mc.targetedEntity)) hitEntity(mc.targetedEntity);
 	}
 
 	private void hitEntity(Entity target) {

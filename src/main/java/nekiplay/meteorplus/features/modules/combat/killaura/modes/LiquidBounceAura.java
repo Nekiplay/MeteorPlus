@@ -2,6 +2,7 @@ package nekiplay.meteorplus.features.modules.combat.killaura.modes;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.friends.Friends;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import meteordevelopment.meteorclient.utils.entity.Target;
 import meteordevelopment.meteorclient.utils.entity.TargetUtils;
@@ -9,9 +10,11 @@ import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
+import nekiplay.meteorplus.features.modules.combat.AntiBotPlus;
 import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlus;
 import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlusMode;
 import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlusModes;
+import nekiplay.meteorplus.features.modules.misc.Teams;
 import nekiplay.meteorplus.utils.Perlin2D;
 import nekiplay.meteorplus.utils.RaycastUtils;
 import nekiplay.meteorplus.utils.RotationUtils;
@@ -58,8 +61,12 @@ public class LiquidBounceAura extends KillAuraPlusMode {
 			target = TargetUtils.getPlayerTarget(settings.range.get(), settings.priority.get());
 		TargetUtils.getList(targets, this::entityCheck, settings.priority.get(), settings.maxTargets.get());
 
+
 		if (targets.size() > 0) {
 			Entity primary = targets.get(0);
+
+			AntiBotPlus antiBotPlus = Modules.get().get(AntiBotPlus.class);
+			Teams teams = Modules.get().get(Teams.class);
 
 			List<Entity> targets2 = targets;
 
@@ -160,6 +167,15 @@ public class LiquidBounceAura extends KillAuraPlusMode {
 
 	private void attack(Entity target) {
 		if (Math.random() > settings.hitChance.get() / 100) return;
+
+		AntiBotPlus antiBotPlus = Modules.get().get(AntiBotPlus.class);
+		Teams teams = Modules.get().get(Teams.class);
+		if (antiBotPlus != null && antiBotPlus.isBot(target)) {
+			return;
+		}
+		if (teams != null && teams.isInYourTeam(target)) {
+			return;
+		}
 
 		if (settings.rotation.get() == KillAuraPlus.RotationMode.OnHit) rotate(target, () -> hitEntity(target));
 		else hitEntity(target);
@@ -345,7 +361,21 @@ public class LiquidBounceAura extends KillAuraPlusMode {
 	}
 
 	public Entity getTarget() {
-		if (!targets.isEmpty()) return targets.get(0);
+        for (Entity target : targets) {
+			boolean allow = true;
+			AntiBotPlus antiBotPlus = Modules.get().get(AntiBotPlus.class);
+			Teams teams = Modules.get().get(Teams.class);
+			if (antiBotPlus != null && antiBotPlus.isBot(target)) {
+				allow = false;
+			}
+			if (teams != null && teams.isInYourTeam(target)) {
+				allow = false;
+			}
+			if (allow) {
+				return target;
+			}
+		}
+
 		return null;
 	}
 }

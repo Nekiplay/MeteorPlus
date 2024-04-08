@@ -227,7 +227,7 @@ public class MeteorStarscriptMixin {
 	}
 
 	private static Value posString(double x, double y, double z) {
-		return Value.string(String.format("X: %.0f Y: %.0f Z: %.0f", x, y, z));
+		return Value.string(String.format("X: %.0f Y: %.0f Z: %.0f", x + ConfigModifier.get().x_spoof.get(), y, z + ConfigModifier.get().z_spoof.get()));
 	}
 
 	private static Value getItem(Starscript ss, int argCount) {
