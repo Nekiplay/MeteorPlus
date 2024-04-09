@@ -178,7 +178,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 				LOG.info(LOGPREFIX + " Loaded mini-map integration");
 			}
 		}
-		if (isLitematicaMapresent) {
+		if (isLitematicaMapresent && isBaritonePresent) {
 			modules.add(new LitematicaPrinter());
 			LOG.info(LOGPREFIX + " Loaded litematica integration");
 		}
