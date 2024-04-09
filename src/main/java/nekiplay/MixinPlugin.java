@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class MixinPlugin implements IMixinConfigPlugin {
 	public static final Logger LOG = LoggerFactory.getLogger(MixinPlugin.class);
-	public static final String LOGPREFIX = "[Meteor+ Mixins]";
+	public static final String METEOR_LOGPREFIX_MIXIN = "[Meteor+ Mixins]";
 
 	private static final String mixinPackageMeteorPlus = "nekiplay.meteorplus.mixin";
 	private static final String mixinPackageBozePlus = "nekiplay.bozeplus.mixin";
@@ -53,7 +53,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
 		if (!mixinClassName.startsWith(mixinPackageMeteorPlus)) {
-			throw new RuntimeException(LOGPREFIX + " " + mixinClassName + " is not in the mixin package");
+			throw new RuntimeException(METEOR_LOGPREFIX_MIXIN + " " + mixinClassName + " is not in the mixin package");
 		}
 		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".meteorclient")) {
 			if (mixinClassName.contains("FreecamMixin") || mixinClassName.contains("WaypointsModuleMixin")) {

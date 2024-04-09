@@ -44,6 +44,9 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+
+import static nekiplay.Main.METEOR_LOGPREFIX;
 import static nekiplay.MixinPlugin.*;
 
 public class MeteorPlusAddon extends MeteorAddon {
@@ -52,7 +55,6 @@ public class MeteorPlusAddon extends MeteorAddon {
 
 	public static final Category CATEGORYMODS = new Category("Integrations", logo_mods_item);
 	public static final HudGroup HUD_GROUP = new HudGroup("Meteor+ Hud");
-	public static final String LOGPREFIX = "[Meteor+]";
 
 	private static MeteorPlusAddon instance;
 
@@ -64,49 +66,66 @@ public class MeteorPlusAddon extends MeteorAddon {
 	public void onInitialize() {
 		instance = this;
 
-		LOG.info(LOGPREFIX + " Initializing...");
+		LOG.info(METEOR_LOGPREFIX + " Initializing...");
+
+		ArrayList<String> notFoundIntegrations = new ArrayList<>();
+		ArrayList<String> notFoundBaritoneIntegrations = new ArrayList<>();
+		ArrayList<String> enabledIntegrations = new ArrayList<>();
 
 		if (isXaeroWorldMapresent) {
 			if (!isBaritonePresent) {
-				LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Xaero's World Map improvement");
+				notFoundBaritoneIntegrations.add("Xaero's World Map");
 			}
 			else {
-				LOG.info(LOGPREFIX + " [Baritone] found, enabling Xaero's World Map improvement");
+				enabledIntegrations.add("Xaero's World Map");
 			}
 		}
 		else {
-			LOG.warn(LOGPREFIX + " [Xaero's World Map] not found, disabling Xaero's World Map improvement");
+			notFoundIntegrations.add("Xaero's World Map");
 		}
 		if (isJourneyMapPresent) {
 			if (!isBaritonePresent) {
-				LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Journey Map improvement");
+				notFoundBaritoneIntegrations.add("Journey Map");
 			}
 			else {
-				LOG.info(LOGPREFIX + " [Baritone] found, enabling Journey Map improvement");
+				enabledIntegrations.add("Journey Map");
 			}
 		}
 		else {
-			LOG.warn(LOGPREFIX + " [Journey Map] not found, disabling Journey Map improvement");
+			notFoundIntegrations.add("Journey Map");
 		}
 		if (!isBaritonePresent) {
-			LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Freecam and Waypoints improvement");
+			notFoundBaritoneIntegrations.add("Freecam");
+			notFoundBaritoneIntegrations.add("Waypoints");
+			notFoundBaritoneIntegrations.add("Goto+");
 		}
 		else {
-			LOG.info(LOGPREFIX + " [Baritone] found, enabling Freecam and Waypoints improvement");
+			enabledIntegrations.add("Freecam");
+			enabledIntegrations.add("Waypoints");
 		}
 
 		if (!isWhereIsIt) {
-			LOG.warn(LOGPREFIX + " [Where is it] not found, disabling ChestTracker improvement");
+			notFoundIntegrations.add("Where is it");
 		}
 		else {
-			LOG.info(LOGPREFIX + " [Where is it] found, enabling ChestTracker improvement");
+			enabledIntegrations.add("Where is it");
+		}
+
+		if (!enabledIntegrations.isEmpty()) {
+			LOG.info(METEOR_LOGPREFIX + " Enabling integrations for: " + String.join(", ", enabledIntegrations));
+		}
+		if (!notFoundBaritoneIntegrations.isEmpty()) {
+			LOG.warn(METEOR_LOGPREFIX + " Not found Baritone for integrations: " + String.join(", ", notFoundBaritoneIntegrations));
+		}
+		if (!notFoundIntegrations.isEmpty()) {
+			LOG.warn(METEOR_LOGPREFIX + " Not found mods for integrations: " + String.join(", ", notFoundIntegrations));
 		}
 
 		MeteorClient.EVENT_BUS.subscribe(new CordinateProtector());
 		ConfigModifier.get();
 
 		//region Commands
-		LOG.info(LOGPREFIX + " Initializing commands...");
+		LOG.info(METEOR_LOGPREFIX + " Initializing commands...");
 
 		Commands.add(new ItemRawIdCommand());
 		Commands.add(new Eclip());
@@ -114,21 +133,18 @@ public class MeteorPlusAddon extends MeteorAddon {
 		if (isBaritonePresent) {
 			Commands.add(new GotoPlus());
 		}
-		else {
-			LOG.warn(LOGPREFIX + " [Baritone] not found, disabling Goto+");
-		}
 		Commands.add(new GPT());
 
-		LOG.info(LOGPREFIX + " Loaded commands");
+		LOG.info(METEOR_LOGPREFIX + " Loaded commands");
 		//endregion
 
-		LOG.info(LOGPREFIX + " Initializing better chat custom head...");
+		LOG.info(METEOR_LOGPREFIX + " Initializing better chat custom head...");
 		BetterChat.registerCustomHead("[Meteor+]", new Identifier("meteorplus", "chat/icon.png"));
-		LOG.info(LOGPREFIX + " Loaded better chat");
+		LOG.info(METEOR_LOGPREFIX + " Loaded better chat");
 
 
 		//region Modules
-		LOG.info(LOGPREFIX + " Initializing modules...");
+		LOG.info(METEOR_LOGPREFIX + " Initializing modules...");
 		Modules modules = Modules.get();
 
 		modules.add(new Teams());
@@ -168,48 +184,45 @@ public class MeteorPlusAddon extends MeteorAddon {
 			modules.add(new NoJumpDelay());
 		}
 		else {
-			LOG.warn(LOGPREFIX + " Meteor Rejects detected, removing No Jump Delay");
+			LOG.warn(METEOR_LOGPREFIX + " Meteor Rejects detected, removing No Jump Delay");
 		}
 		modules.add(new NoSlowPlus());
 		//modules.add(new VelocityPlus());
 		if (isBaritonePresent) {
 			if (isXaeroWorldMapresent || isJourneyMapPresent) {
 				modules.add(new MapIntegration());
-				LOG.info(LOGPREFIX + " Loaded mini-map integration");
 			}
 		}
 		if (isLitematicaMapresent && isBaritonePresent) {
 			modules.add(new LitematicaPrinter());
-			LOG.info(LOGPREFIX + " Loaded litematica integration");
 		}
 		if (isWhereIsIt) {
 			modules.add(new WhereIsIt());
-			LOG.info(LOGPREFIX + " Loaded where is it integration");
 		}
-		LOG.info(LOGPREFIX + " Loaded modules");
+		LOG.info(METEOR_LOGPREFIX + " Loaded modules");
 		//endregion
 
 		//region Hud
-		LOG.info(LOGPREFIX + " Initializing hud...");
+		LOG.info(METEOR_LOGPREFIX + " Initializing hud...");
 
 		Hud.get().register(TimerPlusCharge.INFO);
 
-		LOG.info(LOGPREFIX + " Loaded hud");
+		LOG.info(METEOR_LOGPREFIX + " Loaded hud");
 		//endregion
 
 		//region Tabs
-		LOG.info(LOGPREFIX + " Initializing tabs...");
+		LOG.info(METEOR_LOGPREFIX + " Initializing tabs...");
 
 		Tabs.add(new HiddenModulesTab());
 
-		LOG.info(LOGPREFIX + " Loaded tabs");
+		LOG.info(METEOR_LOGPREFIX + " Loaded tabs");
 		//endregion
-		LOG.info(LOGPREFIX + " Full loaded");
+		LOG.info(METEOR_LOGPREFIX + " Full loaded");
 	}
 
 	@Override
 	public void onRegisterCategories() {
-		LOG.info(LOGPREFIX + " registering categories...");
+		LOG.info(METEOR_LOGPREFIX + " registering categories...");
 		if (isXaeroWorldMapresent ||
 			isJourneyMapPresent ||
 			MixinPlugin.isLitematicaMapresent ||
@@ -218,7 +231,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 			Modules.registerCategory(CATEGORYMODS);
 		}
 		//Modules.registerCategory(CATEGORY);
-		LOG.info(LOGPREFIX + " register categories");
+		LOG.info(METEOR_LOGPREFIX + " register categories");
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
+import nekiplay.Main;
 import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import net.minecraft.text.Text;
@@ -23,9 +24,9 @@ public class JourneyMapMeteorPlus implements IClientPlugin {
 		MapIntegration mapIntegration = Modules.get().get(MapIntegration.class);
 
 
-		MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " " + JourneyMapLOGPREFIX + " loading Journey Map integrate");
+		MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " " + JourneyMapLOGPREFIX + " loading Journey Map integrate");
 		FabricEvents.FULLSCREEN_POPUP_MENU_EVENT.register(event -> {
-			MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " " + JourneyMapLOGPREFIX + " register fullscreen Journey Map");
+			MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " " + JourneyMapLOGPREFIX + " register fullscreen Journey Map");
 			ModPopupMenu popupMenu = event.getPopupMenu();
 
 			if (mapIntegration.baritoneGoto.get()) {
@@ -56,11 +57,11 @@ public class JourneyMapMeteorPlus implements IClientPlugin {
 				}
 			}
 
-			MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " " + JourneyMapLOGPREFIX + " register fullscreen Journey Map done");
+			MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " " + JourneyMapLOGPREFIX + " register fullscreen Journey Map done");
 		});
 
 		FabricEvents.WAYPOINT_POPUP_MENU_EVENT.register(event -> {
-			MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " " + JourneyMapLOGPREFIX + " register waypoints Journey Map");
+			MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " " + JourneyMapLOGPREFIX + " register waypoints Journey Map");
 			ModPopupMenu popupMenu = event.getPopupMenu();
 
 			if (mapIntegration != null && mapIntegration.baritoneGoto.get()) {
@@ -91,16 +92,16 @@ public class JourneyMapMeteorPlus implements IClientPlugin {
 				}
 			}
 
-			MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " " + JourneyMapLOGPREFIX + " register waypoints Journey Map done");
+			MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " " + JourneyMapLOGPREFIX + " register waypoints Journey Map done");
 		});
 
-		MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " " + JourneyMapLOGPREFIX + " initializing tab...");
+		MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " " + JourneyMapLOGPREFIX + " initializing tab...");
 
 
-		MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " " + JourneyMapLOGPREFIX + " loaded tab");
+		MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " " + JourneyMapLOGPREFIX + " loaded tab");
 
 
-		MeteorPlusAddon.LOG.info(MeteorPlusAddon.LOGPREFIX + " " + JourneyMapLOGPREFIX + " Journey Map integrate loaded");
+		MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " " + JourneyMapLOGPREFIX + " Journey Map integrate loaded");
 	}
 
 	@Override
