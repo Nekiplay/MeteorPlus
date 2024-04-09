@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
 		"main": [
-			"nekiplay.meteorplus.MeteorPlusMain"
+			"nekiplay.Main"
 		],
     "meteor": [
 			"nekiplay.meteorplus.MeteorPlusAddon"
@@ -43,7 +43,6 @@
   },
   "depends": {
     "java": ">=17",
-    "minecraft": ">=${mc_version}",
-    "meteor-client": "*"
+    "minecraft": ">=${mc_version}"
   }
 }

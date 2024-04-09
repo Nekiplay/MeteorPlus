@@ -36,6 +36,12 @@ repositories {
 	maven {
 		url = uri("https://maven.jackf.red/releases/")
 	}
+
+	// Boze
+	maven {
+		name = "boze-maven"
+		url = "https://maven.boze.dev/releases"
+	}
 }
 
 dependencies {
@@ -64,6 +70,9 @@ dependencies {
 	modImplementation("red.jackf:whereisit:${project.where_is_it_version}")
 
 	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.2")))
+
+	// Boze
+	modImplementation "dev.boze:boze-api:${project.boze_api_version}"
 }
 
 loom {

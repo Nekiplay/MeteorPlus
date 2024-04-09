@@ -62,6 +62,7 @@ public class NoFallPlus extends Module {
 			case Elytra_Fly -> currentMode = new ElytraFly();
 			case Elytra_Clip -> currentMode = new Eclip();
 			case Matrix_New -> currentMode = new MatrixNew();
+			case Verus -> currentMode = new Verus();
 			case Vulcan -> currentMode = new Vulcan();
 			case Vulcan_2dot7dot7 -> currentMode = new Vulcan277();
 		}

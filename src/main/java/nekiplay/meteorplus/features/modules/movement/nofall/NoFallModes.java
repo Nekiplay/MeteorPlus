@@ -4,6 +4,7 @@ public enum NoFallModes {
 	Matrix_New,
 	Vulcan,
 	Vulcan_2dot7dot7,
+	Verus,
 	Elytra_Clip,
 	Elytra_Fly;
 	@Override

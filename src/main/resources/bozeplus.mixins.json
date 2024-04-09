@@ -1,10 +1,11 @@
 {
 	"required": false,
-	"package": "nekiplay.meteorplus.mixin.whereisit",
+	"package": "nekiplay.bozeplus.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"plugin": "nekiplay.MixinPlugin",
 	"client": [
-		"RenderingMixin"
+		"minecraft.ClientConnectionMixin",
+		"minecraft.PlayerMoveC2SPacketAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

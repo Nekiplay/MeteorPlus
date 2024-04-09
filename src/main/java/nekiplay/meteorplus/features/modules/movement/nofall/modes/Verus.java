@@ -2,14 +2,14 @@ package nekiplay.meteorplus.features.modules.movement.nofall.modes;
 
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.mixin.PlayerMoveC2SPacketAccessor;
-import nekiplay.meteorplus.features.modules.movement.nofall.NoFallModes;
 import nekiplay.meteorplus.features.modules.movement.nofall.NoFallMode;
+import nekiplay.meteorplus.features.modules.movement.nofall.NoFallModes;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
-public class Vulcan277 extends NoFallMode {
+public class Verus extends NoFallMode {
 
-	public Vulcan277() {
-		super(NoFallModes.Vulcan_2dot7dot7);
+	public Verus() {
+		super(NoFallModes.Verus);
 	}
 
 	@Override
@@ -18,7 +18,7 @@ public class Vulcan277 extends NoFallMode {
 			PlayerMoveC2SPacket packet = (PlayerMoveC2SPacket)event.packet;
 			PlayerMoveC2SPacketAccessor accessor = (PlayerMoveC2SPacketAccessor)packet;
 
-			if (mc.player.fallDistance > 7.0) {
+			if (mc.player.fallDistance > 3.35) {
 				accessor.setOnGround(true);
 				mc.player.fallDistance = 0f;
 				var vel = mc.player.getVelocity();

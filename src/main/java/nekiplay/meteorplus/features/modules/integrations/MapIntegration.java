@@ -7,7 +7,7 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import nekiplay.meteorplus.MeteorPlusAddon;
-import nekiplay.meteorplus.MixinPlugin;
+import nekiplay.MixinPlugin;
 
 public class MapIntegration extends Module {
 	public MapIntegration() {

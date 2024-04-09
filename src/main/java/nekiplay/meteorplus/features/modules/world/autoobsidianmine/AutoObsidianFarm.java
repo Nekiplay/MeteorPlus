@@ -7,7 +7,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MixinPlugin;
+import nekiplay.MixinPlugin;
 import nekiplay.meteorplus.features.modules.world.autoobsidianmine.modes.Cauldrons;
 import nekiplay.meteorplus.features.modules.world.autoobsidianmine.modes.Portals;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;

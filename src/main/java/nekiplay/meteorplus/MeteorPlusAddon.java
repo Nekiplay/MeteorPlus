@@ -5,6 +5,7 @@ import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import meteordevelopment.meteorclient.systems.modules.misc.BetterChat;
+import nekiplay.MixinPlugin;
 import nekiplay.meteorplus.features.commands.*;
 import nekiplay.meteorplus.features.modules.combat.*;
 import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlus;
@@ -43,7 +44,7 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static nekiplay.meteorplus.MixinPlugin.*;
+import static nekiplay.MixinPlugin.*;
 
 public class MeteorPlusAddon extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlusAddon.class);

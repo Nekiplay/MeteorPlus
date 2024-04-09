@@ -6,7 +6,7 @@ import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
-import nekiplay.meteorplus.MixinPlugin;
+import nekiplay.MixinPlugin;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
