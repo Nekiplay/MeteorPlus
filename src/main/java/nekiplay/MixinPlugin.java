@@ -15,7 +15,13 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
 	private static final String mixinPackageMeteorPlus = "nekiplay.meteorplus.mixin";
 	private static final String mixinPackageBozePlus = "nekiplay.bozeplus.mixin";
+
 	public static boolean isMeteorClient = false;
+	public static boolean isMeteorRejects= false;
+
+	public static boolean isBozeAPI= false;
+	public static boolean isFutureClient = false;
+
 	public static boolean isBaritonePresent = false;
 	public static boolean isJourneyMapPresent = false;
 	public static boolean isXaeroWorldMapresent = false;
@@ -23,9 +29,6 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	public static boolean isXaeroPlusMapresent = false;
 	public static boolean isLitematicaMapresent = false;
 	public static boolean isWhereIsIt = false;
-	public static boolean isMeteorRejects= false;
-
-	public static boolean isBozeAPI= false;
 
 	@Override
 	public void onLoad(String mixinPackage) {
@@ -33,6 +36,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
 		isMeteorClient = loader.isModLoaded("meteor-client");
 		isBozeAPI = loader.isModLoaded("boze-api");
+		isFutureClient = loader.isModLoaded("future");
 
 		isMeteorRejects = loader.isModLoaded("meteor-rejects");
 
@@ -78,7 +82,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		}
 
 		else if (mixinClassName.startsWith(mixinPackageBozePlus + ".minecraft")) {
-			return isBozeAPI;
+			return isBozeAPI && !isMeteorClient;
 		}
 
 		return false;

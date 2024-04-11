@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.mixin.meteorclient;
+package nekiplay.meteorplus.mixin.meteorclient.utils.misc;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

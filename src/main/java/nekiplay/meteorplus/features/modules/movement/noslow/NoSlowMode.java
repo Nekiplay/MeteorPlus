@@ -1,5 +1,6 @@
 package nekiplay.meteorplus.features.modules.movement.noslow;
 
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
 import net.minecraft.client.MinecraftClient;
@@ -15,4 +16,5 @@ public class NoSlowMode {
 		this.type = type;
 	}
 	public void onUse(PlayerUseMultiplierEvent event) { }
+	public void onTickEventPre(TickEvent.Pre event) { }
 }

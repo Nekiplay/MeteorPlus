@@ -94,6 +94,14 @@ public class MeteorPlusAddon extends MeteorAddon {
 		else {
 			notFoundIntegrations.add("Journey Map");
 		}
+
+		if (!isWhereIsIt) {
+			notFoundIntegrations.add("Where is it");
+		}
+		else {
+			enabledIntegrations.add("Where is it");
+		}
+
 		if (!isBaritonePresent) {
 			notFoundBaritoneIntegrations.add("Freecam");
 			notFoundBaritoneIntegrations.add("Waypoints");
@@ -102,14 +110,9 @@ public class MeteorPlusAddon extends MeteorAddon {
 		else {
 			enabledIntegrations.add("Freecam");
 			enabledIntegrations.add("Waypoints");
+			enabledIntegrations.add("Goto+");
 		}
 
-		if (!isWhereIsIt) {
-			notFoundIntegrations.add("Where is it");
-		}
-		else {
-			enabledIntegrations.add("Where is it");
-		}
 
 		if (!enabledIntegrations.isEmpty()) {
 			LOG.info(METEOR_LOGPREFIX + " Enabling integrations for: " + String.join(", ", enabledIntegrations));

@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.mixin.meteorclient;
+package nekiplay.meteorplus.mixin.meteorclient.gui;
 
 import meteordevelopment.meteorclient.gui.widgets.containers.WHorizontalList;
 import meteordevelopment.meteorclient.gui.widgets.input.WBlockPosEdit;

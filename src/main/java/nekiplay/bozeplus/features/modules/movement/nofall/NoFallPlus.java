@@ -1,29 +1,28 @@
-package nekiplay.bozeplus.features.modules.movement.spider;
+package nekiplay.bozeplus.features.modules.movement.nofall;
 
 import dev.boze.api.addon.module.ToggleableModule;
 import dev.boze.api.event.EventTick;
 import dev.boze.api.setting.SettingMode;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.bozeplus.events.packets.PacketEvent;
-import nekiplay.bozeplus.features.modules.movement.spider.modes.Matrix;
+import nekiplay.bozeplus.features.modules.movement.nofall.modes.MatrixNew;
 
 import java.util.ArrayList;
 
-public class SpiderPlus extends ToggleableModule {
-
+public class NoFallPlus extends ToggleableModule {
 	private final SettingMode mode = new SettingMode("Mode", "Bypass mode", new ArrayList<>() {{
 		add("Matrix");
 	}});
 
-	public SpiderPlus() {
-		super("Spider", "Climb on walls");
+	public NoFallPlus() {
+		super("No Fall+", "Bypass no fall");
 		elements.add(mode);
-		onSpiderModeChanged(mode.getMode());
+		onNoFallModeChanged(mode.getMode());
 	}
 
 	@Override
 	protected void onEnable() {
-		onSpiderModeChanged(mode.getMode());
+		onNoFallModeChanged(mode.getMode());
 		if (currentMode != null) {
 			currentMode.onActivate();
 		}
@@ -56,10 +55,10 @@ public class SpiderPlus extends ToggleableModule {
 			currentMode.onTickEventPost(event);
 		}
 	}
-	private SpiderMode currentMode = null;
-	private void onSpiderModeChanged(int mode) {
+	private NoFallMode currentMode = null;
+	private void onNoFallModeChanged(int mode) {
 		switch (mode) {
-			case 0 -> currentMode = new Matrix(this);
+			case 0 -> currentMode = new MatrixNew(this);
 		}
 	}
 }

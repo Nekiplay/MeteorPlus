@@ -12,7 +12,6 @@ import dev.boze.api.config.Serializable;
 import dev.boze.api.exception.AddonInitializationException;
 import meteordevelopment.orbit.EventBus;
 import meteordevelopment.orbit.IEventBus;
-import nekiplay.MixinPlugin;
 import nekiplay.bozeplus.features.modules.movement.spider.SpiderPlus;
 import nekiplay.bozeplus.impl.BozePlusDispatcher;
 import nekiplay.bozeplus.impl.BozePlusModule;
@@ -35,7 +34,7 @@ public class BozePlusAddon implements Addon, Serializable<BozePlusAddon> {
 	public final AddonMetadata metadata = new AddonMetadata(
 		"boze-plus",
 		"Boze Plus",
-		"An example addon for Boze",
+		"Meteor Plus modules for Boze",
 		new AddonVersion(1, 0, 0));
 
 	private final ArrayList<AddonModule> modules = new ArrayList<>();
@@ -47,6 +46,11 @@ public class BozePlusAddon implements Addon, Serializable<BozePlusAddon> {
 		} catch (AddonInitializationException e) {
 			Log.error(LogCategory.LOG, "Failed to initialize addon: " + getMetadata().id(), e);
 		}
+	}
+
+	private void addModule(AddonModule module) {
+		modules.add(module);
+		EVENT_BUS.subscribe(module);
 	}
 
 	@Override
@@ -65,8 +69,7 @@ public class BozePlusAddon implements Addon, Serializable<BozePlusAddon> {
 
 		SpiderPlus spiderPlus = new SpiderPlus();
 
-		modules.add(spiderPlus);
-		EVENT_BUS.subscribe(spiderPlus);
+		addModule(spiderPlus);
 
 		return true;
 	}

@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.mixin.meteorclient;
+package nekiplay.meteorplus.mixin.meteorclient.gui;
 
 import meteordevelopment.meteorclient.gui.GuiThemes;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;

@@ -4,7 +4,8 @@ public enum NoSlowModes {
 	Vanila,
 	NCP_Strict,
 	Grim_1dot8,
-	Grim_New;
+	Grim_New,
+	Matrix;
 
 	@Override
 	public String toString() {

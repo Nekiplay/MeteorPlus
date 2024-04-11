@@ -1,5 +1,6 @@
 package nekiplay.meteorplus.features.modules.movement.noslow;
 
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.DoubleSetting;
 import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.Setting;
@@ -95,5 +96,10 @@ public class NoSlowPlus extends Module {
 	@EventHandler
 	private void onUse(PlayerUseMultiplierEvent event) {
 		currentMode.onUse(event);
+	}
+
+	@EventHandler
+	private void onTickEventPre(TickEvent.Pre event) {
+		currentMode.onTickEventPre(event);
 	}
 }

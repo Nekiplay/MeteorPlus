@@ -4,12 +4,12 @@
 	"compatibilityLevel": "JAVA_17",
 	"plugin": "nekiplay.MixinPlugin",
 	"client": [
-		"meteorclient.LeftRightSettingsScreenMixin",
-		"meteorclient.ModuleMixin",
-		"meteorclient.ModulesScreenMixin",
-		"meteorclient.WBlockPosEditMixin",
-		"meteorclient.WMeteorModuleMixin",
-		"meteorclient.WPressableMixin",
+		"meteorclient.gui.LeftRightSettingsScreenMixin",
+		"meteorclient.modules.ModuleMixin",
+		"meteorclient.gui.ModulesScreenMixin",
+		"meteorclient.gui.WBlockPosEditMixin",
+		"meteorclient.gui.WMeteorModuleMixin",
+		"meteorclient.gui.WPressableMixin",
 		"meteorclient.modules.NameTagsMixin",
 		"meteorclient.modules.AutoToolMixin",
 		"meteorclient.modules.BlockESPMixin",
@@ -31,9 +31,8 @@
 		"defaultRequire": 1
 	},
 	"mixins": [
-		"meteorclient.DefaultSettingsWidgetFactoryMixin",
-		"meteorclient.KeybindMixin",
-		"meteorclient.utils.misc.MeteorStarscriptMixin",
+		"meteorclient.gui.DefaultSettingsWidgetFactoryMixin",
+		"meteorclient.utils.misc.KeybindMixin",
 		"minecraft.ClientPlayerEntityMixin",
 		"minecraft.LivingEntityMixin",
 		"minecraft.StringReaderMixin"
