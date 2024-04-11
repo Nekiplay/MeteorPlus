@@ -429,7 +429,12 @@ public class ConfigModifier {
 
 	private static Value posString(double x, double y, double z) {
 		if (positionProtection.get()) {
-			return Value.string(String.format("X: %.0f Y: %.0f Z: %.0f", x + ConfigModifier.get().x_spoof.get(), y, z + ConfigModifier.get().z_spoof.get()));
+			if (spoofMode.get() == SpoofMode.Fake) {
+				return Value.string(String.format("X: %.0f Y: %.0f Z: %.0f", x + ConfigModifier.get().x_spoof.get(), y, z + ConfigModifier.get().z_spoof.get()));
+			}
+			else {
+				return Value.string(String.format("X: 0 Y: %.0f Z: 0", y));
+			}
 		}
 		else {
 			return Value.string(String.format("X: %.0f Y: %.0f Z: %.0f", x, y, z));

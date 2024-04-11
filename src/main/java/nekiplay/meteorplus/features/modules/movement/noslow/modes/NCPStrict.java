@@ -29,7 +29,7 @@ public class NCPStrict extends NoSlowMode {
 
 		if (mc.player.isUsingItem()) {
 			ClientPlayNetworkHandler network = mc.getNetworkHandler();
-			mc.getNetworkHandler().sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, mc.player.getBlockPos(), Direction.DOWN));
+			network.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK, mc.player.getBlockPos(), Direction.DOWN));
 		}
 	}
 }

@@ -9,10 +9,7 @@ import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
-import nekiplay.meteorplus.features.modules.movement.noslow.modes.NCPStrict;
-import nekiplay.meteorplus.features.modules.movement.noslow.modes.Vanila;
-import nekiplay.meteorplus.features.modules.movement.noslow.modes.Grim;
-import nekiplay.meteorplus.features.modules.movement.noslow.modes.GrimNew;
+import nekiplay.meteorplus.features.modules.movement.noslow.modes.*;
 
 public class NoSlowPlus extends Module {
 	public NoSlowPlus() {
@@ -90,6 +87,7 @@ public class NoSlowPlus extends Module {
 			case NCP_Strict -> currentMode = new NCPStrict();
 			case Grim_1dot8 -> currentMode = new Grim();
 			case Grim_New -> currentMode = new GrimNew();
+			case Matrix -> currentMode = new Matrix();
 		}
 	}
 
@@ -101,5 +99,10 @@ public class NoSlowPlus extends Module {
 	@EventHandler
 	private void onTickEventPre(TickEvent.Pre event) {
 		currentMode.onTickEventPre(event);
+	}
+
+	@Override
+	public void onActivate() {
+		currentMode.onActivate();
 	}
 }

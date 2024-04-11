@@ -17,4 +17,5 @@ public class NoSlowMode {
 	}
 	public void onUse(PlayerUseMultiplierEvent event) { }
 	public void onTickEventPre(TickEvent.Pre event) { }
+	public void onActivate() { }
 }

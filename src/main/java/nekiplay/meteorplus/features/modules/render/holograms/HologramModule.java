@@ -24,8 +24,13 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3d;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HologramModule extends Module {
 	public HologramModule() {
@@ -104,29 +109,27 @@ public class HologramModule extends Module {
 			if (dir2.exists()) {
 				allHolograms.clear();
 				File[] files = dir2.listFiles();
-				for (File file : files) {
-					if (file.exists()) {
-						MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + "Loading hologram: " + file.getName());
-						FileReader fr = null;
-						try {
-							fr = new FileReader(file);
-							BufferedReader reader = new BufferedReader(fr);
+				if (files != null) {
+					for (File file : files) {
+						if (file.exists()) {
+							MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " Loading hologram: " + file.getName());
 							try {
-								String json = reader.readLine();
-								HologramDataListed hologramData = gson.fromJson(json, HologramDataListed.class);
-								if (hologramData != null) {
-									allHolograms.add(hologramData);
-									MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " Success loaded hologram: " + file.getName());
+								BufferedReader reader = Files.newBufferedReader(Path.of(file.toURI()), StandardCharsets.UTF_8);
+								try {
+									String json = reader.lines().collect(Collectors.joining());
+									HologramDataListed hologramData = gson.fromJson(json, HologramDataListed.class);
+									if (hologramData != null) {
+										allHolograms.add(hologramData);
+										MeteorPlusAddon.LOG.info(Main.METEOR_LOGPREFIX + " Success loaded hologram: " + file.getName());
+									}
+
+								} catch (JsonSyntaxException e) {
+									MeteorPlusAddon.LOG.error(Main.METEOR_LOGPREFIX + " Error in hologram: " + e);
+
 								}
-
-							} catch (IOException | JsonSyntaxException e) {
+							} catch (IOException e) {
 								MeteorPlusAddon.LOG.error(Main.METEOR_LOGPREFIX + " Error in hologram: " + e);
-								e.printStackTrace();
-
 							}
-                        } catch (FileNotFoundException e) {
-							MeteorPlusAddon.LOG.error(Main.METEOR_LOGPREFIX + " Error in hologram: " + e);
-							e.printStackTrace();
 						}
 					}
 				}
