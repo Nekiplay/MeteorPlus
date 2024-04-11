@@ -47,7 +47,7 @@ public class ConfigModifier {
 		.build()
 	);
 
-	public final Setting<SpoofMode> spoofMode = sgMeteorPlus.add(new EnumSetting.Builder<SpoofMode>()
+	public static final Setting<SpoofMode> spoofMode = sgMeteorPlus.add(new EnumSetting.Builder<SpoofMode>()
 		.name("protection-mode")
 		.defaultValue(SpoofMode.Sensor)
 		.visible(positionProtection::get)
@@ -78,81 +78,162 @@ public class ConfigModifier {
 		Starscript ss = MeteorStarscript.ss;
 
 		if (positionProtection.get()) {
-			ss.set("camera", new ValueMap()
-				.set("pos", new ValueMap()
-					.set("_toString", () -> posString(false, true))
-					.set("x", () -> Value.number(mc.gameRenderer.getCamera().getPos().x + ConfigModifier.get().x_spoof.get()))
-					.set("y", () -> Value.number(mc.gameRenderer.getCamera().getPos().y))
-					.set("z", () -> Value.number(mc.gameRenderer.getCamera().getPos().z + ConfigModifier.get().z_spoof.get()))
-				)
-				.set("opposite_dim_pos", new ValueMap()
-					.set("_toString", () -> posString(true, true))
-					.set("x", () -> oppositeX(true))
-					.set("y", () -> Value.number(mc.gameRenderer.getCamera().getPos().y))
-					.set("z", () -> oppositeZ(true))
-				)
+			if (spoofMode.get() == SpoofMode.Fake) {
+				ss.set("camera", new ValueMap()
+					.set("pos", new ValueMap()
+						.set("_toString", () -> posString(false, true))
+						.set("x", () -> Value.number(mc.gameRenderer.getCamera().getPos().x + ConfigModifier.get().x_spoof.get()))
+						.set("y", () -> Value.number(mc.gameRenderer.getCamera().getPos().y))
+						.set("z", () -> Value.number(mc.gameRenderer.getCamera().getPos().z + ConfigModifier.get().z_spoof.get()))
+					)
+					.set("opposite_dim_pos", new ValueMap()
+						.set("_toString", () -> posString(true, true))
+						.set("x", () -> oppositeX(true))
+						.set("y", () -> Value.number(mc.gameRenderer.getCamera().getPos().y))
+						.set("z", () -> oppositeZ(true))
+					)
 
-				.set("yaw", () -> yaw(true))
-				.set("pitch", () -> pitch(true))
-				.set("direction", () -> direction(true))
-			);
-
-			// Player
-			ss.set("player", new ValueMap()
-				.set("_toString", () -> Value.string(mc.getSession().getUsername()))
-				.set("health", () -> Value.number(mc.player != null ? mc.player.getHealth() : 0))
-				.set("absorption", () -> Value.number(mc.player != null ? mc.player.getAbsorptionAmount() : 0))
-				.set("hunger", () -> Value.number(mc.player != null ? mc.player.getHungerManager().getFoodLevel() : 0))
-
-				.set("speed", () -> Value.number(Utils.getPlayerSpeed().horizontalLength()))
-				.set("speed_all", new ValueMap()
-					.set("_toString", () -> Value.string(mc.player != null ? Utils.getPlayerSpeed().toString() : ""))
-					.set("x", () -> Value.number(mc.player != null ? Utils.getPlayerSpeed().x : 0))
-					.set("y", () -> Value.number(mc.player != null ? Utils.getPlayerSpeed().y : 0))
-					.set("z", () -> Value.number(mc.player != null ? Utils.getPlayerSpeed().z : 0))
-				)
-
-				.set("breaking_progress", () -> Value.number(mc.interactionManager != null ? ((ClientPlayerInteractionManagerAccessor) mc.interactionManager).getBreakingProgress() : 0))
-				.set("biome", ConfigModifier::biome)
-
-				.set("dimension", () -> Value.string(PlayerUtils.getDimension().name()))
-				.set("opposite_dimension", () -> Value.string(PlayerUtils.getDimension().opposite().name()))
+					.set("yaw", () -> yaw(true))
+					.set("pitch", () -> pitch(true))
+					.set("direction", () -> direction(true))
+				);
 
 
-				.set("pos", new ValueMap()
-					.set("_toString", () -> posString(false, false))
-					.set("x", () -> Value.number(mc.player != null ? mc.player.getX() + ConfigModifier.get().x_spoof.get() : 0))
-					.set("y", () -> Value.number(mc.player != null ? mc.player.getY() : 0))
-					.set("z", () -> Value.number(mc.player != null ? mc.player.getZ() + ConfigModifier.get().z_spoof.get() : 0))
-				)
-				.set("opposite_dim_pos", new ValueMap()
-					.set("_toString", () -> posString(true, false))
-					.set("x", () -> oppositeX(false))
-					.set("y", () -> Value.number(mc.player != null ? mc.player.getY() : 0))
-					.set("z", () -> oppositeZ(false))
-				)
+				// Player
+				ss.set("player", new ValueMap()
+					.set("_toString", () -> Value.string(mc.getSession().getUsername()))
+					.set("health", () -> Value.number(mc.player != null ? mc.player.getHealth() : 0))
+					.set("absorption", () -> Value.number(mc.player != null ? mc.player.getAbsorptionAmount() : 0))
+					.set("hunger", () -> Value.number(mc.player != null ? mc.player.getHungerManager().getFoodLevel() : 0))
 
-				.set("yaw", () -> yaw(false))
-				.set("pitch", () -> pitch(false))
-				.set("direction", () -> direction(false))
+					.set("speed", () -> Value.number(Utils.getPlayerSpeed().horizontalLength()))
+					.set("speed_all", new ValueMap()
+						.set("_toString", () -> Value.string(mc.player != null ? Utils.getPlayerSpeed().toString() : ""))
+						.set("x", () -> Value.number(mc.player != null ? Utils.getPlayerSpeed().x : 0))
+						.set("y", () -> Value.number(mc.player != null ? Utils.getPlayerSpeed().y : 0))
+						.set("z", () -> Value.number(mc.player != null ? Utils.getPlayerSpeed().z : 0))
+					)
 
-				.set("hand", () -> mc.player != null ? wrap(mc.player.getMainHandStack()) : Value.null_())
-				.set("offhand", () -> mc.player != null ? wrap(mc.player.getOffHandStack()) : Value.null_())
-				.set("hand_or_offhand", ConfigModifier::handOrOffhand)
-				.set("get_item", ConfigModifier::getItem)
-				.set("count_items", ConfigModifier::countItems)
+					.set("breaking_progress", () -> Value.number(mc.interactionManager != null ? ((ClientPlayerInteractionManagerAccessor) mc.interactionManager).getBreakingProgress() : 0))
+					.set("biome", ConfigModifier::biome)
 
-				.set("xp", new ValueMap()
-					.set("level", () -> Value.number(mc.player != null ? mc.player.experienceLevel : 0))
-					.set("progress", () -> Value.number(mc.player != null ? mc.player.experienceProgress : 0))
-					.set("total", () -> Value.number(mc.player != null ? mc.player.totalExperience : 0))
-				)
+					.set("dimension", () -> Value.string(PlayerUtils.getDimension().name()))
+					.set("opposite_dimension", () -> Value.string(PlayerUtils.getDimension().opposite().name()))
 
-				.set("has_potion_effect", ConfigModifier::hasPotionEffect)
-				.set("get_potion_effect", ConfigModifier::getPotionEffect)
 
-				.set("get_stat", ConfigModifier::getStat)
-			);
+					.set("pos", new ValueMap()
+						.set("_toString", () -> posString(false, false))
+						.set("x", () -> Value.number(mc.player != null ? mc.player.getX() + ConfigModifier.get().x_spoof.get() : 0))
+						.set("y", () -> Value.number(mc.player != null ? mc.player.getY() : 0))
+						.set("z", () -> Value.number(mc.player != null ? mc.player.getZ() + ConfigModifier.get().z_spoof.get() : 0))
+					)
+					.set("opposite_dim_pos", new ValueMap()
+						.set("_toString", () -> posString(true, false))
+						.set("x", () -> oppositeX(false))
+						.set("y", () -> Value.number(mc.player != null ? mc.player.getY() : 0))
+						.set("z", () -> oppositeZ(false))
+					)
+
+					.set("yaw", () -> yaw(false))
+					.set("pitch", () -> pitch(false))
+					.set("direction", () -> direction(false))
+
+					.set("hand", () -> mc.player != null ? wrap(mc.player.getMainHandStack()) : Value.null_())
+					.set("offhand", () -> mc.player != null ? wrap(mc.player.getOffHandStack()) : Value.null_())
+					.set("hand_or_offhand", ConfigModifier::handOrOffhand)
+					.set("get_item", ConfigModifier::getItem)
+					.set("count_items", ConfigModifier::countItems)
+
+					.set("xp", new ValueMap()
+						.set("level", () -> Value.number(mc.player != null ? mc.player.experienceLevel : 0))
+						.set("progress", () -> Value.number(mc.player != null ? mc.player.experienceProgress : 0))
+						.set("total", () -> Value.number(mc.player != null ? mc.player.totalExperience : 0))
+					)
+
+					.set("has_potion_effect", ConfigModifier::hasPotionEffect)
+					.set("get_potion_effect", ConfigModifier::getPotionEffect)
+
+					.set("get_stat", ConfigModifier::getStat)
+				);
+			}
+			else {
+				ss.set("camera", new ValueMap()
+					.set("pos", new ValueMap()
+						.set("_toString", () -> posString(false, true))
+						.set("x", () -> Value.number(0))
+						.set("y", () -> Value.number(mc.gameRenderer.getCamera().getPos().y))
+						.set("z", () -> Value.number(0))
+					)
+					.set("opposite_dim_pos", new ValueMap()
+						.set("_toString", () -> posString(true, true))
+						.set("x", () -> Value.number(0))
+						.set("y", () -> Value.number(mc.gameRenderer.getCamera().getPos().y))
+						.set("z", () -> Value.number(0))
+					)
+
+					.set("yaw", () -> yaw(true))
+					.set("pitch", () -> pitch(true))
+					.set("direction", () -> direction(true))
+				);
+
+
+				// Player
+				ss.set("player", new ValueMap()
+					.set("_toString", () -> Value.string(mc.getSession().getUsername()))
+					.set("health", () -> Value.number(mc.player != null ? mc.player.getHealth() : 0))
+					.set("absorption", () -> Value.number(mc.player != null ? mc.player.getAbsorptionAmount() : 0))
+					.set("hunger", () -> Value.number(mc.player != null ? mc.player.getHungerManager().getFoodLevel() : 0))
+
+					.set("speed", () -> Value.number(Utils.getPlayerSpeed().horizontalLength()))
+					.set("speed_all", new ValueMap()
+						.set("_toString", () -> Value.string(mc.player != null ? Utils.getPlayerSpeed().toString() : ""))
+						.set("x", () -> Value.number(0))
+						.set("y", () -> Value.number(mc.player != null ? Utils.getPlayerSpeed().y : 0))
+						.set("z", () -> Value.number(0))
+					)
+
+					.set("breaking_progress", () -> Value.number(mc.interactionManager != null ? ((ClientPlayerInteractionManagerAccessor) mc.interactionManager).getBreakingProgress() : 0))
+					.set("biome", ConfigModifier::biome)
+
+					.set("dimension", () -> Value.string(PlayerUtils.getDimension().name()))
+					.set("opposite_dimension", () -> Value.string(PlayerUtils.getDimension().opposite().name()))
+
+
+					.set("pos", new ValueMap()
+						.set("_toString", () -> posString(false, false))
+						.set("x", () -> Value.number(0))
+						.set("y", () -> Value.number(mc.player != null ? mc.player.getY() : 0))
+						.set("z", () -> Value.number(0))
+					)
+					.set("opposite_dim_pos", new ValueMap()
+						.set("_toString", () -> posString(true, false))
+						.set("x", () -> Value.number(0))
+						.set("y", () -> Value.number(mc.player != null ? mc.player.getY() : 0))
+						.set("z", () -> Value.number(0))
+					)
+
+					.set("yaw", () -> yaw(false))
+					.set("pitch", () -> pitch(false))
+					.set("direction", () -> direction(false))
+
+					.set("hand", () -> mc.player != null ? wrap(mc.player.getMainHandStack()) : Value.null_())
+					.set("offhand", () -> mc.player != null ? wrap(mc.player.getOffHandStack()) : Value.null_())
+					.set("hand_or_offhand", ConfigModifier::handOrOffhand)
+					.set("get_item", ConfigModifier::getItem)
+					.set("count_items", ConfigModifier::countItems)
+
+					.set("xp", new ValueMap()
+						.set("level", () -> Value.number(mc.player != null ? mc.player.experienceLevel : 0))
+						.set("progress", () -> Value.number(mc.player != null ? mc.player.experienceProgress : 0))
+						.set("total", () -> Value.number(mc.player != null ? mc.player.totalExperience : 0))
+					)
+
+					.set("has_potion_effect", ConfigModifier::hasPotionEffect)
+					.set("get_potion_effect", ConfigModifier::getPotionEffect)
+
+					.set("get_stat", ConfigModifier::getStat)
+				);
+			}
 		}
 		else {
 			ss.set("camera", new ValueMap()
