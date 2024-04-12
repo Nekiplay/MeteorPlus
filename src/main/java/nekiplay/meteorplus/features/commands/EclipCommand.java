@@ -21,8 +21,8 @@ import nekiplay.meteorplus.utils.ElytraUtils;
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
-public class Eclip extends Command {
-	public Eclip() {
+public class EclipCommand extends Command {
+	public EclipCommand() {
 		super("eclip", "Elyta clip need elytra bypass most anticheats");
 	}
 

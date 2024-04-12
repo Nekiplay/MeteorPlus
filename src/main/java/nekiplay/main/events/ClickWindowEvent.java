@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.events;
+package nekiplay.main.events;
 
 import meteordevelopment.meteorclient.events.Cancellable;
 import net.minecraft.screen.slot.SlotActionType;

@@ -25,7 +25,7 @@ public class GhostBlockFixer extends Module {
 	public GhostBlockFixer() {
 		super(Categories.World, "auto-ghost-block-fixer", "Automatically fix ghost blocks.");
 	}
-	private final SettingGroup GBSettings = settings.createGroup("Ghost Block Fixer Settings");
+	private final SettingGroup GBSettings = settings.getDefaultGroup();
 
 	private final Setting<Integer> delay = GBSettings.add(new IntSetting.Builder()
 		.name("Fixer delay")

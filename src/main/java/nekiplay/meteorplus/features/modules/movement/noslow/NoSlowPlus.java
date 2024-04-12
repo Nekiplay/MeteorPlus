@@ -8,7 +8,7 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
+import nekiplay.main.events.PlayerUseMultiplierEvent;
 import nekiplay.meteorplus.features.modules.movement.noslow.modes.*;
 
 public class NoSlowPlus extends Module {

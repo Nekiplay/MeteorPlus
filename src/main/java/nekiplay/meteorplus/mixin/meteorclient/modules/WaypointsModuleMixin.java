@@ -38,7 +38,7 @@ public class WaypointsModuleMixin {
 	public final AtomicReference<WTable> tableRef = new AtomicReference<>();
 	private final WaypointsModule waypoints = (WaypointsModule)(Object) this;
 
-	private final SettingGroup meteorPlusTab = waypoints.settings.createGroup("Meteor Plus");
+	private final SettingGroup meteorPlusTab = waypoints.settings.createGroup("Meteor+");
 
 	private final Setting<Boolean> showDistance = meteorPlusTab.add(new BoolSetting.Builder()
 		.name("show-distance")

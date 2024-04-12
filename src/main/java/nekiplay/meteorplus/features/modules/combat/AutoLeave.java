@@ -20,7 +20,7 @@ public class AutoLeave extends Module {
 	public AutoLeave() {
 		super(Categories.Combat, "auto-leave", "Automatically logs out from the server when someone enters your render distance.");
 	}
-	private final SettingGroup ALSettings = settings.createGroup("Auto Leave Settings");
+	private final SettingGroup ALSettings = settings.getDefaultGroup();
 	private final Setting<Boolean> visualRangeIgnoreFriends = ALSettings.add(new BoolSetting.Builder()
 		.name("ignore-friends")
 		.description("Ignores friends.")

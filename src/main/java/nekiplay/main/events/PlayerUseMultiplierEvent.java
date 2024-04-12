@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.events;
+package nekiplay.main.events;
 
 public class PlayerUseMultiplierEvent {
 	private float _forward = 0.2f;

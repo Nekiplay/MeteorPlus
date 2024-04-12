@@ -33,7 +33,7 @@ public class SafeMine extends Module {
 		super(Categories.World, "Safe Mine", "Save you from lava.");
 	}
 
-	private final SettingGroup ALSettings = settings.createGroup("Anti Lava Settings");
+	private final SettingGroup ALSettings = settings.getDefaultGroup();
 	private final SettingGroup FSettings = settings.createGroup("Freeze Settings");
 
 	public final Setting<Boolean> solidLava = ALSettings.add(new BoolSetting.Builder()

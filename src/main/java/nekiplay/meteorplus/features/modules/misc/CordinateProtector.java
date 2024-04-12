@@ -1,7 +1,7 @@
 package nekiplay.meteorplus.features.modules.misc;
 
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.events.hud.DebugDrawTextEvent;
+import nekiplay.main.events.hud.DebugDrawTextEvent;
 import nekiplay.meteorplus.mixinclasses.SpoofMode;
 import nekiplay.meteorplus.settings.ConfigModifier;
 import net.minecraft.util.Formatting;

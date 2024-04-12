@@ -37,7 +37,7 @@ public class FreecamMixin {
 	@Unique
 	private final Freecam freecam = (Freecam)(Object) this;
 	@Unique
-	private final SettingGroup freecamMeteorPlusSetting = freecam.settings.createGroup("Meteor Plus");
+	private final SettingGroup freecamMeteorPlusSetting = freecam.settings.createGroup("Meteor+");
 	@Unique
 	private final Setting<Boolean> moveBaritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
 		.name("baritone-move-control")

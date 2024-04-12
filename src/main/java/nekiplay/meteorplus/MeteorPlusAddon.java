@@ -131,12 +131,12 @@ public class MeteorPlusAddon extends MeteorAddon {
 		LOG.info(METEOR_LOGPREFIX + " Initializing commands...");
 
 		Commands.add(new ItemRawIdCommand());
-		Commands.add(new Eclip());
-		Commands.add(new ClearInventory());
+		Commands.add(new EclipCommand());
+		Commands.add(new ClearInventoryCommand());
 		if (isBaritonePresent) {
-			Commands.add(new GotoPlus());
+			Commands.add(new GotoPlusCommand());
 		}
-		Commands.add(new GPT());
+		Commands.add(new GPTCommand());
 
 		LOG.info(METEOR_LOGPREFIX + " Loaded commands");
 		//endregion

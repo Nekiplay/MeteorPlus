@@ -1,6 +1,6 @@
 package nekiplay.meteorplus.features.modules.movement.noslow.modes;
 
-import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
+import nekiplay.main.events.PlayerUseMultiplierEvent;
 import nekiplay.meteorplus.features.modules.movement.noslow.NoSlowMode;
 import nekiplay.meteorplus.features.modules.movement.noslow.NoSlowModes;
 import net.minecraft.client.network.ClientPlayNetworkHandler;

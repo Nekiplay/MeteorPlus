@@ -3,7 +3,7 @@
   "id": "meteorplus",
   "version": "${version}",
   "name": "Meteor Plus",
-  "description": "An addon for Meteor client that adds many blatant features.",
+  "description": "An addon for Meteor client and Boze Client that adds many blatant features.",
   "authors": [
 		"Neki_play"
   ],

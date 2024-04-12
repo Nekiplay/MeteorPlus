@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.events;
+package nekiplay.main.events;
 
 import net.minecraft.block.entity.SignText;
 import net.minecraft.client.render.VertexConsumerProvider;

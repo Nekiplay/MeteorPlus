@@ -274,13 +274,6 @@ public class XrayBruteforce extends Module {
         .build()
     );
 
-	public final Setting<Boolean> spoofTeleport = sgGeneral.add(new BoolSetting.Builder()
-		.name("spoof-teleport")
-		.description("Clear saved ores cache.")
-		.defaultValue(false)
-		.build()
-	);
-
 	public final Setting<Integer> rescanerDelay = sgDelayer.add(new IntSetting.Builder()
 		.name("rescaner-delay")
 		.description("Deley for rechecking blobk.")

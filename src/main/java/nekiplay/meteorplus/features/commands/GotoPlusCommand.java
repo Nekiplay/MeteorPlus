@@ -19,8 +19,8 @@ import java.util.List;
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
-public class GotoPlus extends Command {
-	public GotoPlus() {
+public class GotoPlusCommand extends Command {
+	public GotoPlusCommand() {
 		super("gotoplus", "Baritone goto to selected type");
 	}
 

@@ -7,10 +7,7 @@ public class MovementUtils {
 		return Math.sqrt(mc.player.getVelocity().x * mc.player.getVelocity().x + mc.player.getVelocity().z * mc.player.getVelocity().z);
 	}
 	public static void strafe(float speed) {
-		double yaw = direction();
-		double sin = -Math.sin(yaw) * speed;
-		double cos = Math.cos(yaw) * speed;
-		mc.player.getVelocity().add(cos, 0, sin);
+		strafe((double)speed);
 	}
 	public static void strafe(double speed) {
 		double yaw = direction();

@@ -19,7 +19,7 @@ public class Freeze extends Module {
 	public Freeze() {
 		super(Categories.Movement, "Freeze", "Freezes your position for server.");
 	}
-	private final SettingGroup FSettings = settings.createGroup("Freeze Settings");
+	private final SettingGroup FSettings = settings.getDefaultGroup();
 
 	private final Setting<Boolean> FreezeLook = FSettings.add(new BoolSetting.Builder()
 		.name("Freeze look")

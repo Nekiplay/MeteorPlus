@@ -19,8 +19,8 @@ import java.util.ArrayList;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
-public class GPT extends Command {
-	public GPT() {
+public class GPTCommand extends Command {
+	public GPTCommand() {
 		super("gpt", "Settings for .gpt");
 	}
 

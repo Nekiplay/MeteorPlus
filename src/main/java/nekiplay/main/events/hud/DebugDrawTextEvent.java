@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.events.hud;
+package nekiplay.main.events.hud;
 
 import meteordevelopment.meteorclient.events.Cancellable;
 import net.minecraft.util.hit.HitResult;

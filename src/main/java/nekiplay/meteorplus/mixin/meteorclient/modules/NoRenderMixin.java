@@ -5,19 +5,10 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.render.NoRender;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.events.hud.DebugDrawTextEvent;
-import nekiplay.meteorplus.mixinclasses.SpoofMode;
-import nekiplay.meteorplus.settings.ConfigModifier;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.ChunkSectionPos;
+import nekiplay.main.events.hud.DebugDrawTextEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import java.util.List;
-import java.util.Locale;
 
 @Mixin(value = NoRender.class, remap = false, priority = 1001)
 public class NoRenderMixin extends Module {

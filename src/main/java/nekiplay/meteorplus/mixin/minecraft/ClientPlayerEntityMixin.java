@@ -3,7 +3,7 @@ package nekiplay.meteorplus.mixin.minecraft;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
+import nekiplay.main.events.PlayerUseMultiplierEvent;
 import nekiplay.meteorplus.features.modules.movement.SprintPlus;
 import nekiplay.meteorplus.features.modules.movement.noslow.NoSlowPlus;
 import net.minecraft.client.input.Input;

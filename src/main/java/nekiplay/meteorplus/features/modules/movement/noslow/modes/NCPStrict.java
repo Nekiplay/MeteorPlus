@@ -1,11 +1,10 @@
 package nekiplay.meteorplus.features.modules.movement.noslow.modes;
 
-import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
+import nekiplay.main.events.PlayerUseMultiplierEvent;
 import nekiplay.meteorplus.features.modules.movement.noslow.NoSlowMode;
 import nekiplay.meteorplus.features.modules.movement.noslow.NoSlowModes;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
-import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.math.Direction;
 
 public class NCPStrict extends NoSlowMode {

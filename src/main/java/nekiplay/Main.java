@@ -22,7 +22,7 @@ public class Main implements ModInitializer {
 			bozePlusMain.onInitialize();
 			LOG.info(METEOR_LOGPREFIX + " & " + BOZE_LOGPREFIX + " Loaded of Boze Client integration");
 		}
-		else if (MixinPlugin.isBozeAPI && MixinPlugin.isMeteorClient) {
+		else if (MixinPlugin.isBozeAPI) {
 			LOG.info(METEOR_LOGPREFIX + " & " + BOZE_LOGPREFIX + " You have Meteor Client installed, integration with Boze Client is disabled");
 		}
 	}

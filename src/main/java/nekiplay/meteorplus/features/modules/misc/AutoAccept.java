@@ -19,7 +19,7 @@ public class AutoAccept extends Module {
 		super(Categories.Misc, "Auto Accept", "Automatically accepts incoming teleport requests.");
 	}
 
-	private final SettingGroup AASettings = settings.createGroup("Auto Accept Settings");
+	private final SettingGroup AASettings = settings.getDefaultGroup();
 
 	private final Setting<Mode> mode = AASettings.add(new EnumSetting.Builder<Mode>()
 		.name("Mode")

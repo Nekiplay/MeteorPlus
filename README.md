@@ -36,14 +36,15 @@
 | **Timer+**             | **Timer for Anti-Cheats**                     | **NCP, Intave, Vulcan**       |
 | **Safe mine**          | **Prevents player from lava**                 | **Matrix**                    |
 | **X-Ray bruteforce**   | **Xray protection bypass for servers 1.12.2** | **Ore Obfuscator**            |
-| **Anti Bot**           | **Ignores bots for KillAura, ESP, Tracers**   |                               |
 | **Trigger Bot**        | **AutoAttack on look at entity**              |                               |
 | **Auto Obsidian Farm** | **Automatically farm obsidian in AFK**        |                               |
 
 ## PvP Modules
-| Module        | Description                  | Bypasses |
-|---------------|------------------------------|----------|
-| **Velocity+** | **Velocity for Anti-Cheats** | **Grim** |
+| Module        | Description                                            | Bypasses |
+|---------------|--------------------------------------------------------|----------|
+| **Velocity+** | **Velocity for Anti-Cheats**                           | **Grim** |
+| **Anti Bot**  | **Ignores bots for KillAura, ESP, Tracers**            |          |
+| **Teams**     | **Does not beat teammates on BedWars and other modes** |          |
 
 ## Commands
 | Command   | Description       | Bypasses                                |

@@ -13,7 +13,7 @@ import nekiplay.meteorplus.features.modules.movement.spider.SpiderModes;
 
 public class Matrix extends SpiderMode {
 	public Matrix() {
-		super(SpiderModes.Matrix_Lower_7);
+		super(SpiderModes.Matrix);
 	}
 
 	private int tick = 0;

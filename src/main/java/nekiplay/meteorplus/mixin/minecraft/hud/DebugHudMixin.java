@@ -1,7 +1,7 @@
 package nekiplay.meteorplus.mixin.minecraft.hud;
 
 import meteordevelopment.meteorclient.MeteorClient;
-import nekiplay.meteorplus.events.hud.DebugDrawTextEvent;
+import nekiplay.main.events.hud.DebugDrawTextEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.DebugHud;

@@ -54,7 +54,7 @@ public class AutoCraftPlus extends Module {
 		.name("delay-ms")
 		.description("Click delay")
 		.defaultValue(100)
-		.sliderMin(50)
+		.sliderMin(15)
 		.sliderMax(1000)
 		.build()
 	);

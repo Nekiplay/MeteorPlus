@@ -1,7 +1,7 @@
 package nekiplay.bozeplus.features.modules.movement.spider;
 
 public enum SpiderModes {
-	Matrix_Lower_7,
+	Matrix,
 	Vulcan,
 	Elytra_clip;
 

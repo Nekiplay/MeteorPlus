@@ -14,7 +14,6 @@ import meteordevelopment.meteorclient.utils.misc.input.Input;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.MeteorPlusAddon;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.option.KeyBinding;
@@ -23,7 +22,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
 import net.minecraft.util.math.MathHelper;
-import nekiplay.meteorplus.events.ClickWindowEvent;
+import nekiplay.main.events.ClickWindowEvent;
 
 import static org.lwjgl.glfw.GLFW.*;
 

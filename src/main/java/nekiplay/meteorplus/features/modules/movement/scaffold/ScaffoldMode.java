@@ -1,7 +1,7 @@
 package nekiplay.meteorplus.features.modules.movement.scaffold;
 
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import nekiplay.meteorplus.events.PlayerUseMultiplierEvent;
+import nekiplay.main.events.PlayerUseMultiplierEvent;
 import net.minecraft.client.MinecraftClient;
 
 public class ScaffoldMode {

@@ -12,7 +12,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class Matrix extends SpiderMode {
 	public Matrix(SpiderPlus spiderPlus) {
-		super(SpiderModes.Matrix_Lower_7, spiderPlus);
+		super(SpiderModes.Matrix, spiderPlus);
 	}
 
 	private int tick = 0;
@@ -29,8 +29,9 @@ public class Matrix extends SpiderMode {
 		start = false;
 		modify = false;
 
-		assert mc.player != null;
-		startY = mc.player.getPos().y;
+		if (mc.player != null) {
+			startY = mc.player.getPos().y;
+		}
 	}
 
 	private boolean YGround(double height, double min, double max) {
@@ -46,9 +47,8 @@ public class Matrix extends SpiderMode {
 		return Double.parseDouble(yString);
 	}
 	private void work(Packet<?> packet) {
-		if (modify) {
+		if (modify && mc.player != null) {
 			if (packet instanceof PlayerMoveC2SPacket move) {
-				assert mc.player != null;
 				double y = mc.player.getY();
 				y = move.getY(y);
 
@@ -61,8 +61,7 @@ public class Matrix extends SpiderMode {
 					start = false;
 				}
 			}
-		} else {
-			assert mc.player != null;
+		} else if (mc.player != null) {
 			if (mc.player.isOnGround() && block) {
 				block = false;
 				startY = mc.player.getPos().y;
@@ -73,7 +72,7 @@ public class Matrix extends SpiderMode {
 
 	@Override
 	public void onTickEventPre(EventTick.Pre event) {
-		if (modify) {
+		if (modify && mc.player != null) {
 			ClientPlayerEntity player = mc.player;
 			double y = player.getPos().y;
 			if (lastY == y && tick > 1) {
@@ -87,36 +86,36 @@ public class Matrix extends SpiderMode {
 	@Override
 	public void onTickEventPost(EventTick.Post event) {
 		ClientPlayerEntity player = mc.player;
-		assert player != null;
-		Vec3d pl_velocity = player.getVelocity();
-		modify = player.horizontalCollision;
-		if (mc.player.isOnGround()) {
-			block = false;
-			startY = mc.player.getPos().y;
-			start = false;
-		}
-		if (player.horizontalCollision) {
-			if (!start) {
-				start = true;
+		if (player != null) {
+			Vec3d pl_velocity = player.getVelocity();
+			modify = player.horizontalCollision;
+			if (mc.player.isOnGround()) {
+				block = false;
 				startY = mc.player.getPos().y;
-				lastY = mc.player.getY();
+				start = false;
 			}
-			if (!block) {
-				if (tick == 0) {
-					mc.player.setVelocity(pl_velocity.x, 0.41999998688698, pl_velocity.z);
-					tick = 1;
-				} else if (tick == 1) {
-					mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.08679999325 - coff, pl_velocity.z);
-					tick = 2;
-				} else if (tick == 2) {
-					mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.17186398826 - coff, pl_velocity.z);
-					tick = 0;
+			if (player.horizontalCollision) {
+				if (!start) {
+					start = true;
+					startY = mc.player.getPos().y;
+					lastY = mc.player.getY();
 				}
+				if (!block) {
+					if (tick == 0) {
+						mc.player.setVelocity(pl_velocity.x, 0.41999998688698, pl_velocity.z);
+						tick = 1;
+					} else if (tick == 1) {
+						mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.08679999325 - coff, pl_velocity.z);
+						tick = 2;
+					} else if (tick == 2) {
+						mc.player.setVelocity(pl_velocity.x, 0.41999998688698 - 0.17186398826 - coff, pl_velocity.z);
+						tick = 0;
+					}
+				}
+			} else {
+				modify = false;
+				tick = 0;
 			}
-		}
-		else {
-			modify = false;
-			tick = 0;
 		}
 	}
 }
