@@ -32,10 +32,9 @@
 		"meteorplus.mixins.json",
 		"meteorplus-journeymap.mixins.json",
 		"meteorplus-xaeroworldmap.mixins.json",
-		"meteorplus-xaerominimap.mixins.json",
-		"meteorplus-whereisit.mixins.json"
-
-  ],
+		"meteorplus-whereisit.mixins.json",
+		"bozeplus.mixins.json"
+	],
 	"accessWidener": "meteorplus.accesswidener",
   "custom": {
     "meteor-client:color": "0,181,73",
