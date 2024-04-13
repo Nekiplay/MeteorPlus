@@ -54,7 +54,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 	public static final ItemStack logo_mods_item = ModItems.LOGO_MODS_ITEM.getDefaultStack();
 
 	public static final Category CATEGORYMODS = new Category("Integrations", logo_mods_item);
-	public static final HudGroup HUD_GROUP = new HudGroup("Meteor+ Hud");
+	public static final HudGroup HUD_GROUP = new HudGroup("Meteor+");
 
 	private static MeteorPlusAddon instance;
 

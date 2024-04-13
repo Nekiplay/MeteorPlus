@@ -11,10 +11,8 @@ import nekiplay.meteorplus.utils.algoritms.RandomUtils;
 import static nekiplay.meteorplus.features.modules.world.timer.TimerPlus.*;
 
 public class Vulcan extends TimerMode  {
-	private Timer timer;
 	public Vulcan() {
 		super(TimerModes.Vulcan);
-		timer = Modules.get().get(Timer.class);
 	}
 
 	@Override
@@ -27,7 +25,7 @@ public class Vulcan extends TimerMode  {
 		if (mc.player == null) return;
 		if (rechargeTimer == 0) {
 			if (workingTimer > RandomUtils.nextInt(8, 10)) {
-				int delay = RandomUtils.nextInt(410, 720);
+				int delay = RandomUtils.nextInt(510, 720);
 				rechargeTimer = delay;
 				rechargeDelay = delay;
 				workingTimer = 0;

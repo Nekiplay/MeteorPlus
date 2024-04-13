@@ -114,7 +114,7 @@ public class Portals extends AutoObsidianFarmMode {
 			commandDelay++;
 		}
 		if (mc.player == null || mc.world == null) { return; }
-		if ((mc.player.isUsingItem() || (Modules.get().get(AutoEat.class).isActive() && Modules.get().get(AutoEat.class).shouldEat())) && settings.pauseOnEat.get()) {
+		if ((mc.player.isUsingItem() || (Modules.get().get(AutoEat.class).isActive() && Modules.get().get(AutoEat.class).eating)) && settings.pauseOnEat.get()) {
 			return;
 		}
 

@@ -7,8 +7,8 @@ public enum TimerModes {
 	Grim,
 	OldFag,
 	rem6g6s,
-	Custom
-	;
+	Custom,
+	Custom_v2;
 
 	@Override
 	public String toString() {

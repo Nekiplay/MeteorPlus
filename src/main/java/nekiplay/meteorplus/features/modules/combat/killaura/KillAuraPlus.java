@@ -9,6 +9,7 @@ import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.features.modules.combat.killaura.modes.LiquidBounceAura;
+import nekiplay.meteorplus.features.modules.combat.killaura.modes.VanilaPlus;
 import nekiplay.meteorplus.utils.algoritms.Smooth;
 import net.minecraft.entity.EntityType;
 
@@ -338,9 +339,8 @@ public class KillAuraPlus extends Module {
 
 	private void onModeChanged(KillAuraPlusModes mode) {
 		switch (mode) {
-			case LiquidBounce -> {
-				currentMode = new LiquidBounceAura();
-			}
+			case LiquidBounce -> currentMode = new LiquidBounceAura();
+			case VanilaPlus -> currentMode = new VanilaPlus();
 		}
 	}
 	@EventHandler

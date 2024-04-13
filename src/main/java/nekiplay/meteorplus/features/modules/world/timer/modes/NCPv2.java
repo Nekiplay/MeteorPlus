@@ -1,17 +1,17 @@
 package nekiplay.meteorplus.features.modules.world.timer.modes;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import nekiplay.meteorplus.features.modules.world.timer.TimerMode;
 import nekiplay.meteorplus.features.modules.world.timer.TimerModes;
 
 import static nekiplay.meteorplus.features.modules.world.timer.TimerPlus.*;
+import static nekiplay.meteorplus.features.modules.world.timer.TimerPlus.timerMultiplierOnRecharge;
 
-public class NCP extends TimerMode {
-	public NCP() {
-		super(TimerModes.NCP);
+public class NCPv2 extends TimerMode {
+	public NCPv2() {
+		super(TimerModes.Custom_v2);
 	}
 
 	@Override
@@ -32,11 +32,21 @@ public class NCP extends TimerMode {
 				if (settings.isActive()) {
 					if (settings.onlyInMove.get() && PlayerUtils.isMoving()) {
 						workingTimer++;
-						timer.setOverride(timerMultiplier);
+						if (mc.player.isOnGround()) {
+							timer.setOverride(timerMultiplier);
+						}
+						else {
+							timer.setOverride(timerMultiplierInAir);
+						}
 					}
 					else if (!settings.onlyInMove.get()) {
 						workingTimer++;
-						timer.setOverride(timerMultiplier);
+						if (mc.player.isOnGround()) {
+							timer.setOverride(timerMultiplier);
+						}
+						else {
+							timer.setOverride(timerMultiplierInAir);
+						}
 					}
 					else {
 						timer.setOverride(timerMultiplierOnRecharge);

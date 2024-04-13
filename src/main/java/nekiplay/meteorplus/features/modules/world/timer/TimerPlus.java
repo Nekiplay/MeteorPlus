@@ -9,6 +9,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.features.modules.world.timer.modes.NCP;
+import nekiplay.meteorplus.features.modules.world.timer.modes.NCPv2;
 import nekiplay.meteorplus.features.modules.world.timer.modes.Vulcan;
 
 import static nekiplay.meteorplus.hud.TimerPlusCharge.find_percent;
@@ -19,12 +20,12 @@ public class TimerPlus extends Module {
 		autoSubscribe = false;
 		MeteorClient.EVENT_BUS.subscribe(this);
 	}
-	private static TimerMode oldMode = null;
 	public static int workingDelay = 27;
 	public static int workingTimer = 0;
 	public static int rechargeTimer = 0; // Reset timer
 	public static int rechargeDelay = 352; // Recharge delay
 	public static double timerMultiplier = 2; // Timer multiplier
+	public static double timerMultiplierInAir = 1.5; // Timer multiplier in air
 	public static double timerMultiplierOnRecharge = 1; // Timer multiplier on recharge
 
 	private final SettingGroup settingsGroup = settings.getDefaultGroup();
@@ -57,7 +58,7 @@ public class TimerPlus extends Module {
 		.name("recharge-delay")
 		.description("Recharge timer delay.")
 		.defaultValue(352)
-		.visible(() -> mode.get() == TimerModes.Custom)
+		.visible(() -> mode.get() == TimerModes.Custom || mode.get() == TimerModes.Custom_v2)
 		.onChanged((a) ->  {
 			rechargeDelay = a;
 			rechargeTimer = 0;
@@ -69,10 +70,21 @@ public class TimerPlus extends Module {
 		.name("boost-delay")
 		.description("Working timer delay.")
 		.defaultValue(27)
-		.visible(() -> mode.get() == TimerModes.Custom)
+		.visible(() -> mode.get() == TimerModes.Custom || mode.get() == TimerModes.Custom_v2)
 		.onChanged((a) -> {
 			workingDelay = a;
 			workingTimer = 0;
+		})
+		.build()
+	);
+
+	private final Setting<Double> boostMultiplierInAir = sgGeneral.add(new DoubleSetting.Builder()
+		.name("multiplier-in-air")
+		.description("Timer multiplier in air.")
+		.defaultValue(2)
+		.visible(() -> mode.get() == TimerModes.Custom_v2)
+		.onChanged((a) -> {
+			timerMultiplierInAir = a;
 		})
 		.build()
 	);
@@ -81,7 +93,7 @@ public class TimerPlus extends Module {
 		.name("multiplier")
 		.description("Timer multiplier.")
 		.defaultValue(2)
-		.visible(() -> mode.get() == TimerModes.Custom)
+		.visible(() -> mode.get() == TimerModes.Custom || mode.get() == TimerModes.Custom_v2)
 		.onChanged((a) -> {
 			timerMultiplier = a;
 		})
@@ -92,7 +104,7 @@ public class TimerPlus extends Module {
 		.name("multiplier-on-recharge")
 		.description("Timer multiplier on recharge.")
 		.defaultValue(1)
-		.visible(() -> mode.get() == TimerModes.Custom)
+		.visible(() -> mode.get() == TimerModes.Custom || mode.get() == TimerModes.Custom_v2)
 		.onChanged((a) -> {
 			timerMultiplierOnRecharge = a;
 		})
@@ -128,10 +140,11 @@ public class TimerPlus extends Module {
 				timerMultiplierOnRecharge = Timer.OFF;
 			}
 			case OldFag -> {
-				currentMode = new NCP();
-				workingDelay = 18;
-				rechargeDelay = 150;
+				currentMode = new NCPv2();
+				workingDelay = 16;
+				rechargeDelay = 155;
 				timerMultiplier = 2;
+				timerMultiplierInAir = 1.7;
 				timerMultiplierOnRecharge = Timer.OFF;
 			}
 			case rem6g6s -> {
@@ -147,6 +160,15 @@ public class TimerPlus extends Module {
 				rechargeDelay = rechargeDelaySetting.get();
 				timerMultiplier = boostMultiplier.get();
 				timerMultiplierOnRecharge = boostMultiplierOnRecharge.get();
+			}
+			case Custom_v2 -> {
+				currentMode = new NCPv2();
+				workingDelay = boostDelaySetting.get();
+				rechargeDelay = rechargeDelaySetting.get();
+				timerMultiplier = boostMultiplier.get();
+				timerMultiplierInAir = boostMultiplierInAir.get();
+				timerMultiplierOnRecharge = boostMultiplierOnRecharge.get();
+
 			}
 		}
 	}
