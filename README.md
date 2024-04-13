@@ -79,7 +79,7 @@
 2. Install [fabric](https://fabricmc.net) and [fabric api](https://www.curseforge.com/minecraft/mc-mods/fabric-api) for your version of minecraft
 3. Download [meteor client](https://meteorclient.com) for your version of minecraft
 4. Download [meteor plus](https://github.com/Nekiplay/MeteorPlus/releases) for your version of minecraft
-5. Place the meteor client and meteor plus and baritone in your mods folder
+5. Place the meteor client and meteor plus in your mods folder
 
     A: Make Commit we welcome anyone who makes a useful contribution to our free open source product
 
