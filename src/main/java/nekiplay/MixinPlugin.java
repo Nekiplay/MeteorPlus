@@ -56,7 +56,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		if (!mixinClassName.startsWith(mixinPackageMeteorPlus)) {
+		if (!mixinClassName.startsWith(mixinPackageMeteorPlus) && !mixinClassName.startsWith(mixinPackageBozePlus)) {
 			throw new RuntimeException(METEOR_LOGPREFIX_MIXIN + " " + mixinClassName + " is not in the mixin package");
 		}
 		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".meteorclient")) {
