@@ -12,16 +12,10 @@ public class Main implements ModInitializer {
 	public static final String METEOR_LOGPREFIX = "[Meteor+]";
 	@Override
 	public void onInitialize() {
-		if (MixinPlugin.isMeteorClient) {
-			LOG.info(METEOR_LOGPREFIX + " Initializing items...");
-			ModItems.initializeMeteorPlus();
-			LOG.info(METEOR_LOGPREFIX + " Loaded items");
-		}
-		if (MixinPlugin.isBozeAPI) {
-			LOG.info(BOZE_LOGPREFIX + " Initializing items...");
-			ModItems.initializeBozePlus();
-			LOG.info(BOZE_LOGPREFIX + " Loaded items");
-		}
+		LOG.info(METEOR_LOGPREFIX + " Initializing items...");
+		ModItems.initializeMeteorPlus();
+		ModItems.initializeBozePlus();
+		LOG.info(METEOR_LOGPREFIX + " Loaded items");
 
 		if (MixinPlugin.isBozeAPI && !MixinPlugin.isMeteorClient) {
 			LOG.info(METEOR_LOGPREFIX + " & " + BOZE_LOGPREFIX + " Initialization of Boze Client integration because Meteor Client is not found...");

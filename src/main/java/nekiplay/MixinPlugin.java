@@ -12,20 +12,21 @@ import java.util.Set;
 public class MixinPlugin implements IMixinConfigPlugin {
 	public static final Logger LOG = LoggerFactory.getLogger(MixinPlugin.class);
 	public static final String METEOR_LOGPREFIX_MIXIN = "[Meteor+ Mixins]";
+	public static final String BOZE_LOGPREFIX_MIXIN = "[Boze+ Mixins]";
 
 	private static final String mixinPackageMeteorPlus = "nekiplay.meteorplus.mixin";
 	private static final String mixinPackageBozePlus = "nekiplay.bozeplus.mixin";
 
 	public static boolean isMeteorClient = false;
-	public static boolean isMeteorRejects= false;
+	public static boolean isMeteorRejects = false;
 
-	public static boolean isBozeAPI= false;
+	public static boolean isBozeAPI = false;
 	public static boolean isFutureClient = false;
 
 	public static boolean isBaritonePresent = false;
 	public static boolean isJourneyMapPresent = false;
 	public static boolean isXaeroWorldMapresent = false;
-	public static boolean isXaeroMiniMapresent= false;
+	public static boolean isXaeroMiniMapresent = false;
 	public static boolean isXaeroPlusMapresent = false;
 	public static boolean isLitematicaMapresent = false;
 	public static boolean isWhereIsIt = false;
@@ -68,14 +69,11 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".journeymap")) {
 			return isBaritonePresent && isJourneyMapPresent && isMeteorClient;
 		}
-		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".xaero.minimap")) {
-			return isXaeroWorldMapresent && isMeteorClient;
-		}
 		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".xaero.worldmap")) {
 			return isBaritonePresent && isXaeroWorldMapresent && isMeteorClient;
 		}
 		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".whereisit")) {
-            return isWhereIsIt && isMeteorClient;
+            return isWhereIsIt && isMeteorClient ;
 		}
 		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".minecraft")) {
 			return isMeteorClient;
