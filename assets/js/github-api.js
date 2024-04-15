@@ -19,8 +19,8 @@ window.onload = function(e){
                     total += asset.download_count;
                 }
             }
+			document.getElementById("downloads").innerText = total;
         })
-		document.getElementById("downloads").innerText = total;
     
         // Stars
         fetch(apiRoot + "repos/" + "NekiPlay" + "/" + "MeteorPlus", {
