@@ -25,7 +25,7 @@ import nekiplay.meteorplus.hud.TimerPlusCharge;
 import nekiplay.meteorplus.features.modules.integrations.LitematicaPrinter;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import nekiplay.meteorplus.features.modules.world.timer.TimerPlus;
-import nekiplay.meteorplus.items.ModItems;
+import nekiplay.main.items.ModItems;
 import nekiplay.meteorplus.settings.ConfigModifier;
 import net.fabricmc.loader.api.FabricLoader;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
@@ -51,7 +51,7 @@ import static nekiplay.MixinPlugin.*;
 
 public class MeteorPlusAddon extends MeteorAddon {
 	public static final Logger LOG = LoggerFactory.getLogger(MeteorPlusAddon.class);
-	public static final ItemStack logo_mods_item = ModItems.LOGO_MODS_ITEM.getDefaultStack();
+	public static final ItemStack logo_mods_item = ModItems.METEOR_PLUS_LOGO_MODS_ITEM.getDefaultStack();
 
 	public static final Category CATEGORYMODS = new Category("Integrations", logo_mods_item);
 	public static final HudGroup HUD_GROUP = new HudGroup("Meteor+");

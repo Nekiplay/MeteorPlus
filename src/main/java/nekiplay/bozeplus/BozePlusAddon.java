@@ -23,7 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BozePlusAddon implements Addon, Serializable<BozePlusAddon> {
-	public static final IEventBus EVENT_BUS = new EventBus();
+	private static final IEventBus EVENT_BUS = new EventBus();
+
+	public static IEventBus getEventBus() {
+		return EVENT_BUS;
+	}
 
 	private static BozePlusAddon instance;
 

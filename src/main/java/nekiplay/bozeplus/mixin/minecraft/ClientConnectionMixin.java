@@ -21,19 +21,19 @@ public class ClientConnectionMixin {
 
 		if (packet instanceof BundleS2CPacket bundle) {
 			for (Iterator<Packet<ClientPlayPacketListener>> it = bundle.getPackets().iterator(); it.hasNext(); ) {
-				if (BozePlusAddon.EVENT_BUS.post(PacketEvent.Receive.get(it.next(), listener)).isCancelled())
+				if (BozePlusAddon.getEventBus().post(PacketEvent.Receive.get(it.next(), listener)).isCancelled())
 					it.remove();
 			}
-		} else if (BozePlusAddon.EVENT_BUS.post(PacketEvent.Receive.get(packet, listener)).isCancelled()) info.cancel();
+		} else if (BozePlusAddon.getEventBus().post(PacketEvent.Receive.get(packet, listener)).isCancelled()) info.cancel();
 	}
 
 	@Inject(at = @At("HEAD"), method = "send(Lnet/minecraft/network/packet/Packet;)V", cancellable = true)
 	private void onSendPacketHead(Packet<?> packet, CallbackInfo info) {
-		if (BozePlusAddon.EVENT_BUS.post(PacketEvent.Send.get(packet)).isCancelled()) info.cancel();
+		if (BozePlusAddon.getEventBus().post(PacketEvent.Send.get(packet)).isCancelled()) info.cancel();
 	}
 
 	@Inject(method = "send(Lnet/minecraft/network/packet/Packet;)V", at = @At("TAIL"))
 	private void onSendPacketTail(Packet<?> packet, CallbackInfo info) {
-		BozePlusAddon.EVENT_BUS.post(PacketEvent.Sent.get(packet));
+		BozePlusAddon.getEventBus().post(PacketEvent.Sent.get(packet));
 	}
 }
