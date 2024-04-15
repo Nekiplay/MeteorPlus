@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import nekiplay.meteorplus.features.modules.integrations.WhereIsIt;
+import nekiplay.meteorplus.utils.ColorRemover;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.Camera;
@@ -15,158 +16,150 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import red.jackf.whereisit.client.render.Rendering;
 import red.jackf.whereisit.config.WhereIsItConfig;
 
 @Mixin(Rendering.class)
 public class RenderingMixin {
+	@Unique
+	private static WhereIsIt whereIsIt;
 	@Inject(method = "renderLabel", at = @At("HEAD"), cancellable = true)
 	private static void renderLabel(Vec3d pos, Text name, MatrixStack pose, Camera camera, VertexConsumerProvider consumers, CallbackInfo ci) {
-		WhereIsIt whereIsIt = Modules.get().get(WhereIsIt.class);
 		if (whereIsIt == null) {
+			whereIsIt = Modules.get().get(WhereIsIt.class);
+			ci.cancel();
 			return;
 		}
-		pose.push();
+		if (whereIsIt.isActive()) {
+			pose.push();
 
 
-		pos = pos.subtract(camera.getPos());
+			pos = pos.subtract(camera.getPos());
 
 
-		pose.translate(pos.x, pos.y + whereIsIt.y_offset.get(), pos.z);
-		pose.multiply(camera.getRotation());
-		var factor = 0.025f * WhereIsItConfig.INSTANCE.instance().getClient().containerNameLabelScale;
-		pose.scale(-factor, -factor, factor);
-		var matrix4f = pose.peek().getPositionMatrix();
+			pose.translate(pos.x, pos.y + whereIsIt.y_offset.get(), pos.z);
+			pose.multiply(camera.getRotation());
+			var factor = 0.025f * WhereIsItConfig.INSTANCE.instance().getClient().containerNameLabelScale;
+			pose.scale(-factor, -factor, factor);
+			var matrix4f = pose.peek().getPositionMatrix();
 
-		String text2 = name.getString();
-		if (whereIsIt.suport_color_symbols.get()) {
-			text2 = text2.replaceAll("&c", "");
-			text2 = text2.replaceAll("&4", "");
-			text2 = text2.replaceAll("&6", "");
-			text2 = text2.replaceAll("&e", "");
-			text2 = text2.replaceAll("&2", "");
-			text2 = text2.replaceAll("&a", "");
-			text2 = text2.replaceAll("&b", "");
-			text2 = text2.replaceAll("&3", "");
-			text2 = text2.replaceAll("&1", "");
-			text2 = text2.replaceAll("&9", "");
-			text2 = text2.replaceAll("&d", "");
-			text2 = text2.replaceAll("&5", "");
-			text2 = text2.replaceAll("&f", "");
-			text2 = text2.replaceAll("&7", "");
-			text2 = text2.replaceAll("&8", "");
-			text2 = text2.replaceAll("&0", "");
+			String text2 = name.getString();
+			if (whereIsIt.suport_color_symbols.get()) {
+				text2 = ColorRemover.GetVerbatimAll(text2);
+			}
+
+			var width = MinecraftClient.getInstance().textRenderer.getWidth(text2);
+			float x = (float) -width / 2;
+
+			if (whereIsIt.background.get()) {
+				var bgBuffer = consumers.getBuffer(RenderLayer.getTextBackgroundSeeThrough());
+				var bgColour = ((int) (MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25F) * 255F)) << 24;
+				bgBuffer.vertex(matrix4f, x - 1, -1f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
+				bgBuffer.vertex(matrix4f, x - 1, 10f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
+				bgBuffer.vertex(matrix4f, x + width, 10f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
+				bgBuffer.vertex(matrix4f, x + width, -1f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
+			}
+
+			RenderSystem.disableDepthTest();
+			RenderSystem.depthMask(false);
+			RenderSystem.depthFunc(GL11.GL_ALWAYS);
+			RenderSystem.enableBlend();
+			RenderSystem.depthMask(true);
+
+			String text = name.getString();
+			if (!whereIsIt.suport_color_symbols.get()) {
+				MinecraftClient.getInstance().textRenderer.draw(text, x, 0, whereIsIt.notvisible_text_color.get().getPacked(), false,
+					matrix4f, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+				MinecraftClient.getInstance().textRenderer.draw(text, x, 0, whereIsIt.visible_text_color.get().getPacked(), false,
+					matrix4f, consumers, TextRenderer.TextLayerType.NORMAL, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+			} else {
+				int color = getColor(text);
+
+				text = ColorRemover.GetVerbatimAll(text);
+
+				MinecraftClient.getInstance().textRenderer.draw(text, x, 0, color, false,
+					matrix4f, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+				MinecraftClient.getInstance().textRenderer.draw(text, x, 0, color, false,
+					matrix4f, consumers, TextRenderer.TextLayerType.NORMAL, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+
+			}
+			RenderSystem.depthFunc(GL11.GL_LEQUAL);
+			RenderSystem.enableDepthTest();
+			RenderSystem.enableBlend();
+
+			pose.pop();
+
+			ci.cancel();
 		}
+	}
 
-		var width = MinecraftClient.getInstance().textRenderer.getWidth(text2);
-		float x = (float) -width / 2;
+	@Unique
+	private static int getColor(String text) {
+		if (text.length() >= 2) {
+			char first_char = text.charAt(0);
+			char color_char = text.charAt(1);
 
-		if (whereIsIt.background.get()) {
-			var bgBuffer = consumers.getBuffer(RenderLayer.getTextBackgroundSeeThrough());
-			var bgColour = ((int) (MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25F) * 255F)) << 24;
-			bgBuffer.vertex(matrix4f, x - 1, -1f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
-			bgBuffer.vertex(matrix4f, x - 1, 10f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
-			bgBuffer.vertex(matrix4f, x + width, 10f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
-			bgBuffer.vertex(matrix4f, x + width, -1f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
+			if (first_char == '&' || first_char == '§') {
+				switch (color_char) {
+					case '4' -> {
+						return 11141120;
+					}
+					case 'c' -> {
+						return 16733525;
+					}
+					case '6' -> {
+						return 16755200;
+					}
+					case 'e' -> {
+						return 16777045;
+					}
+					case '2' -> {
+						return 43520;
+					}
+					case 'a' -> {
+						return 5635925;
+					}
+					case 'b' -> {
+						return 5636095;
+					}
+					case '3' -> {
+						return 43690;
+					}
+					case '1' -> {
+						return 170;
+					}
+					case '9' -> {
+						return 5592575;
+					}
+					case 'd' -> {
+						return 16733695;
+					}
+					case '5' -> {
+						return 11141290;
+					}
+					case 'f' -> {
+						return 16777215;
+					}
+					case '7' -> {
+						return 11184810;
+					}
+					case '8' -> {
+						return 5592405;
+					}
+					case '0' -> {
+						return 0;
+					}
+					default -> {
+						return 0xffffff;
+					}
+				}
+			}
 		}
-
-		RenderSystem.disableDepthTest();
-		RenderSystem.depthMask(false);
-		RenderSystem.depthFunc(GL11.GL_ALWAYS);
-		RenderSystem.enableBlend();
-		RenderSystem.depthMask(true);
-
-		String text = name.getString();
-		if (!whereIsIt.suport_color_symbols.get()) {
-			MinecraftClient.getInstance().textRenderer.draw(text, x, 0, whereIsIt.notvisible_text_color.get().getPacked(), false,
-				matrix4f, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
-			MinecraftClient.getInstance().textRenderer.draw(text, x, 0, whereIsIt.visible_text_color.get().getPacked(), false,
-				matrix4f, consumers, TextRenderer.TextLayerType.NORMAL, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
-		}
-		else {
-			int color = Color.WHITE.getPacked();
-			if (text.startsWith("&4")) {
-				color = 11141120;
-			}
-			else if (text.startsWith("&c")) {
-				color = 16733525;
-			}
-			else if (text.startsWith("&6")) {
-				color = 16755200;
-			}
-			else if (text.startsWith("&e")) {
-				color = 16777045;
-			}
-			else if (text.startsWith("&2")) {
-				color = 43520;
-			}
-			else if (text.startsWith("&a")) {
-				color = 5635925;
-			}
-			else if (text.startsWith("&b")) {
-				color = 5636095;
-			}
-			else if (text.startsWith("&3")) {
-				color = 43690;
-			}
-			else if (text.startsWith("&1")) {
-				color = 170;
-			}
-			else if (text.startsWith("&9")) {
-				color = 5592575;
-			}
-			else if (text.startsWith("&d")) {
-				color = 16733695;
-			}
-			else if (text.startsWith("&5")) {
-				color = 11141290;
-			}
-			else if (text.startsWith("&f")) {
-				color = 16777215;
-			}
-			else if (text.startsWith("&7")) {
-				color = 11184810;
-			}
-			else if (text.startsWith("&8")) {
-				color = 5592405;
-			}
-			else if (text.startsWith("&0")) {
-				color = 0;
-			}
-
-			text = text.replaceAll("&c", "");
-			text = text.replaceAll("&4", "");
-			text = text.replaceAll("&6", "");
-			text = text.replaceAll("&e", "");
-			text = text.replaceAll("&2", "");
-			text = text.replaceAll("&a", "");
-			text = text.replaceAll("&b", "");
-			text = text.replaceAll("&3", "");
-			text = text.replaceAll("&1", "");
-			text = text.replaceAll("&9", "");
-			text = text.replaceAll("&d", "");
-			text = text.replaceAll("&5", "");
-			text = text.replaceAll("&f", "");
-			text = text.replaceAll("&7", "");
-			text = text.replaceAll("&8", "");
-			text = text.replaceAll("&0", "");
-
-			MinecraftClient.getInstance().textRenderer.draw(text, x, 0,  color, false,
-				matrix4f, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
-			MinecraftClient.getInstance().textRenderer.draw(text, x, 0, color, false,
-				matrix4f, consumers, TextRenderer.TextLayerType.NORMAL, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
-
-		}
-		RenderSystem.depthFunc(GL11.GL_LEQUAL);
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableBlend();
-
-
-		pose.pop();
-
-		ci.cancel();
+		return 0xffffff;
 	}
 }

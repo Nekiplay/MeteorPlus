@@ -2,9 +2,8 @@ package nekiplay.meteorplus.mixin.meteorclient.modules;
 
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.render.ESP;
-import nekiplay.meteorplus.features.modules.misc.Teams;
+import nekiplay.meteorplus.features.modules.combat.Teams;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import nekiplay.meteorplus.features.modules.combat.AntiBotPlus;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +17,7 @@ public class ESPMixin {
 	protected void shouldSkip(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		AntiBotPlus antiBotPlus = Modules.get().get(AntiBotPlus.class);
 		Teams teams = Modules.get().get(Teams.class);
-		if (antiBotPlus != null && !cir.getReturnValue() && entity instanceof PlayerEntity) {
+		if (antiBotPlus != null && teams != null && !cir.getReturnValue() && entity instanceof PlayerEntity) {
 			boolean ignore = antiBotPlus.isBot(entity);
 			if (!ignore) {
 				ignore = teams.isInYourTeam(entity);

@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ItemHighlight.class)
 public class ItemHighlightMixin {
-
 	@Inject(method = "getColor", at = @At("RETURN"), cancellable = true)
 	private void getColor(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
 		if (cir.getReturnValue() == -1) {

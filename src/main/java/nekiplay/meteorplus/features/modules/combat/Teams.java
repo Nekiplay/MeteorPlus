@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.features.modules.misc;
+package nekiplay.meteorplus.features.modules.combat;
 
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
@@ -15,7 +15,7 @@ import java.nio.charset.CharsetEncoder;
 
 public class Teams extends Module {
 	public Teams() {
-		super(Categories.Misc, "teams", "Check if [entity] is in your own team using scoreboard, name color or team prefix.");
+		super(Categories.Combat, "teams", "Check if [entity] is in your own team using scoreboard, name color or team prefix.");
 	}
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	private final Setting<Boolean> scoreBoardTeam = sgGeneral.add(new BoolSetting.Builder()

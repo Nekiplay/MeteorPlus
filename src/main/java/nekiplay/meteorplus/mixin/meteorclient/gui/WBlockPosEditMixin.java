@@ -71,7 +71,7 @@ public class WBlockPosEditMixin extends WHorizontalList  {
 				if (this.textBoxZ.get().isEmpty()) {
 					this.set(new BlockPos(0, 0, 0));
 				} else {
-					if (ConfigModifier.get().spoofMode.get() == SpoofMode.Fake) {
+					if (ConfigModifier.spoofMode.get() == SpoofMode.Fake) {
 						this.set(new BlockPos(this.value.getX(), this.value.getY(), Integer.parseInt(this.textBoxZ.get())));
 					}
 					else {
@@ -86,12 +86,12 @@ public class WBlockPosEditMixin extends WHorizontalList  {
 
 
 
-		if (ConfigModifier.get().positionProtection.get()) {
-			if (ConfigModifier.get().spoofMode.get() == SpoofMode.Fake) {
+		if (ConfigModifier.positionProtection.get()) {
+			if (ConfigModifier.spoofMode.get() == SpoofMode.Fake) {
 				textBoxX.set(String.valueOf(value.add(ConfigModifier.get().x_spoof.get(), 0, 0).getX()));
 				textBoxZ.set(String.valueOf(value.add(0, 0, ConfigModifier.get().z_spoof.get()).getZ()));
 			}
-			else if (ConfigModifier.get().spoofMode.get() == SpoofMode.Sensor) {
+			else if (ConfigModifier.spoofMode.get() == SpoofMode.Sensor) {
 				textBoxX.set("***");
 				textBoxZ.set("***");
 				textBoxY.set("***");

@@ -37,7 +37,7 @@ public class WaypointManagerItemMixin {
 		gotoButton = new Button(Text.translatable("gui.world_map.baritone_goal_here").getString());
 		pathButton = new Button(Text.translatable("gui.world_map.baritone_path_here").getString());
 		MapIntegration mapIntegration = Modules.get().get(MapIntegration.class);
-		if (mapIntegration.baritoneGoto.get()) {
+		if (mapIntegration != null && mapIntegration.isActive() && mapIntegration.baritoneGoto.get()) {
 			buttonListLeft.add(gotoButton);
 			buttonListLeft.add(pathButton);
 		}
@@ -47,7 +47,7 @@ public class WaypointManagerItemMixin {
 	private void onRender(DrawContext graphics, int slotIndex, int y, int x, int rowWidth, int itemHeight, int mouseX, int mouseY, boolean isMouseOver, float partialTicks, CallbackInfo ci) {
 		boolean drawHovered = isMouseOver && this.displayHover;
 		MapIntegration mapIntegration = Modules.get().get(MapIntegration.class);
-		if (mapIntegration.baritoneGoto.get()) {
+		if (mapIntegration != null && mapIntegration.isActive() && mapIntegration.baritoneGoto.get()) {
 			gotoButton.drawHovered(drawHovered);
 			pathButton.drawHovered(drawHovered);
 		}

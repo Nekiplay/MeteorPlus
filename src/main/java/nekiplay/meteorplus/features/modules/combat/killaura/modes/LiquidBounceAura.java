@@ -14,7 +14,7 @@ import nekiplay.meteorplus.features.modules.combat.AntiBotPlus;
 import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlus;
 import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlusMode;
 import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlusModes;
-import nekiplay.meteorplus.features.modules.misc.Teams;
+import nekiplay.meteorplus.features.modules.combat.Teams;
 import nekiplay.meteorplus.utils.Perlin2D;
 import nekiplay.meteorplus.utils.RaycastUtils;
 import nekiplay.meteorplus.utils.RotationUtils;
