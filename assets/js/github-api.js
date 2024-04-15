@@ -2,7 +2,7 @@ var apiRoot = "https://api.github.com/";
 
 window.onload = function(e){ 
     console.log(window.location.pathname)
-    if ( window.location.pathname.match("index") != null || window.location.pathname == "/" || window.location.pathname == "" || window.location.pathname.match("MeteorPlus")) {
+    if ( window.location.pathname.match("index") != null || window.location.pathname.match("/MeteorPlus") || window.location.pathname == "/" || window.location.pathname == "" || window.location.pathname.match("MeteorPlus")) {
         var total = 0;
         fetch(apiRoot + "repos/" + "NekiPlay" + "/" + "MeteorPlus" + "/releases", {
             method: "GET"
