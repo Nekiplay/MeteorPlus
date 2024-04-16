@@ -73,7 +73,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 			return isBaritonePresent && isXaeroWorldMapresent && isMeteorClient;
 		}
 		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".whereisit")) {
-            return isWhereIsIt && isMeteorClient ;
+            return isWhereIsIt && isMeteorClient;
 		}
 		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".minecraft")) {
 			return isMeteorClient;

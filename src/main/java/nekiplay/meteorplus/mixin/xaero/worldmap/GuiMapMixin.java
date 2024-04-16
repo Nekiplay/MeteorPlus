@@ -59,7 +59,7 @@ public abstract class GuiMapMixin {
 		Modules modules = Modules.get();
 		if (modules != null) {
 			MapIntegration mapIntegration = modules.get(MapIntegration.class);
-			if (mapIntegration != null & mapIntegration.isActive()) {
+			if (mapIntegration != null && mapIntegration.isActive()) {
 				final ArrayList<RightClickOption> options = cir.getReturnValue();
 
 				int mouseXPos = (int) Misc.getMouseX(mc, false);

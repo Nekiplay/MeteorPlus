@@ -34,7 +34,9 @@ public class BlockESPMixin extends Module {
 		synchronized (chunks) {
             for (ESPChunk chunk : chunks.values()) {
                 if (!chunk.shouldBeDeleted()) {
-					for (ObjectIterator var1 = chunk.blocks.values().iterator(); var1.hasNext();) {
+					ESPBlock block;
+					for (ObjectIterator var1 = chunk.blocks.values().iterator(); var1.hasNext(); block.loaded = false) {
+						block = (ESPBlock) var1.next();
 						renders++;
 					}
                 }

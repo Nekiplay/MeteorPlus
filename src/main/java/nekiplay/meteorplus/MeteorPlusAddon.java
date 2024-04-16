@@ -190,7 +190,6 @@ public class MeteorPlusAddon extends MeteorAddon {
 			LOG.warn(METEOR_LOGPREFIX + " Meteor Rejects detected, removing No Jump Delay");
 		}
 		modules.add(new NoSlowPlus());
-		//modules.add(new VelocityPlus());
 		if (isBaritonePresent) {
 			if (isXaeroWorldMapresent || isJourneyMapPresent) {
 				modules.add(new MapIntegration());

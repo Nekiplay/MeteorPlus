@@ -39,7 +39,7 @@ public class ConfigModifier {
 	private static ConfigModifier INSTANCE;
 
 	public static final SettingGroup sgMeteorPlus = Config.get().settings.createGroup("Meteor+");
-	public static final Setting<Boolean> positionProtection = sgMeteorPlus.add(new BoolSetting.Builder()
+	public final Setting<Boolean> positionProtection = sgMeteorPlus.add(new BoolSetting.Builder()
 		.name("position-protection")
 		.description("Set fake position in F3 and in mods.")
 		.defaultValue(false)
@@ -47,7 +47,7 @@ public class ConfigModifier {
 		.build()
 	);
 
-	public static final Setting<SpoofMode> spoofMode = sgMeteorPlus.add(new EnumSetting.Builder<SpoofMode>()
+	public final Setting<SpoofMode> spoofMode = sgMeteorPlus.add(new EnumSetting.Builder<SpoofMode>()
 		.name("protection-mode")
 		.defaultValue(SpoofMode.Sensor)
 		.visible(positionProtection::get)
@@ -74,7 +74,7 @@ public class ConfigModifier {
 		return INSTANCE;
 	}
 
-	private static void changedProtection() {
+	private void changedProtection() {
 		Starscript ss = MeteorStarscript.ss;
 
 		if (positionProtection.get()) {
@@ -314,7 +314,7 @@ public class ConfigModifier {
 		}
 	}
 
-	private static Value oppositeX(boolean camera) {
+	private Value oppositeX(boolean camera) {
 		double x = 0;
 		if (positionProtection.get()) {
 			x = camera ? mc.gameRenderer.getCamera().getPos().x + ConfigModifier.get().x_spoof.get() : (mc.player != null ? mc.player.getX() + ConfigModifier.get().x_spoof.get() : 0);
@@ -330,7 +330,7 @@ public class ConfigModifier {
 		return Value.number(x);
 	}
 
-	private static Value oppositeZ(boolean camera) {
+	private Value oppositeZ(boolean camera) {
 		double z = 0;
 		if (positionProtection.get()) {
 			z = camera ? mc.gameRenderer.getCamera().getPos().z + ConfigModifier.get().z_spoof.get() : (mc.player != null ? mc.player.getZ() + ConfigModifier.get().z_spoof.get() : 0);
@@ -403,7 +403,7 @@ public class ConfigModifier {
 		PlayerListEntry playerListEntry = mc.getNetworkHandler().getPlayerListEntry(mc.player.getUuid());
 		return Value.number(playerListEntry != null ? playerListEntry.getLatency() : 0);
 	}
-	private static Value posString(boolean opposite, boolean camera) {
+	private Value posString(boolean opposite, boolean camera) {
 		Vec3d pos;
 		if (camera) pos = mc.gameRenderer.getCamera().getPos();
 		else pos = mc.player != null ? mc.player.getPos() : Vec3d.ZERO;
@@ -427,7 +427,7 @@ public class ConfigModifier {
 		return posString(x, pos.y, z);
 	}
 
-	private static Value posString(double x, double y, double z) {
+	private Value posString(double x, double y, double z) {
 		if (positionProtection.get()) {
 			if (spoofMode.get() == SpoofMode.Fake) {
 				return Value.string(String.format("X: %.0f Y: %.0f Z: %.0f", x + ConfigModifier.get().x_spoof.get(), y, z + ConfigModifier.get().z_spoof.get()));
