@@ -26,9 +26,13 @@ import red.jackf.whereisit.config.WhereIsItConfig;
 
 @Mixin(Rendering.class)
 public class RenderingMixin {
+	@Unique
+	private static WhereIsIt whereIsIt;
 	@Inject(method = "renderLabel", at = @At("HEAD"), cancellable = true)
 	private static void renderLabel(Vec3d pos, Text name, MatrixStack pose, Camera camera, VertexConsumerProvider consumers, CallbackInfo ci) {
-		WhereIsIt whereIsIt = Modules.get().get(WhereIsIt.class);
+		if (whereIsIt == null) {
+			whereIsIt = Modules.get().get(WhereIsIt.class);
+		}
 		if (whereIsIt != null && whereIsIt.isActive()) {
 			pose.push();
 
