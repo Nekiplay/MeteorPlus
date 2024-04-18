@@ -1,6 +1,6 @@
 package nekiplay.bozeplus.features.modules.movement.spider;
 import dev.boze.api.event.EventTick;
-import nekiplay.bozeplus.events.packets.PacketEvent;
+import nekiplay.main.events.packets.PacketEvent;
 import net.minecraft.client.MinecraftClient;
 
 public class SpiderMode {

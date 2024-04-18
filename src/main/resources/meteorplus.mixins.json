@@ -20,6 +20,7 @@
 		"meteorclient.modules.NoRenderMixin",
 		"meteorclient.modules.TracersMixin",
 		"meteorclient.modules.WaypointsModuleMixin",
+		"meteorclient.modules.MiddleClickExtraMixin",
 		"minecraft.ClientConnectionAccessor",
 		"minecraft.ClientPlayerInteractionManagerMixin",
 		"minecraft.CraftingScreenHandlerAccessor",
@@ -33,8 +34,8 @@
 	"mixins": [
 		"meteorclient.gui.DefaultSettingsWidgetFactoryMixin",
 		"meteorclient.utils.misc.KeybindMixin",
-		"minecraft.ClientPlayerEntityMixin",
-		"minecraft.LivingEntityMixin",
+      "minecraft.entity.ClientPlayerEntityMixin",
+      "minecraft.entity.LivingEntityMixin",
 		"minecraft.StringReaderMixin"
 	]
 }

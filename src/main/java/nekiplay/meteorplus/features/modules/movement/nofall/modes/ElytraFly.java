@@ -29,14 +29,15 @@ public class ElytraFly extends NoFallMode {
 				if (mc.player.getInventory().getArmorStack(2).getItem() != Items.ELYTRA) {
 					InvUtils.move().from(slot).toArmor(2);
 				}
-			}	
+			}
 
-			if (mc.player.fallDistance > 3) {
+			if (mc.player.fallDistance > 2.7) {
 				mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.START_FALL_FLYING));
 				mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true));
 				Vec3d vel = mc.player.getVelocity();
 				mc.player.setVelocity(vel.x, 0, vel.z);
 				mc.player.fallDistance = 0.0f;
+				mc.player.setOnGround(true);
 			}
 		}
 	}

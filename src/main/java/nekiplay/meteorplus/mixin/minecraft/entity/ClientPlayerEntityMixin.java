@@ -1,4 +1,4 @@
-package nekiplay.meteorplus.mixin.minecraft;
+package nekiplay.meteorplus.mixin.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import meteordevelopment.meteorclient.MeteorClient;

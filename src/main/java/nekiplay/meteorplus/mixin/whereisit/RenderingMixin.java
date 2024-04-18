@@ -2,7 +2,6 @@ package nekiplay.meteorplus.mixin.whereisit;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.utils.render.color.Color;
 import nekiplay.meteorplus.features.modules.integrations.WhereIsIt;
 import nekiplay.meteorplus.utils.ColorRemover;
 import net.minecraft.client.MinecraftClient;
@@ -19,7 +18,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import red.jackf.whereisit.client.render.Rendering;
 import red.jackf.whereisit.config.WhereIsItConfig;

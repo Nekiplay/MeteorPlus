@@ -29,15 +29,16 @@ import org.spongepowered.asm.mixin.Unique;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static meteordevelopment.meteorclient.utils.misc.input.Input.isPressed;
+import static nekiplay.meteorplus.MeteorPlusAddon.HUD_TITLE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 @Mixin(Freecam.class)
 public class FreecamMixin {
 	@Unique
-	private final Freecam freecam = (Freecam)(Object) this;
+	private final Freecam freecam = (Freecam) (Object) this;
 	@Unique
-	private final SettingGroup freecamMeteorPlusSetting = freecam.settings.createGroup("Meteor+");
+	private final SettingGroup freecamMeteorPlusSetting = freecam.settings.createGroup(HUD_TITLE);
 	@Unique
 	private final Setting<Boolean> moveBaritoneControl = freecamMeteorPlusSetting.add(new BoolSetting.Builder()
 		.name("baritone-move-control")

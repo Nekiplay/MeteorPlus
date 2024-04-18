@@ -1,6 +1,6 @@
-package nekiplay.bozeplus.events.packets;
+package nekiplay.main.events.packets;
 
-import nekiplay.bozeplus.events.Cancellable;
+import nekiplay.main.events.Cancellable;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
 

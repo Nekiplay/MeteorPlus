@@ -4,7 +4,7 @@ import dev.boze.api.addon.module.ToggleableModule;
 import dev.boze.api.event.EventTick;
 import dev.boze.api.setting.SettingMode;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.bozeplus.events.packets.PacketEvent;
+import nekiplay.main.events.packets.PacketEvent;
 import nekiplay.bozeplus.features.modules.movement.spider.modes.Matrix;
 
 import java.util.ArrayList;

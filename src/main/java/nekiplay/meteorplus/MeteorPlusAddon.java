@@ -54,7 +54,8 @@ public class MeteorPlusAddon extends MeteorAddon {
 	public static final ItemStack logo_mods_item = ModItems.METEOR_PLUS_LOGO_MODS_ITEM.getDefaultStack();
 
 	public static final Category CATEGORYMODS = new Category("Integrations", logo_mods_item);
-	public static final HudGroup HUD_GROUP = new HudGroup("Meteor+");
+	public static final String HUD_TITLE = "Meteor+";
+	public static final HudGroup HUD_GROUP = new HudGroup(HUD_TITLE);
 
 	private static MeteorPlusAddon instance;
 
@@ -160,7 +161,6 @@ public class MeteorPlusAddon extends MeteorAddon {
 		modules.add(new TriggerBot());
 		modules.add(new EyeFinder());
 		modules.add(new InventoryMovePlus());
-		modules.add(new MiddleClickExtraPlus());
 		modules.add(new AutoDropPlus());
 		modules.add(new NoFallPlus());
 		modules.add(new TimerPlus());

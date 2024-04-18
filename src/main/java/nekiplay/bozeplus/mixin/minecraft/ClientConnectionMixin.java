@@ -1,7 +1,7 @@
 package nekiplay.bozeplus.mixin.minecraft;
 
 import nekiplay.bozeplus.BozePlusAddon;
-import nekiplay.bozeplus.events.packets.PacketEvent;
+import nekiplay.main.events.packets.PacketEvent;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.listener.PacketListener;

@@ -38,6 +38,7 @@ public class NoSlowPlus extends Module {
 		.defaultValue(1)
 		.min(0.2)
 		.sliderRange(0.2, 1)
+		.visible(() -> mode.get() != NoSlowModes.Matrix)
 		.build()
 	);
 
@@ -46,6 +47,7 @@ public class NoSlowPlus extends Module {
 		.defaultValue(1)
 		.min(0.2)
 		.sliderRange(0.2, 1)
+		.visible(() -> mode.get() != NoSlowModes.Matrix)
 		.build()
 	);
 
@@ -54,6 +56,7 @@ public class NoSlowPlus extends Module {
 		.defaultValue(1)
 		.min(0.2)
 		.sliderRange(0.2, 1)
+		.visible(() -> mode.get() != NoSlowModes.Matrix)
 		.build()
 	);
 
@@ -62,6 +65,7 @@ public class NoSlowPlus extends Module {
 		.defaultValue(1)
 		.min(0.2)
 		.sliderRange(0.2, 1)
+		.visible(() -> mode.get() != NoSlowModes.Matrix)
 		.build()
 	);
 
@@ -70,6 +74,7 @@ public class NoSlowPlus extends Module {
 		.defaultValue(1)
 		.min(0.2)
 		.sliderRange(0.2, 1)
+		.visible(() -> mode.get() != NoSlowModes.Matrix)
 		.build()
 	);
 
@@ -78,6 +83,7 @@ public class NoSlowPlus extends Module {
 		.defaultValue(1)
 		.min(0.2)
 		.sliderRange(0.2, 1)
+		.visible(() -> mode.get() != NoSlowModes.Matrix)
 		.build()
 	);
 

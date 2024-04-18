@@ -1,6 +1,6 @@
 package nekiplay.main.events.hud;
 
-import meteordevelopment.meteorclient.events.Cancellable;
+import nekiplay.main.events.Cancellable;
 import net.minecraft.util.hit.HitResult;
 
 import java.util.ArrayList;

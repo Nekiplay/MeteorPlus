@@ -8,6 +8,10 @@ import meteordevelopment.meteorclient.utils.network.MeteorExecutor;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.world.BlockIterator;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -39,13 +43,10 @@ public class GotoPlusCommand extends Command {
 					switch (BlockUtils.isValidMobSpawn(blockPos, true)) {
 						case Never:
 							break;
-						case Potential:
+						case Potential, Always:
 							crosses.add(crossPool.get().set(blockPos));
 							break;
-						case Always:
-							crosses.add((crossPool.get().set(blockPos)));
-							break;
-					}
+                    }
 
 				});
 
@@ -53,14 +54,19 @@ public class GotoPlusCommand extends Command {
 					BlockPos near = null;
 					double dst = Double.MAX_VALUE;
 					for (Cross cross : crosses) {
-						double dist = mc.player.squaredDistanceTo(new Vec3d(cross.x, cross.y, cross.z));
-						if (dist < dst) {
-							dst = dist;
-							near = new BlockPos(cross.x, cross.y, cross.z);
+						BlockState ground = mc.world.getBlockState(new BlockPos(cross.x, cross.y - 1, cross.z));
+						Block ground_block = ground.getBlock();
+                        if (!(ground_block instanceof LeavesBlock) && ground_block != Blocks.CHORUS_FLOWER) {
+							double dist = mc.player.squaredDistanceTo(new Vec3d(cross.x, cross.y, cross.z));
+							if (dist < dst) {
+								dst = dist;
+								near = new BlockPos(cross.x, cross.y, cross.z);
+							}
 						}
-					}
-					for (Cross cross : crosses) crossPool.free(cross);
+                    }
+					for (Cross cross : crosses) { crossPool.free(cross); }
 					crosses.clear();
+
 					if (near != null) {
 						BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("goto " + near.getX() + " " + near.getY() + " " + near.getZ());
 					}

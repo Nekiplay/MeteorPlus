@@ -11,6 +11,8 @@ import meteordevelopment.meteorclient.gui.widgets.containers.WTable;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WMinus;
 import meteordevelopment.meteorclient.settings.*;
+import meteordevelopment.meteorclient.systems.modules.Category;
+import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.render.WaypointsModule;
 import meteordevelopment.meteorclient.systems.waypoints.Waypoint;
 import meteordevelopment.meteorclient.systems.waypoints.Waypoints;
@@ -19,6 +21,7 @@ import nekiplay.meteorplus.utils.NumeralUtils;
 import nekiplay.meteorplus.mixinclasses.EditWaypointScreen;
 import nekiplay.meteorplus.mixinclasses.WIcon;
 import nekiplay.meteorplus.mixinclasses.WaypointsModuleModes;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WCheckbox;
 import org.spongepowered.asm.mixin.Unique;
@@ -31,15 +34,20 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 import static meteordevelopment.meteorclient.utils.render.color.Color.GRAY;
+import static nekiplay.meteorplus.MeteorPlusAddon.HUD_TITLE;
 
 @Mixin(WaypointsModule.class)
-public class WaypointsModuleMixin {
+public class WaypointsModuleMixin extends Module {
+
+	@Unique
 	public final AtomicReference<GuiTheme> themeRef = new AtomicReference<>();
+	@Unique
 	public final AtomicReference<WTable> tableRef = new AtomicReference<>();
-	private final WaypointsModule waypoints = (WaypointsModule)(Object) this;
 
-	private final SettingGroup meteorPlusTab = waypoints.settings.createGroup("Meteor+");
+	@Unique
+	private final SettingGroup meteorPlusTab = settings.createGroup(HUD_TITLE);
 
+	@Unique
 	private final Setting<Boolean> showDistance = meteorPlusTab.add(new BoolSetting.Builder()
 		.name("show-distance")
 		.description("Show distance in this gui.")
@@ -54,6 +62,7 @@ public class WaypointsModuleMixin {
 		.build()
 	);
 
+	@Unique
 	private final Setting<Boolean> showCompactDistance = meteorPlusTab.add(new BoolSetting.Builder()
 		.name("show-compact-distance")
 		.description("Show compact distance in this gui.")
@@ -69,6 +78,7 @@ public class WaypointsModuleMixin {
 		.build()
 	);
 
+	@Unique
 	private final Setting<WaypointsModuleModes.SortMode> sortMode = meteorPlusTab.add(new EnumSetting.Builder<WaypointsModuleModes.SortMode>()
 		.name("sort-mode")
 		.description("Sorting waypoints mode.")
@@ -83,6 +93,7 @@ public class WaypointsModuleMixin {
 		.build()
 	);
 
+	@Unique
 	private final Setting<String> search = meteorPlusTab.add(new StringSetting.Builder()
 		.name("search")
 		.description("Search waypoint by text")
@@ -96,6 +107,11 @@ public class WaypointsModuleMixin {
 			})
 		.build()
 	);
+
+	public WaypointsModuleMixin(Category category, String name, String description) {
+		super(category, name, description);
+	}
+
 	@Inject(method = "getWidget", at = @At("HEAD"), remap = false, cancellable = true)
 	private void getWidget(GuiTheme theme, CallbackInfoReturnable<WWidget> cir) {
 		if (!Utils.canUpdate()) {
@@ -194,8 +210,13 @@ public class WaypointsModuleMixin {
 		table.row();
 
 		WButton create = table.add(theme.button("Create")).expandX().widget();
-		create.action = () -> mc.setScreen(new EditWaypointScreen(theme, null, () -> {
-			initTable(theme, table);
-		}));
+		create.action = () ->
+		{
+			if (Utils.canUpdate()) {
+				mc.setScreen(new EditWaypointScreen(theme, null, () -> {
+				initTable(theme, table);
+				}));
+			}
+		};
 	}
 }

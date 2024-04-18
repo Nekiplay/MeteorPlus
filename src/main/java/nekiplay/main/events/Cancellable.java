@@ -1,4 +1,4 @@
-package nekiplay.bozeplus.events;
+package nekiplay.main.events;
 
 import meteordevelopment.orbit.ICancellable;
 
