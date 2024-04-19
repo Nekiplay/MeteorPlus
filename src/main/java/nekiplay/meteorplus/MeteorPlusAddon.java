@@ -114,6 +114,17 @@ public class MeteorPlusAddon extends MeteorAddon {
 			enabledIntegrations.add("Goto+");
 		}
 
+		if (!isLitematicaMapresent) {
+			if (!isBaritonePresent) {
+				notFoundBaritoneIntegrations.add("Litematica printer");
+			}
+			else {
+				notFoundIntegrations.add("Litematica");
+			}
+		}
+		else {
+			enabledIntegrations.add("Litematica");
+		}
 
 		if (!enabledIntegrations.isEmpty()) {
 			LOG.info(METEOR_LOGPREFIX + " Enabling integrations for: " + String.join(", ", enabledIntegrations));
