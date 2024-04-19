@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "meteorplus",
   "version": "${version}",
-  "name": "Meteor Plus",
+  "name": "Meteor+",
   "description": "An addon for Meteor client and Boze Client that adds many blatant features.",
   "authors": [
     "Neki_play"

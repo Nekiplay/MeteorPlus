@@ -16,8 +16,8 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          automatic_release_tag: "1.20.4_1.0.8.2"
+          automatic_release_tag: "1.20.4_1.0.8.3"
           prerelease: true
-          title: "1.20.4 | 1.0.8.2"
+          title: "1.20.4 | 1.0.8.3"
           files: |
             ./build/libs/*.jar

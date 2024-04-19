@@ -6,7 +6,8 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.features.modules.combat.velocity.modes.Grim;
+import nekiplay.meteorplus.features.modules.combat.velocity.modes.GrimCancel;
+import nekiplay.meteorplus.features.modules.combat.velocity.modes.GrimCancel_v2;
 
 public class VelocityPlus extends Module {
 	public VelocityPlus() {
@@ -19,7 +20,7 @@ public class VelocityPlus extends Module {
 	private final Setting<VelocityModes> mode = sgGeneral.add(new EnumSetting.Builder<VelocityModes>()
 		.name("mode")
 		.description("Velocity mode.")
-		.defaultValue(VelocityModes.Grim)
+		.defaultValue(VelocityModes.Grim_Cancel)
 		.onModuleActivated(timerModesSetting -> onTimerModeChanged(timerModesSetting.get()))
 		.onChanged(this::onTimerModeChanged)
 		.build()
@@ -30,9 +31,8 @@ public class VelocityPlus extends Module {
 
 	private void onTimerModeChanged(VelocityModes mode) {
 		switch (mode) {
-			case Grim -> {
-				currentMode = new Grim();
-			}
+			case Grim_Cancel -> currentMode = new GrimCancel();
+			case Grim_Cancel_v2 -> currentMode = new GrimCancel_v2();
 		}
 	}
 
