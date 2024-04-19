@@ -87,7 +87,7 @@ public class TriggerBot extends Module {
 
 	private final Setting<Boolean> onlyCrits = sgGeneral.add(new BoolSetting.Builder()
 		.name("only-crits")
-		.description("Attack enemy only if this attack crit.")
+		.description("Attack enemy only if this attack crit after jump.")
 		.defaultValue(true)
 		.build()
 	);
@@ -103,15 +103,15 @@ public class TriggerBot extends Module {
 		if (entity instanceof Tameable tameable
 			&& tameable.getOwnerUuid() != null
 			&& tameable.getOwnerUuid().equals(mc.player.getUuid())) return false;
-		if (entity instanceof PlayerEntity) {
-			if (((PlayerEntity) entity).isCreative()) return false;
-			if (!Friends.get().shouldAttack((PlayerEntity) entity)) return false;
+		if (entity instanceof PlayerEntity player) {
+			if (player.isCreative()) return false;
+			if (!Friends.get().shouldAttack(player)) return false;
 			AntiBotPlus antiBotPlus = Modules.get().get(AntiBotPlus.class);
 			Teams teams = Modules.get().get(Teams.class);
-			if (antiBotPlus != null && antiBotPlus.isBot(entity)) {
+			if (antiBotPlus != null && antiBotPlus.isBot(player)) {
 				return false;
 			}
-			if (teams != null && teams.isInYourTeam(entity)) {
+			if (teams != null && teams.isInYourTeam(player)) {
 				return false;
 			}
 		}

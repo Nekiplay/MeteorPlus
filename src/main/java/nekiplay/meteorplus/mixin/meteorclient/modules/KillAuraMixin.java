@@ -29,7 +29,7 @@ public class KillAuraMixin extends Module {
 	@Unique
 	private final Setting<Boolean> onlyCrits = sgTiming.add(new BoolSetting.Builder()
 		.name("only-crits")
-		.description("Attack enemy only if this attack crit.")
+		.description("Attack enemy only if this attack crit after jump.")
 		.defaultValue(true)
 		.build()
 	);
