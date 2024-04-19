@@ -18,7 +18,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	private static final String mixinPackageBozePlus = "nekiplay.bozeplus.mixin";
 
 	public static boolean isMeteorClient = false;
-	public static boolean isMeteorRejects = false;
+	public static boolean isMeteorRejects = false; // Meteor Client Addon
+	public static boolean isNumbyHack = false; // Meteor Client Addon
+	public static boolean isZewo2 = false; // Meteor Client Addon
 
 	public static boolean isBozeAPI = false;
 	public static boolean isFutureClient = false;
@@ -40,6 +42,8 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		isFutureClient = loader.isModLoaded("future");
 
 		isMeteorRejects = loader.isModLoaded("meteor-rejects");
+		isNumbyHack = loader.isModLoaded("numbyhack");
+		isZewo2 = loader.isModLoaded("zewo2");
 
 		isBaritonePresent = loader.isModLoaded("baritone");
 		isJourneyMapPresent = loader.isModLoaded("journeymap");

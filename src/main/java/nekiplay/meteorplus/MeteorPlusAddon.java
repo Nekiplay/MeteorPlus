@@ -69,6 +69,11 @@ public class MeteorPlusAddon extends MeteorAddon {
 
 		LOG.info(METEOR_LOGPREFIX + " Initializing...");
 
+		if (MixinPlugin.isZewo2) {
+			LOG.info(METEOR_LOGPREFIX + " Detected Zero2 addon, full disabling Meteor+");
+			return;
+		}
+
 		ArrayList<String> notFoundIntegrations = new ArrayList<>();
 		ArrayList<String> notFoundBaritoneIntegrations = new ArrayList<>();
 		ArrayList<String> enabledIntegrations = new ArrayList<>();

@@ -50,9 +50,15 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Meteor client
+	// Mixin extras
+	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.2")))
+
+	// Meteor Client
 	modImplementation files("libs\\baritone-unoptimized-fabric-1.10.1-11-g3ed49fd4.jar")
 	modImplementation files("libs\\meteor-client-0.5.6-2055.jar")
+
+	// Meteor Client addons
+	modImplementation files("libs\\Numby-Hack-2.2.jar")
 
 	// Journey Map
 	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true
@@ -68,8 +74,6 @@ dependencies {
 
 	// Chest Tracker
 	modImplementation("red.jackf:whereisit:${project.where_is_it_version}")
-
-	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.2")))
 
 	// Boze
 	modImplementation "dev.boze:boze-api:${project.boze_api_version}"
