@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.features.modules.combat.velocity.modes.GrimCancel;
 import nekiplay.meteorplus.features.modules.combat.velocity.modes.GrimCancel_v2;
+import nekiplay.meteorplus.features.modules.combat.velocity.modes.GrimSkip;
 
 public class VelocityPlus extends Module {
 	public VelocityPlus() {
@@ -33,6 +34,7 @@ public class VelocityPlus extends Module {
 		switch (mode) {
 			case Grim_Cancel -> currentMode = new GrimCancel();
 			case Grim_Cancel_v2 -> currentMode = new GrimCancel_v2();
+			case Grim_Skip -> currentMode = new GrimSkip();
 		}
 	}
 
