@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.orbit.EventHandler;
+import nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlus;
 import nekiplay.meteorplus.features.modules.misc.MultiTasks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -84,6 +85,13 @@ public class TriggerBot extends Module {
 		.build()
 	);
 
+	private final Setting<Boolean> onlyCrits = sgGeneral.add(new BoolSetting.Builder()
+		.name("only-crits")
+		.description("Attack enemy only if this attack crit.")
+		.defaultValue(true)
+		.build()
+	);
+
 	private final List<Entity> targets = new ArrayList<>();
 
 	private int hitDelayTimer;
@@ -112,8 +120,11 @@ public class TriggerBot extends Module {
 	}
 
 	private boolean delayCheck() {
-		if (smartDelay.get()) return mc.player.getAttackCooldownProgress(0.5f) >= 1;
+		if (onlyCrits.get() && !CriticalsPlus.canCrit()) {
+			return false;
+		}
 
+		if (smartDelay.get()) return mc.player.getAttackCooldownProgress(0.5f) >= 1;
 
 		if (hitDelayTimer > 0) {
 			hitDelayTimer--;

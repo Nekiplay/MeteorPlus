@@ -3,11 +3,16 @@ package nekiplay.meteorplus.utils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3d;
 
+import static java.lang.Math.*;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
+import static net.minecraft.util.math.MathHelper.wrapDegrees;
+import static org.joml.Math.clamp;
 
 public class RotationUtils {
 	public static Vec3d getEyesPos()
@@ -42,8 +47,8 @@ public class RotationUtils {
 		final double diffZ = vec.z - eyesPos.z;
 
 		return new Rotation(
-			(float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F,
-			(float) (-Math.toDegrees(Math.atan2(diffY, Math.sqrt(diffX * diffX + diffZ * diffZ)))));
+			(float) toDegrees(atan2(diffZ, diffX)) - 90F,
+			(float) (-toDegrees(atan2(diffY, Math.sqrt(diffX * diffX + diffZ * diffZ)))));
 	}
 
 	public static Vec3d getCenter(final Box bb) {
@@ -70,8 +75,8 @@ public class RotationUtils {
 
 		double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
 
-		float yaw = (float)Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F;
-		float pitch = (float)-Math.toDegrees(Math.atan2(diffY, diffXZ));
+		float yaw = (float) toDegrees(atan2(diffZ, diffX)) - 90F;
+		float pitch = (float)-toDegrees(atan2(diffY, diffXZ));
 
 		return new Rotation(yaw, pitch);
 	}
@@ -82,14 +87,15 @@ public class RotationUtils {
 		Rotation needed = getNeededRotations(vec);
 
 		ClientPlayerEntity player = mc.player;
-		float currentYaw = MathHelper.wrapDegrees(player.getYaw());
-		float currentPitch = MathHelper.wrapDegrees(player.getPitch());
+		float currentYaw = wrapDegrees(player.getYaw());
+		float currentPitch = wrapDegrees(player.getPitch());
 
 		float diffYaw = currentYaw - needed.yaw;
 		float diffPitch = currentPitch - needed.pitch;
 
 		return Math.sqrt(diffYaw * diffYaw + diffPitch * diffPitch);
 	}
+
 
 	public static final class Rotation
 	{
@@ -98,14 +104,14 @@ public class RotationUtils {
 
 		public Rotation(float yaw, float pitch)
 		{
-			this.yaw = MathHelper.wrapDegrees(yaw);
-			this.pitch = MathHelper.wrapDegrees(pitch);
+			this.yaw = wrapDegrees(yaw);
+			this.pitch = wrapDegrees(pitch);
 		}
 
 		public Rotation(double yaw, double pitch)
 		{
-			this.yaw = MathHelper.wrapDegrees((float)yaw);
-			this.pitch = MathHelper.wrapDegrees((float)pitch);
+			this.yaw = wrapDegrees((float)yaw);
+			this.pitch = wrapDegrees((float)pitch);
 		}
 
 		public float getYaw()
@@ -125,5 +131,63 @@ public class RotationUtils {
 		public void setPitch(float pitch) {
 			this.pitch = pitch;
 		}
+	}
+
+	public static Vector3d getVector3d(LivingEntity me, LivingEntity to, float range) {
+
+		// САМЫЙ ПРОСТОЙ И ПРАВИЛЬНЫЙ РАСЧЕТ ОТ ЛИПЫ //
+
+		double wHalf = to.getWidth() / 2;
+
+		double yExpand = clamp(me.getEyeHeight(me.getPose()) - to.getY(), 0, to.getHeight() * (mc.player.distanceTo(to) / (range)));
+
+		double xExpand = clamp(mc.player.getPos().x - to.getPos().x, -wHalf, wHalf);
+		double zExpand = clamp(mc.player.getPos().z - to.getPos().z, -wHalf, wHalf);
+
+		return new Vector3d(
+			to.getX() - me.getX() + xExpand,
+			to.getY() - me.getEyeHeight(me.getPose()) + yExpand,
+			to.getZ() - me.getZ() + zExpand
+		);
+	}
+
+	public static double getDistance(LivingEntity entity, float range) {
+		return getVector3d(mc.player, entity, range).length();
+	}
+
+	public static double getDegree(LivingEntity entity, float range) {
+		Vector3d vec = getVector3d(mc.player, entity, range);
+
+		double yaw = wrapDegrees(toDegrees(atan2(vec.z, vec.x)) - 90);
+		double delta = wrapDegrees(yaw - mc.player.getYaw());
+
+		if (abs(delta) > 180) delta -= signum(delta) * 360;
+
+		return abs(delta);
+	}
+
+	public static boolean isLookingAtMe(LivingEntity target) {
+		double x = target.getX() - mc.player.getX();
+		double z = target.getZ() - mc.player.getZ();
+
+		float entityYaw = wrapDegrees(target.getYaw());
+		double yaw = toDegrees(atan2(z, x)) + 90.0;
+
+		return abs(wrapDegrees(yaw - entityYaw)) <= 90;
+	}
+
+	public static boolean isInHitBox(LivingEntity me, LivingEntity to) {
+		double wHalf = to.getWidth() / 2;
+
+		double yExpand = clamp(me.getEyeHeight(me.getPose()) - to.getY(), 0, to.getHeight());
+
+		double xExpand = clamp(mc.player.getX() - to.getX(), -wHalf, wHalf);
+		double zExpand = clamp(mc.player.getZ() - to.getZ(), -wHalf, wHalf);
+
+		return new Vector3d(
+			to.getX() - me.getX() + xExpand,
+			to.getY() - me.getEyeHeight(me.getPose()) + yExpand,
+			to.getZ() - me.getZ() + zExpand
+		).length() == 0;
 	}
 }

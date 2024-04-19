@@ -15,10 +15,9 @@ public class KillAuraPlusMode {
 		this.mc = MinecraftClient.getInstance();
 		this.type = type;
 	}
-
-	public void onTick(TickEvent.Post event) { }
-
+	public void onActivate() { }
 	public void onDeactivate() { }
+	public void onTick(TickEvent.Post event) { }
 
 	public void onSendPacket(PacketEvent.Send event) { }
 

@@ -180,7 +180,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 		modules.add(new AntiBotPlus());
 		modules.add(new MultiTasks());
 		modules.add(new ItemFrameEsp());
-		modules.add(new KillAuraPlus());
+		//modules.add(new KillAuraPlus());
 		modules.add(new ElytraFlyPlus());
 		modules.add(new VelocityPlus());
 		if (!MixinPlugin.isMeteorRejects) {
