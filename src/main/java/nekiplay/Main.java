@@ -12,12 +12,6 @@ public class Main implements ModInitializer {
 	public static final String METEOR_LOGPREFIX = "[Meteor+]";
 	@Override
 	public void onInitialize() {
-
-		if (MixinPlugin.isZewo2) {
-			LOG.info(METEOR_LOGPREFIX + " Detected Zero2 addon, full disabling Meteor+");
-			return;
-		}
-
 		LOG.info(METEOR_LOGPREFIX + " Initializing items...");
 		ModItems.initializeMeteorPlus();
 		ModItems.initializeBozePlus();
