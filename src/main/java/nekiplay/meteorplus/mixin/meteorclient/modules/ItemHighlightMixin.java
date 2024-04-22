@@ -18,7 +18,7 @@ public class ItemHighlightMixin {
 		if (cir.getReturnValue() == -1) {
 			if (stack != null) {
 				ItemHighlightPlus itemHighlightPlus = Modules.get().get(ItemHighlightPlus.class);
-				if (itemHighlightPlus.isActive()) {
+				if (itemHighlightPlus != null && itemHighlightPlus.isActive()) {
 					if (itemHighlightPlus.whitelist.get().contains(stack.getItem().asItem())) {
 						HiglightItemData espItemData = itemHighlightPlus.itemsConfigs.get().get(stack.getItem());
 						if (espItemData != null) {
