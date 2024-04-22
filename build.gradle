@@ -55,10 +55,7 @@ dependencies {
 
 	// Meteor Client
 	modImplementation files("libs\\baritone-unoptimized-fabric-1.10.1-11-g3ed49fd4.jar")
-	modImplementation files("libs\\meteor-client-0.5.6-2055.jar")
-
-	// Meteor Client addons
-	modImplementation files("libs\\Numby-Hack-2.2.jar")
+	modImplementation files("libs\\meteor-client-0.5.6-2061.jar")
 
 	// Journey Map
 	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true

@@ -6,6 +6,7 @@ import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.combat.Criticals;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.orbit.EventHandler;
 import nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlus;
@@ -120,7 +121,7 @@ public class TriggerBot extends Module {
 	}
 
 	private boolean delayCheck() {
-		if (onlyCrits.get() && !CriticalsPlus.canCrit()) {
+		if (onlyCrits.get() && !CriticalsPlus.allowCrit()) {
 			return false;
 		}
 

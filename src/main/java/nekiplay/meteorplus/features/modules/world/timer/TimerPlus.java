@@ -147,13 +147,6 @@ public class TimerPlus extends Module {
 				timerMultiplierInAir = 1.7;
 				timerMultiplierOnRecharge = Timer.OFF;
 			}
-			case rem6g6s -> {
-				currentMode = new NCP();
-				workingDelay = 75;
-				rechargeDelay = 155;
-				timerMultiplier = 2.5;
-				timerMultiplierOnRecharge = 2;
-			}
 			case Custom -> {
 				currentMode = new NCP();
 				workingDelay = boostDelaySetting.get();

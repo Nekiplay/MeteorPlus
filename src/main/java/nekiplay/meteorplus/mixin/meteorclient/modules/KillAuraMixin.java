@@ -6,6 +6,7 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.combat.Criticals;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import nekiplay.meteorplus.features.modules.combat.Teams;
 import nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlus;
@@ -40,7 +41,7 @@ public class KillAuraMixin extends Module {
 
 	@Inject(method = "delayCheck", at = @At("HEAD"), cancellable = true)
 	private void delayCheck(CallbackInfoReturnable<Boolean> cir) {
-		if (onlyCrits.get() && !CriticalsPlus.canCrit()) {
+		if (onlyCrits.get() && !CriticalsPlus.allowCrit()) {
 			cir.setReturnValue(false);
 		}
 	}

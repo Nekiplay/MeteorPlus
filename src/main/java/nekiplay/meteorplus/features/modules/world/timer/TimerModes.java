@@ -6,7 +6,6 @@ public enum TimerModes {
 	Vulcan,
 	Grim,
 	OldFag,
-	rem6g6s,
 	Custom,
 	Custom_v2;
 
