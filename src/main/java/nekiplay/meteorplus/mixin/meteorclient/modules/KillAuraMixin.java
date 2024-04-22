@@ -45,7 +45,6 @@ public class KillAuraMixin extends Module {
 	private final List<Entity> targets = new ArrayList<>();
 
 	@Shadow
-
 	public Entity getTarget() {
 		if (!targets.isEmpty()) return targets.get(0);
 		return null;

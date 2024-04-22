@@ -21,6 +21,7 @@
 		"meteorclient.modules.TracersMixin",
 		"meteorclient.modules.WaypointsModuleMixin",
 		"meteorclient.modules.MiddleClickExtraMixin",
+		"meteorclient.modules.CriticalsMixin",
 		"minecraft.ClientConnectionAccessor",
 		"minecraft.ClientPlayerInteractionManagerMixin",
 		"minecraft.CraftingScreenHandlerAccessor",
