@@ -1,6 +1,7 @@
 package nekiplay.meteorplus.mixin.meteorclient.modules;
 
 import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
@@ -76,6 +77,28 @@ public class KillAuraMixin extends Module {
 		.build()
 	);
 
+	@Unique
+	private final Setting<Boolean> customDelay = sgTiming.add(new BoolSetting.Builder()
+		.name("custom-delay-for-one-hit-entities")
+		.defaultValue(true)
+		.visible(() -> entities.get().contains(EntityType.SHULKER_BULLET) || entities.get().contains(EntityType.FIREBALL))
+		.build()
+	);
+
+	@Unique
+	private final Setting<Integer> hitDelay = sgTiming.add(new IntSetting.Builder()
+		.name("delay-for-one-hit-entities")
+		.description("How fast you hit the entity in ticks.")
+		.defaultValue(2)
+		.min(0)
+		.sliderMax(60)
+		.visible(() -> customDelay.get())
+		.build()
+	);
+
+	@Unique
+	private int hitTimer;
+
 	public KillAuraMixin(Category category, String name, String description) {
 		super(category, name, description);
 	}
@@ -85,11 +108,31 @@ public class KillAuraMixin extends Module {
 		if (onlyCrits.get() && !CriticalsPlus.allowCrit()) {
 			cir.setReturnValue(false);
 		}
-		else if (ignoreOnlyCritsForOneHitEntity.get() && oneHitEntity()) {
-			cir.setReturnValue(true);
-		}
-		else if (oneHitEntity() && ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && !onlyCrits.get()) {
-			cir.setReturnValue(true);
+
+		float delay = (customDelay.get()) ? hitDelay.get() : 0.5f;
+
+		if (oneHitEntity()) {
+			if (customDelay.get()) {
+				if (hitTimer < delay) {
+					hitTimer++;
+					cir.setReturnValue(false);
+				} else  {
+					if (ignoreOnlyCritsForOneHitEntity.get()) {
+						cir.setReturnValue(true);
+						hitTimer = 0;
+					} else if (oneHitEntity() && ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && !onlyCrits.get()) {
+						cir.setReturnValue(true);
+						hitTimer = 0;
+					}
+				}
+			}
+			else {
+				if (ignoreOnlyCritsForOneHitEntity.get()) {
+					cir.setReturnValue(true);
+				} else if (oneHitEntity() && ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && !onlyCrits.get()) {
+					cir.setReturnValue(true);
+				}
+			}
 		}
 	}
 
