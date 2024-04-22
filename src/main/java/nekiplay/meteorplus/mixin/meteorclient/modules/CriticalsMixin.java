@@ -24,7 +24,7 @@ public class CriticalsMixin extends Module {
 	@Inject(method = "onSendPacket", at = @At("HEAD"), cancellable = true)
 	private void onSendPacket(PacketEvent.Send event, CallbackInfo ci) {
 		if (event.packet instanceof IPlayerInteractEntityC2SPacket packet && packet.getType() == PlayerInteractEntityC2SPacket.InteractType.ATTACK) {
-			if (skipCrit()) return;
+			if (skipCrit()) { ci.cancel(); return; }
 
 			Entity entity = packet.getEntity();
 			if (entity.getType() == EntityType.SHULKER_BULLET || entity.getType() == EntityType.FIREBALL) {
