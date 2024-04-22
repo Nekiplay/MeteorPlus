@@ -249,14 +249,14 @@ public class FreecamMixin {
 	@EventHandler
 	private void onKeyEvent(KeyEvent event)
 	{
-		if (event.action == KeyAction.Press) {
+		if (mc.world != null && event.action == KeyAction.Press) {
 			Work(event);
 		}
 	}
 	@Unique
 	@EventHandler
 	private void onMouseButtonEvent(MouseButtonEvent event) {
-		if (event.action == KeyAction.Press) {
+		if (mc.world != null && event.action == KeyAction.Press) {
 			Work(event);
 		}
 	}
@@ -264,7 +264,7 @@ public class FreecamMixin {
 	@Unique
 	@EventHandler
 	private void onTickEvent(TickEvent.Pre event) {
-		if (blinkBaritoneControl.get() && blink != null) {
+		if (mc.world != null && blinkBaritoneControl.get() && blink != null) {
 			if (isBlinkMoving && (BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().hasPath() || BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing() ) ) {
 				if (!blink.isActive()) {
 					blink.toggle();
