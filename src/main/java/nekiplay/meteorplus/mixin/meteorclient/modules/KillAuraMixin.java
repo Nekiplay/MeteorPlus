@@ -22,10 +22,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Mixin(value = KillAura.class, remap = false, priority = 1001)
@@ -100,7 +102,7 @@ public class KillAuraMixin extends Module {
 		.defaultValue(2)
 		.min(0)
 		.sliderMax(60)
-		.visible(() -> customDelay.get())
+		.visible(customDelay::get)
 		.build()
 	);
 
@@ -114,7 +116,10 @@ public class KillAuraMixin extends Module {
 	@Inject(method = "delayCheck", at = @At("HEAD"), cancellable = true)
 	private void delayCheck(CallbackInfoReturnable<Boolean> cir) {
 		if (onlyCrits.get() && !CriticalsPlus.allowCrit()) {
-			if (!ignoreOnlyCritsOnLevitation.get() && !mc.player.hasStatusEffect(StatusEffects.LEVITATION)) {
+			if (ignoreOnlyCritsOnLevitation.get() && !Objects.requireNonNull(mc.player).hasStatusEffect(StatusEffects.LEVITATION)) {
+				cir.setReturnValue(false);
+			}
+			else if (!ignoreOnlyCritsOnLevitation.get()) {
 				cir.setReturnValue(false);
 			}
 		}
@@ -129,10 +134,8 @@ public class KillAuraMixin extends Module {
 				} else  {
 					if (ignoreOnlyCritsForOneHitEntity.get()) {
 						cir.setReturnValue(true);
-						hitTimer = 0;
 					} else if (oneHitEntity() && ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && !onlyCrits.get()) {
 						cir.setReturnValue(true);
-						hitTimer = 0;
 					}
 				}
 			}
@@ -152,6 +155,11 @@ public class KillAuraMixin extends Module {
 			return true;
 		}
 		return false;
+	}
+
+	@Inject(method = "attack", at = @At("RETURN"))
+	private void onAttackEntity(Entity target, CallbackInfo ci) {
+		hitTimer = 0;
 	}
 
 

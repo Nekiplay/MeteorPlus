@@ -119,7 +119,7 @@ public class AntiBotPlus extends Module {
 		.build()
 	);
 
-	private ArrayList<Integer> hash = new ArrayList<Integer>();
+	private ArrayList<UUID> hash = new ArrayList<UUID>();
 	private ArrayList<Integer> swings = new ArrayList<Integer>();
 	private ArrayList<Integer> grounds = new ArrayList<Integer>();
 	private ArrayList<Integer> airs = new ArrayList<Integer>();
@@ -143,48 +143,48 @@ public class AntiBotPlus extends Module {
 		if (!isActive())
 			return false;
 
-		if (useHash.get() && hash.contains(entity.getId())) {
+		if (useHash.get() && hash.contains(entity.getUuid())) {
 			return true;
 		}
 
 		if (color.get() && entity.getDisplayName().getString().replace("§r", "").contains("§")) {
 			if (useHash.get()) {
-				hash.add(entity.getId());
+				hash.add(entity.getUuid());
 			}
 			return true;
 		}
 
 		if (ground.get() && !grounds.contains(entity.getId())) {
 			if (useHash.get()) {
-				hash.add(entity.getId());
+				hash.add(entity.getUuid());
 			}
 			return true;
 		}
 
 		if (InvalidGround.get() && invalidGrounds.getOrDefault(entity.getId(), 0) >= 10) {
 			if (useHash.get()) {
-				hash.add(entity.getId());
+				hash.add(entity.getUuid());
 			}
 			return true;
 		}
 
 		if (entityID.get() && (entity.getId() >= 1000000000 || entity.getId() <= -1)) {
 			if (useHash.get()) {
-				hash.add(entity.getId());
+				hash.add(entity.getUuid());
 			}
 			return true;
 		}
 
 		if (derp.get() && (entity.getPitch() > 90f || entity.getPitch() < -90)) {
 			if (useHash.get()) {
-				hash.add(entity.getId());
+				hash.add(entity.getUuid());
 			}
 			return true;
 		}
 
 		if (swing.get() && !swings.contains(entity.getId())) {
 			if (useHash.get()) {
-				hash.add(entity.getId());
+				hash.add(entity.getUuid());
 			}
 			return true;
 		}
@@ -215,7 +215,7 @@ public class AntiBotPlus extends Module {
 					}
 				}
 				if (useHash.get()) {
-					hash.add(entity.getId());
+					hash.add(entity.getUuid());
 				}
 				return true;
 			}
@@ -231,10 +231,10 @@ public class AntiBotPlus extends Module {
 
 	@EventHandler
 	private void onEntityRemove(EntityRemovedEvent event) {
-		if (hash.contains(event.entity.getId())) {
-			Iterator<Integer> iterator = hash.iterator();
+		if (hash.contains(event.entity.getUuid())) {
+			Iterator<UUID> iterator = hash.iterator();
 			while (iterator.hasNext()) {
-				if (iterator.next() == event.entity.getId()) {
+				if (iterator.next() == event.entity.getUuid()) {
 					iterator.remove();
 					return;
 				}
@@ -270,10 +270,13 @@ public class AntiBotPlus extends Module {
 			}
 		}
 		else if (event.packet instanceof EntityAnimationS2CPacket packet) {
-			Entity entity = mc.world.getEntityById(packet.getId());
-			if (entity != null) {
-				if (entity instanceof LivingEntity && packet.getAnimationId() == 0 && !swings.contains(entity.getId()))
-					swings.add(entity.getId());
+			if (mc.world != null) {
+				Entity entity = mc.world.getEntityById(packet.getId());
+				if (entity != null) {
+					if (entity instanceof LivingEntity && packet.getAnimationId() == 0 && !swings.contains(entity.getId())) {
+						swings.add(entity.getId());
+					}
+				}
 			}
 		}
 	}
