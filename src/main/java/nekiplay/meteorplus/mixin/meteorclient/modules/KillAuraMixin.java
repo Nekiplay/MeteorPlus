@@ -13,6 +13,7 @@ import nekiplay.meteorplus.features.modules.combat.Teams;
 import nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import nekiplay.meteorplus.features.modules.combat.AntiBotPlus;
@@ -66,6 +67,7 @@ public class KillAuraMixin extends Module {
 	private final Setting<Boolean> ignoreOnlyCritsOnLevitation = sgTiming.add(new BoolSetting.Builder()
 		.name("ignore-only-crits-on-levetation")
 		.defaultValue(true)
+		.visible(() -> onlyCrits.get())
 		.build()
 	);
 
@@ -80,7 +82,7 @@ public class KillAuraMixin extends Module {
 
 	@Unique
 	private final Setting<Boolean> ignoreOnlyCritsForOneHitEntity = sgTiming.add(new BoolSetting.Builder()
-		.name("ignore-only-crits-for-one-hit-entityies")
+		.name("ignore-only-crits-for-one-hit-entities")
 		.description("Ignore only crits delay for shulker bullet and fireball.")
 		.defaultValue(true)
 		.visible(() -> ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && onlyCrits.get())
@@ -151,8 +153,13 @@ public class KillAuraMixin extends Module {
 
 	@Unique
 	private boolean oneHitEntity() {
-		if (ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && getTarget() != null && (getTarget().getType() == EntityType.FIREBALL || getTarget().getType() == EntityType.SHULKER_BULLET)) {
-			return true;
+		if (getTarget() != null) {
+			if (ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && (getTarget().getType() == EntityType.FIREBALL || getTarget().getType() == EntityType.SHULKER_BULLET)) {
+				return true;
+			}
+			else if (getTarget() instanceof LivingEntity livingEntity) {
+				return livingEntity.getHealth() <= 1;
+			}
 		}
 		return false;
 	}

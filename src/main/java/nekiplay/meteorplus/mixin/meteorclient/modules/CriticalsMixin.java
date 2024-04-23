@@ -7,6 +7,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.combat.Criticals;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,6 +30,11 @@ public class CriticalsMixin extends Module {
 			Entity entity = packet.getEntity();
 			if (entity.getType() == EntityType.SHULKER_BULLET || entity.getType() == EntityType.FIREBALL) {
 				ci.cancel();
+			}
+			else if (entity instanceof LivingEntity livingEntity) {
+				if (livingEntity.getHealth() <= 1) {
+					ci.cancel();
+				}
 			}
 		}
 	}

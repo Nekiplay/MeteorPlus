@@ -109,11 +109,13 @@ public class MeteorPlusAddon extends MeteorAddon {
 		}
 
 		if (!isBaritonePresent) {
+			notFoundBaritoneIntegrations.add("Hunt");
 			notFoundBaritoneIntegrations.add("Freecam");
 			notFoundBaritoneIntegrations.add("Waypoints");
 			notFoundBaritoneIntegrations.add("Goto+");
 		}
 		else {
+			enabledIntegrations.add("Hunt");
 			enabledIntegrations.add("Freecam");
 			enabledIntegrations.add("Waypoints");
 			enabledIntegrations.add("Goto+");
@@ -166,7 +168,9 @@ public class MeteorPlusAddon extends MeteorAddon {
 		//region Modules
 		LOG.info(METEOR_LOGPREFIX + " Initializing modules...");
 		Modules modules = Modules.get();
-
+		if (isBaritonePresent) {
+			modules.add(new Hunt());
+		}
 		modules.add(new Teams());
 		modules.add(new HologramModule());
 		modules.add(new SprintPlus());
