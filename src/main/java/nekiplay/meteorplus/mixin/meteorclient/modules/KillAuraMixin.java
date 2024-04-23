@@ -13,6 +13,7 @@ import nekiplay.meteorplus.features.modules.combat.Teams;
 import nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import nekiplay.meteorplus.features.modules.combat.AntiBotPlus;
 import org.spongepowered.asm.mixin.Final;
@@ -55,6 +56,13 @@ public class KillAuraMixin extends Module {
 	private final Setting<Boolean> onlyCrits = sgTiming.add(new BoolSetting.Builder()
 		.name("only-crits")
 		.description("Attack enemy only if this attack crit after jump.")
+		.defaultValue(true)
+		.build()
+	);
+
+	@Unique
+	private final Setting<Boolean> ignoreOnlyCritsOnLevitation = sgTiming.add(new BoolSetting.Builder()
+		.name("ignore-only-crits-on-levetation")
 		.defaultValue(true)
 		.build()
 	);
@@ -106,7 +114,9 @@ public class KillAuraMixin extends Module {
 	@Inject(method = "delayCheck", at = @At("HEAD"), cancellable = true)
 	private void delayCheck(CallbackInfoReturnable<Boolean> cir) {
 		if (onlyCrits.get() && !CriticalsPlus.allowCrit()) {
-			cir.setReturnValue(false);
+			if (!ignoreOnlyCritsOnLevitation.get() && !mc.player.hasStatusEffect(StatusEffects.LEVITATION)) {
+				cir.setReturnValue(false);
+			}
 		}
 
 		float delay = (customDelay.get()) ? hitDelay.get() : 0.5f;
