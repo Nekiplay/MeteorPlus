@@ -5,8 +5,6 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.combat.Criticals;
 import meteordevelopment.meteorclient.utils.entity.DamageUtils;
-import nekiplay.meteorplus.mixin.minecraft.entity.ShulkerEntityAccessor;
-import nekiplay.meteorplus.utils.ItemDamageUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

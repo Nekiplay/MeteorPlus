@@ -7,13 +7,11 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.systems.modules.combat.Criticals;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
+import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.combat.Teams;
-import nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import nekiplay.meteorplus.features.modules.combat.AntiBotPlus;
@@ -38,7 +36,7 @@ import static nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlu
 public class KillAuraMixin extends Module {
 	@Final
 	@Shadow
-	private final SettingGroup sgTiming = settings.getGroup("Timing");
+	private final SettingGroup sgTiming = settings.createGroup(MeteorPlusAddon.HUD_TITLE + " Timing");
 
 	@Final
 	@Shadow
