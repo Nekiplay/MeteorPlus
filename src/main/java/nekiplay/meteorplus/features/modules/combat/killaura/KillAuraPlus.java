@@ -8,7 +8,6 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.orbit.EventHandler;
-import nekiplay.meteorplus.features.modules.combat.killaura.modes.VanilaPlus;
 import net.minecraft.entity.EntityType;
 
 import java.util.ArrayList;
@@ -220,9 +219,7 @@ public class KillAuraPlus extends Module {
 	private KillAuraPlusMode currentMode;
 
 	private void onModeChanged(KillAuraPlusModes mode) {
-		switch (mode) {
-			case VanilaPlus -> currentMode = new VanilaPlus();
-		}
+
 	}
 	@EventHandler
 	private void onTick(TickEvent.Post event) {
