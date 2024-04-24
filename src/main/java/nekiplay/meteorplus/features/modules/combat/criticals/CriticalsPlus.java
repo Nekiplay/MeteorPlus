@@ -8,9 +8,6 @@ import meteordevelopment.meteorclient.utils.entity.DamageUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-/*
-	Not done
- */
 
 public class CriticalsPlus extends Module {
 	public CriticalsPlus() {

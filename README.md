@@ -26,7 +26,7 @@
 ## PvE Modules
 | Module                 | Description                                   | Bypasses                      |
 |------------------------|-----------------------------------------------|-------------------------------|
-| **Fly+**               | **Flight for Anti-Cheats**                    | **Matrix, Spartan, Vulcan**   |
+| **Flight+**            | **Flight for Anti-Cheats**                    | **Matrix, Spartan, Vulcan**   |
 | **Speed+**             | **Speed for Anti-Cheats**                     | **Matrix, ACC, Vulcan, NCP**  |
 | **Spider+**            | **Spider for Anti-Cheats**                    | **Matrix, Vulcan**            |
 | **Jesus+**             | **Jesus for Anti-Cheats**                     | **Matrix, Vulcan**            |

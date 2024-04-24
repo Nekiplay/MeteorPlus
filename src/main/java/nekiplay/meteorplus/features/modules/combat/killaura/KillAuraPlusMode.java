@@ -17,7 +17,8 @@ public class KillAuraPlusMode {
 	}
 	public void onActivate() { }
 	public void onDeactivate() { }
-	public void onTick(TickEvent.Post event) { }
+	public void onTickPre(TickEvent.Pre event) { }
+	public void onTickPost(TickEvent.Post event) { }
 
 	public void onSendPacket(PacketEvent.Send event) { }
 
