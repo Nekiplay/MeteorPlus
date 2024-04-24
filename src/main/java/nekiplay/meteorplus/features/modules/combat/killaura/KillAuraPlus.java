@@ -8,10 +8,7 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.orbit.EventHandler;
-<<<<<<< Updated upstream
-=======
 import nekiplay.meteorplus.features.modules.combat.killaura.modes.Matrix;
->>>>>>> Stashed changes
 import net.minecraft.entity.EntityType;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -135,13 +132,9 @@ public class KillAuraPlus extends Module {
 	private KillAuraPlusMode currentMode;
 
 	private void onModeChanged(KillAuraPlusModes mode) {
-<<<<<<< Updated upstream
-
-=======
 		switch (mode) {
 			case Matrix -> currentMode = new Matrix();
 		}
->>>>>>> Stashed changes
 	}
 	@EventHandler
 	private void onTickPre(TickEvent.Pre event) {
