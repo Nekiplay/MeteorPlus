@@ -14,7 +14,6 @@ public class Main implements ModInitializer {
 	public void onInitialize() {
 		LOG.info(METEOR_LOGPREFIX + " Initializing items...");
 		ModItems.initializeMeteorPlus();
-		ModItems.initializeBozePlus();
 		LOG.info(METEOR_LOGPREFIX + " Loaded items");
 
 		if (MixinPlugin.isBozeAPI && !MixinPlugin.isMeteorClient) {

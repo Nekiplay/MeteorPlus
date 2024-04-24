@@ -16,16 +16,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Tameable;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 public class Hunt extends Module {
 	public Hunt() {
-		super(Categories.Combat, "Hunt", "Automatic falk to entities");
+		super(Categories.Combat, "Hunt", "Automatic walk to selected entities");
 	}
 
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();

@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlus.allowCrit;
+import static nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlus.needCrit;
+
 @Mixin(value = KillAura.class, remap = false, priority = 1001)
 public class KillAuraMixin extends Module {
 	@Final
@@ -117,7 +120,7 @@ public class KillAuraMixin extends Module {
 
 	@Inject(method = "delayCheck", at = @At("HEAD"), cancellable = true)
 	private void delayCheck(CallbackInfoReturnable<Boolean> cir) {
-		if (onlyCrits.get() && !CriticalsPlus.allowCrit()) {
+		if (onlyCrits.get() && !allowCrit() && needCrit(getTarget())) {
 			if (ignoreOnlyCritsOnLevitation.get() && !Objects.requireNonNull(mc.player).hasStatusEffect(StatusEffects.LEVITATION)) {
 				cir.setReturnValue(false);
 			}
@@ -156,9 +159,6 @@ public class KillAuraMixin extends Module {
 		if (getTarget() != null) {
 			if (ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && (getTarget().getType() == EntityType.FIREBALL || getTarget().getType() == EntityType.SHULKER_BULLET)) {
 				return true;
-			}
-			else if (getTarget() instanceof LivingEntity livingEntity) {
-				return livingEntity.getHealth() <= 1;
 			}
 		}
 		return false;

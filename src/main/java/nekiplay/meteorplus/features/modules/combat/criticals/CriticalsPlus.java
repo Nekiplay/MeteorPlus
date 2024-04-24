@@ -4,10 +4,12 @@ import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.combat.Criticals;
+import meteordevelopment.meteorclient.utils.entity.DamageUtils;
+import nekiplay.meteorplus.mixin.minecraft.entity.ShulkerEntityAccessor;
+import nekiplay.meteorplus.utils.ItemDamageUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-
+import net.minecraft.entity.LivingEntity;
 /*
 	Not done
  */
@@ -33,6 +35,13 @@ public class CriticalsPlus extends Module {
 		}
 		else if (Modules.get().get(Criticals.class).isActive()) {
             return !skipCrit();
+		}
+		return false;
+	}
+
+	public static boolean needCrit(Entity entity) {
+		if (entity instanceof LivingEntity livingEntity) {
+			return livingEntity.getHealth() >= DamageUtils.getAttackDamage(mc.player, livingEntity);
 		}
 		return false;
 	}

@@ -27,7 +27,8 @@
 		"minecraft.CraftingScreenHandlerAccessor",
 		"minecraft.MinecraftClientMixin",
 		"minecraft.ShapelessRecipeAccessor",
-		"minecraft.hud.DebugHudMixin"
+		"minecraft.hud.DebugHudMixin",
+		"minecraft.entity.ShulkerEntityAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

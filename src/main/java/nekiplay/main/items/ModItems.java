@@ -12,21 +12,13 @@ public class ModItems {
 	public static final Item METEOR_PLUS_LOGO_ITEM = new Item(new FabricItemSettings());
 	public static final Item METEOR_PLUS_LOGO_MODS_ITEM = new Item(new FabricItemSettings());
 
-	public static final Item BOZE_LOGO_ITEM = new Item(new FabricItemSettings());
 	public static void initializeMeteorPlus() {
 		Registry.register(Registries.ITEM, new Identifier("meteorplus", "logo"), METEOR_PLUS_LOGO_ITEM);
 		Registry.register(Registries.ITEM, new Identifier("meteorplus", "logo_mods"), METEOR_PLUS_LOGO_MODS_ITEM);
 
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {
-			content.add(METEOR_PLUS_LOGO_ITEM);
-			content.add(METEOR_PLUS_LOGO_MODS_ITEM);
-		});
-	}
-	public static void initializeBozePlus() {
-		Registry.register(Registries.ITEM, new Identifier("bozeplus", "logo"), BOZE_LOGO_ITEM);
-
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {
-			content.add(BOZE_LOGO_ITEM);
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(content -> {
+			content.add(ModItems.METEOR_PLUS_LOGO_MODS_ITEM);
+			content.add(ModItems.METEOR_PLUS_LOGO_ITEM);
 		});
 	}
 }
