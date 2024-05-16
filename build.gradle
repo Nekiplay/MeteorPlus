@@ -1,8 +1,6 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id "fabric-loom" version "1.6-SNAPSHOT"
 }
-
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -30,11 +28,38 @@ repositories {
 	maven { url = "https://masa.dy.fi/maven" }
 	// YACL
 	maven {
+		name = "Xander Maven"
 		url = uri("https://maven.isxander.dev/releases")
+		content {
+			includeGroupAndSubgroups("dev.isxander")
+			includeGroupAndSubgroups("org.quiltmc")
+		}
 	}
+	maven {
+		name = "Xander Snapshot Maven"
+		url = uri("https://maven.isxander.dev/snapshots")
+		content {
+			includeGroupAndSubgroups("dev.isxander")
+			includeGroupAndSubgroups("org.quiltmc")
+		}
+	}
+
 	// Where Is It, JackFredLib
 	maven {
+		name = "JackFredMaven"
 		url = uri("https://maven.jackf.red/releases/")
+		content {
+			includeGroupAndSubgroups("red.jackf")
+		}
+	}
+
+	// Cloth Config
+	maven {
+		name = "Shedaniel"
+		url = uri("https://maven.shedaniel.me")
+		content {
+			includeGroupAndSubgroups("me.shedaniel")
+		}
 	}
 
 	// Boze
@@ -51,11 +76,11 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Mixin extras
-	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.3.5")))
+	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.3.6")))
 
 	// Meteor Client
-	modImplementation files("libs\\baritone-unoptimized-fabric-1.10.1-11-g3ed49fd4.jar")
-	modImplementation files("libs\\meteor-client-0.5.6-2061.jar")
+	modImplementation files("libs\\baritone-unoptimized-fabric-1.10.2-3-g323e6faa.jar")
+	modImplementation files("libs\\meteor-client-0.5.7-2079.jar")
 
 	// Journey Map
 	modCompileOnlyApi  group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_fabric_version, changing: true
@@ -65,15 +90,9 @@ dependencies {
 	modCompileOnly "maven.modrinth:xaeros-world-map:${project.xwm_fabric_version}" // Xaero's World Map
 	modCompileOnly "maven.modrinth:xaeros-minimap:${project.xmm_fabric_version}" // Xaero's Minimap
 
-	// Litematica
-	modImplementation "curse.maven:litematica-${project.litematica_projectid}:${project.litematica_fileid}"
-	modImplementation "curse.maven:litematica-${project.malilib_projectid}:${project.malilib_fileid}"
-
 	// Chest Tracker
+	modImplementation("dev.isxander:yet-another-config-lib:${project.yacl_version}")
 	modImplementation("red.jackf:whereisit:${project.where_is_it_version}")
-
-	// Boze
-	modImplementation "dev.boze:boze-api:${project.boze_api_version}"
 }
 
 loom {
