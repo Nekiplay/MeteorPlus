@@ -65,6 +65,16 @@ public class Cauldrons extends AutoObsidianFarmMode {
 	private int placed = 0;
 
 	@Override
+	public void onDeactivate() {
+		if (placed > 0) {
+			ChatUtils.info("Farmed obsidian: " + (placed/64) + " stacks");
+			if (placed >= 64 * 27) {
+				ChatUtils.info("Farmed obsidian: " + (placed/64/27) + " chests");
+			}
+		}
+	}
+	
+	@Override
 	public String getInfoString() {
 		return Integer.toString(placed);
 	}
