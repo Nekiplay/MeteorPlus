@@ -8,10 +8,12 @@ import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
+import meteordevelopment.meteorclient.utils.entity.DamageUtils;
 import nekiplay.meteorplus.MeteorPlusAddon;
 import nekiplay.meteorplus.features.modules.combat.Teams;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import nekiplay.meteorplus.features.modules.combat.AntiBotPlus;
@@ -34,13 +36,16 @@ import static nekiplay.meteorplus.features.modules.combat.criticals.CriticalsPlu
 
 @Mixin(value = KillAura.class, remap = false, priority = 1001)
 public class KillAuraMixin extends Module {
-	@Final
-	@Shadow
-	private final SettingGroup sgTiming = settings.createGroup(MeteorPlusAddon.HUD_TITLE + " Timing");
+	@Unique
+	private final SettingGroup sgTimingPlus = settings.createGroup(MeteorPlusAddon.HUD_TITLE + " Timing");
 
 	@Final
 	@Shadow
 	private final SettingGroup sgTargeting = settings.getGroup("Targeting");
+
+	@Final
+	@Shadow
+	private final SettingGroup sgTiming = settings.getGroup("Timing");
 
 	@Final
 	@Shadow
@@ -56,16 +61,38 @@ public class KillAuraMixin extends Module {
 		return null;
 	}
 
+	@Shadow
+	@Final
+	private final Setting<Boolean> customDelay = (Setting<Boolean>) sgTiming.get("custom-delay");
+
 	@Unique
-	private final Setting<Boolean> onlyCrits = sgTiming.add(new BoolSetting.Builder()
-		.name("only-crits")
-		.description("Attack enemy only if this attack crit after jump.")
+	private final Setting<Boolean> smartDelayv2 = sgTimingPlus.add(new BoolSetting.Builder()
+		.name("smart-delay-v2")
+		.description("Calculate sword damage to enemy.")
 		.defaultValue(true)
+		.visible(() -> !customDelay.get())
+		.build()
+	);
+	@Unique
+	private final Setting<Integer> maxHurtTime = sgTimingPlus.add(new IntSetting.Builder()
+		.name("max-enemy-hurt-time")
+		.defaultValue(0)
+		.min(0)
+		.sliderMax(20)
+		.visible(() -> !smartDelayv2.get())
 		.build()
 	);
 
 	@Unique
-	private final Setting<Boolean> ignoreOnlyCritsOnLevitation = sgTiming.add(new BoolSetting.Builder()
+	private final Setting<Boolean> onlyCrits = sgTimingPlus.add(new BoolSetting.Builder()
+		.name("only-crits")
+		.description("Attack enemy only if this attack crit after jump.")
+		.defaultValue(false)
+		.build()
+	);
+
+	@Unique
+	private final Setting<Boolean> ignoreOnlyCritsOnLevitation = sgTimingPlus.add(new BoolSetting.Builder()
 		.name("ignore-only-crits-on-levetation")
 		.defaultValue(true)
 		.visible(() -> onlyCrits.get())
@@ -73,7 +100,7 @@ public class KillAuraMixin extends Module {
 	);
 
 	@Unique
-	private final Setting<Boolean> ignoreSmartDelayForShulkerBulletAndGhastCharge = sgTiming.add(new BoolSetting.Builder()
+	private final Setting<Boolean> ignoreSmartDelayForShulkerBulletAndGhastCharge = sgTimingPlus.add(new BoolSetting.Builder()
 		.name("ignore-delay-for-one-hit-entities")
 		.description("Ignore attack delay for shulker bullet and fireball.")
 		.defaultValue(true)
@@ -82,7 +109,7 @@ public class KillAuraMixin extends Module {
 	);
 
 	@Unique
-	private final Setting<Boolean> ignoreOnlyCritsForOneHitEntity = sgTiming.add(new BoolSetting.Builder()
+	private final Setting<Boolean> ignoreOnlyCritsForOneHitEntity = sgTimingPlus.add(new BoolSetting.Builder()
 		.name("ignore-only-crits-for-one-hit-entities")
 		.description("Ignore only crits delay for shulker bullet and fireball.")
 		.defaultValue(true)
@@ -91,7 +118,7 @@ public class KillAuraMixin extends Module {
 	);
 
 	@Unique
-	private final Setting<Boolean> customDelay = sgTiming.add(new BoolSetting.Builder()
+	private final Setting<Boolean> customDelayOneHit = sgTimingPlus.add(new BoolSetting.Builder()
 		.name("custom-delay-for-one-hit-entities")
 		.defaultValue(true)
 		.visible(() -> entities.get().contains(EntityType.SHULKER_BULLET) || entities.get().contains(EntityType.FIREBALL))
@@ -99,7 +126,7 @@ public class KillAuraMixin extends Module {
 	);
 
 	@Unique
-	private final Setting<Integer> hitDelay = sgTiming.add(new IntSetting.Builder()
+	private final Setting<Integer> hitDelay = sgTimingPlus.add(new IntSetting.Builder()
 		.name("delay-for-one-hit-entities")
 		.description("How fast you hit the entity in ticks.")
 		.defaultValue(2)
@@ -121,33 +148,46 @@ public class KillAuraMixin extends Module {
 		if (onlyCrits.get() && !allowCrit() && needCrit(getTarget())) {
 			if (ignoreOnlyCritsOnLevitation.get() && !Objects.requireNonNull(mc.player).hasStatusEffect(StatusEffects.LEVITATION)) {
 				cir.setReturnValue(false);
+				return;
 			}
 			else if (!ignoreOnlyCritsOnLevitation.get()) {
 				cir.setReturnValue(false);
+				return;
 			}
 		}
 
-		float delay = (customDelay.get()) ? hitDelay.get() : 0.5f;
+		float delay = (customDelayOneHit.get()) ? hitDelay.get() : 0.5f;
 
 		if (oneHitEntity()) {
-			if (customDelay.get()) {
+			if (customDelayOneHit.get()) {
 				if (hitTimer < delay) {
 					hitTimer++;
 					cir.setReturnValue(false);
+					return;
 				} else  {
 					if (ignoreOnlyCritsForOneHitEntity.get()) {
 						cir.setReturnValue(true);
+						return;
 					} else if (oneHitEntity() && ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && !onlyCrits.get()) {
 						cir.setReturnValue(true);
+						return;
 					}
 				}
 			}
 			else {
 				if (ignoreOnlyCritsForOneHitEntity.get()) {
 					cir.setReturnValue(true);
+					return;
 				} else if (oneHitEntity() && ignoreSmartDelayForShulkerBulletAndGhastCharge.get() && !onlyCrits.get()) {
 					cir.setReturnValue(true);
+					return;
 				}
+			}
+		}
+
+		if (smartDelayv2.get() && getTarget() instanceof LivingEntity livingEntity) {
+			if (DamageUtils.getAttackDamage(mc.player, livingEntity) >= livingEntity.getHealth() + 1.5 &&  mc.player.getAttackCooldownProgress(0.5f) >= 0.25 && livingEntity.hurtTime <= maxHurtTime.get()) {
+				cir.setReturnValue(true);
 			}
 		}
 	}
