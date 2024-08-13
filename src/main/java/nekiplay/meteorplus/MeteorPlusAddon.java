@@ -19,7 +19,6 @@ import nekiplay.meteorplus.features.modules.render.*;
 import nekiplay.meteorplus.features.modules.render.holograms.*;
 import nekiplay.meteorplus.features.modules.world.*;
 import nekiplay.meteorplus.features.modules.world.autoobsidianmine.AutoObsidianFarm;
-import nekiplay.meteorplus.gui.tabs.HiddenModulesTab;
 import nekiplay.meteorplus.hud.TimerPlusCharge;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import nekiplay.meteorplus.features.modules.world.timer.TimerPlus;
@@ -142,7 +141,7 @@ public class MeteorPlusAddon extends MeteorAddon {
 		//endregion
 
 		LOG.info(METEOR_LOGPREFIX + " Initializing better chat custom head...");
-		BetterChat.registerCustomHead("[Meteor+]", new Identifier("meteorplus", "chat/icon.png"));
+		BetterChat.registerCustomHead("[Meteor+]", Identifier.of("meteorplus", "chat/icon.png"));
 		LOG.info(METEOR_LOGPREFIX + " Loaded better chat");
 
 
@@ -210,13 +209,6 @@ public class MeteorPlusAddon extends MeteorAddon {
 		LOG.info(METEOR_LOGPREFIX + " Loaded hud");
 		//endregion
 
-		//region Tabs
-		LOG.info(METEOR_LOGPREFIX + " Initializing tabs...");
-
-		Tabs.add(new HiddenModulesTab());
-
-		LOG.info(METEOR_LOGPREFIX + " Loaded tabs");
-		//endregion
 		LOG.info(METEOR_LOGPREFIX + " Full loaded");
 	}
 

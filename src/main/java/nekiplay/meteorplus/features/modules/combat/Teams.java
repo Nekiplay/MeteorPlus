@@ -45,9 +45,7 @@ public class Teams extends Module {
 		ClientPlayerEntity player = mc.player;
 		if (player == null) { return false; }
 
-		if (!isActive()) {
-			return false;
-		}
+		if (!isActive()) { return false; }
 
 		if (scoreBoardTeam.get() && player.getScoreboardTeam() != null && entity.getScoreboardTeam() != null && player.isTeamPlayer(entity.getScoreboardTeam())) {
 			return true;

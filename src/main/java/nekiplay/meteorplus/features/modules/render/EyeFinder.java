@@ -94,7 +94,7 @@ public class EyeFinder extends Module {
 			while (entityIterator.hasNext()) {
 				Entity entity = entityIterator.next();
 				if (entity instanceof PlayerEntity && entity != mc.player) {
-					HitResult result = entity.raycast(5, mc.getTickDelta(), false);
+					HitResult result = entity.raycast(5, mc.getRenderTickCounter().getTickDelta(true), false);
 					cachMap.put(entity, result);
 				}
 			}

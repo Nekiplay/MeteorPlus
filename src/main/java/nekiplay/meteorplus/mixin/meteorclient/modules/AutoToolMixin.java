@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.player.AutoTool;
 import meteordevelopment.meteorclient.systems.modules.render.Xray;
 import meteordevelopment.meteorclient.systems.modules.world.InfinityMiner;
+import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
@@ -175,31 +176,31 @@ public class AutoToolMixin extends Module
 
 		if (silkTouchEnderChest
 			&& state.getBlock() == Blocks.ENDER_CHEST
-			&& EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, itemStack) == 0) {
+			&& Utils.getEnchantmentLevel(itemStack, Enchantments.SILK_TOUCH) == 0) {
 			return -1;
 		}
 
 		if (silkTouchGlowstone
 			&& state.getBlock() == Blocks.GLOWSTONE
-			&& EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, itemStack) == 0) {
+			&& Utils.getEnchantmentLevel(itemStack, Enchantments.SILK_TOUCH) == 0) {
 			return -1;
 		}
 
 		if (fortuneOre
 			&& isFortunable2(state.getBlock())
-			&& EnchantmentHelper.getLevel(Enchantments.FORTUNE, itemStack) == 0) {
+			&& Utils.getEnchantmentLevel(itemStack, Enchantments.FORTUNE) == 0) {
 			return -1;
 		}
 
 		double score = 0;
 
 		score += itemStack.getMiningSpeedMultiplier(state) * 1000;
-		score += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, itemStack);
-		score += EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, itemStack);
-		score += EnchantmentHelper.getLevel(Enchantments.MENDING, itemStack);
+		score += Utils.getEnchantmentLevel(itemStack, Enchantments.UNBREAKING);
+		score += Utils.getEnchantmentLevel(itemStack, Enchantments.EFFICIENCY);
+		score += Utils.getEnchantmentLevel(itemStack, Enchantments.MENDING);
 
-		if (enchantPreference == AutoTool.EnchantPreference.Fortune) score += EnchantmentHelper.getLevel(Enchantments.FORTUNE, itemStack);
-		if (enchantPreference == AutoTool.EnchantPreference.SilkTouch) score += EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, itemStack);
+		if (enchantPreference == AutoTool.EnchantPreference.Fortune) score += Utils.getEnchantmentLevel(itemStack, Enchantments.FORTUNE);
+		if (enchantPreference == AutoTool.EnchantPreference.SilkTouch) score += Utils.getEnchantmentLevel(itemStack, Enchantments.SILK_TOUCH);
 
 		if (itemStack.getItem() instanceof SwordItem item && (state.getBlock() instanceof BambooBlock || state.getBlock() instanceof BambooShootBlock))
 			score += 9000 + (item.getMaterial().getMiningSpeedMultiplier() * 1000);

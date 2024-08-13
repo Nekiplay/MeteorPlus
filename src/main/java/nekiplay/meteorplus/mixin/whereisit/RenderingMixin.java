@@ -55,10 +55,10 @@ public class RenderingMixin {
 			if (whereIsIt.background.get()) {
 				var bgBuffer = consumers.getBuffer(RenderLayer.getTextBackgroundSeeThrough());
 				var bgColour = ((int) (MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25F) * 255F)) << 24;
-				bgBuffer.vertex(matrix4f, x - 1, -1f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
-				bgBuffer.vertex(matrix4f, x - 1, 10f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
-				bgBuffer.vertex(matrix4f, x + width, 10f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
-				bgBuffer.vertex(matrix4f, x + width, -1f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE).next();
+				bgBuffer.vertex(matrix4f, x - 1, -1f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE);
+				bgBuffer.vertex(matrix4f, x - 1, 10f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE);
+				bgBuffer.vertex(matrix4f, x + width, 10f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE);
+				bgBuffer.vertex(matrix4f, x + width, -1f, 0).color(bgColour).light(LightmapTextureManager.MAX_LIGHT_COORDINATE);
 			}
 
 			RenderSystem.disableDepthTest();

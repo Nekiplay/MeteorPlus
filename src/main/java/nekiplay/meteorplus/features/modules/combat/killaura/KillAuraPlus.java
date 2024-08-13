@@ -39,7 +39,7 @@ public class KillAuraPlus extends Module {
 	public final Setting<KillAura.Weapon> weapon = sgGeneral.add(new EnumSetting.Builder<KillAura.Weapon>()
 		.name("weapon")
 		.description("Only attacks an entity when a specified weapon is in your hand.")
-		.defaultValue(KillAura.Weapon.Both)
+		.defaultValue(KillAura.Weapon.All)
 		.build()
 	);
 

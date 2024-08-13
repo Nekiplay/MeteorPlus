@@ -4,12 +4,7 @@
 	"compatibilityLevel": "JAVA_17",
 	"plugin": "nekiplay.MixinPlugin",
 	"client": [
-		"meteorclient.gui.LeftRightSettingsScreenMixin",
-		"meteorclient.modules.ModuleMixin",
-		"meteorclient.gui.ModulesScreenMixin",
 		"meteorclient.gui.WBlockPosEditMixin",
-		"meteorclient.gui.WMeteorModuleMixin",
-		"meteorclient.gui.WPressableMixin",
 		"meteorclient.modules.NameTagsMixin",
 		"meteorclient.modules.AutoToolMixin",
 		"meteorclient.modules.BlockESPMixin",

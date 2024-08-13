@@ -2,6 +2,7 @@ package nekiplay.meteorplus.mixin.meteorclient.modules;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.IBaritone;
+import com.sun.source.tree.Tree;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
 import baritone.api.pathing.goals.GoalGetToBlock;
 import meteordevelopment.meteorclient.gui.GuiTheme;
@@ -10,6 +11,7 @@ import meteordevelopment.meteorclient.gui.widgets.WLabel;
 import meteordevelopment.meteorclient.gui.widgets.containers.WTable;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WMinus;
+import meteordevelopment.meteorclient.pathing.PathManagers;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -129,51 +131,12 @@ public class WaypointsModuleMixin extends Module {
 	private void initTable(GuiTheme theme, WTable table) {
 		table.clear();
 
-		AtomicReference<Map<String, Waypoint>> waypoints = new AtomicReference<>();
-		waypoints.set(Waypoints.get().waypoints);
-
-		if (sortMode.get() == WaypointsModuleModes.SortMode.Distance) {
-			WaypointsModuleModes.DistanceComparator bvc = new WaypointsModuleModes.DistanceComparator(Waypoints.get().waypoints);
-			TreeMap<String, Waypoint> sorted_map = new TreeMap<String, Waypoint>(bvc);
-			sorted_map.putAll(waypoints.get());
-			waypoints.set(sorted_map);
-		}
-		else if (sortMode.get() == WaypointsModuleModes.SortMode.Name) {
-			WaypointsModuleModes.NameComparator bvc = new WaypointsModuleModes.NameComparator(Waypoints.get().waypoints);
-			TreeMap<String, Waypoint> sorted_map = new TreeMap<String, Waypoint>(bvc);
-			sorted_map.putAll(waypoints.get());
-			waypoints.set(sorted_map);
-		}
-
-		Map<String, Waypoint> filtered = new HashMap<>();
-
-		if (!search.get().isEmpty()) {
-			for (Waypoint waypoint : waypoints.get().values()) {
-				if (waypoint.name.get().toLowerCase().contains(search.get().toLowerCase())) {
-					filtered.put(waypoint.name.get(), waypoint);
-				}
-			}
-			waypoints.set(filtered);
-		}
-
-		for (Waypoint waypoint : waypoints.get().values()) {
+		for (Waypoint waypoint : Waypoints.get()) {
 			boolean validDim = Waypoints.checkDimension(waypoint);
 
 			table.add(new WIcon(waypoint));
 
-			WLabel name = theme.label(waypoint.name.get());
-			if (showDistance.get()) {
-				if (mc.player != null) {
-					long distance = Math.round(mc.player.getPos().distanceTo(waypoint.getPos().toCenterPos()));
-					if (showCompactDistance.get()) {
-						name = theme.label(waypoint.name.get() + " (" + NumeralUtils.FormatNumber(distance) + ")");
-					}
-					else {
-						name = theme.label(waypoint.name.get() + " (" + distance + "m)");
-					}
-				}
-			}
-			table.add(name).expandCellX().widget();
+			WLabel name = table.add(theme.label(waypoint.name.get())).expandCellX().widget();
 			if (!validDim) name.color = GRAY;
 
 			WCheckbox visible = table.add(theme.checkbox(waypoint.visible.get())).widget();
@@ -183,24 +146,23 @@ public class WaypointsModuleMixin extends Module {
 			};
 
 			WButton edit = table.add(theme.button(GuiRenderer.EDIT)).widget();
-			edit.action = () -> mc.setScreen(new EditWaypointScreen(theme, waypoint, () -> {
-				initTable(theme, table);
-			}));
+			edit.action = () -> mc.setScreen(new EditWaypointScreen(theme, waypoint, () -> initTable(theme, table)));
 
 			// Goto
 			if (validDim) {
 				WButton gotoB = table.add(theme.button("Goto")).widget();
 				gotoB.action = () -> {
-					IBaritone baritone = BaritoneAPI.getProvider().getPrimaryBaritone();
-					if (baritone.getPathingBehavior().isPathing()) baritone.getPathingBehavior().cancelEverything();
-					baritone.getCustomGoalProcess().setGoalAndPath(new GoalGetToBlock(waypoint.getPos()));
+					if (PathManagers.get().isPathing())
+						PathManagers.get().stop();
+
+					PathManagers.get().moveTo(waypoint.getPos());
 				};
 			}
 
 			WMinus remove = table.add(theme.minus()).widget();
 			remove.action = () -> {
 				Waypoints.get().remove(waypoint);
-				initTable(themeRef.get(), tableRef.get());
+				initTable(theme, table);
 			};
 
 			table.row();
@@ -210,13 +172,6 @@ public class WaypointsModuleMixin extends Module {
 		table.row();
 
 		WButton create = table.add(theme.button("Create")).expandX().widget();
-		create.action = () ->
-		{
-			if (Utils.canUpdate()) {
-				mc.setScreen(new EditWaypointScreen(theme, null, () -> {
-				initTable(theme, table);
-				}));
-			}
-		};
+		create.action = () -> mc.setScreen(new EditWaypointScreen(theme, null, () -> initTable(theme, table)));
 	}
 }

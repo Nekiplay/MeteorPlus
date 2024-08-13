@@ -56,7 +56,7 @@ public class ItemDataSetting<T extends ICopyable<T> & ISerializable<T> & IChange
 
 		NbtCompound valueTag = tag.getCompound("value");
 		for (String key : valueTag.getKeys()) {
-			get().put(Registries.ITEM.get(new Identifier(key)), defaultData.get().copy().fromTag(valueTag.getCompound(key)));
+			get().put(Registries.ITEM.get(Identifier.of(key)), defaultData.get().copy().fromTag(valueTag.getCompound(key)));
 		}
 
 		return get();

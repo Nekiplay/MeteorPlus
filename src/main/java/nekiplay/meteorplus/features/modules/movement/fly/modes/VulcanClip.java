@@ -79,7 +79,7 @@ public class VulcanClip extends FlyMode {
 	}
 
 	private void clip(float dist, float y) {
-		float tickDelta = mc.getTickDelta();
+		float tickDelta = mc.getRenderTickCounter().getTickDelta(true);
 		double yaw = Math.toRadians(mc.player.getYaw(tickDelta));
 		double x = -sin(yaw) * dist;
 		double z = cos(yaw) * dist;
