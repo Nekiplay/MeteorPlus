@@ -22,9 +22,6 @@
     ],
     "meteor": [
       "nekiplay.meteorplus.MeteorPlusAddon"
-    ],
-    "journeymap": [
-      "nekiplay.meteorplus.modules.integrations.journeymap.JourneyMapMeteorPlus"
     ]
   },
   "mixins": [

@@ -79,7 +79,7 @@ public class BlockHelper {
 	}
 
 	public static boolean outOfRange(BlockPos cityBlock) {
-		return MathHelper.sqrt((float) mc.player.squaredDistanceTo(cityBlock.getX(), cityBlock.getY(), cityBlock.getZ())) > mc.interactionManager.getReachDistance();
+		return MathHelper.sqrt((float) mc.player.squaredDistanceTo(cityBlock.getX(), cityBlock.getY(), cityBlock.getZ())) > 4;
 	}
 
 	public static BlockPos opposite(BlockPos pos, Dimension dimension)

@@ -21,6 +21,7 @@ import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.stat.Stat;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Identifier;
@@ -29,6 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
@@ -473,10 +475,10 @@ public class ConfigModifier {
 
 		Identifier name = popIdentifier(ss, "First argument to player.has_potion_effect() needs to a string.");
 
-		StatusEffect effect = Registries.STATUS_EFFECT.get(name);
-		if (effect == null) return Value.bool(false);
+		Optional<RegistryEntry.Reference<StatusEffect>> effect = Registries.STATUS_EFFECT.getEntry(name);
+		if (effect.isEmpty()) return Value.null_();
 
-		StatusEffectInstance effectInstance = mc.player.getStatusEffect(effect);
+		StatusEffectInstance effectInstance = mc.player.getStatusEffect(effect.get());
 		return Value.bool(effectInstance != null);
 	}
 
@@ -486,10 +488,10 @@ public class ConfigModifier {
 
 		Identifier name = popIdentifier(ss, "First argument to player.get_potion_effect() needs to a string.");
 
-		StatusEffect effect = Registries.STATUS_EFFECT.get(name);
-		if (effect == null) return Value.null_();
+		Optional<RegistryEntry.Reference<StatusEffect>> effect = Registries.STATUS_EFFECT.getEntry(name);
+		if (effect.isEmpty()) return Value.null_();
 
-		StatusEffectInstance effectInstance = mc.player.getStatusEffect(effect);
+		StatusEffectInstance effectInstance = mc.player.getStatusEffect(effect.get());
 		if (effectInstance == null) return Value.null_();
 
 		return wrap(effectInstance);

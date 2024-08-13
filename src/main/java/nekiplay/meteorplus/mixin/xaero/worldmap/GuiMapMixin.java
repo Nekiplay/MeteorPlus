@@ -74,7 +74,7 @@ public abstract class GuiMapMixin {
 				int mouseBlockPosZ = (int) Math.floor(mousePosZ);
 
 				int renderedCaveLayer = mapProcessor.getCurrentCaveLayer();
-				MapRegion leafRegion = this.mapProcessor.getMapRegion(renderedCaveLayer, mouseBlockPosX >> 9, mouseBlockPosZ >> 9, false);
+				MapRegion leafRegion = this.mapProcessor.getLeafMapRegion(renderedCaveLayer, mouseBlockPosX >> 9, mouseBlockPosZ >> 9, false);
 				MapTileChunk chunk = leafRegion == null ? null : leafRegion.getChunk(mouseBlockPosX >> 6 & 7, mouseBlockPosZ >> 6 & 7);
 				MapTile mouseTile = chunk == null ? null : chunk.getTile(mouseBlockPosX >> 4 & 3, mouseBlockPosZ >> 4 & 3);
 

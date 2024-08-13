@@ -202,7 +202,7 @@ public class AutoToolMixin extends Module
 		if (enchantPreference == AutoTool.EnchantPreference.SilkTouch) score += EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, itemStack);
 
 		if (itemStack.getItem() instanceof SwordItem item && (state.getBlock() instanceof BambooBlock || state.getBlock() instanceof BambooShootBlock))
-			score += 9000 + (item.getMaterial().getMiningLevel() * 1000);
+			score += 9000 + (item.getMaterial().getMiningSpeedMultiplier() * 1000);
 
 
 		return score;

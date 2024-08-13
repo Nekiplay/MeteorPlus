@@ -40,7 +40,7 @@ public class RenderingMixin {
 
 			pose.translate(pos.x, pos.y + whereIsIt.y_offset.get(), pos.z);
 			pose.multiply(camera.getRotation());
-			var factor = 0.025f * WhereIsItConfig.INSTANCE.instance().getClient().containerNameLabelScale;
+			var factor = 0.025f * 1;
 			pose.scale(-factor, -factor, factor);
 			var matrix4f = pose.peek().getPositionMatrix();
 

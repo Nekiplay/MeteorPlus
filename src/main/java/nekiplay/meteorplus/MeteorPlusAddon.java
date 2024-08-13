@@ -8,7 +8,6 @@ import meteordevelopment.meteorclient.systems.modules.misc.BetterChat;
 import nekiplay.MixinPlugin;
 import nekiplay.meteorplus.features.commands.*;
 import nekiplay.meteorplus.features.modules.combat.*;
-import nekiplay.meteorplus.features.modules.combat.killaura.KillAuraPlus;
 import nekiplay.meteorplus.features.modules.combat.velocity.VelocityPlus;
 import nekiplay.meteorplus.features.modules.misc.*;
 import nekiplay.meteorplus.features.modules.movement.*;
@@ -18,11 +17,9 @@ import nekiplay.meteorplus.features.modules.player.*;
 import nekiplay.meteorplus.features.modules.render.*;
 import nekiplay.meteorplus.features.modules.render.holograms.*;
 import nekiplay.meteorplus.features.modules.world.*;
-import nekiplay.meteorplus.features.modules.integrations.*;
 import nekiplay.meteorplus.features.modules.world.autoobsidianmine.AutoObsidianFarm;
 import nekiplay.meteorplus.gui.tabs.HiddenModulesTab;
 import nekiplay.meteorplus.hud.TimerPlusCharge;
-import nekiplay.meteorplus.features.modules.integrations.LitematicaPrinter;
 import nekiplay.meteorplus.features.modules.integrations.MapIntegration;
 import nekiplay.meteorplus.features.modules.world.timer.TimerPlus;
 import nekiplay.main.items.ModItems;
@@ -68,11 +65,6 @@ public class MeteorPlusAddon extends MeteorAddon {
 		instance = this;
 
 		LOG.info(METEOR_LOGPREFIX + " Initializing...");
-
-		if (MixinPlugin.isZewo2) {
-			LOG.info(METEOR_LOGPREFIX + " Detected Zero2 addon, full disabling Meteor+");
-			return;
-		}
 
 		ArrayList<String> notFoundIntegrations = new ArrayList<>();
 		ArrayList<String> notFoundBaritoneIntegrations = new ArrayList<>();
@@ -121,18 +113,6 @@ public class MeteorPlusAddon extends MeteorAddon {
 			enabledIntegrations.add("Goto+");
 		}
 
-		if (!isLitematicaMapresent) {
-			if (!isBaritonePresent) {
-				notFoundBaritoneIntegrations.add("Litematica printer");
-			}
-			else {
-				notFoundIntegrations.add("Litematica");
-			}
-		}
-		else {
-			enabledIntegrations.add("Litematica");
-		}
-
 		if (!enabledIntegrations.isEmpty()) {
 			LOG.info(METEOR_LOGPREFIX + " Enabling integrations for: " + String.join(", ", enabledIntegrations));
 		}
@@ -174,7 +154,6 @@ public class MeteorPlusAddon extends MeteorAddon {
 		//modules.add(new KillAuraPlus());
 		modules.add(new Teams());
 		modules.add(new HologramModule());
-		modules.add(new SprintPlus());
 		modules.add(new ChatPrefix());
 		modules.add(new ChatGPT());
 		modules.add(new ItemHighlightPlus());
@@ -215,12 +194,6 @@ public class MeteorPlusAddon extends MeteorAddon {
 			if (isXaeroWorldMapresent || isJourneyMapPresent) {
 				modules.add(new MapIntegration());
 			}
-		}
-		if (isLitematicaMapresent && isBaritonePresent) {
-			modules.add(new LitematicaPrinter());
-		}
-		if (isWhereIsIt) {
-			modules.add(new WhereIsIt());
 		}
 		LOG.info(METEOR_LOGPREFIX + " Loaded modules");
 		//endregion

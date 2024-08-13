@@ -82,11 +82,6 @@ public class MixinPlugin implements IMixinConfigPlugin {
 		else if (mixinClassName.startsWith(mixinPackageMeteorPlus + ".minecraft")) {
 			return isMeteorClient;
 		}
-
-		else if (mixinClassName.startsWith(mixinPackageBozePlus + ".minecraft")) {
-			return isBozeAPI && !isMeteorClient;
-		}
-
 		return false;
 	}
 
