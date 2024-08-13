@@ -47,7 +47,7 @@ public class WhereIsIt extends Module {
 	);
 
 	public final Setting<Double> text_scale = defaultGroup.add(new DoubleSetting.Builder()
-		.name("text_scale")
+		.name("text-scale")
 		.defaultValue(1)
 		.max(15)
 		.min(0)
