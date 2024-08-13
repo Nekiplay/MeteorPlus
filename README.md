@@ -69,10 +69,8 @@
 ## Integrations with mods
 | Mod                                                                       | Integrated                                              |
 |---------------------------------------------------------------------------|---------------------------------------------------------|
-| **[Journey Map](https://modrinth.com/mod/journeymap)**                    | **Goto from Baritone for map context menu**             |
 | **[Xaero's World Map](https://modrinth.com/mod/xaeros-world-map)**        | **Goto, Elytra fly from Baritone for map context menu** |
 | **[Chest Tracker](https://modrinth.com/mod/chest-tracker)**               | **Color support**                                       |
-| **[Litematica](https://www.curseforge.com/minecraft/mc-mods/litematica)** | **Printer (Auto block placer)**                         |
 
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net)

@@ -33,6 +33,11 @@ repositories {
 	maven {
 		url = uri("https://maven.isxander.dev/releases")
 	}
+	// YACL Snapshots
+	maven {
+		name = "Xander Snapshot Maven"
+		url = uri("https://maven.isxander.dev/snapshots")
+	}
 	// Where Is It, JackFredLib
 	maven {
 		url = uri("https://maven.jackf.red/releases/")
@@ -74,9 +79,6 @@ dependencies {
 
 	// Chest Tracker
 	modImplementation("red.jackf:whereisit:${project.where_is_it_version}")
-
-	// Boze
-	modImplementation "dev.boze:boze-api:${project.boze_api_version}"
 }
 
 loom {

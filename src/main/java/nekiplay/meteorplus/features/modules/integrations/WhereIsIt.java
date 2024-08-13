@@ -45,4 +45,13 @@ public class WhereIsIt extends Module {
 		.sliderRange(-15, 15)
 		.build()
 	);
+
+	public final Setting<Double> text_scale = defaultGroup.add(new DoubleSetting.Builder()
+		.name("text_scale")
+		.defaultValue(1)
+		.max(15)
+		.min(0)
+		.sliderRange(0, 15)
+		.build()
+	);
 }

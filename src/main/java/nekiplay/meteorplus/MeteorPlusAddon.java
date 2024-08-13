@@ -9,6 +9,7 @@ import nekiplay.MixinPlugin;
 import nekiplay.meteorplus.features.commands.*;
 import nekiplay.meteorplus.features.modules.combat.*;
 import nekiplay.meteorplus.features.modules.combat.velocity.VelocityPlus;
+import nekiplay.meteorplus.features.modules.integrations.WhereIsIt;
 import nekiplay.meteorplus.features.modules.misc.*;
 import nekiplay.meteorplus.features.modules.movement.*;
 import nekiplay.meteorplus.features.modules.movement.elytrafly.ElytraFlyPlus;
@@ -194,6 +195,9 @@ public class MeteorPlusAddon extends MeteorAddon {
 			if (isXaeroWorldMapresent || isJourneyMapPresent) {
 				modules.add(new MapIntegration());
 			}
+		}
+		if (isWhereIsIt) {
+			modules.add(new WhereIsIt());
 		}
 		LOG.info(METEOR_LOGPREFIX + " Loaded modules");
 		//endregion
