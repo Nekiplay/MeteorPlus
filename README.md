@@ -3,7 +3,7 @@
 	<img src="https://github.com/Nekiplay/MeteorPlus/assets/35975332/5fa04a11-0de7-4423-8c9d-0b6fe9142df4" alt="meteor-plus" width="200px"/>
 	<h1>Meteor Plus</h1>
 	<br>
-		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a>, and <a href="https://boze.dev">Boze client</a> that adds many blatant features.
+		An addon for <a href="https://github.com/MeteorDevelopment/meteor-client">Meteor client</a> that adds many blatant features.
 	<br>
 	<br>
 	<a href="https://github.com/Nekiplay/MeteorPlus/blob/main/ac-tests.md"><img src="https://img.shields.io/badge/anticheats-aac%2C%20spartan%2C%20vulcan%2C%20matrix%2C%20wraith%2C%20ncp%2C%20verus%2C%20cerberus%2C%20taka%2C%20fiona%2C%20intave-brightgreen" alt="AntiChests" /></a>
