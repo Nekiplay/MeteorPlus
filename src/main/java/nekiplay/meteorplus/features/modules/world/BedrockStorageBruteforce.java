@@ -79,7 +79,7 @@ public class BedrockStorageBruteforce extends Module {
 	private void stop() {
 		if (clickerThread != null && clickerThread.isAlive())
 		{
-			clickerThread.stop();
+
 		}
 		scan = false;
 	}

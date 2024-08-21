@@ -246,7 +246,7 @@ public class AntiBotPlus extends Module {
 	private void livingEntityMove(PacketEvent.Receive event) {
 		if (event.packet instanceof EntityPositionS2CPacket packet) {
 			if (mc.world != null) {
-				Entity entity = mc.world.getEntityById(packet.getId());
+				Entity entity = mc.world.getEntityById(packet.getEntityId());
 				if (entity != null) {
 					if (entity.isOnGround()) {
 						grounds.add(entity.getId());
@@ -271,7 +271,7 @@ public class AntiBotPlus extends Module {
 		}
 		else if (event.packet instanceof EntityAnimationS2CPacket packet) {
 			if (mc.world != null) {
-				Entity entity = mc.world.getEntityById(packet.getId());
+				Entity entity = mc.world.getEntityById(packet.getEntityId());
 				if (entity != null) {
 					if (entity instanceof LivingEntity && packet.getAnimationId() == 0 && !swings.contains(entity.getId())) {
 						swings.add(entity.getId());

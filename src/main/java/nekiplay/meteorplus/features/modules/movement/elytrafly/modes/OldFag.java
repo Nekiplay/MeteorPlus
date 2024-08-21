@@ -56,7 +56,6 @@ public class OldFag extends ElytraFlyMode {
 
 	}
 
-	//Walalalalalalalalalalalala
 	@Override
 	public void onPacketSend(PacketEvent.Send event) {
 		if (event.packet instanceof PlayerMoveC2SPacket) {

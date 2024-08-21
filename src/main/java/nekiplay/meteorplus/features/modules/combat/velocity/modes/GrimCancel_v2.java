@@ -37,7 +37,7 @@ public class GrimCancel_v2 extends VelocityMode {
 	public void onReceivePacket(PacketEvent.Receive event) {
 		Packet<?> packet = event.packet;
 
-		if (((packet instanceof EntityVelocityUpdateS2CPacket && ((EntityVelocityUpdateS2CPacket) packet).getId() == mc.player.getId()) || packet instanceof ExplosionS2CPacket) && canCancel) {
+		if (((packet instanceof EntityVelocityUpdateS2CPacket && ((EntityVelocityUpdateS2CPacket) packet).getEntityId() == mc.player.getId()) || packet instanceof ExplosionS2CPacket) && canCancel) {
 			event.cancel();
 			canCancel = true;
 		}

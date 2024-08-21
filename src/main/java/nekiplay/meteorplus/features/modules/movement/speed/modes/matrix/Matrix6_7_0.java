@@ -32,8 +32,8 @@ public class Matrix6_7_0 extends SpeedMode {
 
 	public void onReceivePacket(PacketEvent.Receive event) {
 		if (event.packet instanceof EntityVelocityUpdateS2CPacket velocity) {
-			if (mc.player != null && mc.world != null && mc.world.getEntityById(velocity.getId()) != null) {
-				if (mc.player == mc.world.getEntityById(velocity.getId()))
+			if (mc.player != null && mc.world != null && mc.world.getEntityById(velocity.getEntityId()) != null) {
+				if (mc.player == mc.world.getEntityById(velocity.getEntityId()))
 					noVelocityY = 10;
 			}
 		}
