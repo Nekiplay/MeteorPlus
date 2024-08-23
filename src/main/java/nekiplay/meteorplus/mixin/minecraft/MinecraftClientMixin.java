@@ -35,7 +35,7 @@ public class MinecraftClientMixin {
 	@Redirect(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"), require = 0)
 	public boolean breakBlock(ClientPlayerEntity clientPlayer) {
 		MultiTasks multiTasks = Modules.get().get(MultiTasks.class);
-		if(multiTasks.isActive()) {
+		if(multiTasks != null && multiTasks.isActive()) {
 			return false;
 		}
 		return clientPlayer.isUsingItem();
@@ -44,7 +44,7 @@ public class MinecraftClientMixin {
 	@Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"), require = 0)
 	public boolean itemBreak(ClientPlayerInteractionManager clientPlayerInteractionManager) {
 		MultiTasks multiTasks = Modules.get().get(MultiTasks.class);
-		if(multiTasks.isActive()) {
+		if(multiTasks != null && multiTasks.isActive()) {
 			return false;
 		}
 		return clientPlayerInteractionManager.isBreakingBlock();
