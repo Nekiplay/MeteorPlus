@@ -65,13 +65,6 @@
 | **Auto Tool** | **No work in creative mode**                |
 | **KeyBinds**  | **Allow binding function to LMB, RMB, ESC** |
 
-
-## Integrations with mods
-| Mod                                                                       | Integrated                                              |
-|---------------------------------------------------------------------------|---------------------------------------------------------|
-| **[Xaero's World Map](https://modrinth.com/mod/xaeros-world-map)**        | **Goto, Elytra fly from Baritone for map context menu** |
-| **[Chest Tracker](https://modrinth.com/mod/chest-tracker)**               | **Color support**                                       |
-
 # Installation Guide
 1. Install [minecraft](https://www.minecraft.net)
 2. Install [fabric](https://fabricmc.net) and [fabric api](https://www.curseforge.com/minecraft/mc-mods/fabric-api) for your version of minecraft
